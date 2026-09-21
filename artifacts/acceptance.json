@@ -27,23 +27,23 @@
     },
     {
       "name": "offline-run",
-      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v5",
+      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v6",
       "exit_code": 0,
       "input_version": "examples/hohmann/run.json + dataset.json",
-      "output_path": "artifacts/acceptance-runs-v5/run-7a65020acaf83cfc"
+      "output_path": "artifacts/acceptance-runs-v6/run-7a65020acaf83cfc"
     },
     {
       "name": "deterministic-replay",
-      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v5/run-7a65020acaf83cfc",
+      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v6/run-7a65020acaf83cfc",
       "exit_code": 0,
       "verified": true,
       "checks": ["input_hash", "code_revision", "environment", "seed", "source_files", "evidence_files", "candidate_order", "computational_output"],
       "input_version": "replay-manifest-v1",
-      "output_path": "artifacts/acceptance-runs-v5/run-7a65020acaf83cfc/report.md"
+      "output_path": "artifacts/acceptance-runs-v6/run-7a65020acaf83cfc/report.md"
     },
     {
       "name": "inspection",
-      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v5/run-7a65020acaf83cfc",
+      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v6/run-7a65020acaf83cfc",
       "exit_code": 0,
       "input_version": "run-schema-v1",
       "output_path": "artifacts/demo-transcript.md"

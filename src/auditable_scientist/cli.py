@@ -11,20 +11,24 @@ from typing import Any
 
 from .benchmark import HohmannConfig, load_hohmann_config, load_hohmann_dataset, make_hohmann_study, run_hohmann_experiment
 from .domain import (
+    Agent,
     Claim,
     ClaimStatus,
     Evidence,
     EvidenceKind,
     EvidenceLevel,
+    Evaluator,
+    Memory,
     Observation,
     Policy,
     ProvenanceStatus,
+    Provider,
     Run,
     RunStatus,
     Trace,
+    Tool,
 )
 from .policy import ToolRegistry
-from .domain import Tool
 from .reporting import render_hohmann_report
 from .runtime.canonical import canonical_hash, canonical_json
 from .runtime.environment import capture_environment
@@ -60,6 +64,9 @@ def _source_paths() -> list[Path]:
         root / "src/auditable_scientist/runtime/canonical.py",
         root / "src/auditable_scientist/cli.py",
         root / "src/auditable_scientist/policy/runtime.py",
+        root / "src/auditable_scientist/domain/models.py",
+        root / "schemas/run.schema.json",
+        root / "docs/EVIDENCE_POLICY.md",
     ]
 
 
@@ -90,15 +97,16 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         allowed_providers=["internal-bounded-generator"],
     )
     registry = ToolRegistry(policy)
-    registry.register(
-        Tool(
+    hohmann_tool = Tool(
             tool_id="hohmann-benchmark",
             name="Hohmann benchmark",
             version="1",
             parameter_schema_ref="schemas/hohmann-config-v1.json",
             deterministic=True,
             network_required=False,
-        ),
+        )
+    registry.register(
+        hohmann_tool,
         lambda _: run_hohmann_experiment(config, cases),
         argument_schema={
             "type": "object",
@@ -131,6 +139,33 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         allowed_use=["analytic-reference", "offline-demo"],
     )
     evidence = [dataset_evidence, code_evidence]
+    agent = Agent(
+        agent_id="offline-bounded-agent-v1",
+        name="Offline bounded research agent",
+        version="1",
+        capabilities=["propose-hypothesis", "invoke-registered-tool", "explain-result"],
+    )
+    memory_source = _repo_root() / "docs/EVIDENCE_POLICY.md"
+    memory = Memory(
+        memory_id="evidence-policy-memory-v1",
+        source_ref=str(memory_source),
+        scope="claim-level evidence boundaries",
+        version="local-snapshot",
+        content_hash=fingerprint_file(memory_source).sha256,
+    )
+    evaluator = Evaluator(
+        evaluator_id="hohmann-holdout-v1",
+        name="Hohmann dimensional and holdout evaluator",
+        version="1",
+        read_only=True,
+    )
+    provider = Provider(
+        provider_id="internal-bounded-generator",
+        kind="symbolic-candidate-generator",
+        name="Internal bounded candidate generator",
+        version="1",
+        source_ref="src/auditable_scientist/benchmark/hohmann.py",
+    )
     train_ids = [case.case_id for case in cases if case.split == "train"]
     holdout_ids = [case.case_id for case in cases if case.split == "holdout"]
     observations = [
@@ -173,6 +208,12 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         seed=seed,
         evidence_refs=[item.evidence_id for item in evidence],
         status=RunStatus.COMPLETED if experiment.gate.passed else RunStatus.UNVERIFIED,
+        agent=agent,
+        tools=[hohmann_tool],
+        memories=[memory],
+        evaluators=[evaluator],
+        providers=[provider],
+        policy=policy,
         claims=[claim],
         observations=observations,
         evidence=evidence,

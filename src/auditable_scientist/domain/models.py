@@ -234,6 +234,12 @@ class Run(StrictModel):
     seed: int = Field(ge=0)
     evidence_refs: list[str] = Field(default_factory=list)
     status: RunStatus
+    agent: Agent | None = None
+    tools: list[Tool] = Field(default_factory=list)
+    memories: list[Memory] = Field(default_factory=list)
+    evaluators: list[Evaluator] = Field(default_factory=list)
+    providers: list[Provider] = Field(default_factory=list)
+    policy: Policy | None = None
     events: list[Event] = Field(default_factory=list)
     traces: list[Trace] = Field(default_factory=list)
     claims: list[Claim] = Field(default_factory=list)
@@ -253,6 +259,12 @@ class Run(StrictModel):
         for trace in self.traces:
             if trace.run_id != self.run_id or trace.input_hash != self.input_hash:
                 raise ValueError("trace must reference its containing run and input hash")
+        identifier_fields = {"tools": "tool_id", "memories": "memory_id", "evaluators": "evaluator_id", "providers": "provider_id"}
+        for field_name, identifier_field in identifier_fields.items():
+            records = getattr(self, field_name)
+            ids = [getattr(item, identifier_field) for item in records]
+            if len(ids) != len(set(ids)):
+                raise ValueError(f"{field_name} must have unique identifiers")
         previous = "genesis"
         for expected_seq, event in enumerate(self.events):
             if event.seq != expected_seq:

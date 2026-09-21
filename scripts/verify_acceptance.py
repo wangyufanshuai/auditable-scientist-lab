@@ -31,8 +31,12 @@ def main() -> None:
     if any(item.get("exit_code") != 0 for item in acceptance["checks"]):
         raise SystemExit("an acceptance command did not pass")
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v5/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v6/run-7a65020acaf83cfc"
     run = Run.model_validate(json.loads((run_dir / "run.json").read_text(encoding="utf-8")))
+    if run.agent is None or not run.tools or not run.memories or not run.evaluators or not run.providers or run.policy is None:
+        raise SystemExit("T1 run is missing a shared kernel record")
+    if run.policy.network != "disabled" or run.providers[0].provider_id not in run.policy.allowed_providers:
+        raise SystemExit("T1 policy/provider binding is inconsistent")
     EventLog(run_dir / "events.jsonl").verify()
     input_payload = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")

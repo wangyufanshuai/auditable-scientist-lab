@@ -20,6 +20,12 @@ def test_cli_hohmann_offline_vertical_slice(tmp_path: Path, capsys) -> None:
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     assert run["status"] == "completed"
     assert run["claims"][0]["status"] == "reproduced"
+    assert run["agent"]["agent_id"] == "offline-bounded-agent-v1"
+    assert run["tools"][0]["tool_id"] == "hohmann-benchmark"
+    assert run["memories"][0]["memory_id"] == "evidence-policy-memory-v1"
+    assert run["evaluators"][0]["evaluator_id"] == "hohmann-holdout-v1"
+    assert run["providers"][0]["provider_id"] == "internal-bounded-generator"
+    assert run["policy"]["network"] == "disabled"
     assert main(["replay", str(run_dir)]) == 0
     replay_output = capsys.readouterr().out
     assert '"verified": true' in replay_output
