@@ -31,12 +31,13 @@ def main() -> None:
     if any(item.get("exit_code") != 0 for item in acceptance["checks"]):
         raise SystemExit("an acceptance command did not pass")
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v4/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v5/run-7a65020acaf83cfc"
     run = Run.model_validate(json.loads((run_dir / "run.json").read_text(encoding="utf-8")))
     EventLog(run_dir / "events.jsonl").verify()
     input_payload = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
+    study = json.loads((run_dir / "study.json").read_text(encoding="utf-8"))
     replay_receipt = manifest.verify(
         input_payload=input_payload,
         code_revision=manifest.code_revision,
@@ -45,7 +46,7 @@ def main() -> None:
         source_paths=[item.path for item in manifest.source_files],
         evidence_paths=[item.path for item in manifest.evidence_files],
         candidate_order=experiment["candidate_order"],
-        computational_output=experiment,
+        computational_output={"experiment": experiment, "study": study},
     )
     if not replay_receipt.verified:
         raise SystemExit("T1 replay receipt did not verify")
@@ -65,6 +66,28 @@ def main() -> None:
                 raise SystemExit(f"track {track_id} evidence changed: {evidence.path}")
         if not item["passed"] or not item["negative_case_passed"]:
             raise SystemExit(f"track {track_id} did not pass its positive and negative gates")
+        directory = {
+            "T2": "t2-causal",
+            "T3": "t3-dynamics",
+            "T4": "t4-proof",
+            "T5": "t5-protocol",
+        }[track_id]
+        bundle_dir = ROOT / "artifacts" / directory
+        for filename in ("acceptance.json", "test-report.md", "demo-transcript.md", "sample-run.json"):
+            if not (bundle_dir / filename).is_file():
+                raise SystemExit(f"track {track_id} evidence package is missing: {filename}")
+        acceptance_bundle = json.loads((bundle_dir / "acceptance.json").read_text(encoding="utf-8"))
+        boundaries = acceptance_bundle.get("evidence_boundaries")
+        if boundaries != {
+            "demo": True,
+            "validated_reproduction": item["evidence_level"] == "validated-reproduction",
+            "real_data": False,
+            "research_candidate": False,
+        }:
+            raise SystemExit(f"track {track_id} evidence boundaries are incomplete")
+        sample = json.loads((bundle_dir / "sample-run.json").read_text(encoding="utf-8"))
+        if sample.get("input_hash") != item["input_hash"]:
+            raise SystemExit(f"track {track_id} sample run hash does not match receipt")
 
     t2_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T2")
     t2_fixture = load("examples/causal/fixture.json")

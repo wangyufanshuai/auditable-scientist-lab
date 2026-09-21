@@ -36,8 +36,17 @@
     },
     "track_id": "T2"
   },
+  "evidence_boundaries": {
+    "demo": true,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": true
+  },
   "execution": "offline",
-  "negative_case": "wrong coefficient rejected",
+  "negative_case": {
+    "rejected": true,
+    "wrong_coefficient": 1.0
+  },
   "status": "accepted-with-bounded-scope",
   "track": "T2"
 }

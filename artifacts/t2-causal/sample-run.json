@@ -1,0 +1,34 @@
+{
+  "evaluator": {
+    "coefficient": 2.0,
+    "evaluator_id": "causal-intervention-v1",
+    "holdout_rmse": 0.0,
+    "intercept": 1.0,
+    "max_context_invariance_error": 0.0,
+    "negative_candidate_rejected": true,
+    "notes": [
+      "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+      "Negative candidate is required to fail the holdout gate."
+    ],
+    "passed": true,
+    "train_rmse": 0.0
+  },
+  "evidence_files": [
+    {
+      "allowed_use": [
+        "offline-fixture",
+        "bounded-evaluator"
+      ],
+      "bytes": 561,
+      "path": "examples/causal/fixture.json",
+      "provenance_status": "unverified",
+      "sha256": "71564d14c5ed40133f1f1c89e0597afb4fd48a350905e6e2efd94ed47a46f292"
+    }
+  ],
+  "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+  "negative_case": {
+    "rejected": true,
+    "wrong_coefficient": 1.0
+  },
+  "track": "T2"
+}

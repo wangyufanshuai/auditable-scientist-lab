@@ -1,0 +1,40 @@
+{
+  "evaluator": {
+    "evaluator_id": "bio-chem-protocol-v1",
+    "evidence_level": "validated-reproduction",
+    "execution_allowed": false,
+    "failures": [],
+    "notes": [
+      "This evaluator checks declarative constraints only.",
+      "It never schedules, controls, or authorizes wet-lab execution."
+    ],
+    "passed": true
+  },
+  "evidence_files": [
+    {
+      "allowed_use": [
+        "offline-fixture",
+        "bounded-evaluator"
+      ],
+      "bytes": 622,
+      "path": "examples/protocol/fixture.json",
+      "provenance_status": "unverified",
+      "sha256": "bb2b2b565d4ee9a17bdf1a42df59b50fc341d92a1c68f69eac7e409c09f6c485"
+    }
+  ],
+  "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
+  "negative_case": {
+    "evaluator_id": "bio-chem-protocol-v1",
+    "evidence_level": "demo",
+    "execution_allowed": false,
+    "failures": [
+      "provenance:step-1"
+    ],
+    "notes": [
+      "This evaluator checks declarative constraints only.",
+      "It never schedules, controls, or authorizes wet-lab execution."
+    ],
+    "passed": false
+  },
+  "track": "T5"
+}

@@ -35,6 +35,56 @@ def evidence_for(path: Path) -> list[dict[str, object]]:
     ]
 
 
+def write_track_bundle(
+    *,
+    track_id: str,
+    directory: str,
+    receipt: object,
+    negative_case: object,
+    demo_text: str,
+) -> None:
+    receipt_payload = receipt.model_dump(mode="json")
+    artifact_dir = ROOT / "artifacts" / directory
+    acceptance = {
+        "track": track_id,
+        "status": "accepted-with-bounded-scope",
+        "evaluator": receipt_payload,
+        "negative_case": negative_case,
+        "evidence_boundaries": {
+            "demo": True,
+            "validated_reproduction": receipt_payload["evidence_level"] == "validated-reproduction",
+            "real_data": False,
+            "research_candidate": False,
+        },
+        "execution": "offline",
+    }
+    write_json(artifact_dir / "acceptance.json", acceptance)
+    write_json(
+        artifact_dir / "sample-run.json",
+        {
+            "track": track_id,
+            "input_hash": receipt_payload["input_hash"],
+            "evaluator": receipt_payload["result"],
+            "negative_case": negative_case,
+            "evidence_files": receipt_payload["evidence_files"],
+        },
+    )
+    (artifact_dir / "test-report.md").write_text(
+        f"# {track_id} evaluator test report\n\n"
+        "- Command: `python scripts/verify_acceptance.py`\n"
+        "- Result: independently replayed by the portfolio verifier\n"
+        "- Evidence level: bounded local fixture\n"
+        "- Real-data claim: false\n"
+        "- Research-candidate claim: false\n",
+        encoding="utf-8",
+    )
+    (artifact_dir / "demo-transcript.md").write_text(
+        f"# {track_id} demo transcript\n\n{demo_text}\n\n"
+        "The evaluator is deterministic and offline. The result does not authorize a real-world scientific, clinical, or wet-lab claim.\n",
+        encoding="utf-8",
+    )
+
+
 def main() -> None:
     sample_run = json.loads((ROOT / "artifacts/sample-run.json").read_text(encoding="utf-8"))
     portfolio: list[dict[str, object]] = [
@@ -61,7 +111,7 @@ def main() -> None:
     write_json(causal_fixture, {"schema_version": "causal-fixture-v1", "cases": [item.model_dump(mode="json") for item in causal_cases]})
     _, causal_receipt = evaluate_causal_fixture(causal_cases)
     causal_receipt = TrackReceipt.model_validate({**causal_receipt.model_dump(mode="json"), "evidence_files": evidence_for(causal_fixture)})
-    write_json(ROOT / "artifacts/t2-causal/acceptance.json", {"track": "T2", "status": "accepted-with-bounded-scope", "evaluator": causal_receipt.model_dump(mode="json"), "negative_case": "wrong coefficient rejected", "execution": "offline"})
+    write_track_bundle(track_id="T2", directory="t2-causal", receipt=causal_receipt, negative_case={"wrong_coefficient": 1.0, "rejected": causal_eval.negative_candidate_rejected}, demo_text=f"holdout_rmse={causal_eval.holdout_rmse}; negative_candidate_rejected={causal_eval.negative_candidate_rejected}")
     portfolio.append(causal_receipt.model_dump(mode="json"))
 
     dynamics_cases = [
@@ -74,7 +124,7 @@ def main() -> None:
     write_json(dynamics_fixture, {"schema_version": "dynamics-fixture-v1", "cases": [item.model_dump(mode="json") for item in dynamics_cases]})
     _, dynamics_receipt = evaluate_dynamics_fixture(dynamics_cases)
     dynamics_receipt = TrackReceipt.model_validate({**dynamics_receipt.model_dump(mode="json"), "evidence_files": evidence_for(dynamics_fixture)})
-    write_json(ROOT / "artifacts/t3-dynamics/acceptance.json", {"track": "T3", "status": "accepted-with-bounded-scope", "evaluator": dynamics_receipt.model_dump(mode="json"), "negative_case": "explicit Euler conservation drift rejected", "execution": "offline"})
+    write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, negative_case={"solver": "explicit-euler", "rejected": dynamics_eval.negative_euler_rejected}, demo_text=f"holdout_max_position_error={dynamics_eval.holdout_max_position_error}; negative_euler_rejected={dynamics_eval.negative_euler_rejected}")
     portfolio.append(dynamics_receipt.model_dump(mode="json"))
 
     trajectory = [ProofState(step=0, mass_a=2, mass_b=3), ProofState(step=1, mass_a=1, mass_b=4)]
@@ -90,7 +140,7 @@ def main() -> None:
     proof_fixture = ROOT / "examples/proof/fixture.json"
     write_json(proof_fixture, proof_package.model_dump(mode="json"))
     proof_receipt = make_track_receipt(track_id="T4", evaluator_id=proof_verification.evaluator_id, input_payload=proof_package.model_dump(mode="json"), evidence_level=proof_verification.evidence_level, passed=proof_verification.passed, negative_case_passed=not tampered_verification.passed, result=proof_verification.model_dump(mode="json"), evidence_files=evidence_for(proof_fixture), blocked_gates=["formal proof backend beyond finite obligation check"])
-    write_json(ROOT / "artifacts/t4-proof/acceptance.json", {"track": "T4", "status": "accepted-with-bounded-scope", "evaluator": proof_receipt.model_dump(mode="json"), "negative_case": tampered_verification.model_dump(mode="json"), "execution": "offline"})
+    write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, negative_case=tampered_verification.model_dump(mode="json"), demo_text=f"checked_obligations={proof_verification.checked_obligations}; tampered_claim_status={tampered_verification.claim_status}")
     portfolio.append(proof_receipt.model_dump(mode="json"))
 
     protocol_steps = [
@@ -104,7 +154,7 @@ def main() -> None:
     protocol_fixture = ROOT / "examples/protocol/fixture.json"
     write_json(protocol_fixture, protocol.model_dump(mode="json"))
     protocol_receipt = make_track_receipt(track_id="T5", evaluator_id=protocol_verification.evaluator_id, input_payload=protocol.model_dump(mode="json"), evidence_level=protocol_verification.evidence_level, passed=protocol_verification.passed, negative_case_passed=not bad_protocol_verification.passed, result=protocol_verification.model_dump(mode="json"), evidence_files=evidence_for(protocol_fixture), blocked_gates=["real wet-lab validation and human biosafety review"])
-    write_json(ROOT / "artifacts/t5-protocol/acceptance.json", {"track": "T5", "status": "accepted-with-bounded-scope", "evaluator": protocol_receipt.model_dump(mode="json"), "negative_case": bad_protocol_verification.model_dump(mode="json"), "execution": "verification-only; no wet-lab execution"})
+    write_track_bundle(track_id="T5", directory="t5-protocol", receipt=protocol_receipt, negative_case=bad_protocol_verification.model_dump(mode="json"), demo_text=f"passed={protocol_verification.passed}; execution_allowed={protocol_verification.execution_allowed}")
     portfolio.append(protocol_receipt.model_dump(mode="json"))
 
     write_json(ROOT / "artifacts/track-portfolio.json", {"schema_version": "track-portfolio-v1", "status": "bounded-slices-accepted", "tracks": portfolio, "global_boundaries": ["No real-data claim", "No autonomous wet-lab execution", "No publication or novelty claim"]})

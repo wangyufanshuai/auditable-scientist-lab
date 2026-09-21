@@ -34,6 +34,12 @@
     },
     "track_id": "T4"
   },
+  "evidence_boundaries": {
+    "demo": true,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": true
+  },
   "execution": "offline",
   "negative_case": {
     "checked_obligations": [

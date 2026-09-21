@@ -35,8 +35,17 @@
     },
     "track_id": "T3"
   },
+  "evidence_boundaries": {
+    "demo": true,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": true
+  },
   "execution": "offline",
-  "negative_case": "explicit Euler conservation drift rejected",
+  "negative_case": {
+    "rejected": true,
+    "solver": "explicit-euler"
+  },
   "status": "accepted-with-bounded-scope",
   "track": "T3"
 }

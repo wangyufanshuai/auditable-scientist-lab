@@ -23,7 +23,7 @@
           "bytes": 6601,
           "path": "artifacts/sample-run.json",
           "provenance_status": "unverified",
-          "sha256": "a80e767c828ce9aabe9f2b1cddd3e31ed3a7c7c35771dbd61e0dbfce6b7ed7ce"
+          "sha256": "8853e5d5e95d065b61e4d98c6640c3a82fd8e0404ecc088ab159c659ff487002"
         }
       ],
       "evidence_level": "validated-reproduction",

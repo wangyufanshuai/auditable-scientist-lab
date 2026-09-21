@@ -13,6 +13,10 @@ def test_cli_hohmann_offline_vertical_slice(tmp_path: Path, capsys) -> None:
     run_dir = Path(capsys.readouterr().out.strip())
     assert (run_dir / "run.json").is_file()
     assert (run_dir / "replay-manifest.json").is_file()
+    study = json.loads((run_dir / "study.json").read_text(encoding="utf-8"))
+    assert study["research_question"]["question_id"] == "rq-hohmann-time-of-flight-v1"
+    assert study["hypothesis"]["status"] == "reproduced"
+    assert study["experiment_plan"]["holdout_split"] == "holdout"
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     assert run["status"] == "completed"
     assert run["claims"][0]["status"] == "reproduced"

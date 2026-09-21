@@ -33,7 +33,13 @@
     },
     "track_id": "T5"
   },
-  "execution": "verification-only; no wet-lab execution",
+  "evidence_boundaries": {
+    "demo": true,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": true
+  },
+  "execution": "offline",
   "negative_case": {
     "evaluator_id": "bio-chem-protocol-v1",
     "evidence_level": "demo",

@@ -9,6 +9,7 @@ from .hohmann import (
     load_hohmann_dataset,
     run_hohmann_experiment,
 )
+from .study import make_hohmann_study
 
 __all__ = [
     "CandidateEvaluation",
@@ -18,4 +19,5 @@ __all__ = [
     "load_hohmann_config",
     "load_hohmann_dataset",
     "run_hohmann_experiment",
+    "make_hohmann_study",
 ]

@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .benchmark import HohmannConfig, load_hohmann_config, load_hohmann_dataset, run_hohmann_experiment
+from .benchmark import HohmannConfig, load_hohmann_config, load_hohmann_dataset, make_hohmann_study, run_hohmann_experiment
 from .domain import (
     Claim,
     ClaimStatus,
@@ -53,6 +53,7 @@ def _source_paths() -> list[Path]:
     root = _repo_root()
     return [
         root / "src/auditable_scientist/benchmark/hohmann.py",
+        root / "src/auditable_scientist/benchmark/study.py",
         root / "src/auditable_scientist/tools/dimensions.py",
         root / "src/auditable_scientist/tools/errors.py",
         root / "src/auditable_scientist/tools/numerical.py",
@@ -112,6 +113,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         path_refs=[str(dataset_path)],
         provider_id="internal-bounded-generator",
     )
+    study = make_hohmann_study(config, experiment, dataset_path=dataset_path, seed=seed)
     input_payload = {"config": config.model_dump(mode="json"), "cases": [case.model_dump(mode="json") for case in cases], "seed": seed}
     input_hash = canonical_hash(input_payload)
     run_id = f"run-{input_hash[:16]}"
@@ -227,6 +229,8 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     )
     _json_dump(run_dir / "run.json", run.model_dump(mode="json"))
     _json_dump(run_dir / "experiment.json", experiment.model_dump(mode="json"))
+    _json_dump(run_dir / "study.json", study)
+    manifest.computational_output = {"experiment": experiment.model_dump(mode="json"), "study": study}
     manifest.write(run_dir / "replay-manifest.json")
     report = render_hohmann_report(run=run.model_dump(mode="json"), experiment=experiment.model_dump(mode="json"))
     (run_dir / "report.md").write_text(report, encoding="utf-8")
@@ -240,6 +244,14 @@ def _replay(run_dir: Path) -> dict[str, Any]:
 
     typed_cases = [HohmannCase.model_validate(item) for item in input_payload["cases"]]
     experiment = run_hohmann_experiment(config, typed_cases)
+    from .benchmark import make_hohmann_study
+
+    dataset_path = Path(config.dataset_path)
+    if not dataset_path.is_absolute():
+        dataset_path = (_repo_root() / dataset_path).resolve()
+    if not dataset_path.is_file():
+        raise FileNotFoundError(f"dataset file not found during replay: {dataset_path}")
+    study = make_hohmann_study(config, experiment, dataset_path=dataset_path, seed=input_payload["seed"])
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     receipt = manifest.verify(
         input_payload=input_payload,
@@ -249,7 +261,7 @@ def _replay(run_dir: Path) -> dict[str, Any]:
         source_paths=[item.path for item in manifest.source_files],
         evidence_paths=[item.path for item in manifest.evidence_files],
         candidate_order=experiment.candidate_order,
-        computational_output=experiment.model_dump(mode="json"),
+        computational_output={"experiment": experiment.model_dump(mode="json"), "study": study},
     )
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     updated = render_hohmann_report(run=run, experiment=experiment.model_dump(mode="json"), receipt=receipt.model_dump(mode="json"))

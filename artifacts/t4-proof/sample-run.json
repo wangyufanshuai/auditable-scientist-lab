@@ -1,0 +1,43 @@
+{
+  "evaluator": {
+    "checked_obligations": [
+      "o1",
+      "o2",
+      "o3"
+    ],
+    "claim_status": "verified",
+    "evaluator_id": "proof-carrying-simulation-v1",
+    "evidence_level": "validated-reproduction",
+    "failed_obligations": [],
+    "passed": true
+  },
+  "evidence_files": [
+    {
+      "allowed_use": [
+        "offline-fixture",
+        "bounded-evaluator"
+      ],
+      "bytes": 749,
+      "path": "examples/proof/fixture.json",
+      "provenance_status": "unverified",
+      "sha256": "8236c38bba10ef500e92947a65f2399c5ecd53f8924f1e7aef29bd6dbb03bd76"
+    }
+  ],
+  "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+  "negative_case": {
+    "checked_obligations": [
+      "o1",
+      "o2",
+      "o3"
+    ],
+    "claim_status": "blocked",
+    "evaluator_id": "proof-carrying-simulation-v1",
+    "evidence_level": "demo",
+    "failed_obligations": [
+      "o1",
+      "o3"
+    ],
+    "passed": false
+  },
+  "track": "T4"
+}
