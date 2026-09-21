@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+
 from auditable_scientist.domain import Run
 from auditable_scientist.runtime.environment import capture_environment
 from auditable_scientist.runtime.event_log import EventLog
@@ -32,7 +34,9 @@ def main() -> None:
         raise SystemExit("an acceptance command did not pass")
 
     run_dir = ROOT / "artifacts/acceptance-runs-v6/run-7a65020acaf83cfc"
-    run = Run.model_validate(json.loads((run_dir / "run.json").read_text(encoding="utf-8")))
+    run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
+    run = Run.model_validate(run_payload)
     if run.agent is None or not run.tools or not run.memories or not run.evaluators or not run.providers or run.policy is None:
         raise SystemExit("T1 run is missing a shared kernel record")
     if run.policy.network != "disabled" or run.providers[0].provider_id not in run.policy.allowed_providers:
