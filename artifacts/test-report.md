@@ -6,11 +6,11 @@
 
 | Check | Command | Exit code | Result |
 |---|---|---:|---|
-| Contract, replay, CLI, adapter, policy, T2–T5 track tests | `python -m pytest -q` | 0 | 29 passed |
+| Contract, replay, CLI, adapter, policy, T2–T5 track tests | `python -m pytest -q` | 0 | 30 passed |
 | Editable package install | `python -m pip install -e . --no-deps --no-build-isolation` | 0 | installed |
-| Offline run | `python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v2` | 0 | run written |
-| Replay | `python -m auditable_scientist.cli replay artifacts/acceptance-runs-v2/run-7a65020acaf83cfc` | 0 | 5 checks verified |
-| Inspect | `python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v2/run-7a65020acaf83cfc` | 0 | completed / reproduced |
+| Offline run | `python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v3` | 0 | run written |
+| Replay | `python -m auditable_scientist.cli replay artifacts/acceptance-runs-v3/run-7a65020acaf83cfc` | 0 | 5 checks verified |
+| Inspect | `python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v3/run-7a65020acaf83cfc` | 0 | completed / reproduced |
 | Portfolio verifier | `python scripts/verify_acceptance.py` | 0 | T1–T5 receipts verified |
 
 The test process emits the existing `pytest-asyncio` configuration deprecation warning; this

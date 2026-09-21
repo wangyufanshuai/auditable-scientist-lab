@@ -60,6 +60,25 @@ def test_policy_denies_path_outside_allowlist_and_call_budget() -> None:
         registry.invoke("echo", {})
 
 
+def test_registered_tool_arguments_are_schema_checked() -> None:
+    registry = ToolRegistry(Policy(policy_id="offline", network="disabled", max_seconds=5, max_tool_calls=3))
+    registry.register(
+        _tool(),
+        lambda arguments: arguments["value"],
+        argument_schema={
+            "type": "object",
+            "required": ["value"],
+            "properties": {"value": {"type": "integer"}},
+            "additionalProperties": False,
+        },
+    )
+    with pytest.raises(PolicyDenied, match="missing required"):
+        registry.invoke("echo", {})
+    with pytest.raises(PolicyDenied, match="invalid type"):
+        registry.invoke("echo", {"value": "1"})
+    assert registry.invoke("echo", {"value": 1}) == 1
+
+
 def test_agent_proposal_cannot_encode_a_claim_transition() -> None:
     registry = ToolRegistry(Policy(policy_id="offline", network="disabled", max_seconds=5, max_tool_calls=0))
     agent = OfflineAgent(Agent(agent_id="a1", name="offline", version="1"), registry)

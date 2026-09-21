@@ -23,6 +23,7 @@ class PolicyDenied(PermissionError):
 class RegisteredTool:
     declaration: Tool
     handler: Callable[[dict[str, Any]], Any]
+    argument_schema: dict[str, Any] | None = None
 
 
 class ToolRegistry:
@@ -38,10 +39,16 @@ class ToolRegistry:
     def calls_used(self) -> int:
         return self._calls
 
-    def register(self, declaration: Tool, handler: Callable[[dict[str, Any]], Any]) -> None:
+    def register(
+        self,
+        declaration: Tool,
+        handler: Callable[[dict[str, Any]], Any],
+        *,
+        argument_schema: dict[str, Any] | None = None,
+    ) -> None:
         if declaration.tool_id in self._tools:
             raise ValueError(f"tool already registered: {declaration.tool_id}")
-        self._tools[declaration.tool_id] = RegisteredTool(declaration, handler)
+        self._tools[declaration.tool_id] = RegisteredTool(declaration, handler, argument_schema)
 
     def invoke(
         self,
@@ -63,8 +70,39 @@ class ToolRegistry:
         if provider_id is not None and provider_id not in self.policy.allowed_providers:
             raise PolicyDenied(f"provider is not allowlisted: {provider_id}")
         self._check_paths(path_refs or [])
+        self._validate_arguments(registered.argument_schema, arguments)
         self._calls += 1
         return registered.handler(arguments)
+
+    @staticmethod
+    def _validate_arguments(schema: dict[str, Any] | None, arguments: dict[str, Any]) -> None:
+        if schema is None:
+            return
+        if schema.get("type", "object") != "object":
+            raise PolicyDenied("tool argument schema must describe an object")
+        required = schema.get("required", [])
+        missing = [name for name in required if name not in arguments]
+        if missing:
+            raise PolicyDenied(f"tool arguments missing required fields: {missing}")
+        if schema.get("additionalProperties") is False:
+            unknown = sorted(set(arguments) - set(schema.get("properties", {})))
+            if unknown:
+                raise PolicyDenied(f"tool arguments contain unknown fields: {unknown}")
+        for name, declaration in schema.get("properties", {}).items():
+            if name not in arguments:
+                continue
+            expected = declaration.get("type")
+            value = arguments[name]
+            valid = {
+                "string": isinstance(value, str),
+                "number": isinstance(value, (int, float)) and not isinstance(value, bool),
+                "integer": isinstance(value, int) and not isinstance(value, bool),
+                "boolean": isinstance(value, bool),
+                "array": isinstance(value, list),
+                "object": isinstance(value, dict),
+            }.get(expected, True)
+            if not valid:
+                raise PolicyDenied(f"tool argument has invalid type: {name}")
 
     def _check_paths(self, path_refs: list[str]) -> None:
         if not path_refs:

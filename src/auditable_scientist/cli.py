@@ -99,6 +99,12 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
             network_required=False,
         ),
         lambda _: run_hohmann_experiment(config, cases),
+        argument_schema={
+            "type": "object",
+            "required": ["task_id"],
+            "properties": {"task_id": {"type": "string"}},
+            "additionalProperties": False,
+        },
     )
     experiment = registry.invoke(
         "hohmann-benchmark",

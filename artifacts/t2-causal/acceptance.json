@@ -4,6 +4,18 @@
       "real-world intervention data and causal identification"
     ],
     "evaluator_id": "causal-intervention-v1",
+    "evidence_files": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "bytes": 561,
+        "path": "examples/causal/fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "71564d14c5ed40133f1f1c89e0597afb4fd48a350905e6e2efd94ed47a46f292"
+      }
+    ],
     "evidence_level": "validated-reproduction",
     "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
     "negative_case_passed": true,

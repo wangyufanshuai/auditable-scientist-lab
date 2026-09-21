@@ -4,6 +4,18 @@
       "real wet-lab validation and human biosafety review"
     ],
     "evaluator_id": "bio-chem-protocol-v1",
+    "evidence_files": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "bytes": 622,
+        "path": "examples/protocol/fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "bb2b2b565d4ee9a17bdf1a42df59b50fc341d92a1c68f69eac7e409c09f6c485"
+      }
+    ],
     "evidence_level": "validated-reproduction",
     "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
     "negative_case_passed": true,

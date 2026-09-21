@@ -4,6 +4,18 @@
       "multi-body and real mission validation"
     ],
     "evaluator_id": "harmonic-dynamics-v1",
+    "evidence_files": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "bytes": 568,
+        "path": "examples/dynamics/fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "a0678eb39f7ed4dae6ec00cef9333ac58c172222226a28d195aa57fb8d1e7a50"
+      }
+    ],
     "evidence_level": "validated-reproduction",
     "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
     "negative_case_passed": true,

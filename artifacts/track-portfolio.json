@@ -14,6 +14,18 @@
         "independent backend"
       ],
       "evaluator_id": "hohmann-bounded-generator-v1",
+      "evidence_files": [
+        {
+          "allowed_use": [
+            "offline-fixture",
+            "bounded-evaluator"
+          ],
+          "bytes": 6601,
+          "path": "artifacts/sample-run.json",
+          "provenance_status": "unverified",
+          "sha256": "ae403d3afd18a2e33dde08ef44af881e953083fe1c1f5258c9e4088e87dc2c38"
+        }
+      ],
       "evidence_level": "validated-reproduction",
       "input_hash": "7a65020acaf83cfc24586395b74f3db51e8eba73acf2ae7798e5577647f3f481",
       "negative_case_passed": true,
@@ -30,6 +42,18 @@
         "real-world intervention data and causal identification"
       ],
       "evaluator_id": "causal-intervention-v1",
+      "evidence_files": [
+        {
+          "allowed_use": [
+            "offline-fixture",
+            "bounded-evaluator"
+          ],
+          "bytes": 561,
+          "path": "examples/causal/fixture.json",
+          "provenance_status": "unverified",
+          "sha256": "71564d14c5ed40133f1f1c89e0597afb4fd48a350905e6e2efd94ed47a46f292"
+        }
+      ],
       "evidence_level": "validated-reproduction",
       "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
       "negative_case_passed": true,
@@ -55,6 +79,18 @@
         "multi-body and real mission validation"
       ],
       "evaluator_id": "harmonic-dynamics-v1",
+      "evidence_files": [
+        {
+          "allowed_use": [
+            "offline-fixture",
+            "bounded-evaluator"
+          ],
+          "bytes": 568,
+          "path": "examples/dynamics/fixture.json",
+          "provenance_status": "unverified",
+          "sha256": "a0678eb39f7ed4dae6ec00cef9333ac58c172222226a28d195aa57fb8d1e7a50"
+        }
+      ],
       "evidence_level": "validated-reproduction",
       "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
       "negative_case_passed": true,
@@ -79,6 +115,18 @@
         "formal proof backend beyond finite obligation check"
       ],
       "evaluator_id": "proof-carrying-simulation-v1",
+      "evidence_files": [
+        {
+          "allowed_use": [
+            "offline-fixture",
+            "bounded-evaluator"
+          ],
+          "bytes": 749,
+          "path": "examples/proof/fixture.json",
+          "provenance_status": "unverified",
+          "sha256": "8236c38bba10ef500e92947a65f2399c5ecd53f8924f1e7aef29bd6dbb03bd76"
+        }
+      ],
       "evidence_level": "validated-reproduction",
       "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
       "negative_case_passed": true,
@@ -102,6 +150,18 @@
         "real wet-lab validation and human biosafety review"
       ],
       "evaluator_id": "bio-chem-protocol-v1",
+      "evidence_files": [
+        {
+          "allowed_use": [
+            "offline-fixture",
+            "bounded-evaluator"
+          ],
+          "bytes": 622,
+          "path": "examples/protocol/fixture.json",
+          "provenance_status": "unverified",
+          "sha256": "bb2b2b565d4ee9a17bdf1a42df59b50fc341d92a1c68f69eac7e409c09f6c485"
+        }
+      ],
       "evidence_level": "validated-reproduction",
       "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
       "negative_case_passed": true,
