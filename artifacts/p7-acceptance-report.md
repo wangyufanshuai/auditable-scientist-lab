@@ -12,7 +12,8 @@
   hash. The replay manifest verifies input, source/evidence files, candidate order, and full
   computational output.
 - `scripts/verify_acceptance.py` validates the Run, EventLog, ReplayManifest, all five track
-  receipts, negative-case flags, and the T5 no-execution boundary.
+  receipts, file-level SHA-256 evidence, independently replays T2–T5 evaluators, reconstructs
+  their negative cases, and checks the T5 no-execution boundary.
 - `artifacts/track-portfolio.json` lists T1, T2, T3, T4, and T5 in order. Each T2–T5 evaluator
   has a positive fixture, negative case, input hash, acceptance receipt, and open gates.
 
@@ -22,7 +23,7 @@
 |---|---|
 | `python -m pytest -q` | 30 passed |
 | `python scripts/generate_track_artifacts.py` | exit 0 |
-| `python scripts/verify_acceptance.py` | exit 0; T1–T5 verified |
+| `python scripts/verify_acceptance.py` | exit 0; T1–T5 verified and T2–T5 evaluators replayed |
 | `python -m pip install -e . --no-deps --no-build-isolation` | exit 0 |
 
 This package is local and bounded. The remote repository has not been pushed, and unresolved
