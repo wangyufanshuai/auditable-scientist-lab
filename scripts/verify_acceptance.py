@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from auditable_scientist.domain import Run
+from auditable_scientist.runtime.environment import capture_environment
 from auditable_scientist.runtime.event_log import EventLog
 from auditable_scientist.runtime.replay import ReplayManifest, fingerprint_file
 from auditable_scientist.tracks.common import TrackReceipt
@@ -25,7 +26,7 @@ def main() -> None:
     if any(item.get("exit_code") != 0 for item in acceptance["checks"]):
         raise SystemExit("an acceptance command did not pass")
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v3/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v4/run-7a65020acaf83cfc"
     run = Run.model_validate(json.loads((run_dir / "run.json").read_text(encoding="utf-8")))
     EventLog(run_dir / "events.jsonl").verify()
     input_payload = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
@@ -33,6 +34,9 @@ def main() -> None:
     experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
     replay_receipt = manifest.verify(
         input_payload=input_payload,
+        code_revision=manifest.code_revision,
+        environment=capture_environment(manifest.environment.get("packages", {}).keys()),
+        seed=input_payload["seed"],
         source_paths=[item.path for item in manifest.source_files],
         evidence_paths=[item.path for item in manifest.evidence_files],
         candidate_order=experiment["candidate_order"],

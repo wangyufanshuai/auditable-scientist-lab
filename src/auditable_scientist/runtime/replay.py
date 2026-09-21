@@ -76,6 +76,9 @@ class ReplayManifest(StrictModel):
         self,
         *,
         input_payload: Any | None = None,
+        code_revision: str | None = None,
+        environment: dict[str, Any] | None = None,
+        seed: int | None = None,
         source_paths: list[str | Path] | None = None,
         evidence_paths: list[str | Path] | None = None,
         candidate_order: list[str] | None = None,
@@ -85,6 +88,18 @@ class ReplayManifest(StrictModel):
         if input_payload is not None:
             assert_hash("input", self.input_hash, canonical_hash(input_payload))
             checks.append("input_hash")
+        if code_revision is not None:
+            if code_revision != self.code_revision:
+                raise ReplayMismatch("code revision changed")
+            checks.append("code_revision")
+        if environment is not None:
+            if canonical_hash(environment) != canonical_hash(self.environment):
+                raise ReplayMismatch("runtime environment changed")
+            checks.append("environment")
+        if seed is not None:
+            if seed != self.seed:
+                raise ReplayMismatch("random seed changed")
+            checks.append("seed")
         verify_files("source", self.source_files, source_paths)
         if source_paths is not None:
             checks.append("source_files")

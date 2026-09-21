@@ -243,6 +243,9 @@ def _replay(run_dir: Path) -> dict[str, Any]:
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     receipt = manifest.verify(
         input_payload=input_payload,
+        code_revision=config.source_revision,
+        environment=capture_environment(["auditable-scientist-lab", "pydantic", "sympy"]),
+        seed=input_payload["seed"],
         source_paths=[item.path for item in manifest.source_files],
         evidence_paths=[item.path for item in manifest.evidence_files],
         candidate_order=experiment.candidate_order,

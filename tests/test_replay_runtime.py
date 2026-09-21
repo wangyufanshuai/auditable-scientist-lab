@@ -62,6 +62,9 @@ def test_replay_manifest_verifies_and_detects_source_input_and_output_changes(tm
     loaded = ReplayManifest.load(manifest_path)
     receipt = loaded.verify(
         input_payload=input_payload,
+        code_revision="snapshot-1",
+        environment={"python": "3.12.3"},
+        seed=17,
         source_paths=[source],
         evidence_paths=[evidence],
         candidate_order=["c2", "c1"],
@@ -70,6 +73,9 @@ def test_replay_manifest_verifies_and_detects_source_input_and_output_changes(tm
     assert receipt.verified is True
     assert set(receipt.checks) == {
         "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
         "source_files",
         "evidence_files",
         "candidate_order",
@@ -82,3 +88,9 @@ def test_replay_manifest_verifies_and_detects_source_input_and_output_changes(tm
         loaded.verify(input_payload={"r1": 2.0})
     with pytest.raises(ReplayMismatch, match="computational output changed"):
         loaded.verify(computational_output={"tof": 999.0})
+    with pytest.raises(ReplayMismatch, match="code revision changed"):
+        loaded.verify(code_revision="snapshot-2")
+    with pytest.raises(ReplayMismatch, match="runtime environment changed"):
+        loaded.verify(environment={"python": "other"})
+    with pytest.raises(ReplayMismatch, match="random seed changed"):
+        loaded.verify(seed=18)
