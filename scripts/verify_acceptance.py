@@ -60,6 +60,13 @@ def main() -> None:
         raise SystemExit("T1 replay receipt did not verify")
 
     portfolio = load("artifacts/track-portfolio.json")
+    status = load("artifacts/portfolio-status.json")
+    if status.get("public_release_allowed") is not False or status.get("pushed") is not False:
+        raise SystemExit("portfolio release boundary is not fail-closed")
+    if [item["track_id"] for item in status.get("tracks", [])] != ["T1", "T2", "T3", "T4", "T5"]:
+        raise SystemExit("portfolio status table is incomplete")
+    if not (ROOT / "artifacts/portfolio-status.md").is_file():
+        raise SystemExit("portfolio status markdown is missing")
     if [item["track_id"] for item in portfolio["tracks"]] != ["T1", "T2", "T3", "T4", "T5"]:
         raise SystemExit("portfolio track order or membership is incomplete")
     for track_id in ("T2", "T3", "T4", "T5"):

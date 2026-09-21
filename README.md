@@ -30,6 +30,7 @@
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
+- [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
 - [artifacts/acceptance-runs-v6/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v6/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
 
 ## 非目标

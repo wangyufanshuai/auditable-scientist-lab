@@ -1,0 +1,68 @@
+{
+  "public_release_allowed": false,
+  "pushed": false,
+  "remote": "https://github.com/wangyufanshuai/auditable-scientist-lab",
+  "schema_version": "portfolio-status-v1",
+  "status": "implementing",
+  "tracks": [
+    {
+      "acceptance": "artifacts/acceptance.json",
+      "next_step": "decide local-only release boundary",
+      "open_gates": [
+        "external symbolic engine",
+        "real-data provenance",
+        "independent backend"
+      ],
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T1"
+    },
+    {
+      "acceptance": "artifacts/t2-causal/acceptance.json",
+      "next_step": "add a rights-cleared intervention dataset",
+      "open_gates": [
+        "real interventions",
+        "causal identification",
+        "data rights"
+      ],
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T2"
+    },
+    {
+      "acceptance": "artifacts/t3-dynamics/acceptance.json",
+      "next_step": "add a second numerical backend",
+      "open_gates": [
+        "multi-body validation",
+        "independent production solver",
+        "compute budget"
+      ],
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T3"
+    },
+    {
+      "acceptance": "artifacts/t4-proof/acceptance.json",
+      "next_step": "bind obligations to a formal checker",
+      "open_gates": [
+        "formal proof backend",
+        "obligation completeness"
+      ],
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T4"
+    },
+    {
+      "acceptance": "artifacts/t5-protocol/acceptance.json",
+      "next_step": "rights and safety review before real-data use",
+      "open_gates": [
+        "real protocol provenance",
+        "biosafety review",
+        "human acceptance"
+      ],
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T5"
+    }
+  ]
+}
