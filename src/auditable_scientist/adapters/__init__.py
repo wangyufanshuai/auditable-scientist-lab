@@ -13,6 +13,7 @@ from .providers import (
     SymbolicProviderResult,
 )
 from .evidence import EvidenceReference, map_external_evidence
+from .project05 import Project05Adapter, Project05File, Project05Snapshot
 
 __all__ = [
     "AdapterBlocked",
@@ -20,6 +21,9 @@ __all__ = [
     "AdapterStatus",
     "BlockedExternalSymbolicProvider",
     "EvidenceReference",
+    "Project05Adapter",
+    "Project05File",
+    "Project05Snapshot",
     "SymbolicCandidate",
     "SymbolicProviderRequest",
     "SymbolicProviderResult",

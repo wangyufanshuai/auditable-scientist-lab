@@ -20,10 +20,10 @@
             "offline-fixture",
             "bounded-evaluator"
           ],
-          "bytes": 7867,
+          "bytes": 8406,
           "path": "artifacts/sample-run.json",
           "provenance_status": "unverified",
-          "sha256": "913dae9932956b2d8996c5caff62d65786c19da2b9c1b9cafba59690e9f66675"
+          "sha256": "441e187cbea79c8bc12518000a2e4deb1b68d26bd4df96bac5784fd8e4e9e1eb"
         }
       ],
       "evidence_level": "validated-reproduction",

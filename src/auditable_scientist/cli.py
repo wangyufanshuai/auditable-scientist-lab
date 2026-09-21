@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from .benchmark import HohmannConfig, load_hohmann_config, load_hohmann_dataset, make_hohmann_study, run_hohmann_experiment
+from .adapters import Project05Adapter
 from .domain import (
     Agent,
     Claim,
@@ -67,6 +68,7 @@ def _source_paths() -> list[Path]:
         root / "src/auditable_scientist/domain/models.py",
         root / "schemas/run.schema.json",
         root / "docs/EVIDENCE_POLICY.md",
+        root / "src/auditable_scientist/adapters/project05.py",
     ]
 
 
@@ -139,6 +141,18 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         allowed_use=["analytic-reference", "offline-demo"],
     )
     evidence = [dataset_evidence, code_evidence]
+    project05_snapshot = Project05Adapter().snapshot()
+    project05_snapshot_path = run_dir / "project05-snapshot.json"
+    _json_dump(project05_snapshot_path, project05_snapshot.model_dump(mode="json"))
+    if project05_snapshot.status != "blocked":
+        evidence.append(
+            _evidence(
+                "ev-project05-source-snapshot",
+                EvidenceKind.SNAPSHOT,
+                project05_snapshot_path,
+                allowed_use=["source-provenance", "offline-demo"],
+            )
+        )
     agent = Agent(
         agent_id="offline-bounded-agent-v1",
         name="Offline bounded research agent",
@@ -264,7 +278,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         environment=environment,
         seed=seed,
         source_paths=[*_source_paths(), dataset_source],
-        evidence_paths=[dataset_source, _repo_root() / "src/auditable_scientist/tools/numerical.py"],
+        evidence_paths=[dataset_source, _repo_root() / "src/auditable_scientist/tools/numerical.py", project05_snapshot_path],
         candidate_order=experiment.candidate_order,
         computational_output=experiment.model_dump(mode="json"),
     )

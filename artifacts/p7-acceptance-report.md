@@ -22,7 +22,7 @@
 
 | Command | Result |
 |---|---|
-| `python -m pytest -q` | 30 passed |
+| `python -m pytest -q` | 31 passed |
 | `python scripts/generate_track_artifacts.py` | exit 0 |
 | `python scripts/verify_acceptance.py` | exit 0; T1–T5 verified and T2–T5 evaluators replayed |
 | `python -m pip install -e . --no-deps --no-build-isolation` | exit 0 |

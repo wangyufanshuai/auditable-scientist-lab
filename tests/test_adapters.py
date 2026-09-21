@@ -9,6 +9,7 @@ from auditable_scientist.adapters import (
     SymbolicProviderRequest,
     built_in_manifests,
     map_external_evidence,
+    Project05Adapter,
 )
 
 
@@ -58,3 +59,17 @@ def test_external_evidence_mapping_rejects_unknown_status() -> None:
             provenance_status="real-data",
             allowed_use=["evidence-id-reference"],
         )
+
+
+def test_project05_adapter_records_read_only_snapshot_without_copying_code() -> None:
+    adapter = Project05Adapter()
+    snapshot = adapter.snapshot()
+    assert snapshot.status == "unverified"
+    assert snapshot.license_status == "no root LICENSE confirmed"
+    assert {item.relative_path for item in snapshot.files} == {
+        "README.md",
+        "references.md",
+        "src/main.py",
+        "data/mars_hohmann_summary.csv",
+    }
+    assert adapter.verify_snapshot(snapshot) is True

@@ -8,6 +8,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 from auditable_scientist.domain import Run
+from auditable_scientist.adapters import Project05Adapter, Project05Snapshot
 from auditable_scientist.runtime.environment import capture_environment
 from auditable_scientist.runtime.event_log import EventLog
 from auditable_scientist.runtime.canonical import canonical_hash
@@ -33,7 +34,7 @@ def main() -> None:
     if any(item.get("exit_code") != 0 for item in acceptance["checks"]):
         raise SystemExit("an acceptance command did not pass")
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v6/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v7/run-7a65020acaf83cfc"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -41,6 +42,9 @@ def main() -> None:
         raise SystemExit("T1 run is missing a shared kernel record")
     if run.policy.network != "disabled" or run.providers[0].provider_id not in run.policy.allowed_providers:
         raise SystemExit("T1 policy/provider binding is inconsistent")
+    project05_snapshot = Project05Snapshot.model_validate(json.loads((run_dir / "project05-snapshot.json").read_text(encoding="utf-8")))
+    if project05_snapshot.status != "blocked" and not Project05Adapter(project05_snapshot.source_path).verify_snapshot(project05_snapshot):
+        raise SystemExit("project-05 source snapshot changed")
     EventLog(run_dir / "events.jsonl").verify()
     input_payload = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
