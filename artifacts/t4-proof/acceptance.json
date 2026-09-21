@@ -1,0 +1,43 @@
+{
+  "evaluator": {
+    "blocked_gates": [
+      "formal proof backend beyond finite obligation check"
+    ],
+    "evaluator_id": "proof-carrying-simulation-v1",
+    "evidence_level": "validated-reproduction",
+    "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "checked_obligations": [
+        "o1",
+        "o2",
+        "o3"
+      ],
+      "claim_status": "verified",
+      "evaluator_id": "proof-carrying-simulation-v1",
+      "evidence_level": "validated-reproduction",
+      "failed_obligations": [],
+      "passed": true
+    },
+    "track_id": "T4"
+  },
+  "execution": "offline",
+  "negative_case": {
+    "checked_obligations": [
+      "o1",
+      "o2",
+      "o3"
+    ],
+    "claim_status": "blocked",
+    "evaluator_id": "proof-carrying-simulation-v1",
+    "evidence_level": "demo",
+    "failed_obligations": [
+      "o1",
+      "o3"
+    ],
+    "passed": false
+  },
+  "status": "accepted-with-bounded-scope",
+  "track": "T4"
+}

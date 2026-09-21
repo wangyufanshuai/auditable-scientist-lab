@@ -1,0 +1,19 @@
+{
+  "schema_version": "checkpoint-v1",
+  "phase": "P2",
+  "status": "implementing",
+  "date": "2026-09-20",
+  "commands": [
+    {"command": "python -m pytest -q", "exit_code": 0, "tests_passed": 11},
+    {"command": "python -m pip install -e . --no-deps --no-build-isolation", "exit_code": 0}
+  ],
+  "evidence": [
+    "src/auditable_scientist/runtime/canonical.py",
+    "src/auditable_scientist/runtime/event_log.py",
+    "src/auditable_scientist/runtime/replay.py",
+    "src/auditable_scientist/runtime/environment.py",
+    "tests/test_replay_runtime.py"
+  ],
+  "scientific_claim": false,
+  "next_gate": "P3-deterministic-tools"
+}

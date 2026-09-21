@@ -1,0 +1,28 @@
+{
+  "run_status": "completed",
+  "schema_version": "acceptance-verification-v1",
+  "scientific_boundaries": [
+    "No real-data claim",
+    "No autonomous wet-lab execution",
+    "No publication or novelty claim"
+  ],
+  "status": "verified",
+  "t1_replay": {
+    "checks": [
+      "input_hash",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "7d0fce6a59ae3116d6242c130c1802ad144fd37bd849a1571d58a2e93e3bd4a7",
+    "verified": true
+  },
+  "tracks": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ]
+}

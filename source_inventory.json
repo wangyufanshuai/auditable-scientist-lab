@@ -1,0 +1,197 @@
+{
+  "schema_version": "source-inventory-v1",
+  "generated_at": "2026-09-20T14:48:41.8145178Z",
+  "target": "E:\\xuexi\\auditable-scientist-lab",
+  "python": "3.12.3",
+  "runtime_packages": {
+    "numpy": "2.2.6",
+    "scipy": "1.17.1",
+    "sympy": "1.13.3"
+  },
+  "planning_documents": [
+    {
+      "path": "E:\\xuexi\\codex_task_specs\\00-CODEX-总调度与共享契约.md",
+      "sha256": "38fb1d88cc754d6c59eeea25c08df390fdfe364eeb4263eb27bf33d1475a8c48",
+      "bytes": 6318
+    },
+    {
+      "path": "E:\\xuexi\\codex_task_specs\\01-auditable-scientist-lab.md",
+      "sha256": "940c5d066dddc5c60542213a1ae67bb94d50a8565a83063975a8ec82348c7a70",
+      "bytes": 5059
+    }
+  ],
+  "sources": [
+    {
+      "name": "reproduction-projects",
+      "path": "E:\\xuexi\\projects",
+      "exists": true,
+      "root_git": false,
+      "git_root": null,
+      "git_branch": null,
+      "license_status": "no LICENSE found at root or project directories during inventory",
+      "adapter_mode": "read-only; project 05 selected",
+      "files": [
+        {
+          "path": "PROJECT_INDEX.md",
+          "sha256": "f76f047dc566b9038e907ae951a15b8cc2718d1d67494a7d977a98b40b4cde46",
+          "bytes": 6146
+        },
+        {
+          "path": "05_hohmann_mars_transfer\\README.md",
+          "sha256": "42409d0cf3f198797fb7378b26cbd879b453682c6ac890e942700ccec8dbe0f9",
+          "bytes": 476
+        },
+        {
+          "path": "05_hohmann_mars_transfer\\src\\main.py",
+          "sha256": "c8c0d7dc78391adb218f9b183dab8fa7ab885881a83b8555bd105db971f7aae6",
+          "bytes": 4777
+        }
+      ]
+    },
+    {
+      "name": "symbolic-physics-engine",
+      "path": "E:\\xuexi\\symbolic-physics-engine",
+      "exists": false,
+      "root_git": false,
+      "git_root": null,
+      "git_branch": null,
+      "license_status": "unknown",
+      "adapter_mode": "blocked until path/repository is supplied",
+      "files": []
+    },
+    {
+      "name": "engineering-research-copilot",
+      "path": "E:\\xuexi\\engineering-research-copilot",
+      "exists": true,
+      "root_git": false,
+      "git_root": null,
+      "git_branch": null,
+      "license_status": "no root LICENSE found; confirm before code reuse",
+      "adapter_mode": "contract-level/read-only",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "2ea251b06351801ee688cc2893450e4a7d4e13eae59577da88c05b44103b6f2d",
+          "bytes": 1892
+        },
+        {
+          "path": "backend\\app\\services\\tools.py",
+          "sha256": "93c4e22631007046a715f82419f41b1a04375ccfe752825387aa5c7292745a6a",
+          "bytes": 6013
+        },
+        {
+          "path": "backend\\app\\models\\schemas.py",
+          "sha256": "d4223d0ea7a985cacce20b5e80f6ac202f672befa36e81aec87945946df23bcc",
+          "bytes": 2238
+        }
+      ]
+    },
+    {
+      "name": "paper2project",
+      "path": "E:\\xuexi\\paper2project",
+      "exists": true,
+      "root_git": false,
+      "git_root": null,
+      "git_branch": null,
+      "license_status": "no root LICENSE found; confirm before code reuse",
+      "adapter_mode": "evidence-ID mapping/read-only",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "708779cd27fd69ced2e5de8ff4178bf9f18a1d75dbdd95cee795c80a1a0a65f6",
+          "bytes": 2118
+        },
+        {
+          "path": "backend\\app\\services\\evidence.py",
+          "sha256": "cc55134fa1569fc8ac3c686b5053bbfecae5289d7d4ebbdff94749a7cf5468b3",
+          "bytes": 4457
+        },
+        {
+          "path": "backend\\app\\models\\schemas.py",
+          "sha256": "6e630836cf37ecfdd1ebb30a9cc7b04a081e31692bff3bcc56a15a7e1e76f097",
+          "bytes": 2775
+        }
+      ]
+    },
+    {
+      "name": "physics-programmable-learning",
+      "path": "E:\\xuexi\\physics-programmable-learning",
+      "exists": true,
+      "root_git": true,
+      "git_root": "E:/xuexi/physics-programmable-learning",
+      "git_branch": "master",
+      "license_status": "MIT",
+      "adapter_mode": "read-only policy/reference",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "fcbdf7d39e8dbf637c33a360e7a2cc5807df4a125803f43d151b6ebdca9f1ff0",
+          "bytes": 2542
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "4d8808be40adc058bbf17e065c972d251d95a64ff9bb2424159ec1056949af59",
+          "bytes": 1100
+        },
+        {
+          "path": "docs\\EVIDENCE_AND_RELEASE.md",
+          "sha256": "a38d46633976c4ddaefab5fd4b0be8d593cc432539e4e17b60066ef1bce4e3c4",
+          "bytes": 15584
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "38c4ddd77dea6d055632e28cc8f54456fa5e05ce7b1ab092dbf114183effd6b3",
+          "bytes": 724
+        }
+      ]
+    },
+    {
+      "name": "qft-gr-symbolic-lab",
+      "path": "E:\\xuexi\\qft-gr-symbolic-lab",
+      "exists": true,
+      "root_git": false,
+      "git_root": null,
+      "git_branch": null,
+      "license_status": "not confirmed",
+      "adapter_mode": "reference only; not symbolic regression engine",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "89cd4bcc336aeba8fcfad2b02e01104c8a83e31b8c995fca71e90f87c0ca6e21",
+          "bytes": 4321
+        },
+        {
+          "path": "backend\\requirements.txt",
+          "sha256": "6a357b6c8f54a08918822faa23673c1ed11e1165a09380e7aee016412f05f25b",
+          "bytes": 116
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Hashes describe the current local snapshot and must be refreshed at implementation start.",
+    "No source code has been copied into the target project.",
+    "A source without confirmed license remains read-only or blocked.",
+    "The target remote is public MIT; local planning files are not yet pushed.",
+    "The remote baseline was inspected read-only through the GitHub connector on 2026-09-20."
+  ],
+  "target_repository": {
+    "url": "https://github.com/wangyufanshuai/auditable-scientist-lab",
+    "visibility": "public",
+    "license": "MIT",
+    "default_branch": "main",
+    "initial_commit": "d3e4f1383df7b21aced7816f16df9cb9cce87140",
+    "remote_files": [
+      {
+        "path": "README.md",
+        "sha": "acea9c4192830207a7b9f7d36f56057ce900ebca",
+        "bytes": 25
+      },
+      {
+        "path": "LICENSE",
+        "sha": "0857eef2cbd59b566b2a97c34dc26f9eef1ff4cb",
+        "bytes": 1075
+      }
+    ]
+  }
+}

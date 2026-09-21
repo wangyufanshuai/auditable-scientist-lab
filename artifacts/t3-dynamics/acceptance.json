@@ -1,0 +1,30 @@
+{
+  "evaluator": {
+    "blocked_gates": [
+      "multi-body and real mission validation"
+    ],
+    "evaluator_id": "harmonic-dynamics-v1",
+    "evidence_level": "validated-reproduction",
+    "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "evaluator_id": "harmonic-dynamics-v1",
+      "holdout_max_position_error": 1.0495796261222878e-05,
+      "max_energy_drift": 1.2499992203318655e-05,
+      "negative_euler_rejected": true,
+      "notes": [
+        "Velocity-Verlet is compared with the closed-form harmonic solution.",
+        "Explicit Euler is a required negative control for conservation drift."
+      ],
+      "passed": true,
+      "solver_id": "velocity-verlet-v1",
+      "train_max_position_error": 1.9977752245103897e-05
+    },
+    "track_id": "T3"
+  },
+  "execution": "offline",
+  "negative_case": "explicit Euler conservation drift rejected",
+  "status": "accepted-with-bounded-scope",
+  "track": "T3"
+}

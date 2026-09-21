@@ -1,0 +1,28 @@
+{
+  "schema_version": "checkpoint-v1",
+  "phase": "P1",
+  "status": "implementing",
+  "date": "2026-09-20",
+  "commands": [
+    {
+      "command": "python -m pip install -e . --no-deps --no-build-isolation",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m pytest -q",
+      "exit_code": 0,
+      "tests_passed": 7
+    },
+    {
+      "command": "Draft202012Validator.check_schema(schemas/run.schema.json)",
+      "exit_code": 0
+    }
+  ],
+  "evidence": [
+    "src/auditable_scientist/domain/models.py",
+    "tests/test_domain_contracts.py",
+    "schemas/run.schema.json"
+  ],
+  "scientific_claim": false,
+  "next_gate": "P2-replay"
+}

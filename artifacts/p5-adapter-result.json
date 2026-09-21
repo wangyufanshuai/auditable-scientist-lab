@@ -1,0 +1,18 @@
+{
+  "schema_version": "checkpoint-v1",
+  "phase": "P5",
+  "status": "implementing",
+  "date": "2026-09-20",
+  "commands": [
+    {"command": "python -m pytest -q", "exit_code": 0, "tests_passed": 21}
+  ],
+  "evidence": [
+    "src/auditable_scientist/adapters/manifests.py",
+    "src/auditable_scientist/adapters/providers.py",
+    "src/auditable_scientist/adapters/evidence.py",
+    "tests/test_adapters.py"
+  ],
+  "scientific_claim": false,
+  "blocked_items": ["symbolic-physics-engine path, revision, and license"],
+  "next_gate": "P6-agent-policy"
+}

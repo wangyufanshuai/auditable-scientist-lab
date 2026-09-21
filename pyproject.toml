@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "auditable-scientist-lab"
+version = "0.1.0"
+description = "Offline-first, replayable and evidence-aware scientific discovery workbench"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.7,<3",
+  "sympy>=1.12,<2",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8,<9",
+  "jsonschema>=4.20,<5",
+]
+
+[project.scripts]
+auditable-scientist = "auditable_scientist.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

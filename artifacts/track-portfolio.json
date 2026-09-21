@@ -1,0 +1,123 @@
+{
+  "global_boundaries": [
+    "No real-data claim",
+    "No autonomous wet-lab execution",
+    "No publication or novelty claim"
+  ],
+  "schema_version": "track-portfolio-v1",
+  "status": "bounded-slices-accepted",
+  "tracks": [
+    {
+      "blocked_gates": [
+        "external symbolic engine",
+        "real-data provenance",
+        "independent backend"
+      ],
+      "evaluator_id": "hohmann-bounded-generator-v1",
+      "evidence_level": "validated-reproduction",
+      "input_hash": "7a65020acaf83cfc24586395b74f3db51e8eba73acf2ae7798e5577647f3f481",
+      "negative_case_passed": true,
+      "passed": true,
+      "result": {
+        "acceptance": "artifacts/acceptance.json",
+        "holdout_verified": true,
+        "selected_candidate_id": "tof-hohmann-v1"
+      },
+      "track_id": "T1"
+    },
+    {
+      "blocked_gates": [
+        "real-world intervention data and causal identification"
+      ],
+      "evaluator_id": "causal-intervention-v1",
+      "evidence_level": "validated-reproduction",
+      "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+      "negative_case_passed": true,
+      "passed": true,
+      "result": {
+        "coefficient": 2.0,
+        "evaluator_id": "causal-intervention-v1",
+        "holdout_rmse": 0.0,
+        "intercept": 1.0,
+        "max_context_invariance_error": 0.0,
+        "negative_candidate_rejected": true,
+        "notes": [
+          "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+          "Negative candidate is required to fail the holdout gate."
+        ],
+        "passed": true,
+        "train_rmse": 0.0
+      },
+      "track_id": "T2"
+    },
+    {
+      "blocked_gates": [
+        "multi-body and real mission validation"
+      ],
+      "evaluator_id": "harmonic-dynamics-v1",
+      "evidence_level": "validated-reproduction",
+      "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+      "negative_case_passed": true,
+      "passed": true,
+      "result": {
+        "evaluator_id": "harmonic-dynamics-v1",
+        "holdout_max_position_error": 1.0495796261222878e-05,
+        "max_energy_drift": 1.2499992203318655e-05,
+        "negative_euler_rejected": true,
+        "notes": [
+          "Velocity-Verlet is compared with the closed-form harmonic solution.",
+          "Explicit Euler is a required negative control for conservation drift."
+        ],
+        "passed": true,
+        "solver_id": "velocity-verlet-v1",
+        "train_max_position_error": 1.9977752245103897e-05
+      },
+      "track_id": "T3"
+    },
+    {
+      "blocked_gates": [
+        "formal proof backend beyond finite obligation check"
+      ],
+      "evaluator_id": "proof-carrying-simulation-v1",
+      "evidence_level": "validated-reproduction",
+      "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+      "negative_case_passed": true,
+      "passed": true,
+      "result": {
+        "checked_obligations": [
+          "o1",
+          "o2",
+          "o3"
+        ],
+        "claim_status": "verified",
+        "evaluator_id": "proof-carrying-simulation-v1",
+        "evidence_level": "validated-reproduction",
+        "failed_obligations": [],
+        "passed": true
+      },
+      "track_id": "T4"
+    },
+    {
+      "blocked_gates": [
+        "real wet-lab validation and human biosafety review"
+      ],
+      "evaluator_id": "bio-chem-protocol-v1",
+      "evidence_level": "validated-reproduction",
+      "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
+      "negative_case_passed": true,
+      "passed": true,
+      "result": {
+        "evaluator_id": "bio-chem-protocol-v1",
+        "evidence_level": "validated-reproduction",
+        "execution_allowed": false,
+        "failures": [],
+        "notes": [
+          "This evaluator checks declarative constraints only.",
+          "It never schedules, controls, or authorizes wet-lab execution."
+        ],
+        "passed": true
+      },
+      "track_id": "T5"
+    }
+  ]
+}

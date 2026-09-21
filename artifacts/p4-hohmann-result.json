@@ -1,0 +1,19 @@
+{
+  "schema_version": "checkpoint-v1",
+  "phase": "P4",
+  "status": "implementing",
+  "date": "2026-09-20",
+  "run_path": "artifacts/p4-runs/run-7a65020acaf83cfc",
+  "selected_candidate": "tof-hohmann-v1",
+  "holdout_rmse_days": 2.6152091439906184e-13,
+  "holdout_threshold_days": 1e-8,
+  "holdout_passed": true,
+  "commands": [
+    {"command": "python -m pytest -q", "exit_code": 0, "tests_passed": 17},
+    {"command": "python -m pip install -e . --no-deps --no-build-isolation", "exit_code": 0},
+    {"command": "python -m auditable_scientist.cli replay artifacts/p4-runs/run-7a65020acaf83cfc", "exit_code": 0, "verified": true}
+  ],
+  "scientific_claim": "validated-reproduction-within-analytic-fixture",
+  "provenance_status": "unverified-local-fixture",
+  "next_gate": "P5-adapter-boundary"
+}

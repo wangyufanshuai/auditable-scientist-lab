@@ -1,0 +1,40 @@
+{
+  "evaluator": {
+    "blocked_gates": [
+      "real wet-lab validation and human biosafety review"
+    ],
+    "evaluator_id": "bio-chem-protocol-v1",
+    "evidence_level": "validated-reproduction",
+    "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "evaluator_id": "bio-chem-protocol-v1",
+      "evidence_level": "validated-reproduction",
+      "execution_allowed": false,
+      "failures": [],
+      "notes": [
+        "This evaluator checks declarative constraints only.",
+        "It never schedules, controls, or authorizes wet-lab execution."
+      ],
+      "passed": true
+    },
+    "track_id": "T5"
+  },
+  "execution": "verification-only; no wet-lab execution",
+  "negative_case": {
+    "evaluator_id": "bio-chem-protocol-v1",
+    "evidence_level": "demo",
+    "execution_allowed": false,
+    "failures": [
+      "provenance:step-1"
+    ],
+    "notes": [
+      "This evaluator checks declarative constraints only.",
+      "It never schedules, controls, or authorizes wet-lab execution."
+    ],
+    "passed": false
+  },
+  "status": "accepted-with-bounded-scope",
+  "track": "T5"
+}

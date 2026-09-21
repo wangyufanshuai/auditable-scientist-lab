@@ -1,0 +1,16 @@
+{
+  "schema_version": "checkpoint-v1",
+  "phase": "P6",
+  "status": "implementing",
+  "date": "2026-09-21",
+  "commands": [
+    {"command": "python -m pytest -q", "exit_code": 0, "tests_passed": 25}
+  ],
+  "evidence": [
+    "src/auditable_scientist/policy/runtime.py",
+    "src/auditable_scientist/policy/agent.py",
+    "tests/test_policy_agent.py"
+  ],
+  "scientific_claim": false,
+  "next_gate": "P7-acceptance-package"
+}

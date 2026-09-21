@@ -1,0 +1,31 @@
+{
+  "evaluator": {
+    "blocked_gates": [
+      "real-world intervention data and causal identification"
+    ],
+    "evaluator_id": "causal-intervention-v1",
+    "evidence_level": "validated-reproduction",
+    "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "coefficient": 2.0,
+      "evaluator_id": "causal-intervention-v1",
+      "holdout_rmse": 0.0,
+      "intercept": 1.0,
+      "max_context_invariance_error": 0.0,
+      "negative_candidate_rejected": true,
+      "notes": [
+        "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+        "Negative candidate is required to fail the holdout gate."
+      ],
+      "passed": true,
+      "train_rmse": 0.0
+    },
+    "track_id": "T2"
+  },
+  "execution": "offline",
+  "negative_case": "wrong coefficient rejected",
+  "status": "accepted-with-bounded-scope",
+  "track": "T2"
+}

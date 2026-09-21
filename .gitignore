@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+artifacts/runs/
+artifacts/p4-runs/
+artifacts/hohmann-report.md

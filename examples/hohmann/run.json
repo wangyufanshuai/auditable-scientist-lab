@@ -1,0 +1,8 @@
+{
+  "schema_version": "hohmann-config-v1",
+  "task_id": "hohmann-time-of-flight-v1",
+  "dataset_path": "examples/hohmann/dataset.json",
+  "target": "time_of_flight_days",
+  "max_holdout_rmse": 0.00000001,
+  "source_revision": "local-working-tree"
+}
