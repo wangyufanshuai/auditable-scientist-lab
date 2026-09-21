@@ -20,6 +20,23 @@
 物理动力学基础、携证模拟和生化协议验证。它们共享审计内核，但分别由领域评估器
 验收，不能由一个总分或一次 demo 代替。
 
+## 离线 Quickstart
+
+在一个干净的 Python 3.10+ 环境中执行：
+
+```powershell
+python -m pip install -e ".[test]"
+python -m pytest -q
+python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/local-runs
+python -m auditable_scientist.cli inspect artifacts/local-runs/run-<input-hash-prefix>
+python -m auditable_scientist.cli replay artifacts/local-runs/run-<input-hash-prefix>
+python scripts/verify_acceptance.py
+```
+
+`run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
+seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
+`artifacts/acceptance-runs-v6/`。
+
 ## 当前入口
 
 - [implementation-plan.md](implementation-plan.md)：阶段、依赖、验收和最小实现顺序。
