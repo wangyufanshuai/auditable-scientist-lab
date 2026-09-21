@@ -29,5 +29,235 @@
     "rejected": true,
     "solver": "explicit-euler"
   },
+  "run": {
+    "agent": {
+      "agent_id": "offline-t3-agent-v1",
+      "capabilities": [
+        "invoke-registered-evaluator",
+        "record-negative-case"
+      ],
+      "name": "Offline T3 evaluator agent",
+      "version": "1"
+    },
+    "claims": [
+      {
+        "evidence_refs": [
+          "ev-t3-fixture"
+        ],
+        "falsification_checks": [
+          "positive-evaluator-replay",
+          "negative-case-rejection",
+          "fixture-hash"
+        ],
+        "holdout_verified": false,
+        "level": "validated-reproduction",
+        "status": "unverified",
+        "text": "The T3 evaluator passed its bounded fixture gate; this is not a real-world scientific claim."
+      }
+    ],
+    "code_revision": "local-working-tree",
+    "created_at": "2026-09-21T00:00:00Z",
+    "environment": {
+      "mode": "offline",
+      "runtime": "bounded-evaluator",
+      "track_id": "T3"
+    },
+    "evaluators": [
+      {
+        "evaluator_id": "harmonic-dynamics-v1",
+        "name": "T3 independent evaluator",
+        "read_only": true,
+        "version": "1"
+      }
+    ],
+    "events": [
+      {
+        "event_id": "t3-event-0",
+        "event_type": "run.initialized",
+        "occurred_at": "2026-09-21T00:00:00Z",
+        "payload": {
+          "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+          "run_id": "run-t3-1c4eb6b867515637"
+        },
+        "payload_hash": "2256ccf2279f5d9d09bfca1e9f42d7875717661c7b7ddbf40059882062304e72",
+        "prev_event_hash": "genesis",
+        "seq": 0
+      },
+      {
+        "event_id": "t3-event-1",
+        "event_type": "policy.applied",
+        "occurred_at": "2026-09-21T00:00:01Z",
+        "payload": {
+          "network": "disabled",
+          "policy_id": "offline-t3-v1",
+          "provider_id": "internal-t3-evaluator"
+        },
+        "payload_hash": "3791d3e321da5c979d9294b9071580278c30958c49ee231a93982644609f99a8",
+        "prev_event_hash": "2256ccf2279f5d9d09bfca1e9f42d7875717661c7b7ddbf40059882062304e72",
+        "seq": 1
+      },
+      {
+        "event_id": "t3-event-2",
+        "event_type": "evaluator.completed",
+        "occurred_at": "2026-09-21T00:00:02Z",
+        "payload": {
+          "evaluator_id": "harmonic-dynamics-v1",
+          "result": {
+            "evaluator_id": "harmonic-dynamics-v1",
+            "holdout_max_position_error": 1.0495796261222878e-05,
+            "max_energy_drift": 1.2499992203318655e-05,
+            "negative_euler_rejected": true,
+            "notes": [
+              "Velocity-Verlet is compared with the closed-form harmonic solution.",
+              "Explicit Euler is a required negative control for conservation drift."
+            ],
+            "passed": true,
+            "solver_id": "velocity-verlet-v1",
+            "train_max_position_error": 1.9977752245103897e-05
+          }
+        },
+        "payload_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+        "prev_event_hash": "3791d3e321da5c979d9294b9071580278c30958c49ee231a93982644609f99a8",
+        "seq": 2
+      },
+      {
+        "event_id": "t3-event-3",
+        "event_type": "negative_case.checked",
+        "occurred_at": "2026-09-21T00:00:03Z",
+        "payload": {
+          "negative_case": {
+            "rejected": true,
+            "solver": "explicit-euler"
+          },
+          "negative_case_passed": true
+        },
+        "payload_hash": "7c6ad6482f87d1a564831078a3299cacca51dc601d5ac16730a92bb8d6674d74",
+        "prev_event_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+        "seq": 3
+      },
+      {
+        "event_id": "t3-event-4",
+        "event_type": "run.completed",
+        "occurred_at": "2026-09-21T00:00:04Z",
+        "payload": {
+          "status": "completed"
+        },
+        "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+        "prev_event_hash": "7c6ad6482f87d1a564831078a3299cacca51dc601d5ac16730a92bb8d6674d74",
+        "seq": 4
+      }
+    ],
+    "evidence": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "evidence_id": "ev-t3-fixture",
+        "kind": "data",
+        "notes": "Fixture evidence is not real-data or publication evidence.",
+        "path_or_uri": "E:\\xuexi\\auditable-scientist-lab\\examples\\dynamics\\fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "a0678eb39f7ed4dae6ec00cef9333ac58c172222226a28d195aa57fb8d1e7a50",
+        "source_revision": "local-working-tree"
+      }
+    ],
+    "evidence_refs": [
+      "ev-t3-fixture"
+    ],
+    "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+    "memories": [
+      {
+        "content_hash": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+        "memory_id": "evidence-policy-memory-v1",
+        "scope": "claim-level evidence boundaries",
+        "source_ref": "E:\\xuexi\\auditable-scientist-lab\\docs\\EVIDENCE_POLICY.md",
+        "version": "local-snapshot"
+      }
+    ],
+    "observations": [
+      {
+        "dataset_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+        "observation_id": "obs-t3-fixture",
+        "source_ref": "E:\\xuexi\\auditable-scientist-lab\\examples\\dynamics\\fixture.json",
+        "split": "external",
+        "summary": {
+          "evaluator_id": "harmonic-dynamics-v1",
+          "evidence_level": "validated-reproduction",
+          "track_id": "T3"
+        },
+        "units": {}
+      }
+    ],
+    "policy": {
+      "allowed_paths": [
+        "E:\\xuexi\\auditable-scientist-lab\\examples\\dynamics"
+      ],
+      "allowed_providers": [
+        "internal-t3-evaluator"
+      ],
+      "max_seconds": 60.0,
+      "max_tool_calls": 1,
+      "network": "disabled",
+      "policy_id": "offline-t3-v1"
+    },
+    "providers": [
+      {
+        "kind": "deterministic-domain-evaluator",
+        "name": "Internal T3 evaluator",
+        "provider_id": "internal-t3-evaluator",
+        "source_ref": "src/auditable_scientist/tracks",
+        "version": "1"
+      }
+    ],
+    "run_id": "run-t3-1c4eb6b867515637",
+    "seed": 17,
+    "status": "completed",
+    "task_id": "t3-harmonic-dynamics-v1",
+    "tools": [
+      {
+        "deterministic": true,
+        "name": "T3 domain evaluator",
+        "network_required": false,
+        "parameter_schema_ref": "schemas/track-receipt-v1.json",
+        "tool_id": "t3-evaluator",
+        "version": "1"
+      }
+    ],
+    "traces": [
+      {
+        "entries": [
+          {
+            "event_type": "run.initialized",
+            "payload_hash": "2256ccf2279f5d9d09bfca1e9f42d7875717661c7b7ddbf40059882062304e72",
+            "seq": 0
+          },
+          {
+            "event_type": "policy.applied",
+            "payload_hash": "3791d3e321da5c979d9294b9071580278c30958c49ee231a93982644609f99a8",
+            "seq": 1
+          },
+          {
+            "event_type": "evaluator.completed",
+            "payload_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+            "seq": 2
+          },
+          {
+            "event_type": "negative_case.checked",
+            "payload_hash": "7c6ad6482f87d1a564831078a3299cacca51dc601d5ac16730a92bb8d6674d74",
+            "seq": 3
+          },
+          {
+            "event_type": "run.completed",
+            "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+            "seq": 4
+          }
+        ],
+        "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+        "run_id": "run-t3-1c4eb6b867515637",
+        "trace_id": "trace-run-t3-1c4eb6b867515637"
+      }
+    ]
+  },
   "track": "T3"
 }

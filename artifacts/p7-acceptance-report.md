@@ -15,7 +15,8 @@
   receipts, file-level SHA-256 evidence, independently replays T2–T5 evaluators, reconstructs
   their negative cases, and checks the T5 no-execution boundary.
 - `artifacts/track-portfolio.json` lists T1, T2, T3, T4, and T5 in order. Each T2–T5 evaluator
-  has a positive fixture, negative case, input hash, acceptance receipt, and open gates.
+  has a positive fixture, negative case, input hash, acceptance receipt, shared-kernel
+  `sample-run.json`, append-only `events.jsonl`, and open gates.
 
 ## Commands
 

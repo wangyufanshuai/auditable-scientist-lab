@@ -15,7 +15,8 @@
 - P0–P7 T1 package: implemented locally. `artifacts/acceptance.json` records the CLI,
   policy receipt, replay checks, and bounded evidence boundary.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
-  input hash, acceptance JSON, and explicit open gates in `artifacts/track-portfolio.json`.
+  input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
+  in `artifacts/track-portfolio.json`.
 - The portfolio is still `implementing` locally. No claim of real-data validity, formal
   proof completeness, wet-lab authorization, production readiness, or public release is closed.
 - Next engineering work is hardening the portfolio verifier, adding common artifact schema

@@ -77,7 +77,7 @@ def main() -> None:
             "T5": "t5-protocol",
         }[track_id]
         bundle_dir = ROOT / "artifacts" / directory
-        for filename in ("acceptance.json", "test-report.md", "demo-transcript.md", "sample-run.json"):
+        for filename in ("acceptance.json", "test-report.md", "demo-transcript.md", "sample-run.json", "events.jsonl"):
             if not (bundle_dir / filename).is_file():
                 raise SystemExit(f"track {track_id} evidence package is missing: {filename}")
         acceptance_bundle = json.loads((bundle_dir / "acceptance.json").read_text(encoding="utf-8"))
@@ -92,6 +92,12 @@ def main() -> None:
         sample = json.loads((bundle_dir / "sample-run.json").read_text(encoding="utf-8"))
         if sample.get("input_hash") != item["input_hash"]:
             raise SystemExit(f"track {track_id} sample run hash does not match receipt")
+        sample_run = Run.model_validate(sample["run"])
+        if sample_run.input_hash != item["input_hash"] or sample_run.task_id == "":
+            raise SystemExit(f"track {track_id} shared Run does not match receipt")
+        if sample_run.agent is None or not sample_run.tools or not sample_run.memories or not sample_run.evaluators or not sample_run.providers or sample_run.policy is None:
+            raise SystemExit(f"track {track_id} shared kernel records are incomplete")
+        EventLog(bundle_dir / "events.jsonl").verify()
 
     t2_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T2")
     t2_fixture = load("examples/causal/fixture.json")

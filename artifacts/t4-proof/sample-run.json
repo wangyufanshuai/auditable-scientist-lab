@@ -39,5 +39,245 @@
     ],
     "passed": false
   },
+  "run": {
+    "agent": {
+      "agent_id": "offline-t4-agent-v1",
+      "capabilities": [
+        "invoke-registered-evaluator",
+        "record-negative-case"
+      ],
+      "name": "Offline T4 evaluator agent",
+      "version": "1"
+    },
+    "claims": [
+      {
+        "evidence_refs": [
+          "ev-t4-fixture"
+        ],
+        "falsification_checks": [
+          "positive-evaluator-replay",
+          "negative-case-rejection",
+          "fixture-hash"
+        ],
+        "holdout_verified": false,
+        "level": "validated-reproduction",
+        "status": "unverified",
+        "text": "The T4 evaluator passed its bounded fixture gate; this is not a real-world scientific claim."
+      }
+    ],
+    "code_revision": "local-working-tree",
+    "created_at": "2026-09-21T00:00:00Z",
+    "environment": {
+      "mode": "offline",
+      "runtime": "bounded-evaluator",
+      "track_id": "T4"
+    },
+    "evaluators": [
+      {
+        "evaluator_id": "proof-carrying-simulation-v1",
+        "name": "T4 independent evaluator",
+        "read_only": true,
+        "version": "1"
+      }
+    ],
+    "events": [
+      {
+        "event_id": "t4-event-0",
+        "event_type": "run.initialized",
+        "occurred_at": "2026-09-21T00:00:00Z",
+        "payload": {
+          "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+          "run_id": "run-t4-12ff428e6a112d75"
+        },
+        "payload_hash": "cc574011c67715139e04d49fbef351877d20ff066c6e255fd68ef0f5d1848471",
+        "prev_event_hash": "genesis",
+        "seq": 0
+      },
+      {
+        "event_id": "t4-event-1",
+        "event_type": "policy.applied",
+        "occurred_at": "2026-09-21T00:00:01Z",
+        "payload": {
+          "network": "disabled",
+          "policy_id": "offline-t4-v1",
+          "provider_id": "internal-t4-evaluator"
+        },
+        "payload_hash": "4a3139ea698fbdafea77496eb59b60db1e758b0b66d15aaaeab0e7226efff141",
+        "prev_event_hash": "cc574011c67715139e04d49fbef351877d20ff066c6e255fd68ef0f5d1848471",
+        "seq": 1
+      },
+      {
+        "event_id": "t4-event-2",
+        "event_type": "evaluator.completed",
+        "occurred_at": "2026-09-21T00:00:02Z",
+        "payload": {
+          "evaluator_id": "proof-carrying-simulation-v1",
+          "result": {
+            "checked_obligations": [
+              "o1",
+              "o2",
+              "o3"
+            ],
+            "claim_status": "verified",
+            "evaluator_id": "proof-carrying-simulation-v1",
+            "evidence_level": "validated-reproduction",
+            "failed_obligations": [],
+            "passed": true
+          }
+        },
+        "payload_hash": "4221dc6002b841e2db4072d93526b9375eb61b05e636488a3e6e0c83b80530d1",
+        "prev_event_hash": "4a3139ea698fbdafea77496eb59b60db1e758b0b66d15aaaeab0e7226efff141",
+        "seq": 2
+      },
+      {
+        "event_id": "t4-event-3",
+        "event_type": "negative_case.checked",
+        "occurred_at": "2026-09-21T00:00:03Z",
+        "payload": {
+          "negative_case": {
+            "checked_obligations": [
+              "o1",
+              "o2",
+              "o3"
+            ],
+            "claim_status": "blocked",
+            "evaluator_id": "proof-carrying-simulation-v1",
+            "evidence_level": "demo",
+            "failed_obligations": [
+              "o1",
+              "o3"
+            ],
+            "passed": false
+          },
+          "negative_case_passed": true
+        },
+        "payload_hash": "2e4d0126917229ef3043fae58560c0cadce4842ceb7730d5a22625acda603a1c",
+        "prev_event_hash": "4221dc6002b841e2db4072d93526b9375eb61b05e636488a3e6e0c83b80530d1",
+        "seq": 3
+      },
+      {
+        "event_id": "t4-event-4",
+        "event_type": "run.completed",
+        "occurred_at": "2026-09-21T00:00:04Z",
+        "payload": {
+          "status": "completed"
+        },
+        "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+        "prev_event_hash": "2e4d0126917229ef3043fae58560c0cadce4842ceb7730d5a22625acda603a1c",
+        "seq": 4
+      }
+    ],
+    "evidence": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "evidence_id": "ev-t4-fixture",
+        "kind": "data",
+        "notes": "Fixture evidence is not real-data or publication evidence.",
+        "path_or_uri": "E:\\xuexi\\auditable-scientist-lab\\examples\\proof\\fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "8236c38bba10ef500e92947a65f2399c5ecd53f8924f1e7aef29bd6dbb03bd76",
+        "source_revision": "local-working-tree"
+      }
+    ],
+    "evidence_refs": [
+      "ev-t4-fixture"
+    ],
+    "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+    "memories": [
+      {
+        "content_hash": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+        "memory_id": "evidence-policy-memory-v1",
+        "scope": "claim-level evidence boundaries",
+        "source_ref": "E:\\xuexi\\auditable-scientist-lab\\docs\\EVIDENCE_POLICY.md",
+        "version": "local-snapshot"
+      }
+    ],
+    "observations": [
+      {
+        "dataset_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+        "observation_id": "obs-t4-fixture",
+        "source_ref": "E:\\xuexi\\auditable-scientist-lab\\examples\\proof\\fixture.json",
+        "split": "external",
+        "summary": {
+          "evaluator_id": "proof-carrying-simulation-v1",
+          "evidence_level": "validated-reproduction",
+          "track_id": "T4"
+        },
+        "units": {}
+      }
+    ],
+    "policy": {
+      "allowed_paths": [
+        "E:\\xuexi\\auditable-scientist-lab\\examples\\proof"
+      ],
+      "allowed_providers": [
+        "internal-t4-evaluator"
+      ],
+      "max_seconds": 60.0,
+      "max_tool_calls": 1,
+      "network": "disabled",
+      "policy_id": "offline-t4-v1"
+    },
+    "providers": [
+      {
+        "kind": "deterministic-domain-evaluator",
+        "name": "Internal T4 evaluator",
+        "provider_id": "internal-t4-evaluator",
+        "source_ref": "src/auditable_scientist/tracks",
+        "version": "1"
+      }
+    ],
+    "run_id": "run-t4-12ff428e6a112d75",
+    "seed": 17,
+    "status": "completed",
+    "task_id": "t4-proof-carrying-v1",
+    "tools": [
+      {
+        "deterministic": true,
+        "name": "T4 domain evaluator",
+        "network_required": false,
+        "parameter_schema_ref": "schemas/track-receipt-v1.json",
+        "tool_id": "t4-evaluator",
+        "version": "1"
+      }
+    ],
+    "traces": [
+      {
+        "entries": [
+          {
+            "event_type": "run.initialized",
+            "payload_hash": "cc574011c67715139e04d49fbef351877d20ff066c6e255fd68ef0f5d1848471",
+            "seq": 0
+          },
+          {
+            "event_type": "policy.applied",
+            "payload_hash": "4a3139ea698fbdafea77496eb59b60db1e758b0b66d15aaaeab0e7226efff141",
+            "seq": 1
+          },
+          {
+            "event_type": "evaluator.completed",
+            "payload_hash": "4221dc6002b841e2db4072d93526b9375eb61b05e636488a3e6e0c83b80530d1",
+            "seq": 2
+          },
+          {
+            "event_type": "negative_case.checked",
+            "payload_hash": "2e4d0126917229ef3043fae58560c0cadce4842ceb7730d5a22625acda603a1c",
+            "seq": 3
+          },
+          {
+            "event_type": "run.completed",
+            "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+            "seq": 4
+          }
+        ],
+        "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+        "run_id": "run-t4-12ff428e6a112d75",
+        "trace_id": "trace-run-t4-12ff428e6a112d75"
+      }
+    ]
+  },
   "track": "T4"
 }
