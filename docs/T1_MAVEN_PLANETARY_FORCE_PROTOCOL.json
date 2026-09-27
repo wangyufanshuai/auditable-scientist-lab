@@ -1,0 +1,60 @@
+{
+  "schema_version": "t1-maven-planetary-force-protocol-v1",
+  "status": "predeclared-engineering-diagnostic-not-scientific-validation",
+  "mission_product_lidvid": "urn:nasa:pds:maven.spice:spice_kernels:spk_maven_cru_rec_131118_140923_v1.bsp::1.0",
+  "source_contract": {
+    "de440s_sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+    "mar099s_sha256": "997dc93ba640e476da7a494d2237dcdeb145e528db37be8ccee588c615e4e1ff",
+    "maven_cruise_sha256": "07c76dfc2a1f66a54b4dd74105b2a5a70d72192813abee3659a74d4d21988dc5",
+    "gm_kernel_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de440.tpc",
+    "gm_kernel_sha256": "924ddf4fb9ead9fe8a1aa55780bcabde40b09d00065d58226e24b68d8092f140"
+  },
+  "coordinate_contract": {
+    "frame": "J2000",
+    "aberration": "NONE",
+    "observer": "SUN",
+    "time_scale": "TDB seconds past J2000",
+    "position_unit": "km",
+    "velocity_unit": "km/s",
+    "gm_unit": "km^3/s^2"
+  },
+  "arc_contract": {
+    "initial_et_tdb_seconds": [452088000.0, 457272000.0],
+    "horizon_seconds": 86400.0,
+    "initial_and_endpoint_source": "pinned MAVEN reconstructed NAV SPK",
+    "segment_center_id_required": 10,
+    "split": "previously inspected engineering comparison, not scientific holdout"
+  },
+  "model": {
+    "name": "Sun plus Earth-Moon and Mars barycenter point-mass tides",
+    "sun_gm_km3_s2": 132712440041.27942,
+    "perturbers": [
+      {"naif_id": 3, "gm_km3_s2": 403503.23562548019},
+      {"naif_id": 4, "gm_km3_s2": 42828.375815756102}
+    ],
+    "relative_acceleration": "-mu_sun*r/|r|^3 + sum(mu_p*((r_p-r)/|r_p-r|^3-r_p/|r_p|^3))",
+    "planet_state_source": "DE440s body 3 and body 4 geometric Sun-relative J2000 states at every RK4 stage",
+    "integrator": "fixed-step classical RK4 independent of SPICE propagation",
+    "step_seconds": 600.0,
+    "refinement_step_seconds": 300.0,
+    "excluded_effects": ["maneuvers", "solar radiation pressure", "relativity", "planetary oblateness", "other bodies"]
+  },
+  "engineering_gates": {
+    "refinement_position_difference_km_max": 0.001,
+    "finite_states_required": true,
+    "indirect_term_identity_at_sun_required": true,
+    "report_both_arcs_even_on_failure": true,
+    "report_signed_difference_from_sun_only_required": true,
+    "endpoint_error_limit_km": 100.0
+  },
+  "selection_statement": "The same two NAV arcs and endpoints were already inspected under the Sun-only preflight. Constants and force law are frozen before this new integration; no fit to the endpoint is permitted. The 100 km limit is an engineering sanity gate, not a mission accuracy tolerance. Any worsening must be reported.",
+  "scientific_boundaries": {
+    "source_tracked_reconstructed_mission_states": true,
+    "independent_observables": false,
+    "untouched_scientific_holdout": false,
+    "maneuver_model": false,
+    "full_force_model": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}
