@@ -33,13 +33,14 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "specify a rights-cleared perturbed multi-body validation set and independent reference",
+      "next_step": "bind the finite-horizon perturbed audit to a Run and specify a wider validation set",
       "open_gates": [
-        "perturbed/nonintegrable multi-body validation",
+        "long-horizon/nonintegrable multi-body validation",
         "real-mission provenance",
         "compute budget"
       ],
       "optional_external_run": "artifacts/t3-external-run-audit.json",
+      "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json",

@@ -476,10 +476,10 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 20722,
+      "bytes": 21807,
       "path": "scripts/generate_track_artifacts.py",
       "provenance_status": "unverified",
-      "sha256": "21ffd14926f022b7f63c7bb9fb5ad10a2e1e1365c817e6bb4d1ccce57afaacd5"
+      "sha256": "7a015a09ab27361703b76d5e016378d03f7d00667c665e6f21040cbe0af04cb3"
     },
     {
       "allowed_use": [

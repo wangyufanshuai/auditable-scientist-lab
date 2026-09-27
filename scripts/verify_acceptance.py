@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
@@ -141,6 +142,48 @@ def verify_optional_t3_run_static() -> dict:
     return replay
 
 
+def verify_optional_t3_perturbed_static() -> dict:
+    """Check receipt scope and source bytes; SciPy recomputation remains a separate command."""
+
+    audit = load("artifacts/t3-perturbed-audit.json")
+    expected_sources = {
+        "scripts/verify_t3_perturbed.py", "examples/dynamics/nbody-fixture.json",
+        "src/auditable_scientist/tracks/nbody.py",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "scripts/verify_t3_external_scipy.py", "requirements-t3-scipy-win-py312.txt",
+        "docs/T3_PERTURBED_METHOD.md",
+    }
+    rows = audit.get("rows", [])
+    checks = audit.get("checks", {})
+    if (
+        audit.get("schema_version") != "t3-perturbed-audit-v1"
+        or audit.get("status") != "passed-optional-finite-horizon-cross-check"
+        or audit.get("environment") != load("artifacts/t3-external-scipy.json").get("environment")
+        or audit.get("boundaries") != {
+            "core_run_evidence": False, "real_ephemerides": False, "mission_validation": False,
+            "chaos_or_long_horizon_validation": False, "general_nbody_validity": False,
+        }
+        or not isinstance(checks, dict) or len(checks) != 11 or not all(value is True for value in checks.values())
+        or not isinstance(rows, list) or len(rows) != 2
+        or [(row.get("case_id"), row.get("split")) for row in rows]
+        != [("equal-train", "train"), ("unequal-holdout", "holdout")]
+        or not math.isfinite(audit.get("negative_repulsive_force_error", float("nan")))
+        or audit["negative_repulsive_force_error"] < 0.1
+        or {item.get("path") for item in audit.get("source_files", [])} != expected_sources
+        or len(audit.get("source_files", [])) != len(expected_sources)
+    ):
+        raise ValueError("optional perturbed T3 receipt is absent or exceeds its bounded scope")
+    recorded_at = datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00"))
+    if recorded_at.tzinfo is None or recorded_at.utcoffset() is None:
+        raise ValueError("optional perturbed T3 receipt timestamp is naive")
+    for item in audit["source_files"]:
+        path = ROOT / item["path"]
+        if item.get("sha256") != fingerprint_file(path).sha256 or item.get("bytes") != path.stat().st_size:
+            raise ValueError(f"optional perturbed T3 source differs: {item['path']}")
+    return {"scope": "static-source-and-boundary-check-only", "source_files_match": True,
+            "pinned_scipy_recomputation_required": True}
+
+
 def verify_check_rows(checks: list[dict], *, root: Path, expected_input: str | None = None) -> None:
     if not checks:
         raise ValueError("acceptance package has no command receipts")
@@ -183,6 +226,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         special_inputs = {
             "bounded-parameter-step-sweep": "t3-sweep-v1",
             "optional-external-solver-run": "t3-external-run-audit-v1",
+            "optional-perturbed-three-body-cross-check": "t3-perturbed-audit-v1",
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
@@ -413,7 +457,10 @@ def main() -> None:
         raise SystemExit("optional T3 external Run is missing from acceptance")
     if not any(item.get("name") == "symmetric-three-body-subtrack" and item.get("output_path") == "artifacts/t3-nbody/acceptance.json" for item in t3_checks):
         raise SystemExit("T3 symmetric three-body subtrack is missing from acceptance")
+    if not any(item.get("name") == "optional-perturbed-three-body-cross-check" and item.get("output_path") == "artifacts/t3-perturbed-audit.json" for item in t3_checks):
+        raise SystemExit("T3 perturbed cross-check is missing from acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
+    optional_t3_perturbed_static = verify_optional_t3_perturbed_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
@@ -459,7 +506,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v12" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v13" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -497,7 +544,7 @@ def main() -> None:
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v12" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v13" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -538,6 +585,7 @@ def main() -> None:
         "track_evaluators_replayed": ["T2", "T2P", "T3", "T3N", "T4", "T5"],
         "track_cli_replays": cli_replays,
         "t3_optional_external_run_static_replay": optional_t3_static_replay,
+        "t3_perturbed_static_provenance": optional_t3_perturbed_static,
         "wheel_audit_verified": True,
         "scientific_boundaries": portfolio["global_boundaries"],
     }

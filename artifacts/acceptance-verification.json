@@ -35,6 +35,11 @@
     "manifest_hash": "7d5f79dc99a8ae871afd4cd883f52abad0e9bcca706c4036300d28fb7544168d",
     "verified": true
   },
+  "t3_perturbed_static_provenance": {
+    "pinned_scipy_recomputation_required": true,
+    "scope": "static-source-and-boundary-check-only",
+    "source_files_match": true
+  },
   "track_cli_replays": {
     "T2": {
       "checks": [
@@ -47,7 +52,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "b5764b38d7e0a8a96f3764998e118f20c336e2942c3a3503a77703c7a136ba4a",
+      "manifest_hash": "1f7d0b7973c278e6d3ddfc403dfb926a652e2b6265fbb76f8a6e2c55aa6b3f2b",
       "verified": true
     },
     "T2P": {
@@ -61,7 +66,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "faba08839aad9867e42c814c9da10b2d2c9594615f3769e64139e76a9ece2656",
+      "manifest_hash": "76a515ca8d61f329c1141cd552c371cc3df54cd5031381f414afb2cc7da49ec9",
       "verified": true
     },
     "T3": {
@@ -75,7 +80,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "c86f351ef488974040b6339421d9928a3179586584fee21c3c828a6f1490c9b6",
+      "manifest_hash": "87d76d2a2645da27d24de3d5f3cf8cd82dade2bf9c11a2eadca902a7ab6466f8",
       "verified": true
     },
     "T3N": {
@@ -89,7 +94,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "3adfaf207ab05d64aa1ff537c57c077c6df8d3d12dfeb0a3044b4dc786dacba7",
+      "manifest_hash": "975e7b85c01e5c5204afcf09b3127c1cd0bd5dba34dd6fbae369f11771868a46",
       "verified": true
     },
     "T4": {
@@ -103,7 +108,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "713f5e1fb2845d63200a0eeaedd2761b5ecd108ca5e2ee2471ccffd63eed5939",
+      "manifest_hash": "71427eec404f73e48aa5f2b9c4b017f2468daf9c6c51efa99f1fcb0b73bdc3a7",
       "verified": true
     },
     "T5": {
@@ -117,7 +122,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "848e96353b0a0385e7a84407cc58b7670eafac7042fd52ab8dd4d5fe8ed56a94",
+      "manifest_hash": "5843ad47bdb4579814b66637e827c622728d2e87d363144c85b1ed6bab8b649d",
       "verified": true
     }
   },

@@ -1,0 +1,1 @@
+[{"case_id":"train-1","dt":0.01,"omega":1.0,"split":"train","steps":500,"v0":0.0,"x0":1.0},{"case_id":"train-2","dt":0.01,"omega":1.4,"split":"train","steps":500,"v0":0.2,"x0":0.5},{"case_id":"holdout-1","dt":0.01,"omega":0.8,"split":"holdout","steps":700,"v0":-0.1,"x0":1.2}]

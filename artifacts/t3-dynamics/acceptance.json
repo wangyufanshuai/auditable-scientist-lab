@@ -6,7 +6,7 @@
       "input_version": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t3-dynamics/sample-run.json",
-      "recorded_at": "2026-09-27T06:20:10.249991+00:00"
+      "recorded_at": "2026-09-27T06:35:08.315037+00:00"
     },
     {
       "command": "python scripts/verify_t3_sweep.py --write",
@@ -25,12 +25,20 @@
       "recorded_at": "2026-09-27T05:19:37.160810+00:00"
     },
     {
+      "command": "python scripts/verify_t3_perturbed.py --verify",
+      "exit_code": 0,
+      "input_version": "t3-perturbed-audit-v1",
+      "name": "optional-perturbed-three-body-cross-check",
+      "output_path": "artifacts/t3-perturbed-audit.json",
+      "recorded_at": "2026-09-27T06:38:25.081447+00:00"
+    },
+    {
       "command": "python scripts/generate_track_artifacts.py",
       "exit_code": 0,
       "input_version": "7ea57acea8cc3bb10fcafc25f5dba4ce605accc108f2b5532e2407da8fddeaa8",
       "name": "symmetric-three-body-subtrack",
       "output_path": "artifacts/t3-nbody/acceptance.json",
-      "recorded_at": "2026-09-27T06:20:10.398630+00:00"
+      "recorded_at": "2026-09-27T06:35:08.452971+00:00"
     }
   ],
   "evaluator": {
@@ -230,10 +238,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 20722,
+        "bytes": 21807,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "21ffd14926f022b7f63c7bb9fb5ad10a2e1e1365c817e6bb4d1ccce57afaacd5"
+        "sha256": "7a015a09ab27361703b76d5e016378d03f7d00667c665e6f21040cbe0af04cb3"
       },
       {
         "allowed_use": [

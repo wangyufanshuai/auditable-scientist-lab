@@ -130,7 +130,7 @@
     "real-data provenance and rights",
     "independent numerical backend",
     "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
-    "T3 perturbed/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
+    "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
     "T4 general formal proof backend and transition model coverage",
     "T5 real protocol provenance, biosafety review, and human acceptance"
   ],

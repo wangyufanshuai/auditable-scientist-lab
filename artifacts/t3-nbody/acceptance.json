@@ -6,7 +6,7 @@
       "input_version": "7ea57acea8cc3bb10fcafc25f5dba4ce605accc108f2b5532e2407da8fddeaa8",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t3-nbody/sample-run.json",
-      "recorded_at": "2026-09-27T06:20:10.379985+00:00"
+      "recorded_at": "2026-09-27T06:35:08.439447+00:00"
     }
   ],
   "evaluator": {
@@ -231,10 +231,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 20722,
+        "bytes": 21807,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "21ffd14926f022b7f63c7bb9fb5ad10a2e1e1365c817e6bb4d1ccce57afaacd5"
+        "sha256": "7a015a09ab27361703b76d5e016378d03f7d00667c665e6f21040cbe0af04cb3"
       },
       {
         "allowed_use": [

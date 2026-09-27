@@ -38,7 +38,7 @@
 - T3 now compares Velocity-Verlet against a separately implemented fixed-step RK4,
   plus the analytic oscillator and Euler negative control. The method citation,
   source-rights boundary, and fixture scope are recorded in `docs/T3_METHOD.md`;
-  an external production solver and perturbed multi-body validation remain open.
+  an external production solver and broad multi-body validation remain open.
 - The T3N subtrack compares two local numerical methods against a directly derived
   equilateral three-body circular orbit for equal and unequal masses. Conservation,
   barycenter, separation, and a repulsive-force negative control pass the declared
@@ -61,6 +61,12 @@
   license snapshots and a network-disabled policy, and rejects altered output
   and license bytes. SciPy remains outside the core dependency and T3 core Run;
   the optional Run does not close multi-body or mission gates.
+- A separate optional audit now compares two momentum-balanced, perturbed three-body
+  initial states over 0.35 unperturbed periods. Pinned SciPy DOP853, local Verlet
+  at two resolutions, and independently coded RK4 pass the declared finite-horizon
+  convergence, invariant, separation, and repulsive-force negative gates. See
+  `docs/T3_PERTURBED_METHOD.md` and `artifacts/t3-perturbed-audit.json`. This audit
+  is outside the core Run and does not validate chaotic long horizons or missions.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
@@ -343,9 +349,9 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Extend the new T3 equilateral three-body subtrack to perturbed and nonintegrable
-   multi-body cases only after a separately specified validation set, independent
-   references, numerical error budget, and rights-cleared source provenance are ready.
+1. Bind the short-horizon perturbed T3 audit to a replayable optional Tool/Provider
+   Run, then specify a broader nonintegrable validation set, independent references,
+   numerical error budget, and compute ceiling before attempting long-horizon claims.
    Keep oscillator, symmetric fixture, and any real-mission claim separate.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.

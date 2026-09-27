@@ -98,6 +98,23 @@ def write_track_bundle(
             "input_version": "t3-external-run-audit-v1",
             "output_path": "artifacts/t3-external-run-audit.json",
         })
+    if track_id == "T3" and (ROOT / "artifacts/t3-perturbed-audit.json").is_file():
+        perturbed = json.loads((ROOT / "artifacts/t3-perturbed-audit.json").read_text(encoding="utf-8"))
+        if (
+            perturbed.get("schema_version") != "t3-perturbed-audit-v1"
+            or perturbed.get("status") != "passed-optional-finite-horizon-cross-check"
+            or len(perturbed.get("checks", {})) != 11
+            or not all(perturbed["checks"].values())
+        ):
+            raise ValueError("optional T3 perturbed audit is present but did not pass")
+        acceptance["checks"].append({
+            "name": "optional-perturbed-three-body-cross-check",
+            "command": "python scripts/verify_t3_perturbed.py --verify",
+            "exit_code": 0,
+            "recorded_at": perturbed["recorded_at"],
+            "input_version": "t3-perturbed-audit-v1",
+            "output_path": "artifacts/t3-perturbed-audit.json",
+        })
     write_json(artifact_dir / "acceptance.json", acceptance)
     write_json(
         artifact_dir / "sample-run.json",
@@ -288,7 +305,7 @@ def main() -> None:
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "physical_subtrack": "artifacts/t2-physical/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights", "external algorithm source rights"], "next_step": "add a rights-cleared physical intervention dataset and independent estimator", "public_release": False},
-        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "open_gates": ["perturbed/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a rights-cleared perturbed multi-body validation set and independent reference", "public_release": False},
+        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json", "open_gates": ["long-horizon/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "bind the finite-horizon perturbed audit to a Run and specify a wider validation set", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]
@@ -308,7 +325,7 @@ def main() -> None:
             "and a nine-case oscillator cross-check. An optional versioned Tool/Provider Run now",
             "replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.",
         ])
-    markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. It does not close the perturbed multi-body or real-mission gates."])
+    markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy audit checks two short perturbed trajectories; long-horizon/nonintegrable and real-mission gates remain open."])
     markdown.extend(["", "T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only."])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
