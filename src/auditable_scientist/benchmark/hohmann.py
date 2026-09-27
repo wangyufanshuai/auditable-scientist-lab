@@ -1,9 +1,4 @@
-"""The bounded, offline Hohmann benchmark used by the P4 vertical slice.
-
-The benchmark deliberately exposes a small committed candidate catalog. Candidate
-evaluation is a dispatch table rather than ``eval`` so a run cannot execute arbitrary
-expressions from its input file.
-"""
+"""Bounded, offline Hohmann grammar enumeration with independent baseline checks."""
 
 from __future__ import annotations
 
@@ -19,6 +14,9 @@ from ..runtime.canonical import canonical_hash
 from ..tools.dimensions import check_expression_dimensions
 from ..tools.errors import HoldoutGateResult, holdout_gate
 from ..tools.numerical import HohmannResult, hohmann_baseline
+
+
+GRAMMAR_VERSION = "hohmann-radius-factor-grammar-v2"
 
 
 class HohmannCase(BaseModel):
@@ -64,6 +62,7 @@ class HohmannExperiment(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     benchmark_id: str = "hohmann-mars-transfer-v1"
+    grammar_version: str = GRAMMAR_VERSION
     target: str
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     candidate_set_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
@@ -82,52 +81,35 @@ class _CandidateSpec:
     evaluator: Callable[[HohmannCase], float]
 
 
-def _tof(case: HohmannCase) -> float:
-    return hohmann_baseline(case.r1_km, case.r2_km, case.mu_km3_s2).time_of_flight_days
-
-
-def _tof_without_pi(case: HohmannCase) -> float:
-    return _tof(case) / pi
-
-
-def _tof_wrong_radius_sum(case: HohmannCase) -> float:
-    radius_sum = case.r1_km + case.r2_km
-    return pi * sqrt(radius_sum**3 / case.mu_km3_s2) / 86400.0
-
-
-def _tof_inner_orbit(case: HohmannCase) -> float:
-    return pi * sqrt(case.r1_km**3 / case.mu_km3_s2) / 86400.0
-
-
-def _tof_outer_orbit(case: HohmannCase) -> float:
-    return pi * sqrt(case.r2_km**3 / case.mu_km3_s2) / 86400.0
+@dataclass(frozen=True)
+class _RadiusNode:
+    node_id: str
+    expression: str
+    complexity: int
+    evaluator: Callable[[HohmannCase], float]
 
 
 def bounded_candidate_specs() -> list[_CandidateSpec]:
-    """Return the committed candidate order for replay and candidate-set hashing."""
+    """Enumerate a fixed ten-expression grammar; no candidate calls the baseline."""
 
-    return [
-        _CandidateSpec(
-            "tof-hohmann-v1",
-            "pi*sqrt(((r1+r2)/2)^3/mu)/86400",
-            5,
-            _tof,
-        ),
-        _CandidateSpec(
-            "tof-missing-pi-v1",
-            "sqrt(((r1+r2)/2)^3/mu)/86400",
-            4,
-            _tof_without_pi,
-        ),
-        _CandidateSpec(
-            "tof-radius-sum-v1",
-            "pi*sqrt((r1+r2)^3/mu)/86400",
-            4,
-            _tof_wrong_radius_sum,
-        ),
-        _CandidateSpec("tof-inner-orbit-v1", "pi*sqrt(r1^3/mu)/86400", 3, _tof_inner_orbit),
-        _CandidateSpec("tof-outer-orbit-v1", "pi*sqrt(r2^3/mu)/86400", 3, _tof_outer_orbit),
+    radii = [
+        _RadiusNode("semimajor", "(r1+r2)/2", 3, lambda case: (case.r1_km + case.r2_km) / 2),
+        _RadiusNode("sum", "r1+r2", 2, lambda case: case.r1_km + case.r2_km),
+        _RadiusNode("inner", "r1", 1, lambda case: case.r1_km),
+        _RadiusNode("outer", "r2", 1, lambda case: case.r2_km),
+        _RadiusNode("geometric", "sqrt(r1*r2)", 3, lambda case: sqrt(case.r1_km * case.r2_km)),
     ]
+    factors = [("pi", "pi*", pi, 1), ("unit", "", 1.0, 0)]
+    specifications: list[_CandidateSpec] = []
+    for radius in radii:
+        for factor_id, prefix, factor, factor_cost in factors:
+            specifications.append(_CandidateSpec(
+                candidate_id=f"tof-{radius.node_id}-{factor_id}-v2",
+                expression=f"{prefix}sqrt(({radius.expression})^3/mu)/86400",
+                complexity=radius.complexity + factor_cost + 2,
+                evaluator=lambda case, r=radius.evaluator, f=factor: f * sqrt(r(case) ** 3 / case.mu_km3_s2) / 86400.0,
+            ))
+    return specifications
 
 
 def load_hohmann_dataset(path: str | Path) -> list[HohmannCase]:
@@ -161,9 +143,10 @@ def run_hohmann_experiment(config: HohmannConfig, cases: list[HohmannCase]) -> H
     holdout = [case for case in cases if case.split == "holdout"]
     specs = bounded_candidate_specs()
     candidate_order = [item.candidate_id for item in specs]
-    candidate_set_hash = canonical_hash(
-        [{"candidate_id": item.candidate_id, "expression": item.expression, "complexity": item.complexity} for item in specs]
-    )
+    candidate_set_hash = canonical_hash({
+        "grammar_version": GRAMMAR_VERSION,
+        "candidates": [{"candidate_id": item.candidate_id, "expression": item.expression, "complexity": item.complexity} for item in specs],
+    })
     evaluations: list[CandidateEvaluation] = []
     failed_count = 0
     for spec in specs:
@@ -225,6 +208,7 @@ def run_hohmann_experiment(config: HohmannConfig, cases: list[HohmannCase]) -> H
     )
     baseline = [hohmann_baseline(case.r1_km, case.r2_km, case.mu_km3_s2) for case in cases]
     return HohmannExperiment(
+        grammar_version=GRAMMAR_VERSION,
         target=config.target,
         dataset_hash=canonical_hash([case.model_dump(mode="json") for case in cases]),
         candidate_set_hash=candidate_set_hash,

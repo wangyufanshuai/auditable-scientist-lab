@@ -65,7 +65,7 @@ def _source_paths() -> list[Path]:
         "runtime/run_integrity.py", "runtime/paths.py", "reporting/hohmann_report.py",
         "cli.py", "policy/runtime.py", "domain/models.py", "adapters/project05.py",
     ]
-    resources = ["pyproject.toml", "schemas/run.schema.json", "schemas/hohmann-tool-call-v1.json", "docs/EVIDENCE_POLICY.md"]
+    resources = ["pyproject.toml", "schemas/run.schema.json", "schemas/hohmann-tool-call-v1.json", "docs/EVIDENCE_POLICY.md", "docs/T1_SYMBOLIC_GRAMMAR.md"]
     return [*[source_path(f"src/auditable_scientist/{item}") for item in sources], *[resource_path(item) for item in resources]]
 
 

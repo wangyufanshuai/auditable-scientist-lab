@@ -18,10 +18,10 @@ def make_hohmann_study(
     selected = next(item for item in experiment.candidates if item.candidate_id == experiment.selected_candidate_id)
     question = ResearchQuestion(
         question_id="rq-hohmann-time-of-flight-v1",
-        text="Can a bounded symbolic candidate search recover the heliocentric Hohmann transfer time-of-flight expression within a fixed holdout and dimensional gate?",
+        text="Can a fixed bounded expression grammar select the heliocentric Hohmann transfer time-of-flight expression within a fixed holdout and dimensional gate?",
         domain="orbital-mechanics",
         observables=[config.target],
-        assumptions=["circular coplanar heliocentric orbits", "two-body dynamics", "analytic fixture is the declared reference"],
+        assumptions=["circular coplanar heliocentric orbits", "two-body dynamics", "analytic fixture is the declared reference", "the correct expression is in the predeclared ten-expression grammar"],
         dataset_ref=str(dataset_path),
         allowed_tools=["dimensional-check-v1", "hohmann-analytic-v1", "error-statistics-v1", "internal-bounded-generator"],
         intended_evidence_level="validated-reproduction",
@@ -49,7 +49,7 @@ def make_hohmann_study(
             "dimensional-check": "v1",
             "hohmann-analytic": "v1",
             "error-statistics": "v1",
-            "internal-bounded-generator": "v1",
+            "internal-bounded-generator": "v2",
         },
         tolerances={"max_holdout_rmse_days": config.max_holdout_rmse},
         budget={"max_candidates": len(experiment.candidate_order), "max_tool_calls": 1},

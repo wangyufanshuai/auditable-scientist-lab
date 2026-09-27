@@ -1,6 +1,6 @@
 {
   "schema_version": "replay-environment-audit-v1",
-  "recorded_at": "2026-09-27T06:03:58.311983+00:00",
+  "recorded_at": "2026-09-27T06:23:06.342969+00:00",
   "status": "matched-committed-replay-environment",
   "isolated_venv": true,
   "platform": {
@@ -31,15 +31,15 @@
   },
   "constraints_sha256": "cd74e847377d90eb7ac33a7679d75f5a1ff0f69b9c196bc7f0969d25d2077e06",
   "manifest_sha256": {
-    "T1": "e0fdd6e061eaa6aa62f567f7344bdd276ec5caafc1b3c25b1297122c0a87dda9",
-    "T2": "2eeabfab09f227097bd76bf406b8ceb163bd91a352dcc78b93663fa4e07ff278",
-    "T2P": "ac91f87fd7b05d9b3e6985d88b4fa79f0aacfb39c1651d3fecd1fc6d5832c79d",
-    "T3": "84520420de2af251029065bc2b7459316d20e846a381a751ceedafdb82476e4d",
-    "T3N": "13b118850cc439bf9e45f59e67b0574b520a166a27b98341a9ce97539c693458",
-    "T4": "175253db30e8ab0cf22f3f9c4fa5c39a6dd523cd018659a5fdf2a3270a50db16",
-    "T5": "353e5addce5e707e535aa368518ce5ebd318016887145757525087e6e13b6bd6"
+    "T1": "7a74f98072e30d99aec4f2602ff095029548f2faa835fcb9a2875a41bfd3098e",
+    "T2": "ede56df70d64623c63fdfad4fdfd4a92e40c613c9108c00882cb27322697466b",
+    "T2P": "c935ce137221816c734904bdf0bf7f6110ba56c953514c4b8cb5184382b75974",
+    "T3": "7daad7fc8d0c7c2869e988812ab63f03165428d4765b0f5147c0264994542c6c",
+    "T3N": "606f064817b83d7b82fa75651d7b2a0a1dc7108a05244103da747f055bbddbfc",
+    "T4": "c22705de9404209efebe0425a58baebc55622d7c831116429cf4107ac60d5a29",
+    "T5": "938af37420a424a7e849f38d670b5375fff5b978775bd62b7b62e831a3aeda9b"
   },
-  "script_sha256": "0b0bf5d20c22b66a1db5ee47d90933c89850e358d8f43ef018291bfac4a26aaa",
+  "script_sha256": "9559a48f9063a58c9d4d2f62d2e72fc6f19ba5460489948bf522ba736387d3bc",
   "limitations": [
     "Version pins do not lock downloaded wheel bytes or Python executable bytes.",
     "This audit checks the environment; scripts/verify_acceptance.py checks replay outputs.",

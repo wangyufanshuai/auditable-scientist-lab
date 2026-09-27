@@ -146,7 +146,7 @@ def main() -> None:
             "negative_case_passed": True,
             "evidence_files": evidence_for(ROOT / "artifacts/sample-run.json"),
             "blocked_gates": ["external symbolic engine", "real-data provenance", "independent backend"],
-            "result": {"selected_candidate_id": "tof-hohmann-v1", "holdout_verified": True, "acceptance": "artifacts/acceptance.json"},
+            "result": {"selected_candidate_id": "tof-semimajor-pi-v2", "holdout_verified": True, "acceptance": "artifacts/acceptance.json"},
         }
     ]
 

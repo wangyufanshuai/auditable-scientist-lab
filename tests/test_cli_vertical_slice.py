@@ -96,7 +96,7 @@ def test_cli_replay_rejects_tampered_artifact(tmp_path: Path, capsys, target: st
     elif target == "input.json":
         text = text.replace('"seed":17', '"seed":18', 1)
     elif target == "experiment.json":
-        text = text.replace('"selected_candidate_id":"tof-hohmann-v1"', '"selected_candidate_id":"tampered"', 1)
+        text = text.replace('"selected_candidate_id":"tof-semimajor-pi-v2"', '"selected_candidate_id":"tampered"', 1)
     elif target == "run.json":
         text = text.replace('"status":"completed"', '"status":"failed"', 1)
     elif target == "dataset.json":

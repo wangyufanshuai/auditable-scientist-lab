@@ -19,6 +19,14 @@ and `AIFeynmanEngine.discover` unconditionally raises `NotImplementedError`.
 The exact file hashes are in `artifacts/symbolic-engine-audit.json`. Keep the
 adapter blocked; the parent repository's commit is not a revision of these files.
 
+## 2026-09-27 — Honest bounded grammar for T1
+
+Replace the five hard-coded evaluator functions, including one that called the
+analytic baseline directly, with a ten-expression radius/factor grammar. Rank on
+training data and use the independent baseline and fixed holdout only for checks.
+The correct form is predeclared in the grammar, so reports must call this a
+bounded selection and reproduction, never open-ended law discovery.
+
 ## 2026-09-20 — Delivery shape
 
 Ship CLI plus Markdown/JSON evidence first. Defer Web UI until deterministic replay,

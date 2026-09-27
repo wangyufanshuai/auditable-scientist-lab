@@ -64,7 +64,7 @@ schema、策略文档和示例 fixture。
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v17/`。`run-track` 还接受 `T2P`、`T3`、`T3N`、`T4`、`T5` 和相应
+`artifacts/acceptance-runs-v18/`。`run-track` 还接受 `T2P`、`T3`、`T3N`、`T4`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
 新版运行包保存输入快照，并使用 `run://`、`root://` 受限路径；五轨已在复制的
 源码目录和移动后的 wheel 运行目录中回放。回放仍要求记录的依赖环境与源码字节一致；
@@ -75,7 +75,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 见 [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
 声明的模拟器内部因果效应，不证明真实世界因果识别。当前七份 CLI 收据在
-`artifacts/track-runs-v11/` 和 `artifacts/acceptance-runs-v17/`。
+`artifacts/track-runs-v12/` 和 `artifacts/acceptance-runs-v18/`。
 
 ## 当前入口
 
@@ -84,6 +84,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/symbolic-engine-audit.json](artifacts/symbolic-engine-audit.json)：新发现的本地符号引擎源码指纹、实现与许可证阻断原因。
 - [schemas/run.schema.json](schemas/run.schema.json)：Run、Event、Claim、Evidence 契约草案。
 - [docs/EVIDENCE_POLICY.md](docs/EVIDENCE_POLICY.md)：证据等级和禁止性表述。
+- [docs/T1_SYMBOLIC_GRAMMAR.md](docs/T1_SYMBOLIC_GRAMMAR.md)：T1 十表达式语法、训练集选择与发现边界。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
@@ -99,7 +100,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与七份 CLI 回放收据。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的七份回放与篡改失败收据。
 - [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与七份 manifest 核验。
-- [artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
+- [artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
 
 ## 非目标
 

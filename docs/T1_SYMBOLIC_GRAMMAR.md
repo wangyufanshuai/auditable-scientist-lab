@@ -1,0 +1,7 @@
+# T1 bounded symbolic grammar
+
+The internal provider enumerates exactly ten expressions from version `hohmann-radius-factor-grammar-v2`: five radius nodes (`(r1+r2)/2`, `r1+r2`, `r1`, `r2`, `sqrt(r1*r2)`) crossed with two factors (`pi`, `1`) in the template `factor*sqrt(radius^3/mu)/86400`. Each expression is evaluated by a closed dispatch of Python callables; user-supplied expression text is never executed. Units are checked before numerical ranking. Candidate order and grammar version are committed into the candidate-set SHA-256.
+
+Only training residuals select the candidate. The fixed holdout then checks the selected candidate against its declared RMSE threshold. The project-05 Hohmann baseline is calculated separately for reference and never called by a candidate evaluator. Each candidate record carries expression, source, complexity, dimensional status, predictions, residuals, and training/holdout errors. The Run records the seed, source fingerprints, candidate order, failed count, and complete computational output.
+
+The correct Hohmann expression is **already in this intentionally small grammar**. Passing this test shows deterministic selection and reproduction inside the specified analytic fixture; it does not show open-ended symbolic regression, discovery of a new law, real-data validation, or independent confirmation of the underlying orbital assumptions. Other expressions outside the ten forms cannot be found. The external `symbolic-physics-engine` provider remains blocked by its separate source audit.

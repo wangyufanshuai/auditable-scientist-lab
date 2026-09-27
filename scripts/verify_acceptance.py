@@ -13,6 +13,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 from auditable_scientist.cli import _replay
+from auditable_scientist.benchmark.hohmann import GRAMMAR_VERSION
 from auditable_scientist.domain import Run
 from auditable_scientist.adapters import Project05Adapter, Project05Snapshot, built_in_manifests
 from auditable_scientist.runtime.event_log import EventLog
@@ -281,7 +282,7 @@ def main() -> None:
     ):
         raise SystemExit("external symbolic provider provenance gate was incorrectly promoted")
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2"
+    run_dir = ROOT / "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -438,6 +439,14 @@ def main() -> None:
     if load("artifacts/t5-protocol/acceptance.json")["negative_case"] != verify_protocol(t5_bad).model_dump(mode="json"):
         raise SystemExit("T5 negative case replay mismatch")
     t1 = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T1")
+    t1_experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
+    if (
+        t1_experiment.get("grammar_version") != GRAMMAR_VERSION
+        or len(t1_experiment.get("candidates", [])) != 10
+        or t1_experiment.get("selected_candidate_id") != t1["result"]["selected_candidate_id"]
+        or t1_experiment.get("candidate_order") != [item["candidate_id"] for item in t1_experiment["candidates"]]
+    ):
+        raise SystemExit("T1 bounded grammar or portfolio selection differs from replayed experiment")
     for evidence in t1["evidence_files"]:
         path = ROOT / evidence["path"]
         fingerprint = fingerprint_file(path)
@@ -450,7 +459,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v11" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v12" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -484,11 +493,11 @@ def main() -> None:
                 raise SystemExit("replay environment constraint is not an exact version")
             name, version = line.split("==")
             pins[re.sub(r"[-_.]+", "-", name).lower()] = version
-    manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/replay-manifest.json"}
+    manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/replay-manifest.json"}
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v11" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v12" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -509,7 +518,7 @@ def main() -> None:
         or wheel.get("checkout_root_in_installed_process") is not None
         or wheel.get("all_seven_relocated_replays_equal") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
-        or wheel.get("bundled_resource_count", 0) < 21
+        or wheel.get("bundled_resource_count", 0) < 22
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
         or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T5"}

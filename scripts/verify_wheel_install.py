@@ -96,7 +96,7 @@ def main() -> None:
             [str(python), "-c", "from auditable_scientist.runtime.paths import PACKAGE_ROOT; print(sum(p.is_file() for p in (PACKAGE_ROOT / '_resources').rglob('*')))"],
             cwd=temporary_root, environment=base_environment,
         ))
-        if resource_count < 21:
+        if resource_count < 22:
             raise RuntimeError("wheel omitted an offline resource")
         invoke([str(venv / "Scripts/auditable-scientist.exe"), "--help"], cwd=temporary_root, environment=base_environment)
 
