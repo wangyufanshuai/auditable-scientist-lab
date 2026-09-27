@@ -23,6 +23,14 @@
       "name": "exact-linear-invariant-subtrack",
       "output_path": "artifacts/t4-linear-formal-audit.json",
       "recorded_at": "2026-09-27T08:32:46.876348+00:00"
+    },
+    {
+      "command": "python scripts/verify_t4_linear_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t4-linear-6931db19a01bc59b",
+      "name": "exact-linear-invariant-run",
+      "output_path": "artifacts/t4-linear-run-audit.json",
+      "recorded_at": "2026-09-27T08:42:58.943409+00:00"
     }
   ],
   "evaluator": {

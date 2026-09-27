@@ -98,6 +98,10 @@
   independent `Fraction` checker binds source bytes and rejects forged coefficients,
   negative-case changes, and boundary inflation. It is mathematical evidence about
   declared matrices, not a reviewed physical transition or general formal backend.
+  A separate offline Tool/Policy/Provider Run now snapshots the input and sources,
+  records one tool call plus an event chain, and passes moved replay, output/input
+  tamper controls, and provider/path policy denials. Its physical Claim remains
+  `unverified`; the general backend and reviewed-model gates remain open.
 - T4O now binds a finite T3 harmonic oscillator case, SI units, input/output hashes,
   and T3 source bytes to nine required checker results. It recomputes velocity-Verlet,
   compares the closed form and independent RK4, checks maximum specific-energy drift,

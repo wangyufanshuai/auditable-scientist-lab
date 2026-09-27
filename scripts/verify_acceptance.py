@@ -566,6 +566,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         } if track_id == "T2" else ({
             "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
             "exact-linear-invariant-subtrack": load("artifacts/t4-linear-formal-audit.json")["input_sha256"],
+            "exact-linear-invariant-run": load("artifacts/t4-linear-run-audit.json")["run_id"],
         } if track_id == "T4" else {}))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
@@ -870,6 +871,39 @@ def main() -> None:
         for item in load("artifacts/t4-proof/acceptance.json")["checks"]
     ):
         raise SystemExit("T4 exact linear-invariant proof is missing from track acceptance")
+    t4_linear_run = load("artifacts/t4-linear-run-audit.json")
+    t4_linear_run_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t4_linear_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if t4_linear_run_replay.returncode != 0:
+        raise SystemExit(f"T4 exact linear-invariant Run failed: {t4_linear_run_replay.stderr.strip()}")
+    t4_linear_run_output = json.loads(t4_linear_run_replay.stdout)
+    if (
+        t4_linear_run_output.get("status") != "verified-exact-linear-class-only"
+        or t4_linear_run_output.get("run_id") != t4_linear_run["run_id"]
+        or t4_linear_run_output.get("replay") != t4_linear_run["replay"]
+        or t4_linear_run_output.get("mutation_controls") != [True, True]
+        or t4_linear_run.get("relocated_replay_equal") is not True
+        or t4_linear_run.get("policy_denials") != {
+            "wrong_provider_rejected": True, "out_of_scope_path_rejected": True,
+        }
+        or t4_linear_run.get("boundaries") != {
+            "declared_exact_linear_class": True,
+            "physical_model_validated": False,
+            "general_formal_backend": False,
+            "real_data": False,
+            "research_candidate": False,
+            "publication_ready": False,
+        }
+        or not any(
+            item.get("name") == "exact-linear-invariant-run"
+            and item.get("output_path") == "artifacts/t4-linear-run-audit.json"
+            and item.get("input_version") == t4_linear_run["run_id"]
+            for item in load("artifacts/t4-proof/acceptance.json")["checks"]
+        )
+    ):
+        raise SystemExit("T4 exact linear-invariant Run binding or boundary differs")
     t4o_acceptance = load("artifacts/t4-oscillator/acceptance.json")
     t4o_item = t4o_acceptance["evaluator"]
     verify_track_bundle("T4O", t4o_item, ROOT / "artifacts/t4-oscillator")
@@ -1027,6 +1061,12 @@ def main() -> None:
         "t1_optional_orbit_static_provenance": t1_orbit_static,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t4_exact_linear_invariant_proof": t4_linear_expected,
+        "t4_exact_linear_invariant_run": {
+            "run_id": t4_linear_run["run_id"],
+            "replay": t4_linear_run["replay"],
+            "mutation_controls": t4_linear_run_output["mutation_controls"],
+            "policy_denials": t4_linear_run["policy_denials"],
+        },
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"

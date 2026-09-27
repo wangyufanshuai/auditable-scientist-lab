@@ -86,6 +86,31 @@
     "systems": 3,
     "verified": true
   },
+  "t4_exact_linear_invariant_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "78b53522a50c03e4ba7e4b63027f31c437b6cf0cc10c70bf48f338ce21e4f602",
+      "verified": true
+    },
+    "run_id": "run-t4-linear-6931db19a01bc59b"
+  },
   "track_cli_replays": {
     "T2": {
       "checks": [

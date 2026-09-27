@@ -1,0 +1,200 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "6931db19a01bc59b2e8ef66773e6f16c374f6785457c39f25fae01d9168ef18c",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T4",
+    "runtime": "optional-exact-linear-proof",
+    "network": "disabled",
+    "provider_id": "internal-sympy-t4-linear-v1"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t4_linear_run.py",
+      "sha256": "56003cfbfb7e241cd5b88e7aefc0b24ef4e777e814e88167da7c141f5eee57d4",
+      "bytes": 19185
+    },
+    {
+      "path": "root://scripts/verify_t4_linear_formal.py",
+      "sha256": "26aea112f16d59d65a960695f62389c509978f332ae3b1be53e45a668ae97130",
+      "bytes": 4591
+    },
+    {
+      "path": "root://scripts/check_t4_linear_certificate.py",
+      "sha256": "37aa7721518fe634ac9ee75ad68954f77c2122a0190173dc13acc0984fa29d62",
+      "bytes": 7066
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/proof.py",
+      "sha256": "261c1e9184d11864a0fedb845446f88e3f1f7cb37bff8293ff4298cdb8b32863",
+      "bytes": 5407
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://artifacts/t4-linear-systems-input.json",
+      "sha256": "91c95ca1b557eff6a016e956b5de54d0aaf9ca51110de26cb86a28796277dfe1",
+      "bytes": 1245
+    },
+    {
+      "path": "root://artifacts/t4-linear-formal-audit.json",
+      "sha256": "7dbea15518efe325fb8d05cfa77d0170cc50e55ca3882ec40affef7c51f4d8b1",
+      "bytes": 2867
+    },
+    {
+      "path": "root://docs/T4_LINEAR_INVARIANTS.md",
+      "sha256": "889c6b1c120e379af2d882e1f9558895b8c4126188ad69a6afe02f7b608552b5",
+      "bytes": 2185
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://schemas/t4-linear-tool-call-v1.json",
+      "sha256": "9a8cefbce5df3701141a13eed3e33f72fa6410779239aba740e37655ca93179a",
+      "bytes": 521
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://fixture.json",
+      "sha256": "91c95ca1b557eff6a016e956b5de54d0aaf9ca51110de26cb86a28796277dfe1",
+      "bytes": 1245
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "status": "verified-exact-linear-class-only",
+    "summary": {
+      "verified": true,
+      "systems": 3,
+      "positive_proofs": 2,
+      "negative_controls": 1
+    },
+    "certificates": [
+      {
+        "system_id": "two-compartment-transfer",
+        "state_dimension": 2,
+        "control_dimension": 1,
+        "residual_state_coefficients": [
+          "0",
+          "0"
+        ],
+        "residual_control_coefficients": [
+          "0"
+        ],
+        "sample_next_state": [
+          "1",
+          "4"
+        ],
+        "sample_invariant_delta": "0",
+        "universal_conservation_proved": true
+      },
+      {
+        "system_id": "three-compartment-exchange",
+        "state_dimension": 3,
+        "control_dimension": 2,
+        "residual_state_coefficients": [
+          "0",
+          "0",
+          "0"
+        ],
+        "residual_control_coefficients": [
+          "0",
+          "0"
+        ],
+        "sample_next_state": [
+          "2",
+          "1",
+          "6"
+        ],
+        "sample_invariant_delta": "0",
+        "universal_conservation_proved": true
+      },
+      {
+        "system_id": "leaky-exchange-negative",
+        "state_dimension": 3,
+        "control_dimension": 2,
+        "residual_state_coefficients": [
+          "0",
+          "0",
+          "0"
+        ],
+        "residual_control_coefficients": [
+          "0",
+          "-1"
+        ],
+        "sample_next_state": [
+          "2",
+          "1",
+          "4"
+        ],
+        "sample_invariant_delta": "-2",
+        "universal_conservation_proved": false
+      }
+    ],
+    "boundaries": {
+      "exact_linear_invariant_class": true,
+      "physical_model_validated": false,
+      "nonlinear_dynamics_proved": false,
+      "floating_implementation_proved": false,
+      "nonnegative_state_for_all_controls": false,
+      "general_formal_backend": false,
+      "real_data": false,
+      "publication_ready": false
+    },
+    "standalone_audit_sha256": "7dbea15518efe325fb8d05cfa77d0170cc50e55ca3882ec40affef7c51f4d8b1"
+  }
+}

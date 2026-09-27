@@ -8,7 +8,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 25,
+  "bundled_resource_count": 26,
   "checkout_root_in_installed_process": null,
   "limitations": [
     "The audited wheel was built and installed in a temporary directory; it is not committed.",
@@ -16,7 +16,7 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-27T07:43:07.991932+00:00",
+  "recorded_at": "2026-09-27T08:46:31.772696+00:00",
   "replay_manifest_hashes": {
     "T1": "b2ccb3516d17093d01b328f642eb5907aaa8a647fa40dc32432938c31d1b5942",
     "T2": "6b08706e31b76d0e9800c769dcf3c9e87b981dd0cfc6d6b38a42433511342a62",
@@ -29,12 +29,12 @@
   },
   "schema_version": "wheel-audit-v4",
   "script_sha256": "08970254f625aeec22b54b93a481817a7abcc2b0249358d25ecba771b0dd993a",
-  "source_snapshot_sha256": "0177e6f3098c27ecdec788a59d67adaf9d167fd2854e76a9e535e6c050032ef8",
+  "source_snapshot_sha256": "41423f7118a5936561689890e3ad6f846aace4f7c39910f8b00a1bfc5371ad98",
   "status": "verified-within-offline-fixtures",
   "t4_bounded_result_and_unverified_run_claim": true,
   "t4o_bounded_result_and_unverified_run_claim": true,
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "3aee86e2de9c82249d8eda829f1681f61378be7834d448977d0d47cd2470185d"
+  "wheel_sha256": "ea28ce5d06638d0e72856e6f82b325caabf972a17724e4911ffbedc5f289970c"
 }

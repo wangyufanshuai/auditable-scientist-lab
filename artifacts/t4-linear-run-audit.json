@@ -1,0 +1,36 @@
+{
+  "boundaries": {
+    "declared_exact_linear_class": true,
+    "general_formal_backend": false,
+    "physical_model_validated": false,
+    "publication_ready": false,
+    "real_data": false,
+    "research_candidate": false
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "recorded_at": "2026-09-27T08:42:58.943409+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "78b53522a50c03e4ba7e4b63027f31c437b6cf0cc10c70bf48f338ce21e4f602",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t4-linear-6931db19a01bc59b",
+  "run_path": "artifacts/t4-linear-runs/run-t4-linear-6931db19a01bc59b",
+  "schema_version": "t4-linear-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-exact-linear-class-only"
+}

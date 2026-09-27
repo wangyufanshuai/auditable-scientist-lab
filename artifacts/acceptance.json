@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T08:35:59Z",
+  "recorded_at": "2026-09-27T08:46:46Z",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,9 +14,9 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 114,
+      "tests_passed": 119,
       "tests_skipped": 1,
-      "recorded_at": "2026-09-27T08:35:59Z",
+      "recorded_at": "2026-09-27T08:46:46Z",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },
@@ -103,10 +103,19 @@
       "name": "fresh-wheel-eight-run-replay",
       "command": "python scripts/verify_wheel_install.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T07:43:07.991932Z",
+      "recorded_at": "2026-09-27T08:46:31.772696+00:00",
       "verified": true,
       "input_version": "wheel-audit-v4",
       "output_path": "artifacts/wheel-audit.json"
+    },
+    {
+      "name": "optional-t4-exact-linear-run",
+      "command": "python scripts/verify_t4_linear_run.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T08:42:58.943409+00:00",
+      "verified": true,
+      "input_version": "run-t4-linear-6931db19a01bc59b",
+      "output_path": "artifacts/t4-linear-run-audit.json"
     },
     {
       "name": "optional-nasa-factsheet-parameter-sensitivity",

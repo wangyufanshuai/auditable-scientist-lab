@@ -83,6 +83,8 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 T4 另有可选的精确有理数线性不变量证明：两个通用系数恒等式证书由独立检查器复核，
 泄漏系统作为负例；它不验证物理模型或一般形式证明后端，见
 [docs/T4_LINEAR_INVARIANTS.md](docs/T4_LINEAR_INVARIANTS.md)。
+这项证明另有独立的离线 Tool/Policy/Provider Run，包含输入快照、事件链、搬移回放和篡改负例，
+见 [artifacts/t4-linear-run-audit.json](artifacts/t4-linear-run-audit.json)；物理 Claim 仍是 `unverified`。
 T5 是带逐字段文本位置与文档哈希的合成教学审查；
 它只给 `demo/text-reviewed`，始终要求人工复核且禁止实验执行，见
 [docs/T5_METHOD.md](docs/T5_METHOD.md)。当前八份 CLI 收据在
@@ -115,6 +117,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [artifacts/t3-external-run-audit.json](artifacts/t3-external-run-audit.json)：可选 SciPy Tool/Provider Run 的回放、搬移与篡改负例收据。
 - [docs/T4_METHOD.md](docs/T4_METHOD.md)：T4 精确转移见证与 T4O 振子携证收据的边界。
 - [docs/T4_LINEAR_INVARIANTS.md](docs/T4_LINEAR_INVARIANTS.md)：T4 有理线性不变量证明与独立证书核验的边界。
+- [artifacts/t4-linear-run-audit.json](artifacts/t4-linear-run-audit.json)：T4 精确证明的可选 Tool/Policy/Provider Run 回放与篡改收据。
 - [docs/T5_METHOD.md](docs/T5_METHOD.md)：T5 文本字段引用、确定性检查与执行边界。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
