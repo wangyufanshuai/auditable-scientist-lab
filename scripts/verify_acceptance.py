@@ -184,6 +184,97 @@ def verify_optional_t3_perturbed_static() -> dict:
             "pinned_scipy_recomputation_required": True}
 
 
+def verify_optional_t3_perturbed_run_static() -> dict:
+    """Verify the optional shared Run and its manifest without importing SciPy."""
+
+    audit = load("artifacts/t3-perturbed-run-audit.json")
+    relative = audit.get("run_path", "")
+    if (
+        audit.get("schema_version") != "t3-perturbed-run-audit-v1"
+        or audit.get("status") != "verified-within-pinned-perturbed-grid"
+        or not isinstance(relative, str)
+        or not relative.startswith("artifacts/t3-perturbed-runs/run-t3-perturbed-")
+        or Path(relative).is_absolute() or ".." in Path(relative).parts
+        or audit.get("relocated_replay_equal") is not True
+        or audit.get("result_tamper_rejected") is not True
+        or audit.get("license_tamper_rejected") is not True
+        or audit.get("policy_denials") != {"wrong_provider_rejected": True, "out_of_scope_path_rejected": True}
+        or audit.get("boundaries") != {
+            "synthetic_perturbed_grid": True, "core_t3_run": False,
+            "chaotic_long_horizon": False, "real_mission": False,
+            "general_nbody_validity": False, "publication_ready": False,
+        }
+    ):
+        raise ValueError("optional perturbed T3 Run audit is missing or exceeds its boundary")
+    recorded_at = datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00"))
+    if recorded_at.tzinfo is None or recorded_at.utcoffset() is None:
+        raise ValueError("optional perturbed T3 Run audit timestamp is naive")
+    run_dir = (ROOT / relative).resolve()
+    if not run_dir.is_relative_to((ROOT / "artifacts/t3-perturbed-runs").resolve()):
+        raise ValueError("optional perturbed T3 Run escaped its artifact directory")
+    bindings = BoundPaths(root=ROOT, run_dir=run_dir)
+    saved_input = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
+    saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    receipt = saved_result.get("receipt")
+    static_receipt = load("artifacts/t3-perturbed-audit.json")
+    static_receipt.pop("recorded_at", None)
+    if (
+        saved_input.get("schema_version") != "t3-perturbed-run-input-v1"
+        or saved_input.get("track_id") != "T3"
+        or saved_input.get("provider_id") != "scipy-dop853-perturbed-v1"
+        or saved_result.get("provider_id") != "scipy-dop853-perturbed-v1"
+        or run_dir.name != f"run-t3-perturbed-{canonical_hash(saved_input)[:16]}"
+        or audit.get("run_id") != run_dir.name
+        or not isinstance(receipt, dict) or receipt != static_receipt
+        or receipt.get("environment") != saved_input.get("provider_provenance")
+        or receipt.get("grid") != saved_input.get("grid")
+        or receipt.get("gates") != saved_input.get("gates")
+        or receipt.get("solver") != saved_input.get("solver")
+    ):
+        raise ValueError("optional perturbed T3 Run input or solver receipt differs")
+    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
+    required_sources = {
+        "root://scripts/verify_t3_perturbed_run.py", "root://scripts/verify_t3_perturbed.py",
+        "root://docs/T3_PERTURBED_METHOD.md", "root://requirements-t3-scipy-win-py312.txt",
+        "root://schemas/t3-perturbed-tool-call-v1.json", "root://examples/dynamics/nbody-fixture.json",
+    }
+    source_refs = {item.path for item in manifest.source_files}
+    if (
+        manifest.schema_version != "replay-manifest-v2"
+        or not required_sources.issubset(source_refs)
+        or any(not ref.startswith("root://") for ref in source_refs)
+        or {item.path for item in manifest.evidence_files} != {"run://scipy-license.txt", "run://numpy-license.txt"}
+        or saved_input.get("source_snapshot_hash") != canonical_hash([
+            (item.path.removeprefix("root://"), item.sha256) for item in manifest.source_files
+        ])
+    ):
+        raise ValueError("optional perturbed T3 Run source or license inventory differs")
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT, bindings=bindings)
+    if (
+        run.run_id != run_dir.name or run.input_hash != canonical_hash(saved_input)
+        or run.status.value != "completed" or len(run.claims) != 1
+        or run.claims[0].status.value != "unverified" or run.claims[0].holdout_verified
+        or run.environment.get("subtrack") != "perturbed-three-body"
+        or run.policy is None or run.policy.network != "disabled"
+        or run.policy.allowed_providers != ["scipy-dop853-perturbed-v1"]
+        or len(run.tools) != 1 or run.tools[0].tool_id != "t3-perturbed-three-body-crosscheck-v1"
+        or len(run.providers) != 1 or run.providers[0].provider_id != "scipy-dop853-perturbed-v1"
+        or run.environment.get("pinned_wheel_sha256") != audit.get("pinned_wheel_sha256")
+        or run.environment.get("installed_license_sha256") != audit.get("license_sha256")
+    ):
+        raise ValueError("optional perturbed T3 shared Run widened its scope")
+    replay = manifest.verify(
+        input_payload=saved_input, code_revision=run.code_revision,
+        environment=run.environment, seed=run.seed,
+        source_paths=[bindings.resolve(item.path) for item in manifest.source_files],
+        evidence_paths=[bindings.resolve(item.path) for item in manifest.evidence_files],
+        candidate_order=[], computational_output=receipt, bindings=bindings,
+    ).model_dump(mode="json")
+    if audit.get("replay") != replay or len(replay["checks"]) != 8:
+        raise ValueError("optional perturbed T3 Run replay binding differs")
+    return replay
+
+
 def verify_check_rows(checks: list[dict], *, root: Path, expected_input: str | None = None) -> None:
     if not checks:
         raise ValueError("acceptance package has no command receipts")
@@ -227,6 +318,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "bounded-parameter-step-sweep": "t3-sweep-v1",
             "optional-external-solver-run": "t3-external-run-audit-v1",
             "optional-perturbed-three-body-cross-check": "t3-perturbed-audit-v1",
+            "optional-perturbed-three-body-run": "t3-perturbed-run-audit-v1",
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
@@ -459,8 +551,11 @@ def main() -> None:
         raise SystemExit("T3 symmetric three-body subtrack is missing from acceptance")
     if not any(item.get("name") == "optional-perturbed-three-body-cross-check" and item.get("output_path") == "artifacts/t3-perturbed-audit.json" for item in t3_checks):
         raise SystemExit("T3 perturbed cross-check is missing from acceptance")
+    if not any(item.get("name") == "optional-perturbed-three-body-run" and item.get("output_path") == "artifacts/t3-perturbed-run-audit.json" for item in t3_checks):
+        raise SystemExit("T3 optional perturbed Run is missing from acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
     optional_t3_perturbed_static = verify_optional_t3_perturbed_static()
+    optional_t3_perturbed_run_static = verify_optional_t3_perturbed_run_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
@@ -506,7 +601,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v13" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v14" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -544,7 +639,7 @@ def main() -> None:
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
         receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v13" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v14" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -565,7 +660,7 @@ def main() -> None:
         or wheel.get("checkout_root_in_installed_process") is not None
         or wheel.get("all_seven_relocated_replays_equal") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
-        or wheel.get("bundled_resource_count", 0) < 22
+        or wheel.get("bundled_resource_count", 0) < 23
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
         or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T5"}
@@ -586,6 +681,7 @@ def main() -> None:
         "track_cli_replays": cli_replays,
         "t3_optional_external_run_static_replay": optional_t3_static_replay,
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,
+        "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
         "wheel_audit_verified": True,
         "scientific_boundaries": portfolio["global_boundaries"],
     }

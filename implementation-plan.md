@@ -67,6 +67,10 @@
   convergence, invariant, separation, and repulsive-force negative gates. See
   `docs/T3_PERTURBED_METHOD.md` and `artifacts/t3-perturbed-audit.json`. This audit
   is outside the core Run and does not validate chaotic long horizons or missions.
+  An optional shared Tool/Provider Run in `artifacts/t3-perturbed-runs/` now binds
+  the same grid to replay, source/license snapshots, network-disabled policy,
+  moved-run verification, and altered-result/license rejection. Its claim stays
+  unverified and does not expand the numerical scope.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
@@ -349,8 +353,7 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Bind the short-horizon perturbed T3 audit to a replayable optional Tool/Provider
-   Run, then specify a broader nonintegrable validation set, independent references,
+1. Specify a broader nonintegrable validation set, independent references,
    numerical error budget, and compute ceiling before attempting long-horizon claims.
    Keep oscillator, symmetric fixture, and any real-mission claim separate.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;

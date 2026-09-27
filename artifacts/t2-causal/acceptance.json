@@ -6,7 +6,7 @@
       "input_version": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t2-causal/sample-run.json",
-      "recorded_at": "2026-09-27T06:35:08.159947+00:00"
+      "recorded_at": "2026-09-27T06:48:49.630676+00:00"
     },
     {
       "command": "python scripts/generate_track_artifacts.py",
@@ -14,7 +14,7 @@
       "input_version": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
       "name": "physical-counterfactual-subtrack",
       "output_path": "artifacts/t2-physical/acceptance.json",
-      "recorded_at": "2026-09-27T06:35:08.273275+00:00"
+      "recorded_at": "2026-09-27T06:48:49.772122+00:00"
     }
   ],
   "evaluator": {
@@ -198,10 +198,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 21807,
+        "bytes": 23097,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "7a015a09ab27361703b76d5e016378d03f7d00667c665e6f21040cbe0af04cb3"
+        "sha256": "f7efa64c0dcd8831cbeea9647d8f185c84543cb6bd7e25fed341cae7011c3651"
       },
       {
         "allowed_use": [

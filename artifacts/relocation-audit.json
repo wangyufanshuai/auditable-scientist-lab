@@ -7,7 +7,7 @@
     "The project-05 upstream source path remains an origin record, not a relocated source audit."
   ],
   "original_examples_copied": false,
-  "recorded_at": "2026-09-27T06:36:37.339356+00:00",
+  "recorded_at": "2026-09-27T07:09:19.146278+00:00",
   "runs_replayed": {
     "T1": {
       "checks": [
@@ -34,7 +34,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "1f7d0b7973c278e6d3ddfc403dfb926a652e2b6265fbb76f8a6e2c55aa6b3f2b",
+      "manifest_hash": "3252ccbb03113f91eae797f1babfeaab18df6bc42a82870ae7868839830ef33d",
       "verified": true
     },
     "T2P": {
@@ -48,7 +48,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "76a515ca8d61f329c1141cd552c371cc3df54cd5031381f414afb2cc7da49ec9",
+      "manifest_hash": "f4f9daecb71574fc4cc71bbd0a713bc810287c05a2670db62cc8bf4bf3311321",
       "verified": true
     },
     "T3": {
@@ -62,7 +62,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "87d76d2a2645da27d24de3d5f3cf8cd82dade2bf9c11a2eadca902a7ab6466f8",
+      "manifest_hash": "be11942dae54d8010b125f0c6e2004f1bb61c0af82f86e330598df02394bf67d",
       "verified": true
     },
     "T3N": {
@@ -76,7 +76,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "975e7b85c01e5c5204afcf09b3127c1cd0bd5dba34dd6fbae369f11771868a46",
+      "manifest_hash": "c03cfc0551f5fb2fe1013ebb6be7fdd0ae91d1fcde4871c8321acb0dcca2d727",
       "verified": true
     },
     "T4": {
@@ -90,7 +90,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "71427eec404f73e48aa5f2b9c4b017f2468daf9c6c51efa99f1fcb0b73bdc3a7",
+      "manifest_hash": "34a36ba2e17c9ba6d9e079ae8921de78cd7f17f47eb160ad4ff879b31637ac09",
       "verified": true
     },
     "T5": {
@@ -104,12 +104,12 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "5843ad47bdb4579814b66637e827c622728d2e87d363144c85b1ed6bab8b649d",
+      "manifest_hash": "32b397ebe74de3ab2621c7d2e1a54a75d624deb1c801b5e70b2589caa3e27104",
       "verified": true
     }
   },
   "schema_version": "relocation-audit-v1",
-  "script_sha256": "affd0ba988ec57faf74079433ef5ce35e7daa634d902c5da7df18ef5e377a2ab",
+  "script_sha256": "e5ccb34794e53b82b99da5b63dd5cf2c96e98418c94306f506fb3785cc1e4fec",
   "status": "verified-in-recorded-environment",
   "tampered_t3_fixture_rejected": true
 }

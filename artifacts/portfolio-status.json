@@ -33,7 +33,7 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "bind the finite-horizon perturbed audit to a Run and specify a wider validation set",
+      "next_step": "specify a wider validation grid and finite compute budget before long-horizon claims",
       "open_gates": [
         "long-horizon/nonintegrable multi-body validation",
         "real-mission provenance",
@@ -41,6 +41,7 @@
       ],
       "optional_external_run": "artifacts/t3-external-run-audit.json",
       "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json",
+      "optional_perturbed_run": "artifacts/t3-perturbed-run-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json",

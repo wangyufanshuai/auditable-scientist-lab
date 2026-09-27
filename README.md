@@ -74,10 +74,11 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 对照独立 RK4 并拒绝错误力方向；它不代表一般多体或真实任务验证，
 见 [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)。另有可选的受扰动三体有限时域
 交叉核验，使用已审计的 SciPy DOP853 环境，见 [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)；
-它尚未纳入核心 Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
+独立的可选 Tool/Provider Run 见 [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)。
+它未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
 声明的模拟器内部因果效应，不证明真实世界因果识别。当前七份 CLI 收据在
-`artifacts/track-runs-v13/` 和 `artifacts/acceptance-runs-v18/`。
+`artifacts/track-runs-v14/` 和 `artifacts/acceptance-runs-v18/`。
 
 ## 当前入口
 
@@ -92,6 +93,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)：可选受扰动三体数值交叉核验与边界。
+- [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)：可选受扰动三体 Run 的回放、迁移与篡改负例。
 - [docs/T3_SWEEP.md](docs/T3_SWEEP.md)：T3 固定参数与步长网格、收敛门槛和边界。
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。
 - [artifacts/t3-external-run-audit.json](artifacts/t3-external-run-audit.json)：可选 SciPy Tool/Provider Run 的回放、搬移与篡改负例收据。
