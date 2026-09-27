@@ -111,6 +111,15 @@
     "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
     "status": "verified-source-tracked-center-geometry-only"
   },
+  "t1_maven_desat_sensitivity": {
+    "actual_desat_in_arcs": false,
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "scenario_count": 24,
+    "scientific_holdout": false,
+    "snapshot_sha256": "ab878939896e2c60040345f56aff02f85551cc7f24b70e1aeaa0bd140c343bf1",
+    "status": "passed-conditional-impulse-sensitivity-only"
+  },
   "t1_maven_planetary_force_diagnostic": {
     "arc_count": 2,
     "dynamic_verified_here": true,

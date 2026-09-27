@@ -24,6 +24,15 @@ for the two 2014 cruise arcs.
 One targeted search for public 2013–2014 MAVEN cruise DSN range/Doppler
 records did not identify an official collection with product-level coverage
 for the two fixed arcs. This is a **search result, not proof of nonexistence**.
+
+The author-hosted [MAVEN Navigation Overview](https://drewryanjones.com/assets/conf_paper_2016_no1.pdf)
+(Jesick et al., AAS 16-237, PDF SHA-256
+`969affe7e6d0c8d0a6cbc4dbcdcc46332d429e5e604f004e5e5f1a946231267c`)
+confirms that two-way range, Doppler, and delta-DOR were *acquired* during
+cruise. This establishes operational measurements, not public product-level
+access to the two frozen arcs. The same source documents solar-radiation-pressure
+estimation and approximately weekly desaturation events; see the separate
+[conditional sensitivity result](T1_MAVEN_DESAT_SENSITIVITY_RESULT.md).
 The next admission gate is to locate an official product label or archive
 inventory whose time coverage includes the frozen 2014 arcs, then inspect its
 data rights, measurement semantics, calibration and station/time models, and

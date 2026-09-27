@@ -217,6 +217,36 @@ def desired_outputs() -> dict[Path, str]:
     for spec, row in zip(OPTIONAL, rows):
         _insert_or_replace(bundles[spec[0]]["checks"], row)
     root = _load("artifacts/acceptance.json")
+    desat = _load("artifacts/t1-maven-desat-sensitivity-audit.json")
+    expected_desat_checks = {
+        "source_and_baseline_bound", "all_24_scenarios", "split_no_impulse",
+        "orthonormal_basis", "opposite_sign_oddness", "step_refinement",
+        "finite_responses", "compute_budget",
+    }
+    if (desat.get("schema_version") != "t1-maven-desat-sensitivity-audit-v1"
+            or desat.get("status") != "passed-conditional-impulse-sensitivity-only"
+            or desat.get("protocol_sha256") !=
+            "cc6d520386505f73a2850d3dcee7dc8d3ba08f2e0901e924360c56eb3c78237d"
+            or set(desat.get("checks", {})) != expected_desat_checks
+            or not all(value is True for value in desat["checks"].values())
+            or desat.get("boundaries") != {
+                "conditional_response_scale": True, "actual_desat_in_arcs": False,
+                "statistical_uncertainty_interval": False, "independent_observables": False,
+                "scientific_holdout": False, "mission_validation": False}):
+        raise ValueError("T1 MAVEN desat audit cannot enter acceptance")
+    desat_sources = [item for item in desat.get("source_files", [])
+                     if item.get("path") == "scripts/verify_t1_maven_desat_sensitivity.py"]
+    recorded_at = desat.get("recorded_at")
+    if (len(desat_sources) != 1 or not isinstance(recorded_at, str)
+            or datetime.fromisoformat(recorded_at.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T1 MAVEN desat source or timestamp differs")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t1-maven-desat-sensitivity",
+        "command": "python scripts/verify_t1_maven_desat_sensitivity.py --verify",
+        "exit_code": 0, "recorded_at": recorded_at,
+        "input_version": desat_sources[0]["sha256"],
+        "output_path": "artifacts/t1-maven-desat-sensitivity-audit.json",
+    })
     _insert_or_replace(root["checks"], {
         **next(row for row in rows if row["name"] == "optional-expanded-horizon-grid"),
         "name": "optional-t3-expanded-horizon-grid",
@@ -243,6 +273,8 @@ def desired_outputs() -> dict[Path, str]:
         or status.get("public_release_allowed") is not False
         or status.get("pushed") is not False
         or [item.get("track_id") for item in status.get("tracks", [])] != ["T1", "T2", "T3", "T4", "T5"]
+        or status["tracks"][0].get("optional_desat_sensitivity_audit") !=
+        "artifacts/t1-maven-desat-sensitivity-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"

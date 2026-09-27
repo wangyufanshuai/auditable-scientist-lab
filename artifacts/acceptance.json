@@ -269,6 +269,14 @@
       "name": "optional-t3-pythagorean-close-encounter",
       "output_path": "artifacts/t3-pythagorean-audit.json",
       "recorded_at": "2026-09-27T14:46:01.716392+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_desat_sensitivity.py --verify",
+      "exit_code": 0,
+      "input_version": "622d06f7f540498550f083765ccdc3b585aecfef921863cb1f0f1b22664ff03e",
+      "name": "optional-t1-maven-desat-sensitivity",
+      "output_path": "artifacts/t1-maven-desat-sensitivity-audit.json",
+      "recorded_at": "2026-09-27T15:10:24.221967+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

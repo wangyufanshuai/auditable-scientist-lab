@@ -1,0 +1,63 @@
+{
+  "boundaries": {
+    "actual_desat_in_arcs": false,
+    "conditional_response_scale": true,
+    "independent_observables": false,
+    "mission_validation": false,
+    "scientific_holdout": false,
+    "statistical_uncertainty_interval": false
+  },
+  "checks": {
+    "all_24_scenarios": true,
+    "compute_budget": true,
+    "finite_responses": true,
+    "opposite_sign_oddness": true,
+    "orthonormal_basis": true,
+    "source_and_baseline_bound": true,
+    "split_no_impulse": true,
+    "step_refinement": true
+  },
+  "observed_budget": {
+    "rk4_steps_total": 10368,
+    "spice_position_queries": 2308
+  },
+  "preregistration_commit": "25a4e20",
+  "protocol_sha256": "cc6d520386505f73a2850d3dcee7dc8d3ba08f2e0901e924360c56eb3c78237d",
+  "recorded_at": "2026-09-27T15:10:24.221967+00:00",
+  "schema_version": "t1-maven-desat-sensitivity-audit-v1",
+  "snapshot_sha256": "ab878939896e2c60040345f56aff02f85551cc7f24b70e1aeaa0bd140c343bf1",
+  "source_files": [
+    {
+      "bytes": 19314,
+      "path": "scripts/verify_t1_maven_desat_sensitivity.py",
+      "sha256": "622d06f7f540498550f083765ccdc3b585aecfef921863cb1f0f1b22664ff03e"
+    },
+    {
+      "bytes": 3764,
+      "path": "docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.json",
+      "sha256": "cc6d520386505f73a2850d3dcee7dc8d3ba08f2e0901e924360c56eb3c78237d"
+    },
+    {
+      "bytes": 1923,
+      "path": "docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.md",
+      "sha256": "66618d181115e4fc2f0b17abe3e3513f6b9ef71ba033c149c7c0ab6bb192a086"
+    },
+    {
+      "bytes": 15770,
+      "path": "scripts/verify_t1_maven_planetary_force.py",
+      "sha256": "2f0bbbdb6106c7ad99b7fc77caf910cdbb23626f7457eef48c12c5d1b1361ff0"
+    },
+    {
+      "bytes": 2953,
+      "path": "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+      "sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394"
+    },
+    {
+      "bytes": 100,
+      "path": "requirements-t1-mars-center-win-py312.txt",
+      "sha256": "cccfa91e8f71241c7c39ff3449f7241c2983a0b4be1a6f5b5105df25b441b3d4"
+    }
+  ],
+  "source_pdf_sha256": "969affe7e6d0c8d0a6cbc4dbcdcc46332d429e5e604f004e5e5f1a946231267c",
+  "status": "passed-conditional-impulse-sensitivity-only"
+}

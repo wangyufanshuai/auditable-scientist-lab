@@ -668,6 +668,217 @@ def verify_optional_t1_maven_planetary_force() -> dict:
             "scientific_holdout": False}
 
 
+def verify_optional_t1_maven_desat_sensitivity(audit: dict | None = None,
+                                                snapshot: dict | None = None) -> dict:
+    """Check saved conditional impulse arithmetic, provenance, and scope."""
+
+    audit = audit if audit is not None else load("artifacts/t1-maven-desat-sensitivity-audit.json")
+    snapshot = snapshot if snapshot is not None else load("artifacts/t1-maven-desat-sensitivity-snapshot.json")
+    protocol = load("docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.json")
+    prior = load("artifacts/t1-maven-planetary-force-snapshot.json")
+    protocol_sha = "cc6d520386505f73a2850d3dcee7dc8d3ba08f2e0901e924360c56eb3c78237d"
+    expected_sources = {
+        "scripts/verify_t1_maven_desat_sensitivity.py",
+        "docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.json",
+        "docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.md",
+        "scripts/verify_t1_maven_planetary_force.py",
+        "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+        "requirements-t1-mars-center-win-py312.txt",
+    }
+    expected_checks = {
+        "source_and_baseline_bound", "all_24_scenarios", "split_no_impulse",
+        "orthonormal_basis", "opposite_sign_oddness", "step_refinement",
+        "finite_responses", "compute_budget",
+    }
+    expected_boundaries = {
+        "conditional_response_scale": True, "actual_desat_in_arcs": False,
+        "statistical_uncertainty_interval": False, "independent_observables": False,
+        "scientific_holdout": False, "mission_validation": False,
+    }
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False)+"\n").encode("utf-8")
+    if (audit.get("schema_version") != "t1-maven-desat-sensitivity-audit-v1"
+            or audit.get("status") != "passed-conditional-impulse-sensitivity-only"
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "25a4e20"
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or audit.get("checks") != snapshot.get("checks")
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(value is True for value in audit["checks"].values())
+            or audit.get("source_pdf_sha256") != protocol["source"]["local_pdf_sha256"]
+            or snapshot.get("source_pdf_sha256") != audit.get("source_pdf_sha256")
+            or snapshot.get("schema_version") != "t1-maven-desat-sensitivity-snapshot-v1"
+            or snapshot.get("protocol_sha256") != protocol_sha
+            or snapshot.get("preregistration_commit") != "25a4e20"
+            or snapshot.get("prior_snapshot_sha256") != protocol["baseline"]["prior_snapshot_sha256"]
+            or fingerprint_file(ROOT / "docs/T1_MAVEN_DESAT_SENSITIVITY_PROTOCOL.json").sha256 != protocol_sha
+            or fingerprint_file(ROOT / "artifacts/t1-maven-planetary-force-snapshot.json").sha256 !=
+            protocol["baseline"]["prior_snapshot_sha256"]
+            or snapshot.get("scenario_contract") != protocol["scenario"]
+            or snapshot.get("numerics") != protocol["numerics"]
+            or snapshot.get("engineering_gates") != protocol["engineering_gates"]
+            or snapshot.get("scientific_boundaries") != protocol["scientific_boundaries"]
+            or snapshot.get("scientific_boundaries", {}).get("claim_status") != "unverified"
+            or snapshot.get("source_sha256") != prior.get("source_sha256")
+            or audit.get("observed_budget") != snapshot.get("observed_budget")
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {row.get("path") for row in audit["source_files"]} != expected_sources):
+        raise ValueError("MAVEN desat source, protocol, or boundary differs")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str) or datetime.fromisoformat(timestamp).tzinfo is None:
+        raise ValueError("MAVEN desat audit has no timezone-aware timestamp")
+    for item in audit["source_files"]:
+        fingerprint = fingerprint_file(ROOT / item["path"])
+        if item.get("sha256") != fingerprint.sha256 or item.get("bytes") != fingerprint.bytes:
+            raise ValueError("MAVEN desat source file differs")
+
+    def finite(value: object) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("MAVEN desat numeric field is not finite")
+        return float(value)
+
+    gates = protocol["engineering_gates"]
+    magnitude = protocol["scenario"]["impulse_magnitude_km_s"]
+    fractions = protocol["scenario"]["injection_time_fractions"]
+    axes = protocol["scenario"]["axes"]
+    signs = protocol["scenario"]["signs"]
+    if (len(snapshot.get("arcs", [])) != 2 or fractions != [0.0, 0.5]
+            or axes != ["radial", "transverse", "normal"] or signs != [-1, 1]
+            or not math.isclose(magnitude, 0.47e-6, rel_tol=1e-15)):
+        raise ValueError("MAVEN desat scenario inventory differs")
+    for row, prior_row, et in zip(snapshot["arcs"], prior["arcs"],
+                                  protocol["baseline"]["initial_et_tdb_seconds"], strict=True):
+        if (row.get("initial_et_tdb_seconds") != et
+                or row.get("prior_nav_position_residual_km") != prior_row["position_error_km"]
+                or set(row.get("step_data", {})) != {"600.0", "300.0"}
+                or len(row.get("scenario_pairs", [])) != 6):
+            raise ValueError("MAVEN desat arc identity differs")
+        for step in protocol["numerics"]["step_seconds"]:
+            step_data = row["step_data"][str(step)]
+            baseline = step_data.get("baseline_endpoint_state_km_kms")
+            if not isinstance(baseline, list) or len(baseline) != 6:
+                raise ValueError("MAVEN desat baseline state differs")
+            if step == 600.0 and baseline != prior_row["planetary_force_endpoint_state_km_kms"]:
+                raise ValueError("MAVEN desat prior numerical baseline differs")
+            cases = step_data.get("cases", {})
+            expected_keys = {f"{fraction}:control" for fraction in fractions} | {
+                f"{fraction}:{axis}:{sign}" for fraction in fractions
+                for axis in axes for sign in signs}
+            if set(cases) != expected_keys:
+                raise ValueError("MAVEN desat case inventory differs")
+            for fraction in fractions:
+                control = cases[f"{fraction}:control"]
+                if (finite(control["position_split_error_km"]) >
+                    gates["split_no_impulse_position_difference_km_max"]
+                    or finite(control["velocity_split_error_km_s"]) >
+                    gates["split_no_impulse_velocity_difference_km_s_max"]
+                    or finite(control["basis_error"]) > gates["basis_norm_and_dot_tolerance"]):
+                    raise ValueError("MAVEN desat split or basis gate differs")
+                reference_injection = cases[f"{fraction}:radial:1"].get("injection_state_km_kms")
+                if (not isinstance(reference_injection, list) or len(reference_injection) != 6
+                        or (fraction == 0.0 and
+                            reference_injection != prior_row["initial_nav_sun_state_km_kms"])):
+                    raise ValueError("MAVEN desat injection state differs")
+                state = [finite(value) for value in reference_injection]
+                position, velocity = state[:3], state[3:]
+                angular = [position[1]*velocity[2]-position[2]*velocity[1],
+                           position[2]*velocity[0]-position[0]*velocity[2],
+                           position[0]*velocity[1]-position[1]*velocity[0]]
+                position_norm = math.sqrt(sum(value*value for value in position))
+                angular_norm = math.sqrt(sum(value*value for value in angular))
+                if min(position_norm, angular_norm) <= 0:
+                    raise ValueError("MAVEN desat orbital basis is singular")
+                radial = [value/position_norm for value in position]
+                normal = [value/angular_norm for value in angular]
+                transverse = [normal[1]*radial[2]-normal[2]*radial[1],
+                              normal[2]*radial[0]-normal[0]*radial[2],
+                              normal[0]*radial[1]-normal[1]*radial[0]]
+                basis = {"radial": radial, "transverse": transverse, "normal": normal}
+                for axis in axes:
+                    negative = cases[f"{fraction}:{axis}:-1"]
+                    positive = cases[f"{fraction}:{axis}:1"]
+                    for sign, case in ((-1, negative), (1, positive)):
+                        impulse = case.get("impulse_vector_km_s")
+                        endpoint = case.get("endpoint_state_km_kms")
+                        injection = case.get("injection_state_km_kms")
+                        response_position = case.get("response_position_km")
+                        response_velocity = case.get("response_velocity_km_s")
+                        if (any(not isinstance(v, list) or len(v) != length for v, length in (
+                                (impulse, 3), (endpoint, 6), (injection, 6),
+                                (response_position, 3), (response_velocity, 3)))
+                                or not math.isclose(math.sqrt(sum(finite(v)**2 for v in impulse)),
+                                                    magnitude, rel_tol=0, abs_tol=1e-15)
+                                or injection != reference_injection
+                                or any(not math.isclose(finite(value), sign*magnitude*direction,
+                                                        rel_tol=0, abs_tol=1e-15)
+                                       for value, direction in zip(impulse, basis[axis], strict=True))):
+                            raise ValueError("MAVEN desat impulse or state shape differs")
+                        computed_position = [finite(endpoint[i])-finite(baseline[i]) for i in range(3)]
+                        computed_velocity = [finite(endpoint[3+i])-finite(baseline[3+i]) for i in range(3)]
+                        if (any(not math.isclose(a, finite(b), abs_tol=1e-12)
+                                for a, b in zip(computed_position, response_position, strict=True))
+                                or any(not math.isclose(a, finite(b), abs_tol=1e-15)
+                                for a, b in zip(computed_velocity, response_velocity, strict=True))
+                                or not math.isclose(math.sqrt(sum(v*v for v in computed_position)),
+                                                    finite(case["response_position_norm_km"]), abs_tol=1e-12)):
+                            raise ValueError("MAVEN desat response arithmetic differs")
+                    if any(not math.isclose(a, -b, abs_tol=1e-15)
+                           for a, b in zip(negative["impulse_vector_km_s"],
+                                           positive["impulse_vector_km_s"], strict=True)):
+                        raise ValueError("MAVEN desat opposite impulse differs")
+        coarse = row["step_data"]["600.0"]["cases"]
+        fine = row["step_data"]["300.0"]["cases"]
+        for pair, (fraction, axis) in zip(row["scenario_pairs"],
+                                           ((f, a) for f in fractions for a in axes), strict=True):
+            plus = coarse[f"{fraction}:{axis}:1"]["response_position_km"]
+            minus = coarse[f"{fraction}:{axis}:-1"]["response_position_km"]
+            plus_fine = fine[f"{fraction}:{axis}:1"]["response_position_km"]
+            minus_fine = fine[f"{fraction}:{axis}:-1"]["response_position_km"]
+            metric = {
+                "positive_response_norm_km": math.sqrt(sum(v*v for v in plus)),
+                "negative_response_norm_km": math.sqrt(sum(v*v for v in minus)),
+                "positive_response_refinement_difference_km": math.dist(plus, plus_fine),
+                "negative_response_refinement_difference_km": math.dist(minus, minus_fine),
+                "opposite_sign_position_oddness_km": math.sqrt(sum((a+b)**2 for a, b in
+                                                              zip(plus, minus, strict=True))),
+            }
+            if (pair.get("injection_time_fraction") != fraction or pair.get("axis") != axis
+                    or pair.get("positive_response_position_km") != plus
+                    or pair.get("negative_response_position_km") != minus
+                    or any(not math.isclose(value, finite(pair.get(key)), abs_tol=1e-12)
+                           for key, value in metric.items())
+                    or metric["opposite_sign_position_oddness_km"] >
+                    gates["opposite_sign_position_oddness_km_max"]
+                    or max(metric["positive_response_refinement_difference_km"],
+                           metric["negative_response_refinement_difference_km"]) >
+                    gates["impulse_response_refinement_difference_km_max"]):
+                raise ValueError("MAVEN desat scenario metric or gate differs")
+    observed = snapshot.get("observed_budget", {})
+    budget = protocol["compute_budget"]
+    if (finite(observed.get("rk4_steps_total")) != 10368
+            or finite(observed.get("spice_position_queries")) >
+            budget["maximum_spice_position_queries"]
+            or observed["rk4_steps_total"] > budget["maximum_rk4_steps_total"]):
+        raise ValueError("MAVEN desat budget differs")
+    dynamic = False
+    kernels = ("data/naif/de440s.bsp", "data/naif/mar099s.bsp",
+               "data/naif/maven_cru_rec_131118_140923_v1.bsp", "data/naif/gm_de440.tpc")
+    pdf = ROOT / "data/references/jesick_2016_maven_navigation_overview.pdf"
+    if (pdf.is_file() and all((ROOT / path).is_file() for path in kernels)
+            and importlib.util.find_spec("spiceypy") is not None):
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_desat_sensitivity.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120)
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN desat dynamic check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "scenario_count": 24, "dynamic_verified_here": dynamic,
+            "actual_desat_in_arcs": False, "scientific_holdout": False,
+            "mission_validation": False}
+
+
 def verify_optional_t1_maven_run() -> dict:
     """Replay saved NAV short arcs through the shared offline Run contract."""
 
@@ -1816,6 +2027,16 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN planetary-force diagnostic has no command receipt")
+    maven_desat = verify_optional_t1_maven_desat_sensitivity()
+    if not any(
+        item.get("name") == "optional-t1-maven-desat-sensitivity"
+        and item.get("output_path") == "artifacts/t1-maven-desat-sensitivity-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t1_maven_desat_sensitivity.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN desat sensitivity has no command receipt")
     maven_run = verify_optional_t1_maven_run()
     if not any(
         item.get("name") == "optional-t1-maven-portable-preflight-run"
@@ -2346,6 +2567,7 @@ def main() -> None:
         "t1_maven_reconstructed_source": maven_source,
         "t1_maven_sun_only_preflight": maven_preflight,
         "t1_maven_planetary_force_diagnostic": maven_planetary_force,
+        "t1_maven_desat_sensitivity": maven_desat,
         "t1_maven_portable_preflight_run": maven_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {

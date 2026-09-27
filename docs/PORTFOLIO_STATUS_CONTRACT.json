@@ -7,7 +7,7 @@
   "tracks": [
     {
       "acceptance": "artifacts/acceptance.json",
-      "next_step": "expand the precommitted MAVEN comparison to a mission-domain force and maneuver model, quantify uncertainty and seek independent observables and expert review",
+      "next_step": "locate actual cruise desaturation timing and direction or an independent radiometric product, then add source-backed solar-radiation-pressure and uncertainty models; keep reconstructed NAV endpoints outside scientific holdout",
       "open_gates": [
         "external symbolic engine",
         "mission-domain force and maneuver comparison",
@@ -15,6 +15,7 @@
       ],
       "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",
       "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",
+      "optional_desat_sensitivity_audit": "artifacts/t1-maven-desat-sensitivity-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T1"
