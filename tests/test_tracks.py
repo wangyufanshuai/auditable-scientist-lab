@@ -20,7 +20,7 @@ def test_t2_causal_intervention_and_negative_control() -> None:
     assert receipt.evidence_level == "validated-reproduction"
 
 
-def test_t3_dynamics_reproduction_and_euler_negative_case() -> None:
+def test_t3_dynamics_reproduction_and_euler_negative_case(monkeypatch) -> None:
     cases = [
         DynamicsCase(case_id="train-1", split="train", omega=1.0, dt=0.01, steps=500, x0=1, v0=0),
         DynamicsCase(case_id="train-2", split="train", omega=1.4, dt=0.01, steps=500, x0=0.5, v0=0.2),
@@ -28,8 +28,16 @@ def test_t3_dynamics_reproduction_and_euler_negative_case() -> None:
     ]
     evaluation, receipt = evaluate_dynamics_fixture(cases)
     assert evaluation.passed is True
+    assert evaluation.reference_solver_id == "fixed-step-rk4-v1"
+    assert evaluation.backend_agreement_passed is True
+    assert evaluation.max_reference_position_error < 1e-5
     assert evaluation.negative_euler_rejected is True
     assert receipt.negative_case_passed is True
+    monkeypatch.setattr("auditable_scientist.tracks.dynamics.rk4_oscillator", lambda *args: (100.0, 0.0, 0.0))
+    failed, failed_receipt = evaluate_dynamics_fixture(cases)
+    assert failed.backend_agreement_passed is False
+    assert failed.passed is False
+    assert failed_receipt.evidence_level == "demo"
 
 
 def test_t4_proof_obligations_block_tampered_trajectory() -> None:

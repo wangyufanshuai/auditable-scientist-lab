@@ -31,10 +31,10 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "add a second numerical backend",
+      "next_step": "extend bounded parameter sweep and external solver provenance",
       "open_gates": [
         "multi-body validation",
-        "independent production solver",
+        "external solver and source-rights review",
         "compute budget"
       ],
       "public_release": false,

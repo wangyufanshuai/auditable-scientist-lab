@@ -68,6 +68,19 @@ def make_track_run(
         allowed_use=["offline-evaluator", "source-provenance"],
         notes="Local evaluator source fingerprint; this does not establish external scientific validity.",
     )
+    code_evidence = [evaluator_evidence]
+    if track_id == "T3":
+        reference_source = Path(__file__).with_name("reference_rk4.py")
+        code_evidence.append(Evidence(
+            evidence_id="ev-t3-rk4-reference-code",
+            kind=EvidenceKind.CODE,
+            path_or_uri=str(reference_source),
+            sha256=fingerprint_file(reference_source).sha256,
+            source_revision=installation_revision(),
+            provenance_status=ProvenanceStatus.UNVERIFIED,
+            allowed_use=["offline-evaluator", "source-provenance"],
+            notes="Local independent numerical method; academic formula citation does not establish source rights or real-world validation.",
+        ))
     provider_id = f"internal-{track_id.lower()}-evaluator"
     policy = track_policy(track_id, fixture_path)
     input_hash = receipt.input_hash
@@ -99,8 +112,8 @@ def make_track_run(
         text=f"The {track_id} evaluator passed its bounded fixture gate; this is not a real-world scientific claim.",
         status=ClaimStatus.UNVERIFIED,
         level=EvidenceLevel.VALIDATED_REPRODUCTION if receipt.passed else EvidenceLevel.DEMO,
-        evidence_refs=[evidence_id, evaluator_evidence_id],
-        falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash"],
+        evidence_refs=[evidence_id, *[item.evidence_id for item in code_evidence]],
+        falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash", *(["rk4-backend-agreement"] if track_id == "T3" else [])],
         holdout_verified=False,
     )
     observation = Observation(
@@ -157,7 +170,7 @@ def make_track_run(
         code_revision=installation_revision(),
         environment=environment,
         seed=seed,
-        evidence_refs=[evidence_id, evaluator_evidence_id],
+        evidence_refs=[evidence_id, *[item.evidence_id for item in code_evidence]],
         status=RunStatus.COMPLETED if receipt.passed else RunStatus.UNVERIFIED,
         agent=agent,
         tools=[tool],
@@ -169,5 +182,5 @@ def make_track_run(
         traces=[trace],
         claims=[claim],
         observations=[observation],
-        evidence=[evidence, evaluator_evidence],
+        evidence=[evidence, *code_evidence],
     )

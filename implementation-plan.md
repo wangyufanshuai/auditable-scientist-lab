@@ -25,13 +25,20 @@
 - T2–T5 now use registered offline Tool/Policy calls for generated acceptance packages
   and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
-- A fresh Python environment installed `.[test]`, passed 50 tests, and replayed newly
+- A fresh Python environment installed `.[test]`, passed 58 tests, and replayed newly
   generated T1–T5 runs. Runtime environment and dependency versions are now recorded
   for every track; replay in a mismatched environment fails closed.
 - A standalone wheel now carries the offline schemas, evidence policy, and five fixtures.
   In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
   and T2–T5 `init-track/run-track/replay` completed. The wheel smoke is an engineering
   portability check, not an external scientific validation or publication gate.
+- T3 now compares Velocity-Verlet against a separately implemented fixed-step RK4,
+  plus the analytic oscillator and Euler negative control. The method citation,
+  source-rights boundary, and fixture scope are recorded in `docs/T3_METHOD.md`;
+  an external production solver and multi-body validation remain open.
+- The checked-in Run manifests still contain host-specific absolute paths; exact-file
+  replay works in the registered environment, but relocation to another checkout or
+  operating system has not passed an acceptance gate.
 - Next engineering work is deeper independent backends and data/proof provenance.
   Scientific, rights, compute, and human-review gates remain open; public release
   remains a separate decision.
@@ -304,9 +311,12 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Add a second deterministic numerical backend for T3 only after its implementation,
-   license, and independent-reference provenance are recorded.
-2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
+1. Make checked-in replay packages relocatable without weakening path safety or
+   source/evidence byte checks; prove it by replaying a copied checkout elsewhere.
+2. Expand T3 into a bounded parameter and step-size sweep, with an independent
+   external solver only after its implementation, license, and reference provenance
+   are recorded. Keep the local RK4 comparison at the oscillator-fixture level.
+3. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
-3. Reassess the local-only publication boundary from a fresh environment and user review;
+4. Reassess the local-only publication boundary from a fresh environment and user review;
    do not push or publish automatically.

@@ -149,8 +149,8 @@ def main() -> None:
     dynamics_execution = run_registered_track("T3", dynamics_fixture)
     dynamics_receipt = dynamics_execution.receipt
     dynamics_negative = dynamics_execution.negative_case
-    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v1", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative, calls_used=dynamics_execution.calls_used)
-    write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_receipt.result['holdout_max_position_error']}; negative_euler_rejected={dynamics_receipt.result['negative_euler_rejected']}")
+    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v2", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative, calls_used=dynamics_execution.calls_used)
+    write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_receipt.result['holdout_max_position_error']}; max_backend_position_delta={dynamics_receipt.result['max_backend_position_delta']}; negative_euler_rejected={dynamics_receipt.result['negative_euler_rejected']}")
     portfolio.append(dynamics_receipt.model_dump(mode="json"))
 
     trajectory = [ProofState(step=0, mass_a=2, mass_b=3), ProofState(step=1, mass_a=1, mass_b=4)]
@@ -187,7 +187,7 @@ def main() -> None:
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights"], "next_step": "add a rights-cleared intervention dataset", "public_release": False},
-        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "open_gates": ["multi-body validation", "independent production solver", "compute budget"], "next_step": "add a second numerical backend", "public_release": False},
+        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "open_gates": ["multi-body validation", "external solver and source-rights review", "compute budget"], "next_step": "extend bounded parameter sweep and external solver provenance", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["formal proof backend", "obligation completeness"], "next_step": "bind obligations to a formal checker", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]

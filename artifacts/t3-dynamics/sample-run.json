@@ -1,14 +1,20 @@
 {
   "evaluator": {
-    "evaluator_id": "harmonic-dynamics-v1",
+    "backend_agreement_passed": true,
+    "evaluator_id": "harmonic-dynamics-v2",
     "holdout_max_position_error": 1.0495796261222878e-05,
+    "max_backend_position_delta": 1.9978152767885504e-05,
     "max_energy_drift": 1.2499992203318655e-05,
+    "max_reference_energy_drift": 1.3855472325019491e-11,
+    "max_reference_position_error": 4.824394772562357e-10,
     "negative_euler_rejected": true,
     "notes": [
-      "Velocity-Verlet is compared with the closed-form harmonic solution.",
-      "Explicit Euler is a required negative control for conservation drift."
+      "Velocity-Verlet and independently implemented fixed-step RK4 are compared with the closed-form harmonic solution.",
+      "Explicit Euler is a required negative control for conservation drift.",
+      "The RK4 method citation is a reference, not an imported software or data dependency."
     ],
     "passed": true,
+    "reference_solver_id": "fixed-step-rk4-v1",
     "solver_id": "velocity-verlet-v1",
     "train_max_position_error": 1.9977752245103897e-05
   },
@@ -43,12 +49,14 @@
       {
         "evidence_refs": [
           "ev-t3-fixture",
-          "ev-t3-evaluator-code"
+          "ev-t3-evaluator-code",
+          "ev-t3-rk4-reference-code"
         ],
         "falsification_checks": [
           "positive-evaluator-replay",
           "negative-case-rejection",
-          "fixture-hash"
+          "fixture-hash",
+          "rk4-backend-agreement"
         ],
         "holdout_verified": false,
         "level": "validated-reproduction",
@@ -76,7 +84,7 @@
     },
     "evaluators": [
       {
-        "evaluator_id": "harmonic-dynamics-v1",
+        "evaluator_id": "harmonic-dynamics-v2",
         "name": "T3 independent evaluator",
         "read_only": true,
         "version": "1"
@@ -125,22 +133,28 @@
         "event_type": "evaluator.completed",
         "occurred_at": "2026-09-21T00:00:03Z",
         "payload": {
-          "evaluator_id": "harmonic-dynamics-v1",
+          "evaluator_id": "harmonic-dynamics-v2",
           "result": {
-            "evaluator_id": "harmonic-dynamics-v1",
+            "backend_agreement_passed": true,
+            "evaluator_id": "harmonic-dynamics-v2",
             "holdout_max_position_error": 1.0495796261222878e-05,
+            "max_backend_position_delta": 1.9978152767885504e-05,
             "max_energy_drift": 1.2499992203318655e-05,
+            "max_reference_energy_drift": 1.3855472325019491e-11,
+            "max_reference_position_error": 4.824394772562357e-10,
             "negative_euler_rejected": true,
             "notes": [
-              "Velocity-Verlet is compared with the closed-form harmonic solution.",
-              "Explicit Euler is a required negative control for conservation drift."
+              "Velocity-Verlet and independently implemented fixed-step RK4 are compared with the closed-form harmonic solution.",
+              "Explicit Euler is a required negative control for conservation drift.",
+              "The RK4 method citation is a reference, not an imported software or data dependency."
             ],
             "passed": true,
+            "reference_solver_id": "fixed-step-rk4-v1",
             "solver_id": "velocity-verlet-v1",
             "train_max_position_error": 1.9977752245103897e-05
           }
         },
-        "payload_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+        "payload_hash": "eecf436a89f89457079c2b9aa51752602a4cd83233e19cea3e73dd6c0b3633f9",
         "prev_event_hash": "46ff62df2c446655a150256e678edcb0bda9f3cd7883963041dc653d7280479b",
         "seq": 3
       },
@@ -156,7 +170,7 @@
           "negative_case_passed": true
         },
         "payload_hash": "7c6ad6482f87d1a564831078a3299cacca51dc601d5ac16730a92bb8d6674d74",
-        "prev_event_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+        "prev_event_hash": "eecf436a89f89457079c2b9aa51752602a4cd83233e19cea3e73dd6c0b3633f9",
         "seq": 4
       },
       {
@@ -195,13 +209,27 @@
         "notes": "Local evaluator source fingerprint; this does not establish external scientific validity.",
         "path_or_uri": "E:\\xuexi\\auditable-scientist-lab\\src\\auditable_scientist\\tracks\\dynamics.py",
         "provenance_status": "unverified",
-        "sha256": "84d0a6f1b8543b9c4586f1be0c40783be0bc940725c4b6af787e3ddeafe686a0",
+        "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b",
+        "source_revision": "local-working-tree"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "evidence_id": "ev-t3-rk4-reference-code",
+        "kind": "code",
+        "notes": "Local independent numerical method; academic formula citation does not establish source rights or real-world validation.",
+        "path_or_uri": "E:\\xuexi\\auditable-scientist-lab\\src\\auditable_scientist\\tracks\\reference_rk4.py",
+        "provenance_status": "unverified",
+        "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792",
         "source_revision": "local-working-tree"
       }
     ],
     "evidence_refs": [
       "ev-t3-fixture",
-      "ev-t3-evaluator-code"
+      "ev-t3-evaluator-code",
+      "ev-t3-rk4-reference-code"
     ],
     "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
     "memories": [
@@ -220,7 +248,7 @@
         "source_ref": "E:\\xuexi\\auditable-scientist-lab\\examples\\dynamics\\fixture.json",
         "split": "external",
         "summary": {
-          "evaluator_id": "harmonic-dynamics-v1",
+          "evaluator_id": "harmonic-dynamics-v2",
           "evidence_level": "validated-reproduction",
           "track_id": "T3"
         },
@@ -251,7 +279,7 @@
     "run_id": "run-t3-1c4eb6b867515637",
     "seed": 17,
     "status": "completed",
-    "task_id": "t3-harmonic-dynamics-v1",
+    "task_id": "t3-harmonic-dynamics-v2",
     "tools": [
       {
         "deterministic": true,
@@ -282,7 +310,7 @@
           },
           {
             "event_type": "evaluator.completed",
-            "payload_hash": "b879a22061a1d4bbcbc0e3f1b4a8c80d274618bbbb680a803fbb3f9f832d1eec",
+            "payload_hash": "eecf436a89f89457079c2b9aa51752602a4cd83233e19cea3e73dd6c0b3633f9",
             "seq": 3
           },
           {
@@ -308,10 +336,20 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 4063,
+      "bytes": 5756,
       "path": "src/auditable_scientist/tracks/dynamics.py",
       "provenance_status": "unverified",
-      "sha256": "84d0a6f1b8543b9c4586f1be0c40783be0bc940725c4b6af787e3ddeafe686a0"
+      "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1553,
+      "path": "src/auditable_scientist/tracks/reference_rk4.py",
+      "provenance_status": "unverified",
+      "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792"
     },
     {
       "allowed_use": [
@@ -328,20 +366,20 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 6697,
+      "bytes": 7506,
       "path": "src/auditable_scientist/tracks/run_package.py",
       "provenance_status": "unverified",
-      "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+      "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
     },
     {
       "allowed_use": [
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 8872,
+      "bytes": 9021,
       "path": "src/auditable_scientist/tracks/runner.py",
       "provenance_status": "unverified",
-      "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+      "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
     },
     {
       "allowed_use": [
@@ -448,10 +486,10 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 13080,
+      "bytes": 13206,
       "path": "scripts/generate_track_artifacts.py",
       "provenance_status": "unverified",
-      "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+      "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
     },
     {
       "allowed_use": [
@@ -512,6 +550,16 @@
       "path": "schemas/run.schema.json",
       "provenance_status": "unverified",
       "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1479,
+      "path": "docs/T3_METHOD.md",
+      "provenance_status": "unverified",
+      "sha256": "87e00e838d16cbaf05ffb6861750f547a8dac3818bb2a56fc57c904ce744b0d4"
     }
   ],
   "track": "T3"

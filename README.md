@@ -46,6 +46,10 @@ schema、策略文档和示例 fixture。
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
 `artifacts/acceptance-runs-v14/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
+仓库内已提交的运行包目前按注册时的绝对路径回放；跨机器迁移验收仍待完成。
+T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler 负例比较
+见 [docs/T3_METHOD.md](docs/T3_METHOD.md)；当前 T2–T5 CLI 收据在
+`artifacts/track-runs-v5/`。
 
 ## 当前入口
 
@@ -54,6 +58,7 @@ seed、源码/证据快照、候选顺序和完整计算输出。正式收据和
 - [schemas/run.schema.json](schemas/run.schema.json)：Run、Event、Claim、Evidence 契约草案。
 - [docs/EVIDENCE_POLICY.md](docs/EVIDENCE_POLICY.md)：证据等级和禁止性表述。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
+- [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。

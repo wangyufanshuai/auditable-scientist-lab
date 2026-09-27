@@ -342,20 +342,20 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 6697,
+      "bytes": 7506,
       "path": "src/auditable_scientist/tracks/run_package.py",
       "provenance_status": "unverified",
-      "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+      "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
     },
     {
       "allowed_use": [
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 8872,
+      "bytes": 9021,
       "path": "src/auditable_scientist/tracks/runner.py",
       "provenance_status": "unverified",
-      "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+      "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
     },
     {
       "allowed_use": [
@@ -462,10 +462,10 @@
         "offline-evaluator",
         "source-provenance"
       ],
-      "bytes": 13080,
+      "bytes": 13206,
       "path": "scripts/generate_track_artifacts.py",
       "provenance_status": "unverified",
-      "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+      "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
     },
     {
       "allowed_use": [

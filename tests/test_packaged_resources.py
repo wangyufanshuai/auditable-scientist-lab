@@ -16,6 +16,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
         *(ROOT / "schemas").glob("*.json"),
         ROOT / "docs/EVIDENCE_POLICY.md",
         ROOT / "docs/DECISIONS.md",
+        ROOT / "docs/T3_METHOD.md",
         *(ROOT / "examples").glob("*/*.json"),
     ]
     assert expected

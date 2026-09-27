@@ -98,20 +98,20 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 6697,
+          "bytes": 7506,
           "path": "src/auditable_scientist/tracks/run_package.py",
           "provenance_status": "unverified",
-          "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+          "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 8872,
+          "bytes": 9021,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+          "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
         },
         {
           "allowed_use": [
@@ -218,10 +218,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13080,
+          "bytes": 13206,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+          "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
         },
         {
           "allowed_use": [
@@ -288,9 +288,10 @@
     },
     {
       "blocked_gates": [
-        "multi-body and real mission validation"
+        "multi-body and real mission validation",
+        "external solver and source-rights review"
       ],
-      "evaluator_id": "harmonic-dynamics-v1",
+      "evaluator_id": "harmonic-dynamics-v2",
       "evidence_files": [
         {
           "allowed_use": [
@@ -308,15 +309,21 @@
       "negative_case_passed": true,
       "passed": true,
       "result": {
-        "evaluator_id": "harmonic-dynamics-v1",
+        "backend_agreement_passed": true,
+        "evaluator_id": "harmonic-dynamics-v2",
         "holdout_max_position_error": 1.0495796261222878e-05,
+        "max_backend_position_delta": 1.9978152767885504e-05,
         "max_energy_drift": 1.2499992203318655e-05,
+        "max_reference_energy_drift": 1.3855472325019491e-11,
+        "max_reference_position_error": 4.824394772562357e-10,
         "negative_euler_rejected": true,
         "notes": [
-          "Velocity-Verlet is compared with the closed-form harmonic solution.",
-          "Explicit Euler is a required negative control for conservation drift."
+          "Velocity-Verlet and independently implemented fixed-step RK4 are compared with the closed-form harmonic solution.",
+          "Explicit Euler is a required negative control for conservation drift.",
+          "The RK4 method citation is a reference, not an imported software or data dependency."
         ],
         "passed": true,
+        "reference_solver_id": "fixed-step-rk4-v1",
         "solver_id": "velocity-verlet-v1",
         "train_max_position_error": 1.9977752245103897e-05
       },
@@ -326,10 +333,20 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 4063,
+          "bytes": 5756,
           "path": "src/auditable_scientist/tracks/dynamics.py",
           "provenance_status": "unverified",
-          "sha256": "84d0a6f1b8543b9c4586f1be0c40783be0bc940725c4b6af787e3ddeafe686a0"
+          "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1553,
+          "path": "src/auditable_scientist/tracks/reference_rk4.py",
+          "provenance_status": "unverified",
+          "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792"
         },
         {
           "allowed_use": [
@@ -346,20 +363,20 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 6697,
+          "bytes": 7506,
           "path": "src/auditable_scientist/tracks/run_package.py",
           "provenance_status": "unverified",
-          "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+          "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 8872,
+          "bytes": 9021,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+          "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
         },
         {
           "allowed_use": [
@@ -466,10 +483,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13080,
+          "bytes": 13206,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+          "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
         },
         {
           "allowed_use": [
@@ -530,6 +547,16 @@
           "path": "schemas/run.schema.json",
           "provenance_status": "unverified",
           "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1479,
+          "path": "docs/T3_METHOD.md",
+          "provenance_status": "unverified",
+          "sha256": "87e00e838d16cbaf05ffb6861750f547a8dac3818bb2a56fc57c904ce744b0d4"
         }
       ],
       "track_id": "T3"
@@ -593,20 +620,20 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 6697,
+          "bytes": 7506,
           "path": "src/auditable_scientist/tracks/run_package.py",
           "provenance_status": "unverified",
-          "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+          "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 8872,
+          "bytes": 9021,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+          "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
         },
         {
           "allowed_use": [
@@ -713,10 +740,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13080,
+          "bytes": 13206,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+          "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
         },
         {
           "allowed_use": [
@@ -839,20 +866,20 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 6697,
+          "bytes": 7506,
           "path": "src/auditable_scientist/tracks/run_package.py",
           "provenance_status": "unverified",
-          "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
+          "sha256": "02bafa2a2da42a24f32c30556ead991681e0e7e27d540de8271ca1ca1ec3d4bf"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 8872,
+          "bytes": 9021,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
+          "sha256": "916dea04eb3fd01d744ea47facecfa89b7b299139cbb8250449ccbd5d3af4919"
         },
         {
           "allowed_use": [
@@ -959,10 +986,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13080,
+          "bytes": 13206,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+          "sha256": "b18502b9cdcec2d145ea5fe0259b88375e4a2a76722ccf28a000e2186c0cfb7f"
         },
         {
           "allowed_use": [

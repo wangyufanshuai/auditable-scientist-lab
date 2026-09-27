@@ -66,10 +66,14 @@ def track_source_paths(track_id: str) -> list[Path]:
         "runtime/environment.py", "runtime/event_log.py", "runtime/replay.py",
         "runtime/run_integrity.py", "runtime/paths.py", "cli.py", "track_cli.py",
     ]
+    if track_id == "T3":
+        sources.insert(1, "tracks/reference_rk4.py")
     resources = [
         "pyproject.toml", "docs/EVIDENCE_POLICY.md", "schemas/track-tool-call-v1.json",
         "schemas/track-receipt-v1.json", "schemas/track-acceptance-v1.json", "schemas/run.schema.json",
     ]
+    if track_id == "T3":
+        resources.append("docs/T3_METHOD.md")
     paths = [source_path(f"src/auditable_scientist/{item}") for item in sources]
     root = checkout_root()
     if root is not None:

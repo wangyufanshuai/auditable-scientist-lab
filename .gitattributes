@@ -4,3 +4,4 @@
 *.md text eol=lf
 *.toml text eol=lf
 .gitattributes text eol=lf
+.gitignore text eol=lf

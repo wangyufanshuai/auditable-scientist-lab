@@ -1,14 +1,14 @@
 {
   "schema_version": "wheel-audit-v1",
-  "recorded_at": "2026-09-27T03:11:45Z",
+  "recorded_at": "2026-09-27T03:24:31Z",
   "status": "verified-within-offline-fixtures",
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "8d11adcfd8a76217fcf44f722aba371892fedc1333e4e8c41fa65bc3ec8c991d",
+  "wheel_sha256": "6fbe81e63792f4e62b8d46be7d5e205d2b5f97e74d4ff137951ffdb50a70d920",
   "wheel_artifact_committed": false,
-  "installation": "isolated temporary virtual environment; final wheel force-reinstalled without an editable source checkout",
+  "installation": "final wheel force-reinstalled in an existing isolated temporary virtual environment with dependencies already present; CLI executed outside the source checkout",
   "checkout_root_in_installed_process": null,
-  "bundled_resource_count": 14,
+  "bundled_resource_count": 15,
   "commands_verified": [
     "auditable-scientist --help",
     "auditable-scientist init hohmann.json",
@@ -21,11 +21,11 @@
     "auditable-scientist replay track-runs/<run-id>"
   ],
   "replay_manifest_hashes": {
-    "T1": "c3972373d3438ec5950d1b8b321332b331625cdf7279c33f52dffc1a46812e77",
-    "T2": "d3ad7e60a2869b2856dc8c79cea03b7f732b71b3a5a02d9112d9a907fa06b64b",
-    "T3": "04485c177f24362fe4d9785b5f87946785657f028c91bec1b4aa52a5ee27608c",
-    "T4": "96176c345d4a55d6a6f293c8390c38622c8da56a96dbc3be06c887f54a3e5df7",
-    "T5": "ff4ba6ad9be8ba06425c415244b30af720e5d433d09fbc6a40b793e99fcd179f"
+    "T1": "7fd6391bad76cb7bf2c2bffc37c5e160f0d770d0702ef6e4232a98e7814b3a27",
+    "T2": "c1b03e5bc430a2a241e523785dd83c35b61e206a8165f533ada8ae4cfc3ec372",
+    "T3": "d43c4f02842809aca9736ad21da2e5f86cf11c42694a9740ab3ef95d380648f0",
+    "T4": "3a94141b42b6666f4301eff939ebc369208925f2e39573429bc6e562f1e0f86f",
+    "T5": "94f766a493233d1957b0c0d4b36717ebfd2b2264664902e62c115a38815bf190"
   },
   "boundaries": {
     "scientific_validity": false,

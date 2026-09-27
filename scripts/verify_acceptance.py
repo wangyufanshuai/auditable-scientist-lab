@@ -105,7 +105,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         path = Path(evidence.path_or_uri)
         if not path.resolve().is_relative_to(root.resolve()) or fingerprint_file(path).sha256 != evidence.sha256:
             raise ValueError(f"track {track_id} Run evidence changed: {evidence.evidence_id}")
-    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "dynamics.py", "proof.py", "protocol.py"))}
+    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "dynamics.py", "reference_rk4.py", "proof.py", "protocol.py"))}
     if {evidence.sha256 for evidence in run.evidence if evidence.kind.value == "code"} != evaluator_sources:
         raise ValueError(f"track {track_id} Run code evidence differs from source receipt")
     events = EventLog(bundle_dir / "events.jsonl").verify()
@@ -252,7 +252,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T3", "T4", "T5"):
         item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v4" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v5" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         if canonical_hash(saved_result["receipt"]) != canonical_hash(item):
             raise SystemExit(f"track {track_id} CLI Run receipt differs from portfolio")
