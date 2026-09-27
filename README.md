@@ -92,7 +92,9 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 独立的可选 Tool/Provider Run 见 [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)。
 扩展的 [0.75 周期数值网格](docs/T3_HORIZON_GRID.md) 通过预设误差和守恒门槛，
 1.0 周期近距离案例被排除；这组网格经过可行性预探，不能视作未触碰的科学留出集。
-它们未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
+新增的 [已发表“8 字”三体数值核验](docs/T3_FIGURE_EIGHT_RESULT.md) 按独立预先固定的协议
+覆盖 1 与 10 个近似周期，并包含 10 周期动量守恒扰动、错误引力负例和计算预算。
+这些可选核验未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
 声明的模拟器内部因果效应，不证明真实世界因果识别。独立的整段飞行终点估计器又核对了
 100 个既有场景和 24 个变初态留出场景；仍只属合成模拟器证据，见

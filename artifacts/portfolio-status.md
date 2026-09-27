@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|
 | T1 | `reproduced-within-scope` | `artifacts/acceptance.json` | external symbolic engine, mission-domain force and maneuver comparison, preregistered mission holdout and uncertainty review | expand the precommitted MAVEN comparison to a mission-domain force and maneuver model, quantify uncertainty and seek independent observables and expert review | `False` |
 | T2 | `reproduced-within-scope` | `artifacts/t2-causal/acceptance.json` | real interventions, causal identification, data rights, external algorithm source rights | add a rights-cleared physical intervention dataset and independently validated real-data estimator | `False` |
-| T3 | `reproduced-within-scope` | `artifacts/t3-dynamics/acceptance.json` | long-horizon/nonintegrable multi-body validation, real-mission provenance, long-horizon compute budget | preregister a separate nonintegrable long-horizon suite and rights-cleared mission comparison | `False` |
+| T3 | `reproduced-within-scope` | `artifacts/t3-dynamics/acceptance.json` | long-horizon/nonintegrable multi-body validation, real-mission provenance, long-horizon compute budget | preregister a collision-aware chaotic three-body benchmark with an independent error budget, then locate a rights-cleared mission comparison | `False` |
 | T4 | `reproduced-within-scope` | `artifacts/t4-proof/acceptance.json` | general formal proof backend, reviewed physical transition model, real-world validation | review a physical model and add independent source-backed validation | `False` |
 | T5 | `text-demo-within-scope` | `artifacts/t5-protocol/acceptance.json` | independent protocol source and rights, biosafety review, human acceptance | add a rights-cleared document adapter with independent citation checks | `False` |
 
@@ -26,6 +26,7 @@ replays that scope separately; the core T3 Run remains SciPy-free and multi-body
 
 T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy Tool/Provider Run replays two short perturbed trajectories and rejects altered result or license bytes; long-horizon/nonintegrable and real-mission gates remain open.
 The [expanded finite-horizon audit](t3-horizon-grid-audit.json) admits two smooth, synthetic 0.75-period cases under a fixed 12,000 DOP853-call and 35,000 fixed-step budget. Both one-period stress cases trigger the $0.5a$ close-approach event and are excluded from accuracy claims. The grid was selected after a feasibility preflight, so its inherited holdout label does not mean untouched scientific validation.
+The [published figure-eight audit](t3-figure-eight-audit.json) checks one and ten approximate periods of the equal-mass choreography and a ten-period momentum-balanced perturbation against pinned DOP853 and independent fixed-step RK4. A locally precommitted protocol binds the paper's rounded initial state, event guard, negative control and compute budget. All finite numerical gates pass, but this special orbit does not validate a chaotic regime, general N-body physics, a scientific holdout or a real mission; its Claim remains `unverified`.
 
 T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only.
 

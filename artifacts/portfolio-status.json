@@ -35,13 +35,14 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "preregister a separate nonintegrable long-horizon suite and rights-cleared mission comparison",
+      "next_step": "preregister a collision-aware chaotic three-body benchmark with an independent error budget, then locate a rights-cleared mission comparison",
       "open_gates": [
         "long-horizon/nonintegrable multi-body validation",
         "real-mission provenance",
         "long-horizon compute budget"
       ],
       "optional_external_run": "artifacts/t3-external-run-audit.json",
+      "optional_figure_eight_audit": "artifacts/t3-figure-eight-audit.json",
       "optional_horizon_grid_audit": "artifacts/t3-horizon-grid-audit.json",
       "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json",
       "optional_perturbed_run": "artifacts/t3-perturbed-run-audit.json",

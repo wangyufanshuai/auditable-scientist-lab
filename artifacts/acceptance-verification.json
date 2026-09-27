@@ -254,6 +254,15 @@
     "manifest_hash": "7d5f79dc99a8ae871afd4cd883f52abad0e9bcca706c4036300d28fb7544168d",
     "verified": true
   },
+  "t3_optional_figure_eight_static_provenance": {
+    "mission_validation": false,
+    "periods_max": 10,
+    "pinned_scipy_recomputation_required": true,
+    "scenario_count": 3,
+    "scientific_holdout": false,
+    "scope": "static-saved-numeric-and-boundary-check-only",
+    "source_files_match": true
+  },
   "t3_optional_horizon_static_provenance": {
     "admitted_case_count": 2,
     "excluded_stress_case_count": 2,

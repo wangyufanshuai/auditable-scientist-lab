@@ -55,6 +55,14 @@
       "name": "symmetric-three-body-subtrack",
       "output_path": "artifacts/t3-nbody/acceptance.json",
       "recorded_at": "2026-09-27T07:41:39.787214+00:00"
+    },
+    {
+      "command": "& \"$env:TEMP\\auditable-scientist-figure8-20260927\\Scripts\\python.exe\" scripts/verify_t3_figure_eight.py --verify",
+      "exit_code": 0,
+      "input_version": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d",
+      "name": "optional-published-figure-eight",
+      "output_path": "artifacts/t3-figure-eight-audit.json",
+      "recorded_at": "2026-09-27T14:21:52.251141+00:00"
     }
   ],
   "evaluator": {

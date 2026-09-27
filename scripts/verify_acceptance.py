@@ -1224,6 +1224,135 @@ def verify_optional_t3_horizon_static(audit: dict | None = None) -> dict:
             "admitted_case_count": len(admitted), "excluded_stress_case_count": len(stress)}
 
 
+def verify_optional_t3_figure_eight_static(audit: dict | None = None) -> dict:
+    """Check the saved published-orbit gates; pinned SciPy must recompute them."""
+
+    audit = audit if audit is not None else load("artifacts/t3-figure-eight-audit.json")
+    protocol = load("docs/T3_FIGURE_EIGHT_PROTOCOL.json")
+    protocol_sha = "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d"
+    expected_sources = {
+        "scripts/verify_t3_figure_eight.py", "docs/T3_FIGURE_EIGHT_PROTOCOL.json",
+        "docs/T3_FIGURE_EIGHT_PROTOCOL.md",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "scripts/verify_t3_external_scipy.py",
+        "requirements-t3-scipy-win-py312.txt",
+    }
+    expected_checks = {
+        "finite_three_case_inventory", "endpoint_position", "endpoint_velocity",
+        "refinement", "energy", "angular_momentum", "center_of_mass",
+        "separation", "one_period_closure", "negative_repulsive_force", "compute_budget",
+    }
+    rows = audit.get("rows", [])
+    scenarios = protocol["scenarios"]
+    gates = protocol["engineering_gates"]
+    budget = protocol["compute_budget"]
+    if (audit.get("schema_version") != "t3-figure-eight-audit-v1"
+            or audit.get("status") != "passed-finite-published-figure-eight-numerics-only"
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "4a75872"
+            or fingerprint_file(ROOT / "docs/T3_FIGURE_EIGHT_PROTOCOL.json").sha256 != protocol_sha
+            or audit.get("source_paper_sha256") != protocol["source"]["download_sha256"]
+            or audit.get("scientific_boundaries") != protocol["scientific_boundaries"]
+            or audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
+            or audit.get("environment") != load("artifacts/t3-external-scipy.json").get("environment")
+            or audit.get("solvers") != protocol["solvers"]
+            or audit.get("engineering_gates") != gates
+            or audit.get("compute_budget") != budget
+            or len(rows) != 3
+            or [row.get("id") for row in rows] != [item["id"] for item in scenarios]
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(value is True for value in audit["checks"].values())
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {item.get("path") for item in audit["source_files"]} != expected_sources):
+        raise ValueError("T3 figure-eight source, protocol, or boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("T3 figure-eight audit has no timezone-aware timestamp")
+    for source in audit["source_files"]:
+        path = ROOT / source["path"]
+        fingerprint = fingerprint_file(path)
+        if (source.get("sha256") != fingerprint.sha256
+                or source.get("bytes") != fingerprint.bytes):
+            raise ValueError("T3 figure-eight source file differs")
+
+    def number(row: dict, key: str) -> float:
+        value = row.get(key)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError(f"T3 figure-eight {key} is not finite")
+        return float(value)
+
+    fixed_steps = rhs_calls = 0
+    for row, spec in zip(rows, scenarios, strict=True):
+        periods = spec["periods"]
+        if (row.get("periods") != periods
+                or row.get("opposite_y_velocity_perturbation") !=
+                spec["opposite_y_velocity_perturbation"]
+                or number(row, "duration") != periods*protocol["system"]["published_approximate_period"]
+                or row.get("coarse_rk4_steps") != periods*protocol["solvers"]["coarse_steps_per_period"]
+                or row.get("fine_rk4_steps") != periods*protocol["solvers"]["fine_steps_per_period"]
+                or row.get("reference_inward_threshold_crossings") != 0):
+            raise ValueError("T3 figure-eight scenario identity or steps differ")
+        reference_positions = row.get("reference_endpoint_positions")
+        reference_velocities = row.get("reference_endpoint_velocities")
+        fine_positions = row.get("fine_rk4_endpoint_positions")
+        fine_velocities = row.get("fine_rk4_endpoint_velocities")
+        if any(not isinstance(points, list) or len(points) != 3 or any(
+                not isinstance(point, list) or len(point) != 2 or any(
+                    not isinstance(x, (int, float)) or not math.isfinite(x) for x in point)
+                for point in points) for points in (
+                    reference_positions, reference_velocities, fine_positions, fine_velocities)):
+            raise ValueError("T3 figure-eight saved endpoint is not a finite planar state")
+        position_error = max(math.dist(left, right) for left, right in
+                             zip(fine_positions, reference_positions, strict=True))
+        velocity_error = max(math.dist(left, right) for left, right in
+                             zip(fine_velocities, reference_velocities, strict=True))
+        closure_error = max(math.dist(left, right) for left, right in zip(
+            reference_positions, protocol["system"]["initial_positions"], strict=True))
+        diagnostics = row.get("fine_rk4_sampled_diagnostics", {})
+        if (not math.isclose(position_error, number(row, "fine_rk4_endpoint_position_error"), abs_tol=1e-14)
+                or not math.isclose(velocity_error, number(row, "fine_rk4_endpoint_velocity_error"), abs_tol=1e-14)
+                or not math.isclose(closure_error, number(row, "published_state_closure_error"), abs_tol=1e-14)
+                or position_error > gates["fine_rk4_endpoint_position_error_max"]
+                or velocity_error > gates["fine_rk4_endpoint_velocity_error_max"]
+                or not math.isclose(number(row, "coarse_rk4_endpoint_position_error") /
+                                    number(row, "fine_rk4_endpoint_position_error"),
+                                    number(row, "coarse_to_fine_error_ratio"), rel_tol=1e-12)
+                or number(row, "coarse_to_fine_error_ratio") <
+                gates["coarse_to_fine_endpoint_position_error_ratio_min"]
+                or number(diagnostics, "relative_energy_drift") >
+                gates["fine_rk4_relative_energy_drift_max"]
+                or number(diagnostics, "absolute_angular_momentum_drift") >
+                gates["fine_rk4_absolute_angular_momentum_drift_max"]
+                or number(diagnostics, "center_of_mass_drift") >
+                gates["fine_rk4_center_of_mass_drift_max"]
+                or number(diagnostics, "sampled_minimum_pair_separation") <=
+                gates["minimum_pair_separation_min"]
+                or number(row, "reference_sampled_minimum_pair_separation") <=
+                gates["minimum_pair_separation_min"]):
+            raise ValueError("T3 figure-eight endpoint or numerical gate differs")
+        if row["id"] == "published-one-period" and closure_error > gates[
+                "one_period_published_state_closure_error_max"]:
+            raise ValueError("T3 figure-eight published-state closure failed")
+        rhs_calls += number(row, "reference_rhs_calls")
+        fixed_steps += row["coarse_rk4_steps"]+row["fine_rk4_steps"]
+    negative = audit.get("negative_control_rhs_calls", {})
+    rhs_calls += number(negative, "attractive")+number(negative, "repulsive")
+    if (number(audit, "negative_repulsive_position_error") <
+            gates["negative_repulsive_position_error_min"]
+            or audit.get("observed_budget") != {
+                "dop853_rhs_calls_total": int(rhs_calls),
+                "fixed_rk4_steps_total": fixed_steps,
+            }
+            or rhs_calls > budget["dop853_rhs_calls_total_max"]
+            or fixed_steps > budget["fixed_rk4_steps_total_max"]):
+        raise ValueError("T3 figure-eight negative control or budget differs")
+    return {"scope": "static-saved-numeric-and-boundary-check-only",
+            "source_files_match": True,
+            "pinned_scipy_recomputation_required": True,
+            "scenario_count": 3, "periods_max": 10,
+            "scientific_holdout": False, "mission_validation": False}
+
+
 def verify_optional_t3_perturbed_run_static() -> dict:
     """Verify the optional shared Run and its manifest without importing SciPy."""
 
@@ -1372,6 +1501,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "optional-perturbed-three-body-cross-check": "t3-perturbed-audit-v1",
             "optional-perturbed-three-body-run": "t3-perturbed-run-audit-v1",
             "optional-expanded-horizon-grid": "t3-horizon-grid-audit-v1",
+            "optional-published-figure-eight": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d",
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
@@ -1830,10 +1960,22 @@ def main() -> None:
                and item.get("input_version") == "t3-horizon-grid-audit-v1"
                for item in acceptance["checks"]):
         raise SystemExit("T3 expanded horizon grid is missing from root acceptance")
+    figure_protocol_sha = "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d"
+    if not any(item.get("name") == "optional-published-figure-eight"
+               and item.get("output_path") == "artifacts/t3-figure-eight-audit.json"
+               and item.get("input_version") == figure_protocol_sha
+               and item.get("exit_code") == 0 for item in t3_checks):
+        raise SystemExit("T3 published figure-eight is missing from track acceptance")
+    if not any(item.get("name") == "optional-t3-published-figure-eight"
+               and item.get("output_path") == "artifacts/t3-figure-eight-audit.json"
+               and item.get("input_version") == figure_protocol_sha
+               and item.get("exit_code") == 0 for item in acceptance["checks"]):
+        raise SystemExit("T3 published figure-eight is missing from root acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
     optional_t3_perturbed_static = verify_optional_t3_perturbed_static()
     optional_t3_perturbed_run_static = verify_optional_t3_perturbed_run_static()
     optional_t3_horizon_static = verify_optional_t3_horizon_static()
+    optional_t3_figure_eight_static = verify_optional_t3_figure_eight_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
@@ -2051,6 +2193,7 @@ def main() -> None:
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,
         "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
         "t3_optional_horizon_static_provenance": optional_t3_horizon_static,
+        "t3_optional_figure_eight_static_provenance": optional_t3_figure_eight_static,
         "bounded_optional_acceptance_projection": projection_receipt,
         "wheel_audit_verified": True,
         "t1_nasa_parameter_audit": {

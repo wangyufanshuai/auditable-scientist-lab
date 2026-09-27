@@ -127,6 +127,14 @@
   `artifacts/t3-horizon-grid-audit.json`. The inherited holdout label is not an
   untouched scientific holdout after the feasibility preflight. Long-horizon,
   general multi-body, real-mission, and source-rights gates remain open.
+- A separately locally precommitted published figure-eight benchmark now
+  compares one and ten approximate periods, plus a momentum-balanced
+  ten-period perturbation, using pinned DOP853 and fixed-step Cartesian RK4.
+  It records source-PDF hash, no-close-approach events, conservation and
+  wrong-sign controls, and 52,489/100,000 adaptive RHS and
+  151,200/160,000 fixed-step budget use. It advances finite non-equilateral
+  numerical evidence without claiming a chaotic-regime, general-N-body,
+  scientific-holdout or mission gate. See `docs/T3_FIGURE_EIGHT_RESULT.md`.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.

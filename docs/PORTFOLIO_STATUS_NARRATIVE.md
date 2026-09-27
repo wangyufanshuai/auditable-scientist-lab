@@ -16,6 +16,7 @@ replays that scope separately; the core T3 Run remains SciPy-free and multi-body
 
 T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy Tool/Provider Run replays two short perturbed trajectories and rejects altered result or license bytes; long-horizon/nonintegrable and real-mission gates remain open.
 The [expanded finite-horizon audit](t3-horizon-grid-audit.json) admits two smooth, synthetic 0.75-period cases under a fixed 12,000 DOP853-call and 35,000 fixed-step budget. Both one-period stress cases trigger the $0.5a$ close-approach event and are excluded from accuracy claims. The grid was selected after a feasibility preflight, so its inherited holdout label does not mean untouched scientific validation.
+The [published figure-eight audit](t3-figure-eight-audit.json) checks one and ten approximate periods of the equal-mass choreography and a ten-period momentum-balanced perturbation against pinned DOP853 and independent fixed-step RK4. A locally precommitted protocol binds the paper's rounded initial state, event guard, negative control and compute budget. All finite numerical gates pass, but this special orbit does not validate a chaotic regime, general N-body physics, a scientific holdout or a real mission; its Claim remains `unverified`.
 
 T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only.
 

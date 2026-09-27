@@ -23,6 +23,10 @@ Tool/Provider Run, its license snapshots, replay and mutation controls. The core
 T3 Run does not require SciPy.
 `t3-nbody/` records the dimensionless equilateral three-body benchmark. Its analytic orbit, local RK4 cross-check, and repulsive-force negative control only support this symmetric fixture; perturbed motion and real missions remain open gates.
 `t3-perturbed-audit.json` records a pinned-SciPy check of two short, synthetic velocity perturbations. `t3-perturbed-runs/` and `t3-perturbed-run-audit.json` bind the same grid to an optional replayable Tool/Provider Run with moved-run and mutation controls. It is separate from the core T3N Run and cannot support long-horizon, chaotic, or mission accuracy.
+`t3-figure-eight-audit.json` binds a locally precommitted, source-published
+equal-mass choreography to one- and ten-period DOP853/RK4 comparisons and a
+ten-period perturbation. Its finite numerical gates pass; chaotic-regime,
+general-N-body, scientific-holdout and real-mission gates remain open.
 `t2-physical/` records 100 synthetic ball-and-floor interventions and a complete paired counterfactual example. Its evidence concerns only the declared simulator; real interventions, causal identification, and external algorithm rights remain open gates.
 `wheel-audit.json` records installation and CLI replay from a temporary wheel-only environment.
 `t1-combined-cli-audit-v4.json` records the versioned console and package-module router,

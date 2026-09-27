@@ -17,7 +17,7 @@ from scripts import sync_optional_acceptance
 ROOT = Path(__file__).resolve().parents[1]
 OPTIONAL_ROWS = {
     "t2-physical": {"independent-endpoint-estimator", "independent-endpoint-run"},
-    "t3-dynamics": {"optional-expanded-horizon-grid"},
+    "t3-dynamics": {"optional-expanded-horizon-grid", "optional-published-figure-eight"},
     "t4-proof": {"exact-linear-invariant-subtrack", "exact-linear-invariant-run"},
 }
 
@@ -48,7 +48,7 @@ def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path)
     assert status == current_status
     verified = subprocess.run(
         [sys.executable, "scripts/verify_acceptance.py"], cwd=copied,
-        env=environment, capture_output=True, text=True, check=False, timeout=60,
+        env=environment, capture_output=True, text=True, check=False, timeout=120,
     )
     assert verified.returncode == 0, verified.stderr
     assert json.loads(verified.stdout)["status"] == "verified"
