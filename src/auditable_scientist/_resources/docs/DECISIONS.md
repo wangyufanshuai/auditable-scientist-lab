@@ -11,6 +11,14 @@ Implement a small internal bounded symbolic candidate generator first. The reque
 `symbolic-physics-engine` adapter is present as a protocol and manifest entry only; it
 remains `blocked` until a real path/repository, revision, and license are supplied.
 
+## 2026-09-27 — Located but non-operational symbolic engine
+
+Read-only discovery found `E:/86137/myai/symbolic-physics-engine`. Its directory is
+untracked beneath the parent Git repository, has no scoped LICENSE/COPYING file,
+and `AIFeynmanEngine.discover` unconditionally raises `NotImplementedError`.
+The exact file hashes are in `artifacts/symbolic-engine-audit.json`. Keep the
+adapter blocked; the parent repository's commit is not a revision of these files.
+
 ## 2026-09-20 — Delivery shape
 
 Ship CLI plus Markdown/JSON evidence first. Defer Web UI until deterministic replay,

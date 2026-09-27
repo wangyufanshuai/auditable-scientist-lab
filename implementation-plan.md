@@ -109,7 +109,7 @@ new physics, external scientific novelty, production readiness, or publication r
 | Target directory | resolved by this planning package | New files may be added here only |
 | Remote repository | public MIT repository, `main`, initial commit `d3e4f1383df7b21aced7816f16df9cb9cce87140` | Reconcile local plan with this baseline before the first implementation push |
 | 50-project index | present and lists projects 1–50 | Use project 05 as the first adapter |
-| `symbolic-physics-engine` | exact local path not found | External adapter is `blocked`; use bounded internal generator |
+| `symbolic-physics-engine` | local directory found at `E:/86137/myai/symbolic-physics-engine`, but untracked, unlicensed, and its `discover` entrypoint is a stub | External adapter remains `blocked`; use bounded internal generator and the read-only hash audit |
 | `engineering-research-copilot` | local code exists, root license/revision not confirmed | Use contract-level adapter, no code copy |
 | `paper2project` | evidence-ID workflow exists, root license/revision not confirmed | Map evidence IDs only after provenance manifest |
 | `physics-programmable-learning` | MIT repository with a dirty worktree | Read-only reference and evidence-policy source |

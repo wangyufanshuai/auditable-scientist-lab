@@ -80,7 +80,8 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 ## 当前入口
 
 - [implementation-plan.md](implementation-plan.md)：阶段、依赖、验收和最小实现顺序。
-- [source_inventory.json](source_inventory.json)：本地源项目和来源状态。
+- [source_inventory.json](source_inventory.json)：初始本地来源盘点的历史快照。
+- [artifacts/symbolic-engine-audit.json](artifacts/symbolic-engine-audit.json)：新发现的本地符号引擎源码指纹、实现与许可证阻断原因。
 - [schemas/run.schema.json](schemas/run.schema.json)：Run、Event、Claim、Evidence 契约草案。
 - [docs/EVIDENCE_POLICY.md](docs/EVIDENCE_POLICY.md)：证据等级和禁止性表述。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。

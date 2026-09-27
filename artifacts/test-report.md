@@ -23,6 +23,7 @@
 | Standalone wheel outside checkout | `python scripts/verify_wheel_install.py` | 0 | [wheel-audit.json](wheel-audit.json) records a current source fingerprint, wheel SHA-256, 21 packaged resources, seven CLI replays, and seven successful moved-run replays |
 | Copied checkout without original fixtures | `python scripts/verify_committed_relocation.py` | 0 | [relocation-audit.json](relocation-audit.json) records seven successful replays and rejection of a tampered T3 snapshot |
 | Portfolio verifier | `python scripts/verify_acceptance.py` | 0 | T1–T5 receipts plus T2P/T3N and all seven CLI runs verified |
+| Optional symbolic-provider source audit | `python scripts/audit_symbolic_engine.py` | 0 | [symbolic-engine-audit.json](symbolic-engine-audit.json) records the discovered local path and file hashes; the entrypoint is a stub, the directory is untracked and has no scoped license, so integration remains blocked |
 
 The test process emits the existing `pytest-asyncio` configuration deprecation warning; this
 project uses no async fixtures. The run's source and evidence files remain marked `unverified`

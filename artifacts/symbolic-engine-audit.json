@@ -1,0 +1,68 @@
+{
+  "schema_version": "external-symbolic-audit-v1",
+  "observed_at": "2026-09-27T06:11:31.158532+00:00",
+  "source_path": "E:/86137/myai/symbolic-physics-engine",
+  "source_revision": null,
+  "source_tracked_by_parent_git": false,
+  "entrypoint": "src/ai_feynman.py::AIFeynmanEngine.discover",
+  "entrypoint_unconditionally_raises_not_implemented": true,
+  "license_files": [],
+  "license_status": "missing-scoped-license",
+  "source_files": [
+    {
+      "path": "configs/default.yaml",
+      "bytes": 728,
+      "sha256": "e7828908a18e29b278de6a16fbefb34358f6f493ce2049ca08004e0c642daaf0"
+    },
+    {
+      "path": "data/.gitkeep",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "notebooks/exploration.ipynb",
+      "bytes": 1228,
+      "sha256": "b9bb54b7ac1af9257aa36e034431f5288e56189dbf13d52b7c630f8b385e6f38"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1003,
+      "sha256": "b83c3bfc90d194998b4cb878025ad3c7f6072f8fb94e8b358d9e3c70ac0ba93d"
+    },
+    {
+      "path": "src/ai_feynman.py",
+      "bytes": 3573,
+      "sha256": "15bc135cb2fa61a623c6de2579f1f2eeb9a777da1e849693b9204f2de8ffe09d"
+    },
+    {
+      "path": "src/conservation_check.py",
+      "bytes": 3201,
+      "sha256": "610dc7b7442574dcf0fac3b39cb1b468bbd23a4e8383af3a3b14006493964517"
+    },
+    {
+      "path": "src/dimensional_analysis.py",
+      "bytes": 3730,
+      "sha256": "e27e8c2ea6b3d613c2c3379d10bc1e4dc0e5c60b1e245fb81a0a691dbb1971ae"
+    },
+    {
+      "path": "src/lagrangian_search.py",
+      "bytes": 3242,
+      "sha256": "54511ffb124baf6ead369ddf219dc082e67294ae009a4791d78d2187bfa50230"
+    },
+    {
+      "path": "src/nonlinear_oscillator.py",
+      "bytes": 4236,
+      "sha256": "7b3e479185328cf6d2f315e531d5f883c974b3693b1848d5a85f6fac66328716"
+    }
+  ],
+  "adapter_status": "blocked",
+  "execution_allowed": false,
+  "code_reuse_allowed": false,
+  "reasons": [
+    "entrypoint is an unconditional NotImplementedError stub",
+    "source directory is untracked; no scoped commit revision",
+    "no scoped LICENSE/COPYING file"
+  ],
+  "audit_script_sha256": "bf738019bb109ae9b4461d5e48c3f90cc4f59aab43ccc9e95a82afc88e3164b6",
+  "boundary": "Read-only metadata inspection; no external source code was imported or copied."
+}

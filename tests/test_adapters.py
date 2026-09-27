@@ -18,6 +18,8 @@ def test_builtin_adapter_manifests_keep_missing_provider_blocked() -> None:
     by_id = {item.adapter_id: item for item in manifests}
     assert by_id["symbolic-physics-engine"].status is AdapterStatus.BLOCKED
     assert by_id["symbolic-physics-engine"].code_reuse_allowed is False
+    assert by_id["symbolic-physics-engine"].source_path_or_uri == "E:/86137/myai/symbolic-physics-engine"
+    assert by_id["symbolic-physics-engine"].source_revision.startswith("untracked-entrypoint-sha256:")
     assert all(item.read_only for item in manifests)
 
 

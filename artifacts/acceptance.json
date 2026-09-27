@@ -106,6 +106,14 @@
       "verified": true,
       "input_version": "wheel-audit-v2",
       "output_path": "artifacts/wheel-audit.json"
+    },
+    {
+      "name": "read-only-symbolic-source-audit",
+      "command": "python scripts/audit_symbolic_engine.py",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T06:11:31.158532+00:00",
+      "input_version": "15bc135cb2fa61a623c6de2579f1f2eeb9a777da1e849693b9204f2de8ffe09d",
+      "output_path": "artifacts/symbolic-engine-audit.json"
     }
   ],
   "scientific_boundaries": {
@@ -118,7 +126,7 @@
     "publication_readiness": false
   },
   "blocked": [
-    "external symbolic-physics-engine path, revision, and license",
+    "external symbolic-physics-engine implementation, scoped revision, and license",
     "real-data provenance and rights",
     "independent numerical backend",
     "T2 real intervention data, causal identification, data rights, and external algorithm source rights",

@@ -14,7 +14,7 @@ from jsonschema import Draft202012Validator
 
 from auditable_scientist.cli import _replay
 from auditable_scientist.domain import Run
-from auditable_scientist.adapters import Project05Adapter, Project05Snapshot
+from auditable_scientist.adapters import Project05Adapter, Project05Snapshot, built_in_manifests
 from auditable_scientist.runtime.event_log import EventLog
 from auditable_scientist.runtime.canonical import canonical_hash
 from auditable_scientist.runtime.replay import BoundPaths, ReplayManifest, ReplayReceipt, fingerprint_file
@@ -258,6 +258,28 @@ def main() -> None:
     if acceptance["status"] != "accepted-with-bounded-scope":
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
+    symbolic_audit = load("artifacts/symbolic-engine-audit.json")
+    symbolic_manifest = next(item for item in built_in_manifests() if item.adapter_id == "symbolic-physics-engine")
+    audited_sources = {row["path"]: row for row in symbolic_audit.get("source_files", [])}
+    entrypoint = audited_sources.get("src/ai_feynman.py", {})
+    if (
+        symbolic_audit.get("schema_version") != "external-symbolic-audit-v1"
+        or symbolic_audit.get("adapter_status") != "blocked"
+        or symbolic_audit.get("execution_allowed") is not False
+        or symbolic_audit.get("code_reuse_allowed") is not False
+        or symbolic_audit.get("source_tracked_by_parent_git") is not False
+        or symbolic_audit.get("source_revision") is not None
+        or symbolic_audit.get("entrypoint_unconditionally_raises_not_implemented") is not True
+        or symbolic_audit.get("license_files") != []
+        or symbolic_audit.get("license_status") != "missing-scoped-license"
+        or symbolic_audit.get("source_path") != symbolic_manifest.source_path_or_uri
+        or symbolic_manifest.status.value != "blocked"
+        or symbolic_manifest.code_reuse_allowed is not False
+        or symbolic_manifest.source_revision != f"untracked-entrypoint-sha256:{entrypoint.get('sha256')}"
+        or symbolic_audit.get("audit_script_sha256") != fingerprint_file(ROOT / "scripts/audit_symbolic_engine.py").sha256
+        or not any(item.get("name") == "read-only-symbolic-source-audit" and item.get("output_path") == "artifacts/symbolic-engine-audit.json" for item in acceptance["checks"])
+    ):
+        raise SystemExit("external symbolic provider provenance gate was incorrectly promoted")
 
     run_dir = ROOT / "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))

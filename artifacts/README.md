@@ -23,4 +23,5 @@ T3 Run does not require SciPy.
 `t3-nbody/` records the dimensionless equilateral three-body benchmark. Its analytic orbit, local RK4 cross-check, and repulsive-force negative control only support this symmetric fixture; perturbed motion and real missions remain open gates.
 `t2-physical/` records 100 synthetic ball-and-floor interventions and a complete paired counterfactual example. Its evidence concerns only the declared simulator; real interventions, causal identification, and external algorithm rights remain open gates.
 `wheel-audit.json` records installation and CLI replay from a temporary wheel-only environment.
+`symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 These artifacts do not establish real-data validity, publication readiness, or scientific novelty.
