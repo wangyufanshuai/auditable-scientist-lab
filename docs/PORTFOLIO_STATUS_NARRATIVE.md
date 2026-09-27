@@ -1,0 +1,22 @@
+Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims.
+An optional pinned-SciPy T1 audit integrates ten circular two-body transfers to an event-detected apoapsis, including one NASA-rounded-axis sensitivity case. A separate shared Tool/Policy/Provider Run binds this computation, moved replay, license snapshots and tamper negatives. Core acceptance checks saved provenance and replay statically; the separate `--verify` command recomputes in the pinned solver environment. It does not close mission, source-rights, or core CLI Run backend gates.
+The separate SciPy audit records source tags, installed license notices, pinned wheel hashes,
+and a nine-case oscillator cross-check. An optional versioned Tool/Provider Run now
+replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.
+
+T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy Tool/Provider Run replays two short perturbed trajectories and rejects altered result or license bytes; long-horizon/nonintegrable and real-mission gates remain open.
+The [expanded finite-horizon audit](t3-horizon-grid-audit.json) admits two smooth, synthetic 0.75-period cases under a fixed 12,000 DOP853-call and 35,000 fixed-step budget. Both one-period stress cases trigger the $0.5a$ close-approach event and are excluded from accuracy claims. The grid was selected after a feasibility preflight, so its inherited holdout label does not mean untouched scientific validation.
+
+T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only.
+
+An optional independent impact-to-impact endpoint estimator cross-checks the 100 T2P cases and 24 varied holdout states. The [audit](t2-independent-endpoint-audit.json) and mutation tests bind that synthetic computation; real interventions, observational identification, source rights, and external validation remain open.
+
+An offline Tool/Policy/Provider Run now binds the estimator to both input snapshots, one guarded call, event chain, moved replay, and mutation controls. Its real-world Claim stays `unverified`; [the Run audit](t2-independent-run-audit.json) remains synthetic engineering evidence.
+
+T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open.
+
+T4 also has an optional exact rational linear-invariant proof slice: two coefficient-identity certificates are rechecked independently with `Fraction`, and a leaky system is rejected. This establishes the declared linear identities only. It does not validate a physical transition model or close the general formal-backend gate.
+
+A separate offline Tool/Policy/Provider Run now binds that exact slice to a source and input snapshot, one guarded call, event chain, moved replay, and mutation controls. Its physical Claim stays `unverified`; [the audit](t4-linear-run-audit.json) is engineering evidence for the declared matrices only.
+
+T5 is a synthetic text-review demonstration. Each field is located in an embedded LF document with a SHA-256 hash and exact character span. An altered document is rejected. Source rights, real materials, safety, and human acceptance are unverified; execution remains forbidden.

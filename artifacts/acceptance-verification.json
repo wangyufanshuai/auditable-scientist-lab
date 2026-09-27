@@ -1,4 +1,8 @@
 {
+  "bounded_optional_acceptance_projection": {
+    "output_count": 9,
+    "status": "verified-bounded-optional-acceptance-projection"
+  },
   "run_status": "completed",
   "schema_version": "acceptance-verification-v1",
   "scientific_boundaries": [

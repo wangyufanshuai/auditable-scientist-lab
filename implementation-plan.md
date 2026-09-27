@@ -135,6 +135,10 @@
   `artifacts/relocation-audit.json` records the copied-checkout commands and hashes.
   Cross-OS and dependency-version drift remain unverified or fail closed; the
   project-05 upstream snapshot still records its original host path for provenance.
+- The pinned base-track generator is a source in seven committed Run manifests.
+  `scripts/sync_optional_acceptance.py` projects later T2/T3/T4 audits after base
+  generation; a copied-checkout test executes generation, projection, and full
+  portfolio acceptance without changing those historical source fingerprints.
 - Next engineering work is deeper independent backends and data/proof provenance.
   Scientific, rights, compute, and human-review gates remain open; public release
   remains a separate decision.
@@ -143,8 +147,8 @@
 
 1. The first benchmark is `E:/xuexi/projects/05_hohmann_mars_transfer`.
 2. The first symbolic-discovery implementation is an internal bounded candidate
-   generator. The external `symbolic-physics-engine` adapter remains `blocked` until
-   its real path or repository and license are provided.
+   generator. The located external `symbolic-physics-engine` remains `blocked`:
+   its discovery entrypoint is a stub and scoped license/revision are unresolved.
 3. The first release is an offline CLI with Markdown and JSON reports. Web UI follows
    only after the replay and evidence gates close.
 4. The formal remote is `https://github.com/wangyufanshuai/auditable-scientist-lab`.

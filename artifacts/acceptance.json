@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T09:18:43Z",
+  "recorded_at": "2026-09-27T09:37:31Z",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,9 +14,9 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 144,
+      "tests_passed": 147,
       "tests_skipped": 1,
-      "recorded_at": "2026-09-27T09:18:43Z",
+      "recorded_at": "2026-09-27T09:37:31Z",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },

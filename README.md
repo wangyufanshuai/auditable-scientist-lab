@@ -13,8 +13,8 @@
 Tool/Policy 入口执行的有限 evaluator；
 这些结果只支持声明范围内的 validated reproduction，不声称复现外部论文、真实世界因果、
 生产 solver、安全湿实验或发现新物理。
-外部 `symbolic-physics-engine` 路径尚未确认，因此首版使用内置的有界符号候选器；
-外部引擎适配保持 `blocked`。
+已定位外部 `symbolic-physics-engine` 目录，但入口仍是未实现的桩，且缺少范围明确的许可证；
+因此首版使用内置有界符号候选器，外部适配保持 `blocked`。
 
 长期路线覆盖共享任务契约中的五个科学垂直切片：物理定律发现、因果物理世界、
 物理动力学基础、携证模拟和生化协议验证。它们共享审计内核，但分别由领域评估器
@@ -37,6 +37,15 @@ python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<inpu
 仓库中已提交的验收收据另用 `python scripts/verify_acceptance.py` 核查；该命令
 要求与收据记录的 Python 和依赖版本一致。普通新环境可运行测试及生成自己的运行包，
 版本不一致时旧收据会按设计拒绝回放。
+
+基础轨道生成脚本被已提交 Run 的源码指纹绑定。需要重新生成轨道证据时，
+先在隔离副本中依次运行 `python scripts/generate_track_artifacts.py`、
+`python scripts/sync_optional_acceptance.py --write` 和
+`python scripts/verify_acceptance.py`；第二步从已保存的 T2/T3/T4 可选审计重建验收行，
+并按 [状态契约](docs/PORTFOLIO_STATUS_CONTRACT.json) 重建状态表。
+`python scripts/sync_optional_acceptance.py --verify` 可只读检查当前收据。
+仓库测试会在临时副本执行完整生成链，确认七个历史 CLI Run 仍可回放。
+详细边界见 [再生成方法](docs/REGENERATION_METHOD.md)。
 
 重放**已提交**的五轨运行包时，在 Windows AMD64 的 CPython 3.12.3 上新建
 虚拟环境，并从仓库根目录执行：

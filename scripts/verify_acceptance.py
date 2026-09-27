@@ -777,6 +777,13 @@ def main() -> None:
     if acceptance["status"] != "accepted-with-bounded-scope":
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
+    projected = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/sync_optional_acceptance.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if projected.returncode != 0:
+        raise SystemExit(f"optional acceptance projection differs: {projected.stderr.strip() or projected.stdout.strip()}")
+    projection_receipt = json.loads(projected.stdout)
     nasa_audit = load("artifacts/t1-nasa-factsheet-audit.json")
     nasa_replay = subprocess.run(
         [sys.executable, str(ROOT / "scripts/verify_t1_nasa_factsheets.py"), "verify"],
@@ -1260,6 +1267,7 @@ def main() -> None:
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,
         "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
         "t3_optional_horizon_static_provenance": optional_t3_horizon_static,
+        "bounded_optional_acceptance_projection": projection_receipt,
         "wheel_audit_verified": True,
         "t1_nasa_parameter_audit": {
             "status": nasa_audit["status"],
