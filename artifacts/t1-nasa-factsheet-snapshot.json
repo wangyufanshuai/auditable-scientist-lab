@@ -1,0 +1,57 @@
+{
+  "capture_method": "Read-only HTTPS GET; exact source page bytes were inspected locally, but only two short table rows per page are retained.",
+  "captured_at": "2026-09-27T07:56:45.485195+00:00",
+  "schema_version": "t1-nasa-factsheet-snapshot-v1",
+  "sources": [
+    {
+      "body": "earth",
+      "page_bytes": 5490,
+      "page_sha256": "1b06e3ec31249d063d40d1b38837fac89ddcd2f4b25268b38e8a6d5f413e70ef",
+      "rights_status": "page-specific-usage-unreviewed",
+      "rows": {
+        "semimajor_axis_million_km": {
+          "raw_html": "Semimajor axis (10<sup>6</sup> km)         149.598    ",
+          "row_sha256": "9ad1e737f874c7eaec737719da0f35e492579be71cf6d1e9588582eca1b2817e",
+          "values": [
+            "149.598"
+          ]
+        },
+        "sidereal_period_days": {
+          "raw_html": "Sidereal orbit period (days)    365.256",
+          "row_sha256": "fb836fac647bd6825c4f4631b85abbd293e7c10c8ee7dee40103ade14dfc3465",
+          "values": [
+            "365.256"
+          ]
+        }
+      },
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+    },
+    {
+      "body": "mars",
+      "page_bytes": 13261,
+      "page_sha256": "366b0ce9b69cbee370be904956748af954468a41b93dc71a796a986519aa8d74",
+      "rights_status": "page-specific-usage-unreviewed",
+      "rows": {
+        "semimajor_axis_million_km": {
+          "raw_html": "<tr>\n   <th align=\"left\">Semimajor axis (10<sup>6</sup> km)</th>\n   <td align=\"center\">227.956</td>\n   <td align=\"center\">149.598</td>\n   <td align=\"center\">1.524</td>\n</tr>",
+          "row_sha256": "ec72cc173121c17e41b18735688e71a9fb4a1bf3dce364e480e5bbd222c84f30",
+          "values": [
+            "227.956",
+            "149.598",
+            "1.524"
+          ]
+        },
+        "sidereal_period_days": {
+          "raw_html": "<tr>\n   <th align=\"left\">Sidereal orbit period (days)</th>\n   <td align=\"center\">686.980</td>\n   <td align=\"center\">365.256</td>\n   <td align=\"center\">1.881</td>\n</tr>",
+          "row_sha256": "65e0d6d937b8031fe12120f7654fac360fee9320f1a0c6107106051a42e14bbe",
+          "values": [
+            "686.980",
+            "365.256",
+            "1.881"
+          ]
+        }
+      },
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+    }
+  ]
+}

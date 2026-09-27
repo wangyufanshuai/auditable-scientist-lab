@@ -83,6 +83,8 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 它只给 `demo/text-reviewed`，始终要求人工复核且禁止实验执行，见
 [docs/T5_METHOD.md](docs/T5_METHOD.md)。当前八份 CLI 收据在
 `artifacts/track-runs-v16/` 和 `artifacts/acceptance-runs-v18/`。
+T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利和独立任务轨道验证仍未通过，
+见 [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)。
 
 ## 当前入口
 
@@ -92,6 +94,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [schemas/run.schema.json](schemas/run.schema.json)：Run、Event、Claim、Evidence 契约草案。
 - [docs/EVIDENCE_POLICY.md](docs/EVIDENCE_POLICY.md)：证据等级和禁止性表述。
 - [docs/T1_SYMBOLIC_GRAMMAR.md](docs/T1_SYMBOLIC_GRAMMAR.md)：T1 十表达式语法、训练集选择与发现边界。
+- [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)：外部圆整参数的离线敏感性审计与来源边界。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
@@ -107,9 +110,10 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
-- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与七份 CLI 回放收据。
-- [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的七份回放与篡改失败收据。
-- [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与七份 manifest 核验。
+- [artifacts/t1-nasa-factsheet-audit.json](artifacts/t1-nasa-factsheet-audit.json)：T1 圆整参数敏感性与未通过的外部来源 gate。
+- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与八份 CLI 回放收据。
+- [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
+- [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与八份 manifest 核验。
 - [artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
 
 ## 非目标

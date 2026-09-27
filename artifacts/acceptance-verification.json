@@ -7,6 +7,13 @@
     "No publication or novelty claim"
   ],
   "status": "verified",
+  "t1_nasa_parameter_audit": {
+    "real_data_claim": false,
+    "scientific_validation_claim": false,
+    "snapshot_sha256": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
+    "source_rights_status": "unreviewed-page-specific",
+    "status": "verified-offline-snapshot-only"
+  },
   "t1_replay": {
     "checks": [
       "input_hash",

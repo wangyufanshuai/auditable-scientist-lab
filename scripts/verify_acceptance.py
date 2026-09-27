@@ -400,6 +400,26 @@ def main() -> None:
     if acceptance["status"] != "accepted-with-bounded-scope":
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
+    nasa_audit = load("artifacts/t1-nasa-factsheet-audit.json")
+    nasa_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t1_nasa_factsheets.py"), "verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if (nasa_replay.returncode != 0
+            or json.loads(nasa_replay.stdout).get("status") != nasa_audit.get("status")
+            or nasa_audit.get("status") != "verified-offline-snapshot-only"
+            or nasa_audit.get("source_rights_status") != "unreviewed-page-specific"
+            or any(nasa_audit.get(key) is not False for key in (
+                "offline_origin_authentication", "real_data_claim", "scientific_validation_claim"
+            ))):
+        raise SystemExit("T1 NASA parameter audit differs from offline source-row replay or exceeds its boundary")
+    if not any(
+        item.get("name") == "optional-nasa-factsheet-parameter-sensitivity"
+        and item.get("output_path") == "artifacts/t1-nasa-factsheet-audit.json"
+        and item.get("input_version") == nasa_audit["snapshot_sha256"]
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 NASA parameter audit is missing its bounded command receipt")
     symbolic_audit = load("artifacts/symbolic-engine-audit.json")
     symbolic_manifest = next(item for item in built_in_manifests() if item.adapter_id == "symbolic-physics-engine")
     audited_sources = {row["path"]: row for row in symbolic_audit.get("source_files", [])}
@@ -722,6 +742,13 @@ def main() -> None:
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,
         "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
         "wheel_audit_verified": True,
+        "t1_nasa_parameter_audit": {
+            "status": nasa_audit["status"],
+            "snapshot_sha256": nasa_audit["snapshot_sha256"],
+            "source_rights_status": nasa_audit["source_rights_status"],
+            "real_data_claim": nasa_audit["real_data_claim"],
+            "scientific_validation_claim": nasa_audit["scientific_validation_claim"],
+        },
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"

@@ -14,6 +14,12 @@
 
 - P0–P7 T1 package: implemented locally. `artifacts/acceptance.json` records the CLI,
   policy receipt, replay checks, and bounded evidence boundary.
+- A read-only T1 parameter sensitivity audit captures the two orbital rows from each
+  NASA Earth/Mars fact sheet with URL and full-page hash metadata. The offline verifier
+  checks short-row hashes, cross-page Earth values, rounded-axis Hohmann sensitivity,
+  and a 0.1% Kepler sanity bound. Full-page origin authentication, page-specific
+  source rights, independent mission ephemeris comparison, and human scientific
+  review remain open. See `docs/T1_NASA_PARAMETER_SENSITIVITY.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.
@@ -26,7 +32,7 @@
   and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
 - An earlier fresh Python environment installed `.[test]` and passed 63 tests.
-  The pinned Windows AMD64 / CPython 3.12.3 environment now passes 74 tests and
+  The pinned Windows AMD64 / CPython 3.12.3 environment now passes 93 tests and
   matches all eight current Run manifests. Its exact dependency closure was installed
   from `requirements-replay-win-py312.txt` and passed `pip check`. The resulting
   `artifacts/replay-environment-audit.json` binds installed versions and manifest bytes.
