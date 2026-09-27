@@ -104,6 +104,13 @@
     "run_id": "run-t1-de440s-075f3221475bc496",
     "snapshot_geometry_only": true
   },
+  "t1_mars_center_geometry": {
+    "dynamic_verified_here": true,
+    "mars_center_state_available": true,
+    "mission_trajectory_validated": false,
+    "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
+    "status": "verified-source-tracked-center-geometry-only"
+  },
   "t1_nasa_parameter_audit": {
     "real_data_claim": false,
     "scientific_validation_claim": false,

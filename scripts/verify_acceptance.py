@@ -302,6 +302,85 @@ def verify_optional_t1_de440s_run() -> dict:
             "snapshot_geometry_only": True, "mission_claim_verified": False}
 
 
+def verify_optional_t1_mars_center() -> dict:
+    """Bind the MAR099s correction without treating it as mission validation."""
+
+    audit = load("artifacts/t1-mars-center-ephemeris-audit.json")
+    snapshot = load("artifacts/t1-mars-center-ephemeris-snapshot.json")
+    expected_sources = {
+        "scripts/verify_t1_mars_center_ephemeris.py", "scripts/fetch_mar099s.py",
+        "src/auditable_scientist/adapters/naif_mars_center.py",
+        "src/auditable_scientist/adapters/naif_de440s.py",
+        "docs/T1_MARS_CENTER_EPHEMERIS.md", "requirements-t1-mars-center-win-py312.txt",
+        "artifacts/t1-de440s-ephemeris-snapshot.json",
+    }
+    expected_checks = {
+        "official_md5_matched", "pinned_sha256_matched", "de440s_source_preserved",
+        "fixed_departure_dates", "planetary_states_preserved", "mars_499_coverage",
+        "center_offset_bounded", "spice_chain_consistent", "mission_claim_unverified",
+        "wrong_kernel_rejected",
+    }
+    expected_boundaries = {
+        "mars_center_state_available": True,
+        "source_tracked_ephemeris_geometry": True,
+        "independent_planetary_ephemeris": False,
+        "spacecraft_trajectory_propagated": False,
+        "mission_trajectory_validated": False,
+        "scientific_holdout": False,
+        "publication_ready": False,
+    }
+    sources = audit.get("source_files", [])
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False) + "\n").encode("utf-8")
+    if (audit.get("schema_version") != "t1-mars-center-ephemeris-audit-v1"
+            or audit.get("status") != "verified-source-tracked-center-geometry-only"
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(audit["checks"].values())
+            or audit.get("boundaries") != expected_boundaries
+            or {item.get("path") for item in sources} != expected_sources
+            or len(sources) != len(expected_sources)
+            or any(fingerprint_file(ROOT / item["path"]).sha256 != item.get("sha256")
+                   or (ROOT / item["path"]).stat().st_size != item.get("bytes")
+                   for item in sources)
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or audit.get("kernel_local_paths") != {
+                "de440s": "data/naif/de440s.bsp", "mar099s": "data/naif/mar099s.bsp"}
+            or snapshot.get("sources") != audit.get("kernel_sources")
+            or snapshot.get("sources", {}).get("mar099s", {}).get("md5") !=
+            "fd7302dfbaa0c63ce85b1e98923ee6a1"
+            or snapshot.get("sources", {}).get("mar099s", {}).get("sha256") !=
+            "997dc93ba640e476da7a494d2237dcdeb145e528db37be8ccee588c615e4e1ff"
+            or snapshot.get("claim_status") != "unverified"
+            or snapshot.get("evidence_level") != "real-data"
+            or snapshot.get("mars_499_coverage_et_seconds") != [-157809600.0, 1577880000.0]
+            or [row.get("departure_jd_tdb") for row in snapshot.get("cases", [])] !=
+            [2460584.5, 2461375.5]
+            or any(not 0 <= row["center_barycenter_separation_m"] < 1
+                   or not 0 <= row["mars_center_arrival_gap_km"] < 600_000_000
+                   for row in snapshot["cases"])
+            or audit.get("source_rights", {}).get("kernels_redistributed_in_repository") is not False
+            or audit.get("source_rights", {}).get("applies_to_unrelated_sources") is not False):
+        raise ValueError("Mars-center saved source, rights, or scientific boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("Mars-center audit has no timezone-aware timestamp")
+    de440s = ROOT / "data/naif/de440s.bsp"
+    mar099s = ROOT / "data/naif/mar099s.bsp"
+    dynamic_verified = False
+    if (de440s.is_file() and mar099s.is_file()
+            and importlib.util.find_spec("spiceypy") is not None):
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_mars_center_ephemeris.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+        )
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"Mars-center dynamic audit failed: {command.stderr.strip()}")
+        dynamic_verified = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic_verified, "mars_center_state_available": True,
+            "mission_trajectory_validated": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -1107,6 +1186,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 DE440s portable Run has no command receipt")
+    mars_center = verify_optional_t1_mars_center()
+    if not any(
+        item.get("name") == "optional-t1-mars-center-fixed-date-geometry"
+        and item.get("output_path") == "artifacts/t1-mars-center-ephemeris-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_mars_center_ephemeris.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 Mars-center optional geometry audit has no command receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1601,6 +1689,7 @@ def main() -> None:
         "t1_combined_package_cli": t1_combined_cli,
         "t1_de440s_geometry": de440s,
         "t1_de440s_snapshot_run": de440s_run,
+        "t1_mars_center_geometry": mars_center,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

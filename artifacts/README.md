@@ -33,6 +33,9 @@ snapshot is not a spacecraft trajectory or independent mission validation.
 `t1-de440s-run-audit.json` binds that small snapshot to an offline Tool/Policy/
 Provider Run with moved replay and mutation controls. Run replay recomputes
 geometry from saved states; it does not rerun the NAIF kernel.
+`t1-mars-center-ephemeris-snapshot.json` and its audit add a checksum-verified
+MAR099s mass-center offset to the DE440s planetary states. This supplies a
+Mars-center geometry diagnostic, not a spacecraft encounter or mission proof.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
 geometry comparisons. None of these artifacts establishes real-mission validity,

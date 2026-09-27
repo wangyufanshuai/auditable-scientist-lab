@@ -8,11 +8,11 @@
     {
       "acceptance": "artifacts/acceptance.json",
       "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",
-      "next_step": "add rights-cleared Mars-center and spacecraft-state comparisons, then seek independent mission review",
+      "next_step": "add independently archived spacecraft states and trajectory propagation, then seek expert mission review",
       "open_gates": [
         "external symbolic engine",
-        "real-data provenance",
-        "dated mission ephemeris"
+        "mission trajectory provenance and rights",
+        "independent spacecraft-state comparison"
       ],
       "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",
       "public_release": false,

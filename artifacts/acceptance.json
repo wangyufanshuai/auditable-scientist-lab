@@ -1,8 +1,8 @@
 {
   "blocked": [
     "external symbolic-physics-engine implementation, scoped revision, and license",
-    "real-data provenance and rights",
-    "independent numerical backend",
+    "mission trajectory provenance and rights",
+    "independent spacecraft propagation and mission comparison",
     "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
     "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
     "T4 general formal proof backend and transition model coverage",
@@ -15,9 +15,9 @@
       "input_version": "working-tree-2026-09-27",
       "name": "unit-contract-runtime-tests",
       "output_path": "artifacts/test-report.md",
-      "recorded_at": "2026-09-27T12:24:27Z",
-      "tests_passed": 182,
-      "tests_skipped": 1
+      "recorded_at": "2026-09-27T12:44:56.986Z",
+      "tests_passed": 185,
+      "tests_skipped": 0
     },
     {
       "command": "python -m pip install -e . --no-deps --no-build-isolation",
@@ -181,6 +181,14 @@
       "name": "optional-t1-de440s-portable-snapshot-run",
       "output_path": "artifacts/t1-de440s-run-audit.json",
       "recorded_at": "2026-09-27T12:18:34.427503+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_mars_center_ephemeris.py --verify",
+      "exit_code": 0,
+      "input_version": "515e3c415fbb22cd4e628105ffb51434f39ceb58cdd243cfbcac52a448443d9d",
+      "name": "optional-t1-mars-center-fixed-date-geometry",
+      "output_path": "artifacts/t1-mars-center-ephemeris-audit.json",
+      "recorded_at": "2026-09-27T12:34:15.247460+00:00"
     },
     {
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",

@@ -28,10 +28,10 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-27T12:00:04.206828+00:00",
+  "recorded_at": "2026-09-27T12:41:51.282290+00:00",
   "replay_manifest_hashes": {
     "T1": "1508118b0b6811b98c20da6aa3c76025e7c45128c0546e5bd69f2a523a3cd8e0",
-    "T1V2": "a14844621f89528392f92cff7f6d146d4e28d994090bc3de62c932197d8f52fb",
+    "T1V2": "961df21b320f36f2415e1c4ffbdcaaaf6a939f722d177ea157488e8b51f563fc",
     "T2": "4073f58c862edacdeddc2ac833b6530158f407a8d143f7babfe44d99ca2c8112",
     "T2P": "ecf5da6b43ba14c6db1aff67c4547054d4c9af5792b3db3722be6ede9ad36e9c",
     "T3": "d126457c6a150725aefdc6607a868ed8d46399569fa21684184347e7ea04a07a",
@@ -42,7 +42,7 @@
   },
   "schema_version": "wheel-audit-v6",
   "script_sha256": "6ac4160e0ee684593bc4e3f085f8c91a71b4758eb9ab1ba42be4574365fd01e5",
-  "source_snapshot_sha256": "c9c52b8bc5c659337cd983b4892f03f59c6835671e50c277111de4c6fab2e10a",
+  "source_snapshot_sha256": "11bb55f3b219fc6965a9bd252bef8a89a181769e314466d90c3540b3461dc662",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t4_bounded_result_and_unverified_run_claim": true,
@@ -50,5 +50,5 @@
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "bc833873fbcd3f6bc9f13de3b87fc78ab3a2246e90b5d30b24c8e8a7e3bd8926"
+  "wheel_sha256": "3bf71403735a7780e562bf85b6a2080cac10873eb4fd714fafcdecd3ea017be3"
 }
