@@ -32,6 +32,10 @@ from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, veri
 from auditable_scientist.tracks.runner import run_registered_track
 from auditable_scientist.track_cli import replay_track_run
 from auditable_scientist.tools.numerical import hohmann_baseline
+if __package__:
+    from .verify_t1_core_orbit import build_audit as build_t1_core_orbit_audit
+else:
+    from verify_t1_core_orbit import build_audit as build_t1_core_orbit_audit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,6 +55,24 @@ def wheel_source_snapshot_hash(root: Path = ROOT) -> str:
         digest.update(path.relative_to(root).as_posix().encode("utf-8") + b"\0")
         digest.update(hashlib.sha256(path.read_bytes()).digest())
     return digest.hexdigest()
+
+
+def verify_core_t1_orbit() -> dict:
+    """Recompute the dependency-free propagation receipt in the core environment."""
+    saved = load("artifacts/t1-core-orbit-audit.json")
+    recorded_at = saved.pop("recorded_at", None)
+    if not isinstance(recorded_at, str):
+        raise ValueError("T1 core orbit audit has no timestamp")
+    timestamp = datetime.fromisoformat(recorded_at.replace("Z", "+00:00"))
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise ValueError("T1 core orbit audit timestamp is naive")
+    expected = build_t1_core_orbit_audit()
+    if (saved != expected or expected["status"] != "verified-synthetic-two-body-only"
+            or not all(expected["checks"].values())
+            or expected["boundaries"]["core_cli_run_integrated"] is not False):
+        raise ValueError("T1 core orbit recomputation, source, or scope differs")
+    return {"scope": "dynamic-pure-python-synthetic-two-body-recomputation",
+            "source_files_match": True, "checks": expected["checks"]}
 
 
 def verify_optional_t1_orbit_static() -> dict:
@@ -804,6 +826,14 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 NASA parameter audit is missing its bounded command receipt")
+    t1_core_orbit = verify_core_t1_orbit()
+    if not any(
+        item.get("name") == "t1-core-offline-orbit-propagation"
+        and item.get("output_path") == "artifacts/t1-core-orbit-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_core_orbit.py").sha256
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 core orbit audit is missing its recomputation receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1277,6 +1307,7 @@ def main() -> None:
             "scientific_validation_claim": nasa_audit["scientific_validation_claim"],
         },
         "t1_optional_orbit_static_provenance": t1_orbit_static,
+        "t1_core_orbit_recomputation": t1_core_orbit,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

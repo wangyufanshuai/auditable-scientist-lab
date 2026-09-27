@@ -11,6 +11,17 @@
     "No publication or novelty claim"
   ],
   "status": "verified",
+  "t1_core_orbit_recomputation": {
+    "checks": {
+      "all_errors_bounded": true,
+      "bounded_compute": true,
+      "nine_apoapses_detected": true,
+      "repulsive_force_rejected": true,
+      "time_error_shrinks_on_refinement": true
+    },
+    "scope": "dynamic-pure-python-synthetic-two-body-recomputation",
+    "source_files_match": true
+  },
   "t1_nasa_parameter_audit": {
     "real_data_claim": false,
     "scientific_validation_claim": false,

@@ -144,6 +144,14 @@
       "output_path": "artifacts/t1-nasa-factsheet-audit.json"
     },
     {
+      "name": "t1-core-offline-orbit-propagation",
+      "command": "python scripts/verify_t1_core_orbit.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T10:33:03.326116+00:00",
+      "input_version": "25b041013fbbc4dd047167ced167b476c3ea560013386cda5730e839891ea6e9",
+      "output_path": "artifacts/t1-core-orbit-audit.json"
+    },
+    {
       "name": "optional-t1-external-orbit-cross-check",
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",
       "exit_code": 0,
