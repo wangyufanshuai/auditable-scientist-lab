@@ -7,11 +7,12 @@
   "tracks": [
     {
       "acceptance": "artifacts/acceptance.json",
-      "next_step": "seek a rights-cleared ephemeris and evaluate a core CLI integration after replay gates",
+      "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v3.json",
+      "next_step": "route the console script to the versioned CLI without losing legacy replay, then seek a rights-cleared dated ephemeris",
       "open_gates": [
         "external symbolic engine",
         "real-data provenance",
-        "independent backend in the core CLI Run",
+        "versioned console-script routing",
         "dated mission ephemeris"
       ],
       "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",

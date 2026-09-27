@@ -123,6 +123,67 @@ def verify_core_t1_orbit_run() -> dict:
             "mutation_controls": observed["mutation_controls"], "main_cli_integrated": False}
 
 
+def verify_combined_t1_cli() -> dict:
+    """Recompute the v2 package CLI Run without weakening historical replay."""
+    audit = load("artifacts/t1-combined-cli-audit-v3.json")
+    relative = Path(audit.get("run_path", ""))
+    expected_checks = {
+        "one_combined_run", "fixed_holdout_passed", "numerical_grid_passed",
+        "mission_claim_unverified", "network_disabled", "cli_replay_equal",
+        "cli_inspect_bound", "report_export_equal", "relocated_replay_equal",
+        "legacy_t1_replay_preserved", "numerical_tamper_rejected",
+        "dataset_tamper_rejected", "event_tamper_rejected", "claim_tamper_rejected",
+        "missing_numerical_tamper_rejected",
+    }
+    expected_boundaries = {
+        "package_module_cli_integrated": True, "console_script_routed_to_v2": False,
+        "independent_time_propagation": True, "independent_orbit_derivation": False,
+        "synthetic_fixture_only": True, "real_data": False,
+        "dated_ephemeris": False, "mission_trajectory_validated": False,
+        "publication_ready": False,
+    }
+    sources = audit.get("source_files", [])
+    if (audit.get("schema_version") != "t1-combined-cli-audit-v3"
+            or audit.get("status") != "verified-bounded-combined-cli-run"
+            or audit.get("boundaries") != expected_boundaries
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(audit["checks"].values())
+            or audit.get("replay", {}).get("verified") is not True
+            or len(audit["replay"].get("checks", [])) != 8
+            or audit.get("legacy_replay", {}).get("verified") is not True
+            or relative.parts[:2] != ("artifacts", "t1-combined-runs-v3")
+            or len(relative.parts) != 3 or relative.name != audit.get("run_id")
+            or not relative.name.startswith("run-t1-v2-")
+            or {item.get("path") for item in sources} != {
+                "scripts/verify_t1_combined_cli.py", "docs/T1_COMBINED_CLI_V2.md",
+                "src/auditable_scientist/__main__.py", "src/auditable_scientist/cli_v2.py",
+                "src/auditable_scientist/tools/orbit_audit_v2.py",
+            } or len(sources) != 5):
+        raise ValueError("T1 combined CLI audit identity, checks, or boundary differs")
+    for item in sources:
+        path = ROOT / item["path"]
+        if (fingerprint_file(path).sha256 != item.get("sha256")
+                or path.stat().st_size != item.get("bytes")):
+            raise ValueError(f"T1 combined CLI source changed: {item['path']}")
+    run = load((relative / "run.json").as_posix())
+    if ([item.get("status") for item in run.get("claims", [])] != ["reproduced", "unverified"]
+            or [item.get("level") for item in run["claims"]] != ["validated-reproduction", "demo"]
+            or len(run.get("tools", [])) != 2 or run.get("policy", {}).get("network") != "disabled"):
+        raise ValueError("T1 v2 CLI Run exceeded its synthetic and mission claim boundary")
+    command = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t1_combined_cli.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+    )
+    if command.returncode != 0:
+        raise ValueError(f"T1 v2 CLI dynamic audit failed: {command.stderr.strip()}")
+    observed = json.loads(command.stdout)
+    if (observed.get("status") != audit["status"] or observed.get("run_id") != audit["run_id"]
+            or observed.get("replay") != audit["replay"] or observed.get("checks") != audit["checks"]):
+        raise ValueError("T1 v2 CLI dynamic audit differs from saved receipt")
+    return {"run_id": audit["run_id"], "replay": audit["replay"],
+            "checks": audit["checks"], "console_script_routed_to_v2": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -890,6 +951,14 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 numerical Tool/Provider Run is missing its replay receipt")
+    t1_combined_cli = verify_combined_t1_cli()
+    if not any(
+        item.get("name") == "t1-combined-package-cli-run"
+        and item.get("output_path") == "artifacts/t1-combined-cli-audit-v3.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_combined_cli.py").sha256
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 v2 package CLI Run is missing its dynamic acceptance receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1323,17 +1392,18 @@ def main() -> None:
 
     wheel = load("artifacts/wheel-audit.json")
     if (
-        wheel.get("schema_version") != "wheel-audit-v4"
+        wheel.get("schema_version") != "wheel-audit-v5"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
-        or wheel.get("all_eight_relocated_replays_equal") is not True
+        or wheel.get("all_nine_relocated_replays_equal") is not True
+        or wheel.get("t1v2_combined_run_and_unverified_mission_claim") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t4o_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t5_demo_text_review_and_unverified_run_claim") is not True
         or wheel.get("bundled_resource_count", 0) < 25
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
-        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}
+        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T1V2", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}
         or wheel.get("source_snapshot_sha256") != wheel_source_snapshot_hash()
         or wheel.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_wheel_install.py").sha256
         or not re.fullmatch(r"[a-f0-9]{64}", wheel.get("wheel_sha256", ""))
@@ -1365,6 +1435,7 @@ def main() -> None:
         "t1_optional_orbit_static_provenance": t1_orbit_static,
         "t1_core_orbit_recomputation": t1_core_orbit,
         "t1_core_orbit_tool_run": t1_core_orbit_run,
+        "t1_combined_package_cli": t1_combined_cli,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

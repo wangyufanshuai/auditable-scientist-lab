@@ -49,9 +49,10 @@ def invoke(command: list[str], *, cwd: Path, environment: dict[str, str], timeou
     return completed.stdout.strip()
 
 
-def replay(python: Path, run_dir: Path, *, cwd: Path, environment: dict[str, str]) -> dict[str, object]:
+def replay(python: Path, run_dir: Path, *, cwd: Path, environment: dict[str, str],
+           module: str = "auditable_scientist.cli") -> dict[str, object]:
     result = json.loads(invoke(
-        [str(python), "-m", "auditable_scientist.cli", "replay", str(run_dir)],
+        [str(python), "-m", module, "replay", str(run_dir)],
         cwd=cwd, environment=environment,
     ))
     if result.get("verified") is not True or len(result.get("checks", [])) != 8:
@@ -113,6 +114,28 @@ def main() -> None:
         invoke([str(python), "-m", "auditable_scientist.cli", "export-report", str(runs["T1"]), "--output", str(report)], cwd=temporary_root, environment=base_environment)
         if not report.is_file():
             raise RuntimeError("wheel did not export the T1 report")
+        invoke([str(python), "-m", "auditable_scientist", "--help"], cwd=temporary_root, environment=base_environment)
+        v2_config = temporary_root / "hohmann-v2.json"
+        invoke([str(python), "-m", "auditable_scientist", "init", str(v2_config)], cwd=temporary_root, environment=base_environment)
+        runs["T1V2"] = Path(invoke(
+            [str(python), "-m", "auditable_scientist", "run", str(v2_config), "--offline", "--seed", "17", "--output-dir", str(temporary_root / "runs-v2")],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        invoke([str(python), "-m", "auditable_scientist", "inspect", str(runs["T1V2"])], cwd=temporary_root, environment=base_environment)
+        v2_report = temporary_root / "hohmann-v2-report.md"
+        invoke([str(python), "-m", "auditable_scientist", "export-report", str(runs["T1V2"]), "--output", str(v2_report)], cwd=temporary_root, environment=base_environment)
+        if not v2_report.is_file():
+            raise RuntimeError("wheel did not export the combined T1 report")
+        v2_run = json.loads((runs["T1V2"] / "run.json").read_text(encoding="utf-8"))
+        v2_orbit = json.loads((runs["T1V2"] / "numerical.json").read_text(encoding="utf-8"))
+        if (v2_run["status"] != "completed" or len(v2_run["tools"]) != 2
+                or len(v2_run["providers"]) != 2
+                or [claim["status"] for claim in v2_run["claims"]] != ["reproduced", "unverified"]
+                or [claim["level"] for claim in v2_run["claims"]] != ["validated-reproduction", "demo"]
+                or v2_run["policy"]["network"] != "disabled"
+                or v2_orbit["status"] != "passed-synthetic-two-body"
+                or not all(v2_orbit["checks"].values())):
+            raise RuntimeError("wheel T1 combined CLI Run or scientific boundary differs")
         for track_id, fixture_name in TRACKS.items():
             fixture = temporary_root / f"{fixture_name}.json"
             invoke([str(python), "-m", "auditable_scientist.cli", "init-track", track_id, str(fixture)], cwd=temporary_root, environment=base_environment)
@@ -136,19 +159,26 @@ def main() -> None:
                 or t5_run["claims"][0]["status"] != "unverified"):
             raise RuntimeError("wheel T5 text-review boundary differs")
 
-        original = {track_id: replay(python, path, cwd=temporary_root, environment=base_environment) for track_id, path in runs.items()}
+        original = {
+            track_id: replay(python, path, cwd=temporary_root, environment=base_environment,
+                             module="auditable_scientist" if track_id == "T1V2" else "auditable_scientist.cli")
+            for track_id, path in runs.items()
+        }
         moved_root = temporary_root / "moved-runs"
         moved_root.mkdir()
         moved: dict[str, dict[str, object]] = {}
         for track_id, path in runs.items():
             destination = moved_root / path.name
             shutil.copytree(path, destination)
-            moved[track_id] = replay(python, destination, cwd=temporary_root, environment=base_environment)
+            moved[track_id] = replay(
+                python, destination, cwd=temporary_root, environment=base_environment,
+                module="auditable_scientist" if track_id == "T1V2" else "auditable_scientist.cli",
+            )
             if moved[track_id] != original[track_id]:
                 raise RuntimeError(f"wheel run changed on relocation: {track_id}")
 
     result = {
-        "schema_version": "wheel-audit-v4",
+        "schema_version": "wheel-audit-v5",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "status": "verified-within-offline-fixtures",
         "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
@@ -161,7 +191,8 @@ def main() -> None:
         "bundled_resource_count": resource_count,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
-        "all_eight_relocated_replays_equal": moved == original,
+        "all_nine_relocated_replays_equal": moved == original,
+        "t1v2_combined_run_and_unverified_mission_claim": True,
         "t4_bounded_result_and_unverified_run_claim": True,
         "t4o_bounded_result_and_unverified_run_claim": True,
         "t5_demo_text_review_and_unverified_run_claim": True,

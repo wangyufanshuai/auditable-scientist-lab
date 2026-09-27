@@ -11,6 +11,41 @@
     "No publication or novelty claim"
   ],
   "status": "verified",
+  "t1_combined_package_cli": {
+    "checks": {
+      "claim_tamper_rejected": true,
+      "cli_inspect_bound": true,
+      "cli_replay_equal": true,
+      "dataset_tamper_rejected": true,
+      "event_tamper_rejected": true,
+      "fixed_holdout_passed": true,
+      "legacy_t1_replay_preserved": true,
+      "missing_numerical_tamper_rejected": true,
+      "mission_claim_unverified": true,
+      "network_disabled": true,
+      "numerical_grid_passed": true,
+      "numerical_tamper_rejected": true,
+      "one_combined_run": true,
+      "relocated_replay_equal": true,
+      "report_export_equal": true
+    },
+    "console_script_routed_to_v2": false,
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "f4335f841b453eaa99bed866ddba0b57f4fe04fc6a2050f7eccdb0cf55b66615",
+      "verified": true
+    },
+    "run_id": "run-t1-v2-bd8e4e217fae77f1"
+  },
   "t1_core_orbit_recomputation": {
     "checks": {
       "all_errors_bounded": true,

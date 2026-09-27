@@ -100,12 +100,12 @@
       "output_path": "artifacts/acceptance-verification.json"
     },
     {
-      "name": "fresh-wheel-eight-run-replay",
+      "name": "fresh-wheel-nine-run-replay",
       "command": "python scripts/verify_wheel_install.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:46:31.772696+00:00",
+      "recorded_at": "2026-09-27T11:17:45.952717+00:00",
       "verified": true,
-      "input_version": "wheel-audit-v4",
+      "input_version": "wheel-audit-v5",
       "output_path": "artifacts/wheel-audit.json"
     },
     {
@@ -158,6 +158,14 @@
       "recorded_at": "2026-09-27T10:43:29.450584+00:00",
       "input_version": "1cc9dd08a94b980e968840aaabdea88ccacced873afc97455fcb1e8c8c843321",
       "output_path": "artifacts/t1-core-orbit-run-audit.json"
+    },
+    {
+      "name": "t1-combined-package-cli-run",
+      "command": "python scripts/verify_t1_combined_cli.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T11:16:35.382000+00:00",
+      "input_version": "cd242c787239211745339ca125851252556be76118084731129fdd79e1077921",
+      "output_path": "artifacts/t1-combined-cli-audit-v3.json"
     },
     {
       "name": "optional-t1-external-orbit-cross-check",

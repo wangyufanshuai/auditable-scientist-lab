@@ -174,7 +174,7 @@ def desired_outputs() -> dict[Path, str]:
     })
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
-        "T1": {"external symbolic engine", "real-data provenance", "independent backend in the core CLI Run", "dated mission ephemeris"},
+        "T1": {"external symbolic engine", "real-data provenance", "versioned console-script routing", "dated mission ephemeris"},
         "T2": {"real interventions", "causal identification", "data rights", "external algorithm source rights"},
         "T3": {"long-horizon/nonintegrable multi-body validation", "real-mission provenance", "long-horizon compute budget"},
         "T4": {"general formal proof backend", "reviewed physical transition model", "real-world validation"},

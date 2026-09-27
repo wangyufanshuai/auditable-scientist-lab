@@ -1,0 +1,90 @@
+{
+  "boundaries": {
+    "console_script_routed_to_v2": false,
+    "dated_ephemeris": false,
+    "independent_orbit_derivation": false,
+    "independent_time_propagation": true,
+    "mission_trajectory_validated": false,
+    "package_module_cli_integrated": true,
+    "publication_ready": false,
+    "real_data": false,
+    "synthetic_fixture_only": true
+  },
+  "checks": {
+    "claim_tamper_rejected": true,
+    "cli_inspect_bound": true,
+    "cli_replay_equal": true,
+    "dataset_tamper_rejected": true,
+    "event_tamper_rejected": true,
+    "fixed_holdout_passed": true,
+    "legacy_t1_replay_preserved": true,
+    "missing_numerical_tamper_rejected": true,
+    "mission_claim_unverified": true,
+    "network_disabled": true,
+    "numerical_grid_passed": true,
+    "numerical_tamper_rejected": true,
+    "one_combined_run": true,
+    "relocated_replay_equal": true,
+    "report_export_equal": true
+  },
+  "legacy_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
+    "verified": true
+  },
+  "recorded_at": "2026-09-27T11:16:35.382000+00:00",
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "f4335f841b453eaa99bed866ddba0b57f4fe04fc6a2050f7eccdb0cf55b66615",
+    "verified": true
+  },
+  "run_id": "run-t1-v2-bd8e4e217fae77f1",
+  "run_path": "artifacts/t1-combined-runs-v3/run-t1-v2-bd8e4e217fae77f1",
+  "schema_version": "t1-combined-cli-audit-v3",
+  "source_files": [
+    {
+      "bytes": 9761,
+      "path": "scripts/verify_t1_combined_cli.py",
+      "sha256": "cd242c787239211745339ca125851252556be76118084731129fdd79e1077921"
+    },
+    {
+      "bytes": 2118,
+      "path": "docs/T1_COMBINED_CLI_V2.md",
+      "sha256": "bcdd6bb726d3d23fe853d612dcba97db1fa2178afef5ff645a46ea6a476dc44e"
+    },
+    {
+      "bytes": 171,
+      "path": "src/auditable_scientist/__main__.py",
+      "sha256": "deb15892f3f26c04208c782308051d0c68e976f315d432bd39f49ac55b3190e2"
+    },
+    {
+      "bytes": 23589,
+      "path": "src/auditable_scientist/cli_v2.py",
+      "sha256": "5daf09411b8b4284b626a104a9907b4896815e029286133abbb3a69c3b749881"
+    },
+    {
+      "bytes": 4395,
+      "path": "src/auditable_scientist/tools/orbit_audit_v2.py",
+      "sha256": "1f30ab5bbf613d901d6fd0c9b7e20c01d4c623bcf623af835fcbf7fb900d7c35"
+    }
+  ],
+  "status": "verified-bounded-combined-cli-run"
+}
