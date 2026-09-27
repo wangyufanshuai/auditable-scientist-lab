@@ -284,6 +284,14 @@
     "manifest_hash": "830b97e01145717034957e4ee2d3439ff7de8d1fd2cde4999e1f79c3aaa67c0d",
     "verified": true
   },
+  "t3_optional_pythagorean_static_provenance": {
+    "chaotic_regime_validated": false,
+    "pinned_scipy_recomputation_required": true,
+    "scenario_count": 2,
+    "scientific_holdout": false,
+    "scope": "static-pre-event-number-and-boundary-check-only",
+    "source_files_match": true
+  },
   "t3_perturbed_static_provenance": {
     "pinned_scipy_recomputation_required": true,
     "scope": "static-source-and-boundary-check-only",

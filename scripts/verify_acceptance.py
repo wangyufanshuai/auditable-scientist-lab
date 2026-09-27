@@ -1353,6 +1353,128 @@ def verify_optional_t3_figure_eight_static(audit: dict | None = None) -> dict:
             "scientific_holdout": False, "mission_validation": False}
 
 
+def verify_optional_t3_pythagorean_static(audit: dict | None = None) -> dict:
+    """Bind the saved close-encounter numbers without importing SciPy."""
+
+    audit = audit if audit is not None else load("artifacts/t3-pythagorean-audit.json")
+    protocol = load("docs/T3_PYTHAGOREAN_PROTOCOL.json")
+    protocol_sha = "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927"
+    expected_sources = {
+        "scripts/verify_t3_pythagorean.py", "docs/T3_PYTHAGOREAN_PROTOCOL.json",
+        "docs/T3_PYTHAGOREAN_PROTOCOL.md", "scripts/verify_t3_external_scipy.py",
+        "requirements-t3-scipy-win-py312.txt",
+    }
+    expected_checks = {
+        "initial_state", "finite_pre_event_comparison", "external_energy",
+        "independent_energy", "angular_momentum", "center_of_mass",
+        "terminal_close_approach", "event_pair_match", "event_time_agreement",
+        "historical_event_window", "negative_wrong_force", "compute_budget",
+    }
+    rows = audit.get("rows", [])
+    if (audit.get("schema_version") != "t3-pythagorean-audit-v1"
+            or audit.get("status") != "passed-bounded-close-encounter-numerics-only"
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "e74409e"
+            or fingerprint_file(ROOT / "docs/T3_PYTHAGOREAN_PROTOCOL.json").sha256 != protocol_sha
+            or audit.get("scientific_boundaries") != protocol["scientific_boundaries"]
+            or audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
+            or audit.get("environment") != load("artifacts/t3-external-scipy.json").get("environment")
+            or len(rows) != 2
+            or [row.get("id") for row in rows] != [item["id"] for item in protocol["scenarios"]]
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(value is True for value in audit["checks"].values())
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {item.get("path") for item in audit["source_files"]} != expected_sources):
+        raise ValueError("T3 Pythagorean protocol, source, or boundary differs")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str) or datetime.fromisoformat(timestamp).tzinfo is None:
+        raise ValueError("T3 Pythagorean audit timestamp differs")
+    for source in audit["source_files"]:
+        fingerprint = fingerprint_file(ROOT / source["path"])
+        if (source.get("sha256") != fingerprint.sha256
+                or source.get("bytes") != fingerprint.bytes):
+            raise ValueError("T3 Pythagorean source file differs")
+
+    def finite(value: object) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("T3 Pythagorean numeric field is not finite")
+        return float(value)
+
+    gates, budget = protocol["engineering_gates"], protocol["compute_budget"]
+    external_calls = independent_calls = attempts = 0
+    for row, scenario in zip(rows, protocol["scenarios"], strict=True):
+        if row.get("body_zero_x_offset") != scenario["body_zero_x_offset"]:
+            raise ValueError("T3 Pythagorean scenario differs")
+        reference, independent = row["reference"], row["independent"]
+        for solver in (reference, independent):
+            event_time = finite(solver["event_time"])
+            if not 10 < event_time < protocol["sampling"]["maximum_time"]:
+                raise ValueError("T3 Pythagorean event interval differs")
+            final_state = solver.get("final_state")
+            if (solver.get("event_pair") not in (0, 1, 2)
+                    or not math.isclose(finite(solver.get("end_time")), event_time, abs_tol=1e-10)
+                    or not isinstance(final_state, list) or len(final_state) != 12):
+                raise ValueError("T3 Pythagorean terminal state differs")
+            pair = ((0, 1), (0, 2), (1, 2))[solver["event_pair"]]
+            event_distance = math.hypot(
+                finite(final_state[2*pair[0]])-finite(final_state[2*pair[1]]),
+                finite(final_state[2*pair[0]+1])-finite(final_state[2*pair[1]+1]))
+            if abs(event_distance-protocol["collision_monitor"]["minimum_pair_separation"]) > 1e-6:
+                raise ValueError("T3 Pythagorean terminal separation differs")
+            diagnostics = solver["diagnostics"]
+            if (finite(diagnostics["angular_momentum_drift"]) >
+                    gates["absolute_angular_momentum_drift_max"]
+                    or finite(diagnostics["center_of_mass_drift"]) >
+                    gates["center_of_mass_drift_max"]):
+                raise ValueError("T3 Pythagorean invariant gate differs")
+        if (reference["event_pair"] != independent["event_pair"]
+                or abs(finite(reference["event_time"])-finite(independent["event_time"])) >
+                gates["event_time_agreement_max"]
+                or finite(reference["diagnostics"]["relative_energy_drift"]) >
+                gates["external_relative_energy_drift_max"]
+                or finite(independent["diagnostics"]["relative_energy_drift"]) >
+                gates["independent_relative_energy_drift_max"]):
+            raise ValueError("T3 Pythagorean event or energy gate differs")
+        if len(row.get("comparison_errors", [])) != 3:
+            raise ValueError("T3 Pythagorean comparison inventory differs")
+        for error, time in zip(row["comparison_errors"],
+                               protocol["sampling"]["comparison_times"], strict=True):
+            left, right = reference["samples"][str(time)], independent["samples"][str(time)]
+            if (error.get("time") != time or len(left) != 12 or len(right) != 12
+                    or any(not math.isfinite(finite(x)) for x in [*left, *right])):
+                raise ValueError("T3 Pythagorean saved phase state differs")
+            for key, offset, scale in (("position", 0, protocol["system"]["position_normalizer"]),
+                                       ("velocity", 6, protocol["system"]["velocity_normalizer"])):
+                computed = max(math.hypot(left[offset+2*i]-right[offset+2*i],
+                                          left[offset+2*i+1]-right[offset+2*i+1])/scale
+                               for i in range(3))
+                if (not math.isclose(computed, finite(error[key]), abs_tol=1e-14)
+                        or computed > gates[f"comparison_{key}_error_max"]):
+                    raise ValueError("T3 Pythagorean saved comparison differs")
+        external_calls += finite(reference["rhs_calls"])
+        independent_calls += finite(independent["rhs_calls"])
+        attempts += finite(independent["step_attempts"])
+    window = protocol["collision_monitor"]["published_state_event_time_window"]
+    if not window[0] <= rows[0]["reference"]["event_time"] <= window[1]:
+        raise ValueError("T3 Pythagorean historical event window differs")
+    negative = audit.get("negative_control_rhs_calls", {})
+    external_calls += finite(negative.get("attractive"))+finite(negative.get("repulsive"))
+    if (finite(audit.get("negative_repulsive_position_error")) <
+            gates["negative_repulsive_position_error_min"]
+            or audit.get("observed_budget") != {
+                "external_rhs_calls_total": int(external_calls),
+                "independent_rhs_calls_total": int(independent_calls),
+                "independent_step_attempts_total": int(attempts)}
+            or external_calls > budget["external_rhs_calls_total_max"]
+            or independent_calls > budget["independent_rhs_calls_total_max"]
+            or attempts > budget["independent_step_attempts_total_max"]):
+        raise ValueError("T3 Pythagorean negative control or budget differs")
+    return {"scope": "static-pre-event-number-and-boundary-check-only",
+            "source_files_match": True, "pinned_scipy_recomputation_required": True,
+            "scenario_count": 2, "scientific_holdout": False,
+            "chaotic_regime_validated": False}
+
+
 def verify_optional_t3_perturbed_run_static() -> dict:
     """Verify the optional shared Run and its manifest without importing SciPy."""
 
@@ -1502,6 +1624,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "optional-perturbed-three-body-run": "t3-perturbed-run-audit-v1",
             "optional-expanded-horizon-grid": "t3-horizon-grid-audit-v1",
             "optional-published-figure-eight": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d",
+            "optional-pythagorean-close-encounter": "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927",
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
@@ -1971,11 +2094,20 @@ def main() -> None:
                and item.get("input_version") == figure_protocol_sha
                and item.get("exit_code") == 0 for item in acceptance["checks"]):
         raise SystemExit("T3 published figure-eight is missing from root acceptance")
+    pythagorean_protocol_sha = "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927"
+    for checks, name in ((t3_checks, "optional-pythagorean-close-encounter"),
+                         (acceptance["checks"], "optional-t3-pythagorean-close-encounter")):
+        if not any(item.get("name") == name
+                   and item.get("output_path") == "artifacts/t3-pythagorean-audit.json"
+                   and item.get("input_version") == pythagorean_protocol_sha
+                   and item.get("exit_code") == 0 for item in checks):
+            raise SystemExit("T3 Pythagorean close encounter is missing from acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
     optional_t3_perturbed_static = verify_optional_t3_perturbed_static()
     optional_t3_perturbed_run_static = verify_optional_t3_perturbed_run_static()
     optional_t3_horizon_static = verify_optional_t3_horizon_static()
     optional_t3_figure_eight_static = verify_optional_t3_figure_eight_static()
+    optional_t3_pythagorean_static = verify_optional_t3_pythagorean_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
@@ -2194,6 +2326,7 @@ def main() -> None:
         "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
         "t3_optional_horizon_static_provenance": optional_t3_horizon_static,
         "t3_optional_figure_eight_static_provenance": optional_t3_figure_eight_static,
+        "t3_optional_pythagorean_static_provenance": optional_t3_pythagorean_static,
         "bounded_optional_acceptance_projection": projection_receipt,
         "wheel_audit_verified": True,
         "t1_nasa_parameter_audit": {

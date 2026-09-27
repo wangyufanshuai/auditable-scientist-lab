@@ -63,6 +63,14 @@
       "name": "optional-published-figure-eight",
       "output_path": "artifacts/t3-figure-eight-audit.json",
       "recorded_at": "2026-09-27T14:21:52.251141+00:00"
+    },
+    {
+      "command": "& \"$env:TEMP\\auditable-scientist-figure8-20260927\\Scripts\\python.exe\" scripts/verify_t3_pythagorean.py --verify",
+      "exit_code": 0,
+      "input_version": "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927",
+      "name": "optional-pythagorean-close-encounter",
+      "output_path": "artifacts/t3-pythagorean-audit.json",
+      "recorded_at": "2026-09-27T14:46:01.716392+00:00"
     }
   ],
   "evaluator": {

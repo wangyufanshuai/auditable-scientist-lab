@@ -37,6 +37,10 @@ OPTIONAL = (
      "t3-figure-eight-audit-v1", "passed-finite-published-figure-eight-numerics-only",
      '& "$env:TEMP\\auditable-scientist-figure8-20260927\\Scripts\\python.exe" scripts/verify_t3_figure_eight.py --verify',
      "protocol_sha256", (), ()),
+    ("t3-dynamics", "optional-pythagorean-close-encounter", "t3-pythagorean-audit.json",
+     "t3-pythagorean-audit-v1", "passed-bounded-close-encounter-numerics-only",
+     '& "$env:TEMP\\auditable-scientist-figure8-20260927\\Scripts\\python.exe" scripts/verify_t3_pythagorean.py --verify',
+     "protocol_sha256", (), ()),
     ("t4-proof", "exact-linear-invariant-subtrack", "t4-linear-formal-audit.json",
      "t4-linear-formal-audit-v1", "verified-exact-linear-class-only",
      "python scripts/verify_t4_linear_formal.py --verify", "input_sha256",
@@ -88,6 +92,16 @@ REPORT_MARKERS = {
     "t3-dynamics": "The optional expanded [finite-horizon audit]",
     "t4-proof": "The optional exact linear-invariant audit",
 }
+PYTHAGOREAN_REPORT_NOTE = (
+    "The optional [Pythagorean close-encounter audit](../t3-pythagorean-audit.json) "
+    "compares a published 3–4–5 three-body state and one authored perturbation "
+    "with pinned DOP853 and independently implemented adaptive RK4. Both stop at "
+    "the predeclared 0.001 pair-separation guard near t=15.8299. All 12 finite "
+    "engineering checks pass within budget; no post-guard orbit, Lyapunov "
+    "estimate, untouched scientific holdout, or mission validation is claimed. "
+    "Pinned SciPy `python scripts/verify_t3_pythagorean.py --verify` recomputes "
+    "the receipt; core acceptance checks saved arithmetic and scope.\n"
+)
 
 
 def _load(relative: str) -> dict:
@@ -133,6 +147,22 @@ def _receipt_row(spec: tuple) -> dict:
         or not all(value is True for value in audit["checks"].values())
     ):
         raise ValueError("T3 figure-eight audit cannot enter acceptance")
+    if filename == "t3-pythagorean-audit.json" and (
+        audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
+        or audit.get("scientific_boundaries", {}).get("untouched_scientific_holdout") is not False
+        or audit.get("scientific_boundaries", {}).get("chaotic_regime_validated") is not False
+        or audit.get("scientific_boundaries", {}).get("real_mission_validated") is not False
+        or audit.get("protocol_sha256") !=
+        "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927"
+        or set(audit.get("checks", {})) != {
+            "initial_state", "finite_pre_event_comparison", "external_energy",
+            "independent_energy", "angular_momentum", "center_of_mass",
+            "terminal_close_approach", "event_pair_match", "event_time_agreement",
+            "historical_event_window", "negative_wrong_force", "compute_budget",
+        }
+        or not all(value is True for value in audit["checks"].values())
+    ):
+        raise ValueError("T3 Pythagorean audit cannot enter acceptance")
     recorded_at = audit.get("recorded_at")
     if not isinstance(recorded_at, str):
         raise ValueError(f"optional audit has no timestamp: {filename}")
@@ -196,6 +226,10 @@ def desired_outputs() -> dict[Path, str]:
         **next(row for row in rows if row["name"] == "optional-published-figure-eight"),
         "name": "optional-t3-published-figure-eight",
     })
+    _insert_or_replace(root["checks"], {
+        **next(row for row in rows if row["name"] == "optional-pythagorean-close-encounter"),
+        "name": "optional-t3-pythagorean-close-encounter",
+    })
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
         "T1": {"external symbolic engine", "mission-domain force and maneuver comparison", "preregistered mission holdout and uncertainty review"},
@@ -211,6 +245,7 @@ def desired_outputs() -> dict[Path, str]:
         or [item.get("track_id") for item in status.get("tracks", [])] != ["T1", "T2", "T3", "T4", "T5"]
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
+        or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"
         or any(item.get("public_release") is not False for item in status["tracks"])
         or any(item.get("state") != ("text-demo-within-scope" if item["track_id"] == "T5" else "reproduced-within-scope") for item in status["tracks"])
         or any(not required_gates[item["track_id"]] <= set(item.get("open_gates", [])) for item in status["tracks"])
@@ -229,6 +264,9 @@ def desired_outputs() -> dict[Path, str]:
         if REPORT_MARKERS[directory] not in report:
             report = report.rstrip("\n") + "\n\n" + note
         outputs[path] = report
+    t3_report = ROOT / "artifacts/t3-dynamics/test-report.md"
+    if "The optional [Pythagorean close-encounter audit]" not in outputs[t3_report]:
+        outputs[t3_report] = outputs[t3_report].rstrip("\n") + "\n\n" + PYTHAGOREAN_REPORT_NOTE
     return outputs
 
 
