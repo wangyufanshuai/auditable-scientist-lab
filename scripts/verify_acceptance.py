@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -69,7 +71,11 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
     acceptance = json.loads((bundle_dir / "acceptance.json").read_text(encoding="utf-8"))
     schema = json.loads((root / "schemas/track-acceptance-v1.json").read_text(encoding="utf-8"))
     Draft202012Validator(schema).validate(acceptance)
-    verify_check_rows(acceptance["checks"], root=root, expected_input=receipt.input_hash)
+    verify_check_rows(acceptance["checks"], root=root)
+    for check in acceptance["checks"]:
+        expected_input = "t3-sweep-v1" if track_id == "T3" and check.get("name") == "bounded-parameter-step-sweep" else receipt.input_hash
+        if check["input_version"] != expected_input:
+            raise ValueError(f"track {track_id} acceptance command input version differs")
     if acceptance["track"] != track_id or canonical_hash(acceptance["evaluator"]) != canonical_hash(item):
         raise ValueError(f"track {track_id} acceptance package differs from portfolio receipt")
     if acceptance["evidence_boundaries"] != {
@@ -222,6 +228,15 @@ def main() -> None:
         raise SystemExit("T3 evaluator replay mismatch")
     if load("artifacts/t3-dynamics/acceptance.json")["negative_case"] != {"solver": "explicit-euler", "rejected": t3_eval.negative_euler_rejected}:
         raise SystemExit("T3 negative case replay mismatch")
+    t3_checks = load("artifacts/t3-dynamics/acceptance.json")["checks"]
+    if not any(item.get("name") == "bounded-parameter-step-sweep" and item.get("output_path") == "artifacts/t3-sweep.json" for item in t3_checks):
+        raise SystemExit("T3 parameter sweep is missing from acceptance")
+    sweep = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t3_sweep.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if sweep.returncode != 0:
+        raise SystemExit(f"T3 parameter sweep replay failed: {sweep.stderr.strip()}")
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))

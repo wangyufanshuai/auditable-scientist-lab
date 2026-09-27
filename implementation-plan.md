@@ -39,6 +39,10 @@
   plus the analytic oscillator and Euler negative control. The method citation,
   source-rights boundary, and fixture scope are recorded in `docs/T3_METHOD.md`;
   an external production solver and multi-body validation remain open.
+- A 27-case T3 parameter/step-size sweep now checks second- and fourth-order
+  convergence, normalized energy drift, backend agreement, and Euler rejection.
+  `artifacts/t3-sweep.json` is independently recomputed by the acceptance verifier;
+  it is still evidence only for the declared oscillator grid.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
   fixture inputs. T1–T5 replayed from a copied checkout in the same dependency
   environment, and five wheel-generated run directories replayed after relocation.
@@ -317,9 +321,9 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Expand T3 into a bounded parameter and step-size sweep, with an independent
-   external solver only after its implementation, license, and reference provenance
-   are recorded. Keep the local RK4 comparison at the oscillator-fixture level.
+1. Identify and review an independent external T3 solver before integrating it;
+   require its implementation, license, and reference provenance. Keep current
+   RK4 and grid checks at the oscillator-fixture level.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
 3. Reassess the local-only publication boundary from a fresh environment and user review;

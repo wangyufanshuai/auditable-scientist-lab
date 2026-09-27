@@ -7,6 +7,14 @@
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t3-dynamics/sample-run.json",
       "recorded_at": "2026-09-27T03:39:01.658488+00:00"
+    },
+    {
+      "command": "python scripts/verify_t3_sweep.py --write",
+      "exit_code": 0,
+      "input_version": "t3-sweep-v1",
+      "name": "bounded-parameter-step-sweep",
+      "output_path": "artifacts/t3-sweep.json",
+      "recorded_at": "2026-09-27T03:59:59.079349+00:00"
     }
   ],
   "evaluator": {
