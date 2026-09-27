@@ -14,6 +14,7 @@
         "independent backend in the core CLI Run",
         "dated mission ephemeris"
       ],
+      "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T1"

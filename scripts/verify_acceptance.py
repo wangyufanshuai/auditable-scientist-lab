@@ -75,6 +75,54 @@ def verify_core_t1_orbit() -> dict:
             "source_files_match": True, "checks": expected["checks"]}
 
 
+def verify_core_t1_orbit_run() -> dict:
+    """Recompute the versioned numerical Tool/Provider Run and its mutations."""
+    audit = load("artifacts/t1-core-orbit-run-audit.json")
+    relative = Path(audit.get("run_path", ""))
+    boundaries = {
+        "synthetic_two_body_grid": True, "shared_kernel_run": True,
+        "main_cli_integrated": False, "independent_orbit_derivation": False,
+        "real_data": False, "dated_ephemeris": False,
+        "mission_validity": False, "publication_ready": False,
+    }
+    if (audit.get("schema_version") != "t1-core-orbit-run-audit-v1"
+            or audit.get("status") != "verified-synthetic-two-body-run-only"
+            or audit.get("provider_id") != "internal-rk4-t1-orbit-v1"
+            or audit.get("provider_version") != "internal-rk4-v1"
+            or audit.get("boundaries") != boundaries
+            or audit.get("relocated_replay_equal") is not True
+            or audit.get("result_tamper_rejected") is not True
+            or audit.get("snapshot_tamper_rejected") is not True
+            or audit.get("policy_denials") != {
+                "wrong_provider_rejected": True, "out_of_scope_path_rejected": True,
+            }
+            or relative.parts[:2] != ("artifacts", "t1-core-orbit-runs")
+            or len(relative.parts) != 3 or relative.name != audit.get("run_id")
+            or not relative.name.startswith("run-t1-core-orbit-")
+            or audit.get("replay", {}).get("verified") is not True
+            or len(audit["replay"].get("checks", [])) != 8):
+        raise ValueError("versioned T1 core orbit Run is missing or exceeds its boundary")
+    run = load((relative / "run.json").as_posix())
+    if (run.get("claims", [{}])[0].get("status") != "unverified"
+            or run["claims"][0].get("level") != "demo"
+            or run.get("environment", {}).get("network") != "disabled"
+            or run.get("status") != "completed"):
+        raise ValueError("T1 numerical Run claim, network, or lifecycle was promoted")
+    replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t1_core_orbit_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if replay.returncode != 0:
+        raise ValueError(f"T1 numerical Run dynamic replay failed: {replay.stderr.strip()}")
+    observed = json.loads(replay.stdout)
+    if (observed.get("status") != audit["status"] or observed.get("run_id") != audit["run_id"]
+            or observed.get("replay") != audit["replay"]
+            or observed.get("mutation_controls") != [True, True]):
+        raise ValueError("T1 numerical Run dynamic replay differs from saved receipt")
+    return {"run_id": audit["run_id"], "replay": audit["replay"],
+            "mutation_controls": observed["mutation_controls"], "main_cli_integrated": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -834,6 +882,14 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 core orbit audit is missing its recomputation receipt")
+    t1_core_orbit_run = verify_core_t1_orbit_run()
+    if not any(
+        item.get("name") == "t1-versioned-core-orbit-tool-run"
+        and item.get("output_path") == "artifacts/t1-core-orbit-run-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_core_orbit_run.py").sha256
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 numerical Tool/Provider Run is missing its replay receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1308,6 +1364,7 @@ def main() -> None:
         },
         "t1_optional_orbit_static_provenance": t1_orbit_static,
         "t1_core_orbit_recomputation": t1_core_orbit,
+        "t1_core_orbit_tool_run": t1_core_orbit_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

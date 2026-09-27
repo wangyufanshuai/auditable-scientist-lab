@@ -1,0 +1,40 @@
+{
+  "boundaries": {
+    "dated_ephemeris": false,
+    "independent_orbit_derivation": false,
+    "main_cli_integrated": false,
+    "mission_validity": false,
+    "publication_ready": false,
+    "real_data": false,
+    "shared_kernel_run": true,
+    "synthetic_two_body_grid": true
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "provider_id": "internal-rk4-t1-orbit-v1",
+  "provider_version": "internal-rk4-v1",
+  "recorded_at": "2026-09-27T10:43:29.450584+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "e0285cf8c6f1c0bb21c551d859cde238926680d011317179d89472bd767841cd",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t1-core-orbit-96bd3ccfd5e0ae1d",
+  "run_path": "artifacts/t1-core-orbit-runs/run-t1-core-orbit-96bd3ccfd5e0ae1d",
+  "schema_version": "t1-core-orbit-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-synthetic-two-body-run-only"
+}

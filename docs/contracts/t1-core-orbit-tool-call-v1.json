@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "T1 offline two-body propagation tool call",
+  "type": "object",
+  "required": ["provider_id", "input_hash", "dataset_path"],
+  "properties": {
+    "provider_id": {"const": "internal-rk4-t1-orbit-v1"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "dataset_path": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

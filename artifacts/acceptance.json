@@ -152,6 +152,14 @@
       "output_path": "artifacts/t1-core-orbit-audit.json"
     },
     {
+      "name": "t1-versioned-core-orbit-tool-run",
+      "command": "python scripts/verify_t1_core_orbit_run.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T10:43:29.450584+00:00",
+      "input_version": "1cc9dd08a94b980e968840aaabdea88ccacced873afc97455fcb1e8c8c843321",
+      "output_path": "artifacts/t1-core-orbit-run-audit.json"
+    },
+    {
       "name": "optional-t1-external-orbit-cross-check",
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",
       "exit_code": 0,

@@ -22,6 +22,28 @@
     "scope": "dynamic-pure-python-synthetic-two-body-recomputation",
     "source_files_match": true
   },
+  "t1_core_orbit_tool_run": {
+    "main_cli_integrated": false,
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "e0285cf8c6f1c0bb21c551d859cde238926680d011317179d89472bd767841cd",
+      "verified": true
+    },
+    "run_id": "run-t1-core-orbit-96bd3ccfd5e0ae1d"
+  },
   "t1_nasa_parameter_audit": {
     "real_data_claim": false,
     "scientific_validation_claim": false,

@@ -1,0 +1,17 @@
+{
+  "schema_version": "hohmann-dataset-v1",
+  "benchmark_id": "hohmann-mars-transfer-v1",
+  "target": "time_of_flight_days",
+  "units": {"r1_km": "km", "r2_km": "km", "mu_km3_s2": "km^3/s^2", "target_tof_days": "day"},
+  "cases": [
+    {"case_id": "train-01", "split": "train", "r1_km": 149597870.7, "r2_km": 227939134.0303053, "mu_km3_s2": 132712440018.0, "target_tof_days": 258.865758917809},
+    {"case_id": "train-02", "split": "train", "r1_km": 149597870.7, "r2_km": 209437018.98, "mu_km3_s2": 132712440018.0, "target_tof_days": 240.071331018894},
+    {"case_id": "train-03", "split": "train", "r1_km": 134638083.63, "r2_km": 179517444.84, "mu_km3_s2": 132712440018.0, "target_tof_days": 196.495396356765},
+    {"case_id": "train-04", "split": "train", "r1_km": 164557657.77, "r2_km": 239356593.12, "mu_km3_s2": 132712440018.0, "target_tof_days": 286.463361597649},
+    {"case_id": "train-05", "split": "train", "r1_km": 119678296.56, "r2_km": 224396806.05, "mu_km3_s2": 132712440018.0, "target_tof_days": 225.22427198301},
+    {"case_id": "train-06", "split": "train", "r1_km": 179517444.84, "r2_km": 269276167.26, "mu_km3_s2": 132712440018.0, "target_tof_days": 335.509884754438},
+    {"case_id": "holdout-01", "split": "holdout", "r1_km": 142117977.165, "r2_km": 227939134.0303053, "mu_km3_s2": 132712440018.0, "target_tof_days": 251.210883569851},
+    {"case_id": "holdout-02", "split": "holdout", "r1_km": 157077764.235, "r2_km": 254316380.19, "mu_km3_s2": 132712440018.0, "target_tof_days": 294.457403702095},
+    {"case_id": "holdout-03", "split": "holdout", "r1_km": 127158190.095, "r2_km": 201957125.445, "mu_km3_s2": 132712440018.0, "target_tof_days": 210.696566769914}
+  ]
+}
