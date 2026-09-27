@@ -29,7 +29,7 @@
     },
     {
       "name": "offline-run",
-      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v14",
+      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v15",
       "exit_code": 0,
       "recorded_at": "2026-09-27T03:40:15Z",
       "input_version": "examples/hohmann/run.json + dataset.json",
@@ -79,6 +79,24 @@
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/relocation-audit.json"
+    },
+    {
+      "name": "fresh-pinned-replay-environment",
+      "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_replay_environment.py --output artifacts/replay-environment-audit.json",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T03:53:19.227239+00:00",
+      "verified": true,
+      "input_version": "requirements-replay-win-py312.txt",
+      "output_path": "artifacts/replay-environment-audit.json"
+    },
+    {
+      "name": "fresh-pinned-five-track-replay",
+      "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_acceptance.py",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T03:53:57Z",
+      "verified": true,
+      "input_version": "replay-manifest-v2",
+      "output_path": "artifacts/acceptance-verification.json"
     }
   ],
   "scientific_boundaries": {

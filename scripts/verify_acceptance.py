@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -275,6 +277,34 @@ def main() -> None:
         or canonical_hash(relocation.get("runs_replayed")) != canonical_hash({"T1": replay_receipt.model_dump(mode="json"), **cli_replays})
     ):
         raise SystemExit("relocation audit is missing or differs from the current five run packages")
+
+    environment_audit = load("artifacts/replay-environment-audit.json")
+    constraints = ROOT / "requirements-replay-win-py312.txt"
+    pins = {}
+    for line in constraints.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            if line.count("==") != 1:
+                raise SystemExit("replay environment constraint is not an exact version")
+            name, version = line.split("==")
+            pins[re.sub(r"[-_.]+", "-", name).lower()] = version
+    manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/replay-manifest.json"}
+    for track_id in ("T2", "T3", "T4", "T5"):
+        receipt = next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
+        run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v6" / run_id / "replay-manifest.json"
+    manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
+    if (
+        environment_audit.get("schema_version") != "replay-environment-audit-v1"
+        or environment_audit.get("status") != "matched-committed-replay-environment"
+        or environment_audit.get("isolated_venv") is not True
+        or environment_audit.get("platform") != {key: run.environment[key] for key in ("python", "implementation", "system", "machine")}
+        or environment_audit.get("installed_packages") != {**pins, "auditable-scientist-lab": "0.1.0"}
+        or environment_audit.get("constraints_sha256") != hashlib.sha256(constraints.read_bytes()).hexdigest()
+        or environment_audit.get("manifest_sha256") != manifest_hashes
+        or environment_audit.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_replay_environment.py").sha256
+    ):
+        raise SystemExit("fresh replay environment audit is missing or differs from current inputs")
 
     result = {
         "schema_version": "acceptance-verification-v1",

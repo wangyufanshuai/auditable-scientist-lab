@@ -25,9 +25,12 @@
 - T2–T5 now use registered offline Tool/Policy calls for generated acceptance packages
   and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
-- A fresh Python environment installed `.[test]`, passed 58 tests, and replayed newly
-  generated T1–T5 runs. Runtime environment and dependency versions are now recorded
-  for every track; replay in a mismatched environment fails closed.
+- A fresh Python environment installed `.[test]`, passed 63 tests, and replayed newly
+  generated T1–T5 runs. A second new Windows AMD64 / CPython 3.12.3 virtual environment
+  installed the exact dependency closure from `requirements-replay-win-py312.txt`, passed
+  `pip check` and 63 tests, and replayed the five committed Run packages. The resulting
+  `artifacts/replay-environment-audit.json` binds installed versions and manifest bytes.
+  Replay in a mismatched environment fails closed; wheel and interpreter bytes are not locked.
 - A standalone wheel now carries the offline schemas, evidence policy, and five fixtures.
   In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
   and T2–T5 `init-track/run-track/replay` completed. The wheel smoke is an engineering
@@ -314,14 +317,10 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Pin and document a reproducible replay environment, then prove the checked-in
-   acceptance packages replay in a newly created matching environment. Current
-   broad package dependency ranges allow newer versions, which fail the recorded
-   environment check by design.
-2. Expand T3 into a bounded parameter and step-size sweep, with an independent
+1. Expand T3 into a bounded parameter and step-size sweep, with an independent
    external solver only after its implementation, license, and reference provenance
    are recorded. Keep the local RK4 comparison at the oscillator-fixture level.
-3. Add rights-cleared real-data adapters only after source and data-use gates are closed;
+2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
-4. Reassess the local-only publication boundary from a fresh environment and user review;
+3. Reassess the local-only publication boundary from a fresh environment and user review;
    do not push or publish automatically.

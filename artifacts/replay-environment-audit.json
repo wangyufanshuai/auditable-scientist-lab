@@ -1,0 +1,46 @@
+{
+  "schema_version": "replay-environment-audit-v1",
+  "recorded_at": "2026-09-27T03:53:19.227239+00:00",
+  "status": "matched-committed-replay-environment",
+  "isolated_venv": true,
+  "platform": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64"
+  },
+  "installed_packages": {
+    "annotated-types": "0.7.0",
+    "attrs": "23.2.0",
+    "auditable-scientist-lab": "0.1.0",
+    "colorama": "0.4.6",
+    "iniconfig": "2.3.0",
+    "jsonschema": "4.24.0",
+    "jsonschema-specifications": "2025.4.1",
+    "mpmath": "1.3.0",
+    "packaging": "26.2",
+    "pluggy": "1.6.0",
+    "pydantic": "2.11.10",
+    "pydantic-core": "2.33.2",
+    "pytest": "8.3.4",
+    "referencing": "0.36.2",
+    "rpds-py": "0.25.1",
+    "sympy": "1.13.3",
+    "typing-extensions": "4.15.0",
+    "typing-inspection": "0.4.2"
+  },
+  "constraints_sha256": "cd74e847377d90eb7ac33a7679d75f5a1ff0f69b9c196bc7f0969d25d2077e06",
+  "manifest_sha256": {
+    "T1": "72b8b5ace2714fa1654af0e6fe4d35f987def904444a2ea6b716175bf48f273c",
+    "T2": "5e3dfd0fef9503fda4ffe8e1ecca5e8aa942ec410572b26b996cfcf5d6518988",
+    "T3": "b1993bcf8dfc3d5fdeaa266e1a331aa72c23e7d3ab77231f548816ce856f17e4",
+    "T4": "b62b43b19bd8ff49a81532a6de4fca3132dc0c144ab3e3b5c1016bb6b665c83b",
+    "T5": "a12108225130dce3b0b1fccb2b3dc279331196a19c7065f8a64595ce7885d4d8"
+  },
+  "script_sha256": "09917280fb23e60c3d49adbae4d07baad0e12b2a998f6b3ab21689e83e186ba9",
+  "limitations": [
+    "Version pins do not lock downloaded wheel bytes or Python executable bytes.",
+    "This audit checks the environment; scripts/verify_acceptance.py checks replay outputs.",
+    "The five committed Runs are bounded fixture evidence, not scientific validation or publication approval."
+  ]
+}

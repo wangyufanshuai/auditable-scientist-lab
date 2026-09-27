@@ -38,6 +38,23 @@ python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<inpu
 要求与收据记录的 Python 和依赖版本一致。普通新环境可运行测试及生成自己的运行包，
 版本不一致时旧收据会按设计拒绝回放。
 
+重放**已提交**的五轨运行包时，在 Windows AMD64 的 CPython 3.12.3 上新建
+虚拟环境，并从仓库根目录执行：
+
+```powershell
+$replayVenv = Join-Path $env:TEMP ("auditable-scientist-replay-" + [guid]::NewGuid().ToString("N"))
+python -m venv $replayVenv
+$replayPython = Join-Path $replayVenv "Scripts\python.exe"
+& $replayPython -m pip install -e ".[test]" -c requirements-replay-win-py312.txt
+& $replayPython -m pip check
+& $replayPython scripts/verify_replay_environment.py
+& $replayPython scripts/verify_acceptance.py
+```
+
+`requirements-replay-win-py312.txt` 固定运行和测试依赖的版本闭包；
+`artifacts/replay-environment-audit.json` 记录一次在仓库外新建虚拟环境的核验。
+约束文件不锁定 wheel 或 Python 解释器的原始字节，跨系统重放也未验收。
+
 独立 wheel 安装后无需源码仓库：先运行 `auditable-scientist init hohmann.json`，
 它会在配置旁复制所需数据；再运行 `auditable-scientist run hohmann.json --offline`
 与 `auditable-scientist replay <run-dir>`。T2–T5 可先运行
@@ -70,6 +87,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与五轨 CLI 回放收据。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的五轨回放与篡改失败收据。
+- [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：全新匹配环境的版本闭包与五轨 manifest 核验。
 - [artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
 
 ## 非目标
