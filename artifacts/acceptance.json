@@ -15,8 +15,8 @@
       "input_version": "working-tree-2026-09-27",
       "name": "unit-contract-runtime-tests",
       "output_path": "artifacts/test-report.md",
-      "recorded_at": "2026-09-27T13:38:35.930Z",
-      "tests_passed": 192,
+      "recorded_at": "2026-09-27T13:57:00.271754Z",
+      "tests_passed": 195,
       "tests_skipped": 0
     },
     {
@@ -205,6 +205,14 @@
       "name": "optional-t1-maven-sun-only-preflight",
       "output_path": "artifacts/t1-maven-preflight-audit.json",
       "recorded_at": "2026-09-27T13:18:53.362Z"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_planetary_force.py --verify",
+      "exit_code": 0,
+      "input_version": "2f0bbbdb6106c7ad99b7fc77caf910cdbb23626f7457eef48c12c5d1b1361ff0",
+      "name": "optional-t1-maven-planetary-force-diagnostic",
+      "output_path": "artifacts/t1-maven-planetary-force-audit.json",
+      "recorded_at": "2026-09-27T13:47:25.167855+00:00"
     },
     {
       "command": "python scripts/verify_t1_maven_preflight_run.py --verify",

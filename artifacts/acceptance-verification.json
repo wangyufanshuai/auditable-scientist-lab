@@ -111,6 +111,15 @@
     "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
     "status": "verified-source-tracked-center-geometry-only"
   },
+  "t1_maven_planetary_force_diagnostic": {
+    "arc_count": 2,
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "planetary_tide_model": true,
+    "scientific_holdout": false,
+    "snapshot_sha256": "cbe072ec2f6f34d32e834852ffee6b652c6946c08499ec30fd75151e4502ef76",
+    "status": "passed-engineering-diagnostic-only"
+  },
   "t1_maven_portable_preflight_run": {
     "mission_claim_verified": false,
     "replay": {

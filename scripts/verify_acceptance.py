@@ -561,6 +561,113 @@ def verify_optional_t1_maven_preflight() -> dict:
             "scientific_holdout": False}
 
 
+def verify_optional_t1_maven_planetary_force() -> dict:
+    """Check a source-bound two-planet diagnostic without promoting mission validity."""
+
+    audit = load("artifacts/t1-maven-planetary-force-audit.json")
+    snapshot = load("artifacts/t1-maven-planetary-force-snapshot.json")
+    protocol = load("docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json")
+    baseline = load("artifacts/t1-maven-preflight-snapshot.json")
+    protocol_sha = "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394"
+    expected_sources = {
+        "scripts/verify_t1_maven_planetary_force.py", "scripts/fetch_maven_cruise.py",
+        "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+        "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.md",
+        "src/auditable_scientist/adapters/naif_de440s.py",
+        "src/auditable_scientist/adapters/naif_mars_center.py",
+    }
+    expected_boundaries = {
+        "real_mission_reconstructed_states": True, "planetary_tide_model": True,
+        "maneuver_model": False, "independent_observables": False,
+        "scientific_holdout": False, "mission_validation": False,
+    }
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False) + "\n").encode("utf-8")
+    arcs = snapshot.get("arcs", [])
+    gates = protocol["engineering_gates"]
+    source_hashes = snapshot.get("source_sha256", {})
+    contract_hashes = protocol["source_contract"]
+    if (audit.get("schema_version") != "t1-maven-planetary-force-audit-v1"
+            or audit.get("status") != "passed-engineering-diagnostic-only"
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("engineering_gates_passed") is not True
+            or audit.get("arc_count") != 2
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "4b98a57"
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or snapshot.get("schema_version") != "t1-maven-planetary-force-snapshot-v1"
+            or snapshot.get("protocol_sha256") != protocol_sha
+            or snapshot.get("preregistration_commit") != "4b98a57"
+            or snapshot.get("claim_status") != "unverified"
+            or snapshot.get("engineering_gates_passed") is not True
+            or snapshot.get("indirect_term_identity_at_sun") is not True
+            or snapshot.get("wrong_indirect_sign_rejected") is not True
+            or snapshot.get("scientific_boundaries") != protocol["scientific_boundaries"]
+            or snapshot.get("model") != protocol["model"]
+            or snapshot.get("coordinate_contract") != protocol["coordinate_contract"]
+            or snapshot.get("engineering_gates") != gates
+            or fingerprint_file(ROOT / "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json").sha256 != protocol_sha
+            or snapshot.get("baseline_snapshot_sha256") != fingerprint_file(
+                ROOT / "artifacts/t1-maven-preflight-snapshot.json").sha256
+            or source_hashes != {
+                "de440s": contract_hashes["de440s_sha256"],
+                "mar099s": contract_hashes["mar099s_sha256"],
+                "maven_cruise": contract_hashes["maven_cruise_sha256"],
+                "gm_kernel": contract_hashes["gm_kernel_sha256"],
+            }
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {row.get("path") for row in audit["source_files"]} != expected_sources
+            or any(fingerprint_file(ROOT / row["path"]).sha256 != row.get("sha256")
+                   or (ROOT / row["path"]).stat().st_size != row.get("bytes")
+                   for row in audit["source_files"])
+            or [row.get("initial_et_tdb_seconds") for row in arcs] !=
+            protocol["arc_contract"]["initial_et_tdb_seconds"]
+            or len(baseline.get("arcs", [])) != 2):
+        raise ValueError("MAVEN planetary-force source, protocol, or boundary differs")
+    for row, prior in zip(arcs, baseline["arcs"], strict=True):
+        states = (row["initial_nav_sun_state_km_kms"],
+                  row["held_nav_endpoint_sun_state_km_kms"],
+                  row["planetary_force_endpoint_state_km_kms"])
+        if any(len(state) != 6 or not all(math.isfinite(value) for value in state)
+               for state in states):
+            raise ValueError("MAVEN planetary-force state is not a finite six-vector")
+        position_error = math.dist(states[2][:3], states[1][:3])
+        velocity_error = math.dist(states[2][3:], states[1][3:])
+        if (states[0] != prior["initial_nav_sun_state_km_kms"]
+                or states[1] != prior["held_nav_endpoint_sun_state_km_kms"]
+                or row["initial_et_tdb_seconds"] != prior["initial_et_tdb_seconds"]
+                or row["endpoint_et_tdb_seconds"] != prior["endpoint_et_tdb_seconds"]
+                or not math.isclose(position_error, row["position_error_km"], abs_tol=1e-9)
+                or not math.isclose(velocity_error, row["velocity_error_km_s"], abs_tol=1e-12)
+                or not math.isclose(row["position_error_delta_from_sun_only_km"],
+                                    position_error-prior["position_error_km"], abs_tol=1e-9)
+                or row["sun_only_position_error_km"] != prior["position_error_km"]
+                or not 0 <= row["refinement_position_difference_km"] <=
+                gates["refinement_position_difference_km_max"]
+                or position_error > gates["endpoint_error_limit_km"]
+                or row["engineering_gates_passed"] is not True):
+            raise ValueError("MAVEN planetary-force metric or gate differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("MAVEN planetary-force audit has no timezone-aware timestamp")
+    dynamic = False
+    kernels = ("data/naif/de440s.bsp", "data/naif/mar099s.bsp",
+               "data/naif/maven_cru_rec_131118_140923_v1.bsp", "data/naif/gm_de440.tpc")
+    if (all((ROOT / path).is_file() for path in kernels)
+            and importlib.util.find_spec("spiceypy") is not None):
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_planetary_force.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+        )
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN planetary-force dynamic check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic, "arc_count": 2,
+            "planetary_tide_model": True, "mission_validation": False,
+            "scientific_holdout": False}
+
+
 def verify_optional_t1_maven_run() -> dict:
     """Replay saved NAV short arcs through the shared offline Run contract."""
 
@@ -1446,6 +1553,16 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN propagation preflight has no command receipt")
+    maven_planetary_force = verify_optional_t1_maven_planetary_force()
+    if not any(
+        item.get("name") == "optional-t1-maven-planetary-force-diagnostic"
+        and item.get("output_path") == "artifacts/t1-maven-planetary-force-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t1_maven_planetary_force.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN planetary-force diagnostic has no command receipt")
     maven_run = verify_optional_t1_maven_run()
     if not any(
         item.get("name") == "optional-t1-maven-portable-preflight-run"
@@ -1952,6 +2069,7 @@ def main() -> None:
         "t1_mars_center_geometry": mars_center,
         "t1_maven_reconstructed_source": maven_source,
         "t1_maven_sun_only_preflight": maven_preflight,
+        "t1_maven_planetary_force_diagnostic": maven_planetary_force,
         "t1_maven_portable_preflight_run": maven_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {

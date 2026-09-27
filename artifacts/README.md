@@ -47,6 +47,11 @@ the fixed protocol; mission-domain dynamics and scientific validation stay open.
 `t1-maven-preflight-run-audit.json` binds that saved comparison to a single
 offline Tool/Policy/Provider Run, with portable replay and tamper/policy
 controls. Replay does not access the original SPK binaries.
+`t1-maven-planetary-force-snapshot.json` and its audit bind a separately
+precommitted Sun-plus-Earth-Moon/Mars-barycenter tide diagnostic to the same
+two previously inspected NAV arcs. The dynamic check needs four pinned local
+NAIF files; the committed snapshot is statically checked in core acceptance.
+It is not a maneuver reconstruction or scientific holdout.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
 geometry comparisons. None of these artifacts establishes real-mission validity,

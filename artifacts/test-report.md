@@ -6,7 +6,8 @@
 
 | Check | Command | Exit code | Result |
 |---|---|---:|---|
-| Contract, replay, CLI, adapter, policy, T2–T5 and optional-subtrack tests | `python -m pytest -q -o addopts=''` | 0 | 192 passed in the current environment; includes version-routed historical CLI replay, DE440s, MAR099s and MAVEN source, propagation and portable-Run checks, 100 physical counterfactual scenarios, source/evidence mutation, copied-checkout regeneration, and optional audit/Run mutation controls |
+| Contract, replay, CLI, adapter, policy, T2–T5 and optional-subtrack tests | `python -m pytest -q -o addopts=''` | 0 | 195 passed in the current environment; includes version-routed historical CLI replay, DE440s, MAR099s and MAVEN source, propagation, planetary-force and portable-Run checks, 100 physical counterfactual scenarios, source/evidence mutation, copied-checkout regeneration, and optional audit/Run mutation controls |
+| Optional MAVEN planetary-force diagnostic | `python scripts/verify_t1_maven_planetary_force.py --verify`; `python -m pytest tests/test_t1_maven_planetary_force.py -q -o addopts=''` | 0 | Two predeclared, previously inspected NAV short arcs recomputed with Sun plus Earth-Moon/Mars barycenter tides; position errors 0.067658 and 0.217095 km; 3 targeted tests passed; no mission validation or scientific holdout |
 | T1 bounded symbolic grammar | `python -m pytest tests/test_symbolic_grammar.py -q -o addopts=''` | 0 | ten expressions enumerated; candidate evaluators do not call the reference baseline; changing only holdout targets leaves training selection unchanged and fails the holdout gate |
 | Editable package install | `python -m pip install -e . --no-deps --no-build-isolation` | 0 | installed |
 | Offline run | `python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v18` | 0 | snapshotted input and v2 manifest written |

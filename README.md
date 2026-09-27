@@ -135,6 +135,9 @@ kernel 读取火星中心（499）相对质心（4）的状态；两次日期的
 方向负例失败。它通过工程预检，不构成完整任务力学、科学 holdout 或会合验证。
 另有 [离线 MAVEN 短弧 Run](docs/T1_MAVEN_PREFLIGHT_RUN.md) 将已保存状态绑定到一次
 Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 RK4，不查询 NAIF kernel。
+独立的 [MAVEN 行星摄动诊断](docs/T1_MAVEN_PLANETARY_FORCE_RESULT.md) 在固定协议下加入
+地月及火星系统质心引力潮汐，两段已看过的 NAV 端点误差降至约 0.068 km、0.217 km。
+它仍缺机动及其他力项、独立观测与科学 holdout，任务 Claim 保持 `unverified`。
 
 ## 当前入口
 

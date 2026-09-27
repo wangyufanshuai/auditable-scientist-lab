@@ -42,6 +42,13 @@
   Run with source/environment/seed bindings, moved replay and mutation
   controls; replay never substitutes for a fresh SPK check. See
   `docs/T1_MAVEN_PREFLIGHT_RUN.md`.
+- A separate locally precommitted T1 planetary-force diagnostic adds the DE440
+  Earth-Moon and Mars-barycenter tidal terms to the same two previously seen
+  MAVEN NAV short arcs. Their position residuals decrease to 0.068 km and
+  0.217 km; the four local NAIF sources, GM values, source code, refinement,
+  indirect-term identity, and scientific boundaries are bound in the audit.
+  This is still not a maneuver model, scientific holdout, independent observable,
+  or validated mission Claim. See `docs/T1_MAVEN_PLANETARY_FORCE_RESULT.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.
