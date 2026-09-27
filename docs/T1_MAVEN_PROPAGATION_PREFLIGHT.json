@@ -37,7 +37,8 @@
   "selection_statement": "The two epochs are fixed inside the published cruise coverage and do not overlap the three previously inspected MAVEN samples. They were selected before querying their NAV states or endpoints. Failed thresholds will be reported, not retuned in this protocol.",
   "scientific_boundaries": {
     "source_tracked_real_mission_states": true,
-    "independent_numerical_propagation": true,
+    "independent_numerical_propagation": false,
+    "planned_independent_numerical_propagation": true,
     "full_force_model": false,
     "maneuver_reconstruction": false,
     "untouched_scientific_holdout": false,
