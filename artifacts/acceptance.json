@@ -1,7 +1,7 @@
 {
   "blocked": [
     "external symbolic-physics-engine implementation, scoped revision, and license",
-    "mission trajectory provenance and rights",
+    "preregistered mission holdout and uncertainty review",
     "independent spacecraft propagation and mission comparison",
     "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
     "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
@@ -15,8 +15,8 @@
       "input_version": "working-tree-2026-09-27",
       "name": "unit-contract-runtime-tests",
       "output_path": "artifacts/test-report.md",
-      "recorded_at": "2026-09-27T12:44:56.986Z",
-      "tests_passed": 185,
+      "recorded_at": "2026-09-27T13:05:19.209Z",
+      "tests_passed": 187,
       "tests_skipped": 0
     },
     {
@@ -189,6 +189,14 @@
       "name": "optional-t1-mars-center-fixed-date-geometry",
       "output_path": "artifacts/t1-mars-center-ephemeris-audit.json",
       "recorded_at": "2026-09-27T12:34:15.247460+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_source.py --verify",
+      "exit_code": 0,
+      "input_version": "1ba5502f3984e093b87078c4965d8e9100f9395aaa8db8d4aa1780c9dc428f11",
+      "name": "optional-t1-maven-reconstructed-source",
+      "output_path": "artifacts/t1-maven-source-audit.json",
+      "recorded_at": "2026-09-27T12:57:02.711Z"
     },
     {
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",

@@ -127,6 +127,9 @@ kernel 不入 Git，运行时不联网；它不能验证火星中心会合或航
 可选的 [MAR099s 火星中心核对](docs/T1_MARS_CENTER_EPHEMERIS.md) 从 NAIF 第二个校验过的
 kernel 读取火星中心（499）相对质心（4）的状态；两次日期的中心修正小于 0.2 m，
 无法消除数千万公里的理想到达位置缺口。它提供中心状态，不提供航天器轨迹或任务会合证明。
+可选的 [MAVEN 归档航天器状态核对](docs/T1_MAVEN_MISSION_SOURCE.md) 使用 PDS4 产品标签与
+校验过的重建巡航 SPK，在三个探索性时刻读取航天器到火星中心的状态，并核验内含段中心切换。
+这提供了任务状态来源，尚无独立传播、预注册 holdout 或任务有效性结论。
 
 ## 当前入口
 
@@ -166,6 +169,7 @@ kernel 读取火星中心（499）相对质心（4）的状态；两次日期的
 - [artifacts/t1-de440s-ephemeris-audit.json](artifacts/t1-de440s-ephemeris-audit.json)：固定日期、来源哈希和使命边界收据。
 - [artifacts/t1-de440s-run-audit.json](artifacts/t1-de440s-run-audit.json)：星历快照 Run 的搬移回放、策略拒绝和篡改负例收据。
 - [artifacts/t1-mars-center-ephemeris-audit.json](artifacts/t1-mars-center-ephemeris-audit.json)：MAR099s 来源校验、火星中心状态与任务边界收据。
+- [artifacts/t1-maven-source-audit.json](artifacts/t1-maven-source-audit.json)：MAVEN 重建巡航 SPK 来源、坐标链和探索性采样边界收据。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装、九个当前 Run 家族与九个历史控制台回放。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
 - [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与八份 manifest 核验。

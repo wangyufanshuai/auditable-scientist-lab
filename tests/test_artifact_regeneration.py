@@ -66,9 +66,9 @@ def test_optional_receipt_rejects_boundary_overclaim(tmp_path: Path, monkeypatch
         sync_optional_acceptance._receipt_row(spec)
 
 
-def test_status_contract_cannot_drop_mission_provenance_gate(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_status_contract_cannot_drop_mission_holdout_gate(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     contract = json.loads(sync_optional_acceptance.STATUS_CONTRACT.read_text(encoding="utf-8"))
-    contract["tracks"][0]["open_gates"].remove("mission trajectory provenance and rights")
+    contract["tracks"][0]["open_gates"].remove("preregistered mission holdout and uncertainty review")
     changed = tmp_path / "status.json"
     changed.write_text(json.dumps(contract), encoding="utf-8")
     monkeypatch.setattr(sync_optional_acceptance, "STATUS_CONTRACT", changed)

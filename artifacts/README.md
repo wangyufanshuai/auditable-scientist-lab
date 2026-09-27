@@ -36,6 +36,10 @@ geometry from saved states; it does not rerun the NAIF kernel.
 `t1-mars-center-ephemeris-snapshot.json` and its audit add a checksum-verified
 MAR099s mass-center offset to the DE440s planetary states. This supplies a
 Mars-center geometry diagnostic, not a spacecraft encounter or mission proof.
+`t1-maven-source-snapshot.json` and its audit read three exploratory states
+from a PDS4-archived, checksum-pinned reconstructed MAVEN cruise SPK. They
+record its Sun/Mars-barycenter segment transition and the Mars-center chain,
+but do not establish independent spacecraft propagation or mission validity.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
 geometry comparisons. None of these artifacts establishes real-mission validity,

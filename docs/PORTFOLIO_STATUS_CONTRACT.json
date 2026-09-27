@@ -7,11 +7,11 @@
   "tracks": [
     {
       "acceptance": "artifacts/acceptance.json",
-      "next_step": "add independently archived spacecraft states and trajectory propagation, then seek expert mission review",
+      "next_step": "preregister a MAVEN NAV holdout and independently propagate a declared force/maneuver model, then seek expert mission review",
       "open_gates": [
         "external symbolic engine",
-        "mission trajectory provenance and rights",
-        "independent spacecraft-state comparison"
+        "independent spacecraft propagation and mission comparison",
+        "preregistered mission holdout and uncertainty review"
       ],
       "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",
       "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",

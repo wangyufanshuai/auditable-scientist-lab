@@ -381,6 +381,82 @@ def verify_optional_t1_mars_center() -> dict:
             "mission_trajectory_validated": False}
 
 
+def verify_optional_t1_maven_source() -> dict:
+    """Check a NAV spacecraft-state source without promoting mission validation."""
+
+    audit = load("artifacts/t1-maven-source-audit.json")
+    snapshot = load("artifacts/t1-maven-source-snapshot.json")
+    expected_sources = {
+        "scripts/fetch_maven_cruise.py", "scripts/verify_t1_maven_source.py",
+        "src/auditable_scientist/adapters/naif_de440s.py",
+        "src/auditable_scientist/adapters/naif_mars_center.py",
+        "docs/T1_MAVEN_MISSION_SOURCE.md", "requirements-t1-mars-center-win-py312.txt",
+    }
+    expected_checks = {
+        "pds_label_md5_and_size_matched", "pinned_sha256_matched", "three_declared_samples",
+        "center_transition_observed", "mars_approach_observed", "direct_chain_consistent",
+        "mission_claim_unverified", "wrong_kernel_rejected",
+    }
+    expected_boundaries = {
+        "archived_spacecraft_states_available": True,
+        "independent_planetary_ephemeris": False,
+        "independent_spacecraft_propagation": False,
+        "mission_validation": False,
+        "scientific_holdout": False,
+        "publication_ready": False,
+    }
+    sources = audit.get("source_files", [])
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False) + "\n").encode("utf-8")
+    samples = snapshot.get("samples", [])
+    if (audit.get("schema_version") != "t1-maven-source-audit-v1"
+            or audit.get("status") != "verified-source-tracked-reconstructed-mission-geometry-only"
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(audit["checks"].values())
+            or audit.get("boundaries") != expected_boundaries
+            or len(sources) != len(expected_sources)
+            or {item.get("path") for item in sources} != expected_sources
+            or any(fingerprint_file(ROOT / item["path"]).sha256 != item.get("sha256")
+                   or (ROOT / item["path"]).stat().st_size != item.get("bytes")
+                   for item in sources)
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or audit.get("kernel_local_paths") != {
+                "de440s": "data/naif/de440s.bsp", "mar099s": "data/naif/mar099s.bsp",
+                "maven_cruise": "data/naif/maven_cru_rec_131118_140923_v1.bsp"}
+            or snapshot.get("schema_version") != "t1-maven-source-snapshot-v1"
+            or snapshot.get("spacecraft_id") != -202
+            or snapshot.get("mission_product", {}).get("md5") != "8d7c55ef3bb935ad487c529f5be5343d"
+            or snapshot.get("mission_product", {}).get("sha256") !=
+            "07c76dfc2a1f66a54b4dd74105b2a5a70d72192813abee3659a74d4d21988dc5"
+            or snapshot.get("mission_product", {}).get("bytes") != 4_797_440
+            or snapshot.get("claim_status") != "unverified"
+            or snapshot.get("sampling_status") != "exploratory-selected-after-source-inspection; not a holdout"
+            or snapshot.get("coordinate_contract", {}).get("kernel_load_order") !=
+            ["maven_cruise", "mar099s", "de440s"]
+            or [row.get("et_tdb_seconds_past_j2000") for row in samples] !=
+            [446_904_000.0, 464_616_000.0, 464_702_400.0]
+            or [row.get("maven_segment_center_id") for row in samples] != [10, 4, 4]
+            or any(row.get("chain_position_error_m", float("inf")) >= 0.001 for row in samples)
+            or audit.get("source_rights", {}).get("unmodified_kernel_redistributed") is not False):
+        raise ValueError("MAVEN saved source, rights, or scientific boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("MAVEN source audit has no timezone-aware timestamp")
+    dynamic_verified = False
+    if (all((ROOT / path).is_file() for path in audit["kernel_local_paths"].values())
+            and importlib.util.find_spec("spiceypy") is not None):
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_source.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+        )
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN dynamic source audit failed: {command.stderr.strip()}")
+        dynamic_verified = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic_verified, "archived_spacecraft_states_available": True,
+            "independent_spacecraft_propagation": False, "mission_validation": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -1195,6 +1271,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 Mars-center optional geometry audit has no command receipt")
+    maven_source = verify_optional_t1_maven_source()
+    if not any(
+        item.get("name") == "optional-t1-maven-reconstructed-source"
+        and item.get("output_path") == "artifacts/t1-maven-source-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_maven_source.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN reconstructed source has no command receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1690,6 +1775,7 @@ def main() -> None:
         "t1_de440s_geometry": de440s,
         "t1_de440s_snapshot_run": de440s_run,
         "t1_mars_center_geometry": mars_center,
+        "t1_maven_reconstructed_source": maven_source,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],
