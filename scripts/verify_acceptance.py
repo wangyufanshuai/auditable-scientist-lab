@@ -152,6 +152,146 @@ def verify_optional_t1_orbit_static() -> dict:
             "dynamic_recalculation_required": "python scripts/verify_t1_external_orbit.py --verify"}
 
 
+def verify_optional_t1_run_static() -> dict:
+    """Verify the saved T1 Tool/Provider Run without importing its SciPy backend."""
+    audit = load("artifacts/t1-external-run-audit.json")
+    relative = audit.get("run_path", "")
+    if (
+        audit.get("schema_version") != "t1-external-run-audit-v1"
+        or audit.get("status") != "verified-within-pinned-two-body-grid"
+        or not isinstance(relative, str)
+        or not relative.startswith("artifacts/t1-external-runs/run-t1-scipy-orbit-")
+        or Path(relative).is_absolute() or ".." in Path(relative).parts
+        or audit.get("relocated_replay_equal") is not True
+        or audit.get("result_tamper_rejected") is not True
+        or audit.get("license_tamper_rejected") is not True
+        or audit.get("policy_denials") != {"wrong_provider_rejected": True, "out_of_scope_path_rejected": True}
+        or audit.get("provider_id") != "scipy-dop853-t1-orbit-v1"
+        or audit.get("provider_version") != "scipy-1.18.1-numpy-2.2.6"
+        or audit.get("boundaries") != {
+            "synthetic_two_body_grid": True, "core_t1_run": False,
+            "real_data": False, "dated_ephemeris": False, "mission_validity": False,
+            "publication_ready": False, "nasa_rights_status": "unreviewed-page-specific",
+        }
+    ):
+        raise ValueError("optional T1 external Run is missing or exceeds its boundary")
+    recorded_at = datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00"))
+    if recorded_at.tzinfo is None or recorded_at.utcoffset() is None:
+        raise ValueError("optional T1 external Run audit timestamp is naive")
+    run_dir = (ROOT / relative).resolve()
+    if not run_dir.is_relative_to((ROOT / "artifacts/t1-external-runs").resolve()):
+        raise ValueError("optional T1 external Run escaped its artifact directory")
+    bindings = BoundPaths(root=ROOT, run_dir=run_dir)
+    saved_input = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
+    saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+    receipt = saved_result.get("receipt")
+    static_receipt = load("artifacts/t1-external-orbit-audit.json")
+    static_receipt.pop("recorded_at", None)
+    provider_environment = static_receipt.get("environment", {})
+    fixture = load("examples/hohmann/dataset.json")
+    if (
+        saved_input.get("schema_version") != "t1-scipy-orbit-run-input-v1"
+        or saved_input.get("track_id") != "T1"
+        or saved_input.get("provider_id") != "scipy-dop853-t1-orbit-v1"
+        or saved_input.get("case_ids") != [item["case_id"] for item in fixture["cases"]] + ["nasa-rounded-axes"]
+        or saved_result.get("provider_id") != "scipy-dop853-t1-orbit-v1"
+        or run_dir.name != f"run-t1-scipy-orbit-{canonical_hash(saved_input)[:16]}"
+        or audit.get("run_id") != run_dir.name
+        or not isinstance(receipt, dict) or receipt != static_receipt
+        or receipt.get("environment") != saved_input.get("provider_provenance")
+        or receipt.get("gates") != saved_input.get("gates")
+        or receipt.get("solver") != saved_input.get("solver")
+        or audit.get("pinned_wheel_sha256") != provider_environment.get("wheel_sha256")
+        or audit.get("license_sha256") != {
+            "scipy": provider_environment.get("scipy_installed_license_sha256"),
+            "numpy": provider_environment.get("numpy_installed_license_sha256"),
+        }
+        or audit.get("source_tag_and_commit") != {
+            "scipy": [provider_environment.get("scipy_source_tag"), provider_environment.get("scipy_source_commit")],
+            "numpy": [provider_environment.get("numpy_source_tag"), provider_environment.get("numpy_source_commit")],
+        }
+    ):
+        raise ValueError("optional T1 external Run input or result differs")
+    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
+    expected_sources = {
+        "root://scripts/verify_t1_external_orbit_run.py",
+        "root://scripts/verify_t1_external_orbit.py",
+        "root://scripts/verify_t1_nasa_factsheets.py",
+        "root://scripts/verify_t3_external_scipy.py",
+        "root://src/auditable_scientist/tools/numerical.py",
+        "root://src/auditable_scientist/domain/models.py",
+        "root://src/auditable_scientist/policy/runtime.py",
+        "root://src/auditable_scientist/runtime/canonical.py",
+        "root://src/auditable_scientist/runtime/environment.py",
+        "root://src/auditable_scientist/runtime/event_log.py",
+        "root://src/auditable_scientist/runtime/replay.py",
+        "root://src/auditable_scientist/runtime/run_integrity.py",
+        "root://src/auditable_scientist/runtime/paths.py",
+        "root://examples/hohmann/dataset.json",
+        "root://artifacts/t1-nasa-factsheet-snapshot.json",
+        "root://artifacts/t1-nasa-factsheet-audit.json",
+        "root://docs/T1_EXTERNAL_ORBIT.md",
+        "root://docs/contracts/t1-external-tool-call-v1.json",
+        "root://artifacts/t1-external-orbit-audit.json",
+        "root://requirements-t3-scipy-win-py312.txt",
+        "root://docs/EVIDENCE_POLICY.md",
+    }
+    source_refs = {item.path for item in manifest.source_files}
+    evidence_refs = {item.path for item in manifest.evidence_files}
+    if (
+        manifest.schema_version != "replay-manifest-v2"
+        or source_refs != expected_sources
+        or len(manifest.source_files) != len(expected_sources)
+        or any(not ref.startswith("root://") for ref in source_refs)
+        or evidence_refs != {"run://scipy-license.txt", "run://numpy-license.txt"}
+        or saved_input.get("source_snapshot_hash") != canonical_hash([
+            (item.path.removeprefix("root://"), item.sha256) for item in manifest.source_files
+        ])
+    ):
+        raise ValueError("optional T1 external Run source or license inventory differs")
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT, bindings=bindings)
+    if (
+        run.run_id != run_dir.name or run.input_hash != canonical_hash(saved_input)
+        or run.status.value != "completed"
+        or len(run.claims) != 1 or run.claims[0].status.value != "unverified"
+        or run.claims[0].holdout_verified is not False
+        or run.claims[0].level.value != "validated-reproduction"
+        or any(item.provenance_status.value != "unverified" for item in run.evidence)
+        or run.policy is None or run.policy.network != "disabled"
+        or run.policy.max_tool_calls != 1 or run.policy.max_seconds != 120
+        or run.policy.allowed_providers != ["scipy-dop853-t1-orbit-v1"]
+        or set(run.policy.allowed_paths) != source_refs | evidence_refs
+        or len(run.tools) != 1 or run.tools[0].tool_id != "t1-scipy-two-body-apoapsis-v1"
+        or len(run.providers) != 1 or run.providers[0].provider_id != "scipy-dop853-t1-orbit-v1"
+        or run.environment.get("pinned_wheel_sha256") != audit.get("pinned_wheel_sha256")
+        or run.environment.get("installed_license_sha256") != audit.get("license_sha256")
+        or run.environment.get("nasa_source_rights_status") != "unreviewed-page-specific"
+    ):
+        raise ValueError("optional T1 external shared Run widened its claim, policy, or provenance")
+    event_types = [event.event_type for event in run.events]
+    if event_types != [
+        "run.initialized", "policy.applied", "tool.invoked", "evaluator.completed",
+        "negative_case.checked", "run.completed",
+    ]:
+        raise ValueError("optional T1 external Run lifecycle differs")
+    if (run.events[3].payload != {
+        "evaluator_id": "t1-scipy-orbit-crosscheck-v1",
+        "summary": receipt["summary"], "checks": receipt["checks"],
+    } or run.events[4].payload != {
+        "wrong_gravity_event_detected": False, "rejected": True,
+    }):
+        raise ValueError("optional T1 external Run evaluator or negative event differs")
+    replay = manifest.verify(
+        input_payload=saved_input, code_revision=run.code_revision, environment=run.environment,
+        seed=run.seed, source_paths=[bindings.resolve(item.path) for item in manifest.source_files],
+        evidence_paths=[bindings.resolve(item.path) for item in manifest.evidence_files],
+        candidate_order=[], computational_output=receipt, bindings=bindings,
+    ).model_dump(mode="json")
+    if audit.get("replay") != replay or len(replay["checks"]) != 8:
+        raise ValueError("optional T1 external Run replay binding differs")
+    return replay
+
+
 def verify_optional_t3_run_static() -> dict:
     """Bind optional solver evidence without importing SciPy into the core environment."""
 
@@ -529,6 +669,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 external orbit audit is missing its pinned dynamic-verification receipt")
+    t1_external_run_replay = verify_optional_t1_run_static()
+    orbit_run_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit_run.py").sha256
+    if not any(
+        item.get("name") == "optional-t1-external-orbit-tool-run"
+        and item.get("output_path") == "artifacts/t1-external-run-audit.json"
+        and item.get("input_version") == orbit_run_script_sha
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 external orbit Run is missing its pinned dynamic-verification receipt")
     symbolic_audit = load("artifacts/symbolic-engine-audit.json")
     symbolic_manifest = next(item for item in built_in_manifests() if item.adapter_id == "symbolic-physics-engine")
     audited_sources = {row["path"]: row for row in symbolic_audit.get("source_files", [])}
@@ -859,6 +1008,7 @@ def main() -> None:
             "scientific_validation_claim": nasa_audit["scientific_validation_claim"],
         },
         "t1_optional_orbit_static_provenance": t1_orbit_static,
+        "t1_optional_external_run_static_replay": t1_external_run_replay,
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"

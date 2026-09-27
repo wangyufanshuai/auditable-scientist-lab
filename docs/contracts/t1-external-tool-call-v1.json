@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "T1 optional external two-body solver tool call",
+  "type": "object",
+  "required": ["provider_id", "input_hash", "lock_path"],
+  "properties": {
+    "provider_id": {"const": "scipy-dop853-t1-orbit-v1"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "lock_path": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

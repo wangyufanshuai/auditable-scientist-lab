@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T08:14:19Z",
+  "recorded_at": "2026-09-27T08:23:35Z",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,9 +14,9 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 98,
+      "tests_passed": 102,
       "tests_skipped": 1,
-      "recorded_at": "2026-09-27T08:14:19Z",
+      "recorded_at": "2026-09-27T08:23:35Z",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },
@@ -67,7 +67,7 @@
       "name": "portfolio-verification",
       "command": "python scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:14:19Z",
+      "recorded_at": "2026-09-27T08:23:35Z",
       "verified": true,
       "input_version": "acceptance-verification-v1",
       "output_path": "artifacts/acceptance-verification.json"
@@ -94,7 +94,7 @@
       "name": "pinned-eight-run-replay",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:14:19Z",
+      "recorded_at": "2026-09-27T08:23:35Z",
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/acceptance-verification.json"
@@ -123,6 +123,14 @@
       "recorded_at": "2026-09-27T08:09:01Z",
       "input_version": "7fe132ac8aac4f4afd76f66ee78b788fa310e3bd77d21b3b283c037fbd4b5fa0",
       "output_path": "artifacts/t1-external-orbit-audit.json"
+    },
+    {
+      "name": "optional-t1-external-orbit-tool-run",
+      "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit_run.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T08:21:59Z",
+      "input_version": "0a6b382ffd8a0ca79d87c1a690c55be581dd547d0e0c53f5eab1bc8c7a668453",
+      "output_path": "artifacts/t1-external-run-audit.json"
     },
     {
       "name": "read-only-symbolic-source-audit",

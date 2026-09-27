@@ -24,10 +24,13 @@
   one NASA-rounded-axis sensitivity case to an event-detected apoapsis. It checks
   time, final state, specific energy, angular momentum, and a wrong-gravity
   negative control at predeclared relative tolerances. It is a finite two-body
-  numerical cross-check, not a dated ephemeris, full mission trajectory, or a
-  core Run/Policy backend. Dynamic verification requires the optional SciPy
-  environment; the core acceptance verifier checks only its saved provenance,
-  gate arithmetic, and scientific boundaries. See `docs/T1_EXTERNAL_ORBIT.md`.
+  numerical cross-check, not a dated ephemeris or full mission trajectory.
+  A separate Tool/Policy/Provider Run binds that receipt to the shared audit
+  kernel with portable replay, copied license notices, relocation and tamper
+  negatives. The core T1 CLI Run remains analytic. Dynamic verification requires
+  the optional SciPy environment; the core acceptance verifier checks the saved
+  Run, manifest, provenance, gate arithmetic, and scientific boundaries without
+  importing SciPy. See `docs/T1_EXTERNAL_ORBIT.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.
@@ -40,7 +43,7 @@
   and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
 - An earlier fresh Python environment installed `.[test]` and passed 63 tests.
-  The pinned Windows AMD64 / CPython 3.12.3 environment now passes 98 tests (one
+  The pinned Windows AMD64 / CPython 3.12.3 environment now passes 102 tests (one
   optional SciPy module skipped) and
   matches all eight current Run manifests. Its exact dependency closure was installed
   from `requirements-replay-win-py312.txt` and passed `pip check`. The resulting

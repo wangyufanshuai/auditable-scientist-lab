@@ -88,6 +88,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 可选的固定 SciPy DOP853 环境还从初始状态积分到远日点，对九个合成样例和一个圆整参数样例
 核对飞行时间、末态和守恒量；它只覆盖圆轨道出发的二体模型，见
 [docs/T1_EXTERNAL_ORBIT.md](docs/T1_EXTERNAL_ORBIT.md)。
+该核对另有独立的离线 Tool/Policy/Provider Run 和搬移回放、篡改负例；核心 T1 CLI Run 仍使用解析基准。
 
 ## 当前入口
 
@@ -116,6 +117,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
 - [artifacts/t1-nasa-factsheet-audit.json](artifacts/t1-nasa-factsheet-audit.json)：T1 圆整参数敏感性与未通过的外部来源 gate。
 - [artifacts/t1-external-orbit-audit.json](artifacts/t1-external-orbit-audit.json)：十例远日点积分及错误引力方向负例的固定环境收据。
+- [artifacts/t1-external-run-audit.json](artifacts/t1-external-run-audit.json)：可选外部求解器 Run 的回放、策略拒绝与篡改负例。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与八份 CLI 回放收据。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
 - [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与八份 manifest 核验。

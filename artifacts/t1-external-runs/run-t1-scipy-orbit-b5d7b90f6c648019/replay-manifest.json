@@ -1,0 +1,428 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "b5d7b90f6c6480197ff494e2ecba1abc91332cd5e6ff72ee836eba7e2d4db456",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "numpy": "2.2.6",
+      "pydantic": "2.11.10",
+      "scipy": "1.18.1",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T1",
+    "runtime": "optional-external-solver",
+    "network": "disabled",
+    "provider_id": "scipy-dop853-t1-orbit-v1",
+    "pinned_wheel_sha256": {
+      "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+    },
+    "installed_license_sha256": {
+      "scipy": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    },
+    "nasa_source_rights_status": "unreviewed-page-specific"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t1_external_orbit_run.py",
+      "sha256": "0a6b382ffd8a0ca79d87c1a690c55be581dd547d0e0c53f5eab1bc8c7a668453",
+      "bytes": 21357
+    },
+    {
+      "path": "root://scripts/verify_t1_external_orbit.py",
+      "sha256": "7fe132ac8aac4f4afd76f66ee78b788fa310e3bd77d21b3b283c037fbd4b5fa0",
+      "bytes": 9526
+    },
+    {
+      "path": "root://scripts/verify_t1_nasa_factsheets.py",
+      "sha256": "6637a1173432fbb0a325444bfe54f61493053ddc70aca33c0b9beefcea205e5f",
+      "bytes": 10363
+    },
+    {
+      "path": "root://scripts/verify_t3_external_scipy.py",
+      "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+      "bytes": 9741
+    },
+    {
+      "path": "root://src/auditable_scientist/tools/numerical.py",
+      "sha256": "c8bd3bf6258b4c5eb3c3555c58dabd4e0d1e9d9cc373a8486a50424a152b4150",
+      "bytes": 1504
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://examples/hohmann/dataset.json",
+      "sha256": "58484830a36617896cd1f8a2df645092b2e94048427c05a7c041ed39ccba0213",
+      "bytes": 1691
+    },
+    {
+      "path": "root://artifacts/t1-nasa-factsheet-snapshot.json",
+      "sha256": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
+      "bytes": 2325
+    },
+    {
+      "path": "root://artifacts/t1-nasa-factsheet-audit.json",
+      "sha256": "28b937937f72c6bba8cab965ced143ce98e44f570bd602ea44fb3c48f93a70e5",
+      "bytes": 1793
+    },
+    {
+      "path": "root://artifacts/t1-external-orbit-audit.json",
+      "sha256": "41b77c8ee76b50ec7fe591fa40f6fb7ccc185abd10f65da06fdf6de320f28ef8",
+      "bytes": 10125
+    },
+    {
+      "path": "root://requirements-t3-scipy-win-py312.txt",
+      "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "bytes": 385
+    },
+    {
+      "path": "root://docs/T1_EXTERNAL_ORBIT.md",
+      "sha256": "b7439ce9556c3efba42fbb929071767e9f854d719ba13ada9dba976f9c732bad",
+      "bytes": 3824
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://docs/contracts/t1-external-tool-call-v1.json",
+      "sha256": "3b4aa7d46055940c218f38e7baa95770f69d003db3dc5185b4c58a8151d0d16f",
+      "bytes": 436
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://scipy-license.txt",
+      "sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "bytes": 45881
+    },
+    {
+      "path": "run://numpy-license.txt",
+      "sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d",
+      "bytes": 47709
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "schema_version": "t1-external-orbit-audit-v1",
+    "status": "passed-within-circular-two-body-scope",
+    "scope": "Event-driven, dimensionless, heliocentric two-body apoapsis integration for nine synthetic T1 cases and one NASA-rounded-axis sensitivity case",
+    "solver": {
+      "api": "scipy.integrate.solve_ivp",
+      "method": "DOP853",
+      "rtol": 3e-12,
+      "atol": 3e-14
+    },
+    "environment": {
+      "platform_and_packages": {
+        "python": "3.12.3",
+        "implementation": "CPython",
+        "system": "Windows",
+        "machine": "AMD64",
+        "numpy": "2.2.6",
+        "scipy": "1.18.1"
+      },
+      "lock_sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "wheel_sha256": {
+        "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+        "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+      },
+      "scipy_source_tag": "v1.18.1",
+      "scipy_source_commit": "c2df8ace0d9859f090e79058b2bd2ffc584f19e6",
+      "scipy_installed_license_sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy_source_tag": "v2.2.6",
+      "numpy_source_commit": "bbb76e7d76c3748fb2747fc3d8e06b944005362a",
+      "numpy_installed_license_sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    },
+    "gates": {
+      "case_count": 10,
+      "relative_tof_error_max": 1e-9,
+      "relative_final_position_error_max": 1e-9,
+      "relative_final_velocity_error_max": 1e-9,
+      "relative_energy_drift_max": 1e-9,
+      "relative_angular_momentum_drift_max": 1e-9
+    },
+    "rows": [
+      {
+        "case_id": "train-01",
+        "split": "train",
+        "r1_km": 149597870.7,
+        "r2_km": 227939134.0303053,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 329,
+        "numerical_tof_days": 258.8657589196337,
+        "analytic_tof_days": 258.8657589178094,
+        "relative_tof_error": 7.047503891640195e-12,
+        "relative_final_position_error": 1.139933248539598e-11,
+        "relative_final_velocity_error": 1.1272102154771246e-11,
+        "relative_energy_drift": 2.9689766782303716e-12,
+        "relative_angular_momentum_drift": 9.640619896950108e-13
+      },
+      {
+        "case_id": "train-02",
+        "split": "train",
+        "r1_km": 149597870.7,
+        "r2_km": 209437018.98,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 329,
+        "numerical_tof_days": 240.07133102050832,
+        "analytic_tof_days": 240.07133101889372,
+        "relative_tof_error": 6.725477270923253e-12,
+        "relative_final_position_error": 1.2548514934913155e-11,
+        "relative_final_velocity_error": 1.2340168813197526e-11,
+        "relative_energy_drift": 2.3745005961473004e-12,
+        "relative_angular_momentum_drift": 8.560074639014434e-13
+      },
+      {
+        "case_id": "train-03",
+        "split": "train",
+        "r1_km": 134638083.63,
+        "r2_km": 179517444.84,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 317,
+        "numerical_tof_days": 196.4953963581328,
+        "analytic_tof_days": 196.49539635676476,
+        "relative_tof_error": 6.962262342910271e-12,
+        "relative_final_position_error": 1.415160209454895e-11,
+        "relative_final_velocity_error": 1.3978384405796615e-11,
+        "relative_energy_drift": 2.0680124279692795e-12,
+        "relative_angular_momentum_drift": 7.913511314910203e-13
+      },
+      {
+        "case_id": "train-04",
+        "split": "train",
+        "r1_km": 164557657.77,
+        "r2_km": 239356593.12,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 329,
+        "numerical_tof_days": 286.46336159969707,
+        "analytic_tof_days": 286.46336159764894,
+        "relative_tof_error": 7.1495720562663634e-12,
+        "relative_final_position_error": 1.2955587539126065e-11,
+        "relative_final_velocity_error": 1.266663064200188e-11,
+        "relative_energy_drift": 2.6667758910228008e-12,
+        "relative_angular_momentum_drift": 9.223116118227845e-13
+      },
+      {
+        "case_id": "train-05",
+        "split": "train",
+        "r1_km": 119678296.56,
+        "r2_km": 224396806.05,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 365,
+        "numerical_tof_days": 225.22427198475137,
+        "analytic_tof_days": 225.22427198301023,
+        "relative_tof_error": 7.730703406618934e-12,
+        "relative_final_position_error": 1.0517705792309986e-11,
+        "relative_final_velocity_error": 9.548147126358711e-12,
+        "relative_energy_drift": 4.941207165654051e-12,
+        "relative_angular_momentum_drift": 1.5534250187986477e-12
+      },
+      {
+        "case_id": "train-06",
+        "split": "train",
+        "r1_km": 179517444.84,
+        "r2_km": 269276167.26,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 329,
+        "numerical_tof_days": 335.5098847568258,
+        "analytic_tof_days": 335.5098847544377,
+        "relative_tof_error": 7.117722637266064e-12,
+        "relative_final_position_error": 1.2257281010545843e-11,
+        "relative_final_velocity_error": 1.1888720912153494e-11,
+        "relative_energy_drift": 2.994687831048281e-12,
+        "relative_angular_momentum_drift": 1.0850427409614966e-12
+      },
+      {
+        "case_id": "holdout-01",
+        "split": "holdout",
+        "r1_km": 142117977.165,
+        "r2_km": 227939134.0303053,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 353,
+        "numerical_tof_days": 251.21088357170476,
+        "analytic_tof_days": 251.21088356985115,
+        "relative_tof_error": 7.378623879106607e-12,
+        "relative_final_position_error": 1.1751787288523439e-11,
+        "relative_final_velocity_error": 1.1189735116043841e-11,
+        "relative_energy_drift": 3.73371522290421e-12,
+        "relative_angular_momentum_drift": 1.3253666562902153e-12
+      },
+      {
+        "case_id": "holdout-02",
+        "split": "holdout",
+        "r1_km": 157077764.235,
+        "r2_km": 254316380.19,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 353,
+        "numerical_tof_days": 294.45740370426444,
+        "analytic_tof_days": 294.45740370209495,
+        "relative_tof_error": 7.367667343893952e-12,
+        "relative_final_position_error": 1.1081373006520868e-11,
+        "relative_final_velocity_error": 1.085472534063564e-11,
+        "relative_energy_drift": 3.374126375125084e-12,
+        "relative_angular_momentum_drift": 1.0116546901802426e-12
+      },
+      {
+        "case_id": "holdout-03",
+        "split": "holdout",
+        "r1_km": 127158190.095,
+        "r2_km": 201957125.445,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 353,
+        "numerical_tof_days": 210.69656677148123,
+        "analytic_tof_days": 210.69656676991443,
+        "relative_tof_error": 7.436385440223912e-12,
+        "relative_final_position_error": 1.227508624446789e-11,
+        "relative_final_velocity_error": 1.159828810257954e-11,
+        "relative_energy_drift": 4.179963564819018e-12,
+        "relative_angular_momentum_drift": 1.594847059001489e-12
+      },
+      {
+        "case_id": "nasa-rounded-axes",
+        "split": "external-parameter-sensitivity",
+        "r1_km": 149598000.0,
+        "r2_km": 227956000.0,
+        "mu_km3_s2": 132712440018.0,
+        "event_detected": true,
+        "function_calls": 329,
+        "numerical_tof_days": 258.88323883356804,
+        "analytic_tof_days": 258.8832388317415,
+        "relative_tof_error": 7.055355498954758e-12,
+        "relative_final_position_error": 1.1408030093563928e-11,
+        "relative_final_velocity_error": 1.1280957797201489e-11,
+        "relative_energy_drift": 2.9716295371515506e-12,
+        "relative_angular_momentum_drift": 9.650583434613963e-13
+      }
+    ],
+    "summary": {
+      "relative_tof_error": 7.730703406618934e-12,
+      "relative_final_position_error": 1.415160209454895e-11,
+      "relative_final_velocity_error": 1.3978384405796615e-11,
+      "relative_energy_drift": 4.941207165654051e-12,
+      "relative_angular_momentum_drift": 1.594847059001489e-12
+    },
+    "checks": {
+      "ten_apoapses_detected": true,
+      "time_agreement": true,
+      "position_agreement": true,
+      "velocity_agreement": true,
+      "energy_conservation": true,
+      "angular_momentum_conservation": true,
+      "repulsive_gravity_rejected": true
+    },
+    "negative_control": {
+      "gravity_sign": -1,
+      "event_detected": false,
+      "function_calls": 482
+    },
+    "source_files": [
+      {
+        "path": "scripts/verify_t1_external_orbit.py",
+        "sha256": "7fe132ac8aac4f4afd76f66ee78b788fa310e3bd77d21b3b283c037fbd4b5fa0",
+        "bytes": 9526
+      },
+      {
+        "path": "scripts/verify_t1_nasa_factsheets.py",
+        "sha256": "6637a1173432fbb0a325444bfe54f61493053ddc70aca33c0b9beefcea205e5f",
+        "bytes": 10363
+      },
+      {
+        "path": "scripts/verify_t3_external_scipy.py",
+        "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "bytes": 9741
+      },
+      {
+        "path": "src/auditable_scientist/tools/numerical.py",
+        "sha256": "c8bd3bf6258b4c5eb3c3555c58dabd4e0d1e9d9cc373a8486a50424a152b4150",
+        "bytes": 1504
+      },
+      {
+        "path": "examples/hohmann/dataset.json",
+        "sha256": "58484830a36617896cd1f8a2df645092b2e94048427c05a7c041ed39ccba0213",
+        "bytes": 1691
+      },
+      {
+        "path": "artifacts/t1-nasa-factsheet-snapshot.json",
+        "sha256": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
+        "bytes": 2325
+      },
+      {
+        "path": "artifacts/t1-nasa-factsheet-audit.json",
+        "sha256": "28b937937f72c6bba8cab965ced143ce98e44f570bd602ea44fb3c48f93a70e5",
+        "bytes": 1793
+      },
+      {
+        "path": "requirements-t3-scipy-win-py312.txt",
+        "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+        "bytes": 385
+      }
+    ],
+    "boundaries": {
+      "core_dependency": false,
+      "circular_two_body_numerical_cross_check": true,
+      "real_data": false,
+      "dated_ephemeris": false,
+      "mission_trajectory_validated": false,
+      "publication_ready": false,
+      "nasa_source_rights_status": "unreviewed-page-specific"
+    }
+  }
+}

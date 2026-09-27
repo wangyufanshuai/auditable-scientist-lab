@@ -14,6 +14,20 @@
     "source_rights_status": "unreviewed-page-specific",
     "status": "verified-offline-snapshot-only"
   },
+  "t1_optional_external_run_static_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "bee1def5213db7099fe2cd00cce8bf87539c7cdfe2ab9cb8c9331483d0f5f947",
+    "verified": true
+  },
   "t1_optional_orbit_static_provenance": {
     "dynamic_recalculation_required": "python scripts/verify_t1_external_orbit.py --verify",
     "scope": "static-source-and-boundary-check-only",

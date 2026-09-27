@@ -2,14 +2,14 @@
 
 | Track | State | Acceptance | Open gates | Next step | Public release |
 |---|---|---|---|---|---|
-| T1 | `reproduced-within-scope` | `artifacts/acceptance.json` | external symbolic engine, real-data provenance, independent backend in the core Run, dated mission ephemeris | attach the optional numerical cross-check to a policy-guarded Run and seek a rights-cleared ephemeris | `False` |
+| T1 | `reproduced-within-scope` | `artifacts/acceptance.json` | external symbolic engine, real-data provenance, independent backend in the core CLI Run, dated mission ephemeris | seek a rights-cleared ephemeris and evaluate a core CLI integration after replay gates | `False` |
 | T2 | `reproduced-within-scope` | `artifacts/t2-causal/acceptance.json` | real interventions, causal identification, data rights, external algorithm source rights | add a rights-cleared physical intervention dataset and independent estimator | `False` |
 | T3 | `reproduced-within-scope` | `artifacts/t3-dynamics/acceptance.json` | long-horizon/nonintegrable multi-body validation, real-mission provenance, compute budget | specify a wider validation grid and finite compute budget before long-horizon claims | `False` |
 | T4 | `reproduced-within-scope` | `artifacts/t4-proof/acceptance.json` | general formal proof backend, reviewed physical transition model, real-world validation | review a physical model and add independent source-backed validation | `False` |
 | T5 | `text-demo-within-scope` | `artifacts/t5-protocol/acceptance.json` | independent protocol source and rights, biosafety review, human acceptance | add a rights-cleared document adapter with independent citation checks | `False` |
 
 Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims.
-An optional pinned-SciPy T1 audit now integrates ten circular two-body transfers to an event-detected apoapsis, including one NASA-rounded-axis sensitivity case. Its core acceptance check is static; the separate `--verify` command recomputes in the pinned solver environment. It does not close mission, source-rights, or core-Run backend gates.
+An optional pinned-SciPy T1 audit integrates ten circular two-body transfers to an event-detected apoapsis, including one NASA-rounded-axis sensitivity case. A separate shared Tool/Policy/Provider Run binds this computation, moved replay, license snapshots and tamper negatives. Core acceptance checks saved provenance and replay statically; the separate `--verify` command recomputes in the pinned solver environment. It does not close mission, source-rights, or core CLI Run backend gates.
 The separate SciPy audit records source tags, installed license notices, pinned wheel hashes,
 and a nine-case oscillator cross-check. An optional versioned Tool/Provider Run now
 replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.
