@@ -14,6 +14,11 @@
     "source_rights_status": "unreviewed-page-specific",
     "status": "verified-offline-snapshot-only"
   },
+  "t1_optional_orbit_static_provenance": {
+    "dynamic_recalculation_required": "python scripts/verify_t1_external_orbit.py --verify",
+    "scope": "static-source-and-boundary-check-only",
+    "source_files_match": true
+  },
   "t1_replay": {
     "checks": [
       "input_hash",

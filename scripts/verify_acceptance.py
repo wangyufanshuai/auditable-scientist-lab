@@ -31,6 +31,7 @@ from auditable_scientist.tracks.proof import ProofPackage, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
 from auditable_scientist.tracks.runner import run_registered_track
 from auditable_scientist.track_cli import replay_track_run
+from auditable_scientist.tools.numerical import hohmann_baseline
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,6 +51,105 @@ def wheel_source_snapshot_hash(root: Path = ROOT) -> str:
         digest.update(path.relative_to(root).as_posix().encode("utf-8") + b"\0")
         digest.update(hashlib.sha256(path.read_bytes()).digest())
     return digest.hexdigest()
+
+
+def verify_optional_t1_orbit_static() -> dict:
+    """Check saved external-solver provenance and bounds without importing SciPy."""
+    audit = load("artifacts/t1-external-orbit-audit.json")
+    expected_sources = {
+        "scripts/verify_t1_external_orbit.py",
+        "scripts/verify_t1_nasa_factsheets.py",
+        "scripts/verify_t3_external_scipy.py",
+        "src/auditable_scientist/tools/numerical.py",
+        "examples/hohmann/dataset.json",
+        "artifacts/t1-nasa-factsheet-snapshot.json",
+        "artifacts/t1-nasa-factsheet-audit.json",
+        "requirements-t3-scipy-win-py312.txt",
+    }
+    sources = audit.get("source_files", [])
+    boundaries = audit.get("boundaries", {})
+    environment = audit.get("environment", {})
+    if (
+        audit.get("schema_version") != "t1-external-orbit-audit-v1"
+        or audit.get("status") != "passed-within-circular-two-body-scope"
+        or audit.get("scope") != "Event-driven, dimensionless, heliocentric two-body apoapsis integration for nine synthetic T1 cases and one NASA-rounded-axis sensitivity case"
+        or audit.get("solver") != {"api": "scipy.integrate.solve_ivp", "method": "DOP853", "rtol": 3e-12, "atol": 3e-14}
+        or environment.get("platform_and_packages") != {
+            "python": "3.12.3", "implementation": "CPython", "system": "Windows", "machine": "AMD64",
+            "numpy": "2.2.6", "scipy": "1.18.1",
+        }
+        or environment.get("lock_sha256") != fingerprint_file(ROOT / "requirements-t3-scipy-win-py312.txt").sha256
+        or environment != load("artifacts/t3-external-scipy.json").get("environment")
+        or len(sources) != len(expected_sources)
+        or {item.get("path") for item in sources} != expected_sources
+        or boundaries != {
+            "core_dependency": False,
+            "circular_two_body_numerical_cross_check": True,
+            "real_data": False,
+            "dated_ephemeris": False,
+            "mission_trajectory_validated": False,
+            "publication_ready": False,
+            "nasa_source_rights_status": "unreviewed-page-specific",
+        }
+    ):
+        raise ValueError("T1 external orbit audit identity, environment, or boundary differs")
+    recorded_at = datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00"))
+    if recorded_at.tzinfo is None or recorded_at.utcoffset() is None:
+        raise ValueError("T1 external orbit audit timestamp is naive")
+    for item in sources:
+        fingerprint = fingerprint_file(ROOT / item["path"])
+        if fingerprint.sha256 != item.get("sha256") or fingerprint.bytes != item.get("bytes"):
+            raise ValueError(f"T1 external orbit source changed: {item['path']}")
+    fixture = load("examples/hohmann/dataset.json")
+    nasa = load("artifacts/t1-nasa-factsheet-audit.json")
+    expected_inputs = [
+        (item["case_id"], item["split"], item["r1_km"], item["r2_km"], item["mu_km3_s2"])
+        for item in fixture["cases"]
+    ]
+    expected_inputs.append((
+        "nasa-rounded-axes", "external-parameter-sensitivity",
+        float(nasa["rounded_axes_million_km"]["earth"]) * 1_000_000,
+        float(nasa["rounded_axes_million_km"]["mars"]) * 1_000_000,
+        fixture["cases"][0]["mu_km3_s2"],
+    ))
+    rows = audit.get("rows", [])
+    actual_inputs = [
+        (row["case_id"], row["split"], row["r1_km"], row["r2_km"], row["mu_km3_s2"])
+        for row in rows
+    ]
+    if actual_inputs != expected_inputs or len(rows) != 10 or not all(row.get("event_detected") is True for row in rows):
+        raise ValueError("T1 external orbit audit inputs or apoapsis results differ")
+    for row in rows:
+        reference = hohmann_baseline(row["r1_km"], row["r2_km"], row["mu_km3_s2"])
+        numerical_days = row["numerical_tof_days"]
+        observed_relative = abs(numerical_days - reference.time_of_flight_days) / reference.time_of_flight_days
+        if (not isinstance(row.get("function_calls"), int) or row["function_calls"] <= 0
+                or not math.isfinite(numerical_days) or numerical_days <= 0
+                or not math.isclose(row["analytic_tof_days"], reference.time_of_flight_days, rel_tol=0, abs_tol=1e-12)
+                or not math.isclose(row["relative_tof_error"], observed_relative, rel_tol=0, abs_tol=2e-15)):
+            raise ValueError(f"T1 external orbit time arithmetic differs: {row['case_id']}")
+    gates = audit.get("gates", {})
+    metrics = (
+        "relative_tof_error", "relative_final_position_error", "relative_final_velocity_error",
+        "relative_energy_drift", "relative_angular_momentum_drift",
+    )
+    if gates.get("case_count") != 10 or any(gates.get(f"{metric}_max") != 1e-9 for metric in metrics):
+        raise ValueError("T1 external orbit gates differ")
+    for metric in metrics:
+        values = [row[metric] for row in rows]
+        if (not all(math.isfinite(value) and value >= 0 for value in values)
+                or audit["summary"][metric] != max(values)
+                or max(values) > gates[f"{metric}_max"]):
+            raise ValueError(f"T1 external orbit metric differs or fails: {metric}")
+    if (audit.get("checks") != {
+        "ten_apoapses_detected": True, "time_agreement": True, "position_agreement": True,
+        "velocity_agreement": True, "energy_conservation": True,
+        "angular_momentum_conservation": True, "repulsive_gravity_rejected": True,
+    } or audit.get("negative_control", {}).get("gravity_sign") != -1
+            or audit["negative_control"].get("event_detected") is not False):
+        raise ValueError("T1 external orbit checks or wrong-gravity control differ")
+    return {"scope": "static-source-and-boundary-check-only", "source_files_match": True,
+            "dynamic_recalculation_required": "python scripts/verify_t1_external_orbit.py --verify"}
 
 
 def verify_optional_t3_run_static() -> dict:
@@ -420,6 +520,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 NASA parameter audit is missing its bounded command receipt")
+    t1_orbit_static = verify_optional_t1_orbit_static()
+    orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
+    if not any(
+        item.get("name") == "optional-t1-external-orbit-cross-check"
+        and item.get("output_path") == "artifacts/t1-external-orbit-audit.json"
+        and item.get("input_version") == orbit_script_sha
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 external orbit audit is missing its pinned dynamic-verification receipt")
     symbolic_audit = load("artifacts/symbolic-engine-audit.json")
     symbolic_manifest = next(item for item in built_in_manifests() if item.adapter_id == "symbolic-physics-engine")
     audited_sources = {row["path"]: row for row in symbolic_audit.get("source_files", [])}
@@ -749,6 +858,7 @@ def main() -> None:
             "real_data_claim": nasa_audit["real_data_claim"],
             "scientific_validation_claim": nasa_audit["scientific_validation_claim"],
         },
+        "t1_optional_orbit_static_provenance": t1_orbit_static,
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"
