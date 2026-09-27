@@ -66,7 +66,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "3252ccbb03113f91eae797f1babfeaab18df6bc42a82870ae7868839830ef33d",
+      "manifest_hash": "423b1dbdd857a50c33f2925f0c3fb9e1d924f7f3856e6d9e9e386caee958d2b6",
       "verified": true
     },
     "T2P": {
@@ -80,7 +80,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "f4f9daecb71574fc4cc71bbd0a713bc810287c05a2670db62cc8bf4bf3311321",
+      "manifest_hash": "8c5215e9cf6484ae7aefebbd9fac1a1d47a9b0f80759945a5c6496d18a7b2c61",
       "verified": true
     },
     "T3": {
@@ -94,7 +94,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "be11942dae54d8010b125f0c6e2004f1bb61c0af82f86e330598df02394bf67d",
+      "manifest_hash": "dc1e90f05fde3f36e49c420c47f469879d1824a15a69487720326bebc4e1fbcd",
       "verified": true
     },
     "T3N": {
@@ -108,7 +108,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "c03cfc0551f5fb2fe1013ebb6be7fdd0ae91d1fcde4871c8321acb0dcca2d727",
+      "manifest_hash": "a745e5291837157085242790429ecd39c1a1c8684831519a953f4bc925d76d73",
       "verified": true
     },
     "T4": {
@@ -122,7 +122,21 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "34a36ba2e17c9ba6d9e079ae8921de78cd7f17f47eb160ad4ff879b31637ac09",
+      "manifest_hash": "f106fdbf3171b03d43048ef1f6549eaeed9d53f821564e10d23312ac10f73411",
+      "verified": true
+    },
+    "T4O": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "308b651174f17a5b1101d88b11c1f512dd714c7eba49be1e0c7fd6b24cbc5078",
       "verified": true
     },
     "T5": {
@@ -136,7 +150,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "32b397ebe74de3ab2621c7d2e1a54a75d624deb1c801b5e70b2589caa3e27104",
+      "manifest_hash": "b6a018ce22c190eba6bd700165dd1d66c06e2080daaf48ad38d71d4c581e6cc1",
       "verified": true
     }
   },
@@ -146,6 +160,7 @@
     "T3",
     "T3N",
     "T4",
+    "T4O",
     "T5"
   ],
   "tracks": [

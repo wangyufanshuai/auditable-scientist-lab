@@ -22,6 +22,7 @@ TASK_IDS = {
     "T3": "t3-harmonic-dynamics-v2",
     "T3N": "t3-equilateral-three-body-v1",
     "T4": "t4-proof-carrying-v2",
+    "T4O": "t4-oscillator-proof-v1",
     "T5": "t5-bio-chem-protocol-v1",
 }
 FIXTURE_RESOURCES = {
@@ -30,6 +31,7 @@ FIXTURE_RESOURCES = {
     "T3": "examples/dynamics/fixture.json",
     "T3N": "examples/dynamics/nbody-fixture.json",
     "T4": "examples/proof/fixture.json",
+    "T4O": "examples/proof/oscillator-fixture.json",
     "T5": "examples/protocol/fixture.json",
 }
 

@@ -25,6 +25,7 @@ from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixtur
 from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
 from auditable_scientist.tracks.nbody import NBodyCase, evaluate_nbody_fixture
+from auditable_scientist.tracks.oscillator_proof import OscillatorProofPackage, verify_oscillator_package
 from auditable_scientist.tracks.physical_world import PhysicalCase, compare, evaluate_physical_fixture, standard_cases
 from auditable_scientist.tracks.proof import ProofPackage, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
@@ -322,7 +323,9 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
-        } if track_id == "T2" else {})
+        } if track_id == "T2" else ({
+            "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
+        } if track_id == "T4" else {}))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
             raise ValueError(f"track {track_id} acceptance command input version differs")
@@ -363,7 +366,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         path = BoundPaths(root=root, run_dir=bundle_dir).resolve(evidence.path_or_uri)
         if fingerprint_file(path).sha256 != evidence.sha256:
             raise ValueError(f"track {track_id} Run evidence changed: {evidence.evidence_id}")
-    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "physical_world.py", "dynamics.py", "reference_rk4.py", "nbody.py", "reference_nbody_rk4.py", "proof.py", "protocol.py"))}
+    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "physical_world.py", "dynamics.py", "reference_rk4.py", "nbody.py", "reference_nbody_rk4.py", "proof.py", "oscillator_proof.py", "dimensions.py", "protocol.py"))}
     if {evidence.sha256 for evidence in run.evidence if evidence.kind.value == "code"} != evaluator_sources:
         raise ValueError(f"track {track_id} Run code evidence differs from source receipt")
     events = EventLog(bundle_dir / "events.jsonl").verify()
@@ -570,6 +573,27 @@ def main() -> None:
         raise SystemExit("T4 proof evaluator replay mismatch")
     if load("artifacts/t4-proof/acceptance.json")["negative_case"] != verify_proof_package(t4_tampered).model_dump(mode="json"):
         raise SystemExit("T4 negative case replay mismatch")
+    t4o_acceptance = load("artifacts/t4-oscillator/acceptance.json")
+    t4o_item = t4o_acceptance["evaluator"]
+    verify_track_bundle("T4O", t4o_item, ROOT / "artifacts/t4-oscillator")
+    t4o_package = OscillatorProofPackage.model_validate(load("examples/proof/oscillator-fixture.json"))
+    t4o_result = verify_oscillator_package(t4o_package)
+    t4o_altered_output = t4o_package.output.model_copy(update={"final_x": t4o_package.output.final_x + 0.1})
+    t4o_tampered = t4o_package.model_copy(update={
+        "output": t4o_altered_output,
+        "output_hash": canonical_hash(t4o_altered_output.model_dump(mode="json")),
+    })
+    t4o_negative = verify_oscillator_package(t4o_tampered)
+    if (
+        t4o_result.model_dump(mode="json") != t4o_item["result"]
+        or t4o_item["input_hash"] != canonical_hash(t4o_package.model_dump(mode="json"))
+        or not t4o_result.passed or t4o_negative.passed
+        or t4o_acceptance["negative_case"] != t4o_negative.model_dump(mode="json")
+        or canonical_hash(run_registered_track("T4O", ROOT / "examples/proof/oscillator-fixture.json").receipt) != canonical_hash(t4o_item)
+    ):
+        raise SystemExit("T4O oscillator proof evaluator replay mismatch")
+    if not any(item.get("name") == "oscillator-physical-module-subtrack" and item.get("output_path") == "artifacts/t4-oscillator/acceptance.json" for item in load("artifacts/t4-proof/acceptance.json")["checks"]):
+        raise SystemExit("T4O subtrack is missing from T4 acceptance")
 
     t5_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T5")
     t5_protocol = ProtocolSpec.model_validate(load("examples/protocol/fixture.json"))
@@ -599,9 +623,9 @@ def main() -> None:
         raise SystemExit("T5 execution boundary was widened")
 
     cli_replays: dict[str, dict] = {}
-    for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
-        item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v14" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+    for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"):
+        item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else t4o_item if track_id == "T4O" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
+        run_dir = ROOT / "artifacts/track-runs-v15" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -636,10 +660,10 @@ def main() -> None:
             name, version = line.split("==")
             pins[re.sub(r"[-_.]+", "-", name).lower()] = version
     manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/replay-manifest.json"}
-    for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T5"):
-        receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
+    for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"):
+        receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else t4o_item if track_id == "T4O" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v14" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v15" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -655,15 +679,16 @@ def main() -> None:
 
     wheel = load("artifacts/wheel-audit.json")
     if (
-        wheel.get("schema_version") != "wheel-audit-v2"
+        wheel.get("schema_version") != "wheel-audit-v3"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
-        or wheel.get("all_seven_relocated_replays_equal") is not True
+        or wheel.get("all_eight_relocated_replays_equal") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
-        or wheel.get("bundled_resource_count", 0) < 23
+        or wheel.get("t4o_bounded_result_and_unverified_run_claim") is not True
+        or wheel.get("bundled_resource_count", 0) < 24
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
-        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T5"}
+        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}
         or wheel.get("source_snapshot_sha256") != wheel_source_snapshot_hash()
         or wheel.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_wheel_install.py").sha256
         or not re.fullmatch(r"[a-f0-9]{64}", wheel.get("wheel_sha256", ""))
@@ -677,7 +702,7 @@ def main() -> None:
         "t1_replay": replay_receipt.model_dump(mode="json"),
         "run_status": run.status.value,
         "tracks": [item["track_id"] for item in portfolio["tracks"]],
-        "track_evaluators_replayed": ["T2", "T2P", "T3", "T3N", "T4", "T5"],
+        "track_evaluators_replayed": ["T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"],
         "track_cli_replays": cli_replays,
         "t3_optional_external_run_static_replay": optional_t3_static_replay,
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,

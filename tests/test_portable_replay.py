@@ -14,7 +14,7 @@ from auditable_scientist.cli import main
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_five_runs_replay_in_copied_checkout_without_original_fixtures(tmp_path: Path, capsys) -> None:
+def test_six_runs_replay_in_copied_checkout_without_original_fixtures(tmp_path: Path, capsys) -> None:
     generated: list[Path] = []
     assert main(["run", str(ROOT / "examples/hohmann/run.json"), "--offline", "--seed", "17", "--output-dir", str(tmp_path / "source-runs")]) == 0
     generated.append(Path(capsys.readouterr().out.strip()))
@@ -22,6 +22,7 @@ def test_five_runs_replay_in_copied_checkout_without_original_fixtures(tmp_path:
         ("T2", "examples/causal/fixture.json"),
         ("T3", "examples/dynamics/fixture.json"),
         ("T4", "examples/proof/fixture.json"),
+        ("T4O", "examples/proof/oscillator-fixture.json"),
         ("T5", "examples/protocol/fixture.json"),
     ):
         assert main(["run-track", track_id, str(ROOT / fixture), "--output-dir", str(tmp_path / "source-tracks")]) == 0
@@ -60,5 +61,5 @@ def test_five_runs_replay_in_copied_checkout_without_original_fixtures(tmp_path:
         capture_output=True, text=True, timeout=60, check=False,
     )
     assert completed.returncode == 0, completed.stdout + completed.stderr
-    assert completed.stdout.count('"verified": true') == 5
+    assert completed.stdout.count('"verified": true') == 6
     assert "error:" in completed.stderr

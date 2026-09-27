@@ -16,13 +16,14 @@ from .causal import CausalCase, evaluate_causal_fixture
 from .common import TrackReceipt
 from .dynamics import DynamicsCase, evaluate_dynamics_fixture
 from .nbody import NBodyCase, evaluate_nbody_fixture
+from .oscillator_proof import OscillatorProofPackage, verify_oscillator_package
 from .physical_world import PhysicalCase, evaluate_physical_fixture
 from .proof import ProofPackage, verify_proof_package
 from .protocol import ProtocolSpec, verify_protocol
 
 
 ROOT = project_root()
-TRACK_SOURCES = {"T2": "causal.py", "T2P": "physical_world.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}
+TRACK_SOURCES = {"T2": "causal.py", "T2P": "physical_world.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T4O": "oscillator_proof.py", "T5": "protocol.py"}
 
 
 @dataclass(frozen=True)
@@ -72,6 +73,8 @@ def track_source_paths(track_id: str) -> list[Path]:
         sources.insert(1, "tracks/reference_rk4.py")
     if track_id == "T3N":
         sources.insert(1, "tracks/reference_nbody_rk4.py")
+    if track_id == "T4O":
+        sources[1:1] = ["tracks/dynamics.py", "tracks/reference_rk4.py", "tools/dimensions.py"]
     resources = [
         "pyproject.toml", "docs/EVIDENCE_POLICY.md", "schemas/track-tool-call-v1.json",
         "schemas/track-receipt-v1.json", "schemas/track-acceptance-v1.json", "schemas/run.schema.json",
@@ -82,7 +85,7 @@ def track_source_paths(track_id: str) -> list[Path]:
         resources.append("docs/T2_PHYSICAL_METHOD.md")
     if track_id == "T3N":
         resources.append("docs/T3_NBODY_METHOD.md")
-    if track_id == "T4":
+    if track_id in ("T4", "T4O"):
         resources.append("docs/T4_METHOD.md")
     paths = [source_path(f"src/auditable_scientist/{item}") for item in sources]
     root = checkout_root()
@@ -133,6 +136,8 @@ def load_track_input(track_id: str, fixture_path: Path) -> Any:
         return [case.model_dump(mode="json") for case in cases]
     if track_id == "T4":
         return ProofPackage.model_validate(data).model_dump(mode="json")
+    if track_id == "T4O":
+        return OscillatorProofPackage.model_validate(data).model_dump(mode="json")
     if track_id == "T5":
         return ProtocolSpec.model_validate(data).model_dump(mode="json")
     raise ValueError(f"unsupported track: {track_id}")
@@ -173,6 +178,25 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
             negative_case_passed=not negative_result.passed,
             result=result.model_dump(mode="json"),
             blocked_gates=["general formal proof backend beyond this fixed transfer rule"],
+        )
+        negative = negative_result.model_dump(mode="json")
+    elif track_id == "T4O":
+        package = OscillatorProofPackage.model_validate(input_payload)
+        result = verify_oscillator_package(package)
+        altered_output = package.output.model_copy(update={"final_x": package.output.final_x + 0.1})
+        tampered = package.model_copy(update={
+            "output": altered_output,
+            "output_hash": canonical_hash(altered_output.model_dump(mode="json")),
+        })
+        negative_result = verify_oscillator_package(tampered)
+        from .common import make_track_receipt
+
+        receipt = make_track_receipt(
+            track_id="T4O", evaluator_id=result.evaluator_id, input_payload=input_payload,
+            evidence_level=result.evidence_level, passed=result.passed,
+            negative_case_passed=not negative_result.passed,
+            result=result.model_dump(mode="json"),
+            blocked_gates=["external formal proof backend", "reviewed physics model and real-world validation"],
         )
         negative = negative_result.model_dump(mode="json")
     elif track_id == "T5":

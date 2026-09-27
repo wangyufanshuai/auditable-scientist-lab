@@ -29,3 +29,36 @@ This is a machine-checkable witness for one declared transfer rule and a
 finite trajectory. It is not a general formal proof backend, a verified
 physics model, or evidence of correctness for arbitrary simulation code.
 The general proof and transition-model coverage gates remain open.
+
+## T4O oscillator adapter
+
+`T4O` attaches a separate proof receipt to the T3 velocity-Verlet harmonic
+oscillator. Its declared input is one finite case (`0 < omega <= 2`,
+`0 < dt <= 0.02`, `1 <= steps <= 1000`, `|x0|, |v0| <= 2`) and a seed. The
+seed is recorded in the input hash, but the solver itself has no randomness.
+The declared output contains the initial state, final position, and maximum
+specific-energy drift. The package binds the input, output, and exact bytes of
+the local T3 solver source with SHA-256. These hashes detect accidental or
+adversarial changes to a saved package; the checker still recomputes the
+numerical result rather than accepting a recomputed hash as proof.
+
+The checker requires nine uniquely identified, correctly stated obligations:
+input and output hashes, solver-source hash, SI units, initial boundary,
+velocity-Verlet replay, closed-form harmonic position, independent fixed-step
+RK4 position, and specific-energy drift. The numerical bounds are fixed in
+checker code: `2e-3` for closed-form position error, RK4 position difference,
+and maximum specific-energy drift. The declared SI units are `m`, `m/s`, `s`,
+`s^-1`, and `m^2/s^2`; the acceleration and energy expressions are also
+dimension-checked. A missing required obligation is `inconclusive`, a bad or
+duplicated one is `failed`, and only all-passed required obligations permit a
+`bounded-verified` evaluator result. The optional external formal-prover
+obligation is `not_applicable`, because no formal backend is configured. The
+shared Run Claim remains `unverified`.
+
+The committed negative control changes the reported final position and
+recomputes its output hash. The solver replay must still reject it. This is a
+finite, synthetic, machine-checkable numerical witness for a known oscillator
+equation. The local RK4 and closed form are independent checks of numerical
+agreement, not a proof of the solver implementation, of the physical model,
+or of applicability to real data. The physical-model review, external formal
+backend, real-data provenance, and human acceptance gates remain open.

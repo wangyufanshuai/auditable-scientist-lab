@@ -11,6 +11,7 @@ from auditable_scientist.runtime.replay import BoundPaths, fingerprint_file
 from auditable_scientist.tracks.causal import CausalCase
 from auditable_scientist.tracks.dynamics import DynamicsCase
 from auditable_scientist.tracks.physical_world import PhysicalCase, compare, standard_cases
+from auditable_scientist.tracks.oscillator_proof import create_oscillator_package
 from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep
 from auditable_scientist.tracks.run_package import make_track_run
@@ -306,6 +307,35 @@ def main() -> None:
     write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, run=proof_run, negative_case=proof_negative, demo_text=f"run_id={proof_run.run_id}; checked_obligations={proof_receipt.result['checked_obligations']}; tampered_claim_status={proof_negative['claim_status']}")
     portfolio.append(proof_receipt.model_dump(mode="json"))
 
+    oscillator_package = create_oscillator_package(dynamics_cases[-1])
+    oscillator_fixture = ROOT / "examples/proof/oscillator-fixture.json"
+    write_json(oscillator_fixture, oscillator_package.model_dump(mode="json"))
+    oscillator_execution = run_registered_track("T4O", oscillator_fixture)
+    oscillator_receipt = oscillator_execution.receipt
+    oscillator_negative = oscillator_execution.negative_case
+    oscillator_run = make_track_run(
+        track_id="T4O", task_id="t4-oscillator-proof-v1", receipt=oscillator_receipt,
+        fixture_path=oscillator_fixture, negative_case=oscillator_negative,
+        calls_used=oscillator_execution.calls_used,
+        bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t4-oscillator"),
+    )
+    write_track_bundle(
+        track_id="T4O", directory="t4-oscillator", receipt=oscillator_receipt,
+        run=oscillator_run, negative_case=oscillator_negative,
+        demo_text=f"run_id={oscillator_run.run_id}; checker_statuses={[item['status'] for item in oscillator_receipt.result['results']]}; negative_claim_status={oscillator_negative['claim_status']}",
+    )
+    proof_acceptance = ROOT / "artifacts/t4-proof/acceptance.json"
+    proof_acceptance_payload = json.loads(proof_acceptance.read_text(encoding="utf-8"))
+    proof_acceptance_payload["checks"].append({
+        "name": "oscillator-physical-module-subtrack",
+        "command": "python scripts/generate_track_artifacts.py",
+        "exit_code": 0,
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "input_version": oscillator_receipt.input_hash,
+        "output_path": "artifacts/t4-oscillator/acceptance.json",
+    })
+    write_json(proof_acceptance, proof_acceptance_payload)
+
     protocol_steps = [
         ProtocolStep(step_id="step-1", action="mix", reagent="buffer", volume_ul=10, temperature_c=22, duration_min=5, provenance_status="verified"),
         ProtocolStep(step_id="step-2", action="incubate", reagent="sample", volume_ul=5, temperature_c=24, duration_min=10, provenance_status="verified"),
@@ -325,7 +355,7 @@ def main() -> None:
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "physical_subtrack": "artifacts/t2-physical/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights", "external algorithm source rights"], "next_step": "add a rights-cleared physical intervention dataset and independent estimator", "public_release": False},
         {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json", "optional_perturbed_run": "artifacts/t3-perturbed-run-audit.json", "open_gates": ["long-horizon/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a wider validation grid and finite compute budget before long-horizon claims", "public_release": False},
-        {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
+        {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json", "open_gates": ["general formal proof backend", "reviewed physical transition model", "real-world validation"], "next_step": "review a physical model and add independent source-backed validation", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]
     write_json(ROOT / "artifacts/portfolio-status.json", {"schema_version": "portfolio-status-v1", "status": "implementing", "remote": "https://github.com/wangyufanshuai/auditable-scientist-lab", "pushed": False, "public_release_allowed": False, "tracks": status_rows})
@@ -346,6 +376,7 @@ def main() -> None:
         ])
     markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy Tool/Provider Run replays two short perturbed trajectories and rejects altered result or license bytes; long-horizon/nonintegrable and real-mission gates remain open."])
     markdown.extend(["", "T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only."])
+    markdown.extend(["", "T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open."])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 

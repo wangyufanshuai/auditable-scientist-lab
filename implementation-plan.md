@@ -27,11 +27,11 @@
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
 - An earlier fresh Python environment installed `.[test]` and passed 63 tests.
   The pinned Windows AMD64 / CPython 3.12.3 environment now passes 74 tests and
-  matches all seven current Run manifests. Its exact dependency closure was installed
+  matches all eight current Run manifests. Its exact dependency closure was installed
   from `requirements-replay-win-py312.txt` and passed `pip check`. The resulting
   `artifacts/replay-environment-audit.json` binds installed versions and manifest bytes.
   Replay in a mismatched environment fails closed; wheel and interpreter bytes are not locked.
-- A standalone wheel now carries the offline schemas, evidence policy, and seven fixtures.
+- A standalone wheel now carries the offline schemas, evidence policy, and eight fixtures.
   In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
   and T2–T5 plus T2P/T3N `init-track/run-track/replay` completed. The wheel smoke is an engineering
   portability check, not an external scientific validation or publication gate.
@@ -75,9 +75,15 @@
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
   The v2 package remains bounded to this declared rule and is not a general proof backend.
+- T4O now binds a finite T3 harmonic oscillator case, SI units, input/output hashes,
+  and T3 source bytes to nine required checker results. It recomputes velocity-Verlet,
+  compares the closed form and independent RK4, checks maximum specific-energy drift,
+  and rejects a forged output even when its hash is recomputed. The optional formal
+  prover reports `not_applicable`; the Run Claim remains `unverified`. This is not a
+  reviewed physical model, general solver proof, or real-data validation.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
-  fixture inputs. T1–T5 plus T2P/T3N replayed from a copied checkout in the same dependency
-  environment, and seven wheel-generated run directories replayed after relocation.
+  fixture inputs. T1–T5 plus T2P/T3N/T4O replayed from a copied checkout in the same dependency
+  environment, and eight wheel-generated run directories replayed after relocation.
   `artifacts/relocation-audit.json` records the copied-checkout commands and hashes.
   Cross-OS and dependency-version drift remain unverified or fail closed; the
   project-05 upstream snapshot still records its original host path for provenance.

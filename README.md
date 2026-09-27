@@ -64,7 +64,7 @@ schema、策略文档和示例 fixture。
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v18/`。`run-track` 还接受 `T2P`、`T3`、`T3N`、`T4`、`T5` 和相应
+`artifacts/acceptance-runs-v18/`。`run-track` 还接受 `T2P`、`T3`、`T3N`、`T4`、`T4O`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
 新版运行包保存输入快照，并使用 `run://`、`root://` 受限路径；五轨已在复制的
 源码目录和移动后的 wheel 运行目录中回放。回放仍要求记录的依赖环境与源码字节一致；
@@ -77,8 +77,10 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 独立的可选 Tool/Provider Run 见 [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)。
 它未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
-声明的模拟器内部因果效应，不证明真实世界因果识别。当前七份 CLI 收据在
-`artifacts/track-runs-v14/` 和 `artifacts/acceptance-runs-v18/`。
+声明的模拟器内部因果效应，不证明真实世界因果识别。T4O 把证明收据接到 T3
+谐振子数值模块，核对单位、源码、解析解、RK4 和能量漂移；其形式证明仍未配置，
+见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。当前八份 CLI 收据在
+`artifacts/track-runs-v15/` 和 `artifacts/acceptance-runs-v18/`。
 
 ## 当前入口
 
@@ -97,7 +99,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [docs/T3_SWEEP.md](docs/T3_SWEEP.md)：T3 固定参数与步长网格、收敛门槛和边界。
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。
 - [artifacts/t3-external-run-audit.json](artifacts/t3-external-run-audit.json)：可选 SciPy Tool/Provider Run 的回放、搬移与篡改负例收据。
-- [docs/T4_METHOD.md](docs/T4_METHOD.md)：T4 精确转移见证、完整义务集和证明边界。
+- [docs/T4_METHOD.md](docs/T4_METHOD.md)：T4 精确转移见证与 T4O 振子携证收据的边界。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。

@@ -6,7 +6,15 @@
       "input_version": "6497f62cc5a8ff8440eb4abab7754f1045ec10aa919de669f51eff8e25a59e00",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t4-proof/sample-run.json",
-      "recorded_at": "2026-09-27T06:48:50.080718+00:00"
+      "recorded_at": "2026-09-27T07:26:20.761052+00:00"
+    },
+    {
+      "command": "python scripts/generate_track_artifacts.py",
+      "exit_code": 0,
+      "input_version": "1d00e31fd06b3dde507db30c05fb32f7f1ec67887eb2fa46ba4e8f4acd67ea4a",
+      "name": "oscillator-physical-module-subtrack",
+      "output_path": "artifacts/t4-oscillator/acceptance.json",
+      "recorded_at": "2026-09-27T07:26:20.802226+00:00"
     }
   ],
   "evaluator": {
@@ -72,20 +80,20 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 8402,
+        "bytes": 9310,
         "path": "src/auditable_scientist/tracks/run_package.py",
         "provenance_status": "unverified",
-        "sha256": "ec2fa3ca7bf43534895e9925a4aedfdeedde8e219117596f5aa355473a0a10dc"
+        "sha256": "7f9cac2e63c795169a3b5e41f3d6dd868aee41f61de8b701208bbb1b2dd53adf"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 11176,
+        "bytes": 12562,
         "path": "src/auditable_scientist/tracks/runner.py",
         "provenance_status": "unverified",
-        "sha256": "af3f27a8fb9a8a51acc9d71aed710245dd2cf417166c11d7bf1ff4fb631e9114"
+        "sha256": "f5257480663fdbbeaeece9aad8659716bfc1bfe9ef53eb4bf2e71f6cf405d170"
       },
       {
         "allowed_use": [
@@ -182,20 +190,20 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 8820,
+        "bytes": 8910,
         "path": "src/auditable_scientist/track_cli.py",
         "provenance_status": "unverified",
-        "sha256": "a8d0886d912428d2868cabdaca8cb4a96f118f0e3db506272b529d961d04740b"
+        "sha256": "0bead5c481e61cea6430c5267605548f7819c4e7e900e2406f6b2b63592ebe88"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 23097,
+        "bytes": 25345,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "f7efa64c0dcd8831cbeea9647d8f185c84543cb6bd7e25fed341cae7011c3651"
+        "sha256": "8f2a3d9f76070ac676dd60fa1420fa15bc9ffd2a032ce4849a23076c8a4cbb04"
       },
       {
         "allowed_use": [
@@ -222,30 +230,30 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 508,
+        "bytes": 515,
         "path": "schemas/track-tool-call-v1.json",
         "provenance_status": "unverified",
-        "sha256": "e03a3f22059a56ce5609482ba7445238b18fa1d6c2a1ee32b955403e53410dd1"
+        "sha256": "2e95da18738e29d0981efdc37e2d8f2ef85ddabc99f46f332b89d7668fcfc0ae"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 1740,
+        "bytes": 1747,
         "path": "schemas/track-receipt-v1.json",
         "provenance_status": "unverified",
-        "sha256": "152c1f70a20d6a62b1746aa2c4a6330eca4e47de10cf27ed4a49d59687d743a4"
+        "sha256": "caa83fd95a68914ee85f7aecbdf317cfa51ed16875fe650bad726aeb13d1f945"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 3260,
+        "bytes": 3274,
         "path": "schemas/track-acceptance-v1.json",
         "provenance_status": "unverified",
-        "sha256": "88e7302f377e60b1c69e6a022b8a3d650c8359f3d05dd6de7613af7660a258d7"
+        "sha256": "389f0981fcf4da138f0d393d23adda54d1338278541779cbb5bf3588a1768bcb"
       },
       {
         "allowed_use": [
@@ -262,10 +270,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 1940,
+        "bytes": 4038,
         "path": "docs/T4_METHOD.md",
         "provenance_status": "unverified",
-        "sha256": "f272555a845451ac71eed61071743eb4693d48e64f7ffc831b63db7369ef99cb"
+        "sha256": "392e5f2c4c4e52a1a067e8ce8c93c40eb233396f2baafd28f59177c966d08a53"
       }
     ],
     "track_id": "T4"

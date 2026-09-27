@@ -18,6 +18,7 @@ FIXTURES = {
     "T3": "examples/dynamics/fixture.json",
     "T3N": "examples/dynamics/nbody-fixture.json",
     "T4": "examples/proof/fixture.json",
+    "T4O": "examples/proof/oscillator-fixture.json",
     "T5": "examples/protocol/fixture.json",
 }
 

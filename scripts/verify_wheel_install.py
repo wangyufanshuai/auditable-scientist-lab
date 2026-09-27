@@ -1,4 +1,4 @@
-"""Build the current wheel and replay T1-T5 plus T2P and T3N outside the checkout."""
+"""Build the current wheel and replay all bounded tracks outside the checkout."""
 
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ TRACKS = {
     "T3": "dynamics",
     "T3N": "nbody",
     "T4": "proof",
+    "T4O": "oscillator-proof",
     "T5": "protocol",
 }
 
@@ -96,7 +97,7 @@ def main() -> None:
             [str(python), "-c", "from auditable_scientist.runtime.paths import PACKAGE_ROOT; print(sum(p.is_file() for p in (PACKAGE_ROOT / '_resources').rglob('*')))"],
             cwd=temporary_root, environment=base_environment,
         ))
-        if resource_count < 23:
+        if resource_count < 24:
             raise RuntimeError("wheel omitted an offline resource")
         invoke([str(venv / "Scripts/auditable-scientist.exe"), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -123,6 +124,10 @@ def main() -> None:
         t4_run = json.loads((runs["T4"] / "run.json").read_text(encoding="utf-8"))
         if t4_result["receipt"]["result"]["claim_status"] != "bounded-verified" or t4_run["claims"][0]["status"] != "unverified":
             raise RuntimeError("wheel T4 proof boundary differs")
+        t4o_result = json.loads((runs["T4O"] / "result.json").read_text(encoding="utf-8"))
+        t4o_run = json.loads((runs["T4O"] / "run.json").read_text(encoding="utf-8"))
+        if t4o_result["receipt"]["result"]["claim_status"] != "bounded-verified" or t4o_run["claims"][0]["status"] != "unverified":
+            raise RuntimeError("wheel T4O proof boundary differs")
 
         original = {track_id: replay(python, path, cwd=temporary_root, environment=base_environment) for track_id, path in runs.items()}
         moved_root = temporary_root / "moved-runs"
@@ -136,7 +141,7 @@ def main() -> None:
                 raise RuntimeError(f"wheel run changed on relocation: {track_id}")
 
     result = {
-        "schema_version": "wheel-audit-v2",
+        "schema_version": "wheel-audit-v3",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "status": "verified-within-offline-fixtures",
         "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
@@ -149,8 +154,9 @@ def main() -> None:
         "bundled_resource_count": resource_count,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
-        "all_seven_relocated_replays_equal": moved == original,
+        "all_eight_relocated_replays_equal": moved == original,
         "t4_bounded_result_and_unverified_run_claim": True,
+        "t4o_bounded_result_and_unverified_run_claim": True,
         "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "boundaries": {
             "scientific_validity": False,

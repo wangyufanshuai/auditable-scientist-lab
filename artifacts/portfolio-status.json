@@ -49,11 +49,13 @@
     },
     {
       "acceptance": "artifacts/t4-proof/acceptance.json",
-      "next_step": "extend the fixed transfer witness to reviewed transition systems",
+      "next_step": "review a physical model and add independent source-backed validation",
       "open_gates": [
         "general formal proof backend",
-        "transition model coverage"
+        "reviewed physical transition model",
+        "real-world validation"
       ],
+      "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T4"
