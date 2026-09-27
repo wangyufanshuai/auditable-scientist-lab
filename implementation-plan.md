@@ -64,8 +64,12 @@
   nonintegrable trajectories or real missions.
 - The T2P subtrack supplies a 100-case planar ball-and-floor simulator with paired
   parameter and policy counterfactuals, analytic first-impact and rebound references,
-  a zero-effect negative estimator, and a full example trajectory. The local
-  `CausalInference` folder was inspected read-only; its untracked revision and scoped
+  a zero-effect negative estimator, and a full example trajectory. An independent
+  synthetic endpoint check uses a separate impact-to-impact recurrence over
+  the 100 cases and 24 varied holdout states. It compares both branch endpoints
+  and effects against the grid simulator while rejecting a zero-effect negative;
+  it does not close real-intervention, identification, rights, or model-validity gates.
+  The local `CausalInference` folder was inspected read-only; its untracked revision and scoped
   license are unresolved, so no external code was imported. See `docs/T2_PHYSICAL_METHOD.md`.
 - A 27-case T3 parameter/step-size sweep now checks second- and fourth-order
   convergence, normalized energy drift, backend agreement, and Euler rejection.

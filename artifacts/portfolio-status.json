@@ -19,7 +19,7 @@
     },
     {
       "acceptance": "artifacts/t2-causal/acceptance.json",
-      "next_step": "add a rights-cleared physical intervention dataset and independent estimator",
+      "next_step": "add a rights-cleared physical intervention dataset and independently validated real-data estimator",
       "open_gates": [
         "real interventions",
         "causal identification",

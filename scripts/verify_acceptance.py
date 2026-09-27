@@ -567,7 +567,9 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
             "exact-linear-invariant-subtrack": load("artifacts/t4-linear-formal-audit.json")["input_sha256"],
             "exact-linear-invariant-run": load("artifacts/t4-linear-run-audit.json")["run_id"],
-        } if track_id == "T4" else {}))
+        } if track_id == "T4" else ({
+            "independent-endpoint-estimator": "t2-independent-endpoint-audit-v1",
+        } if track_id == "T2P" else {})))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
             raise ValueError(f"track {track_id} acceptance command input version differs")
@@ -783,6 +785,45 @@ def main() -> None:
         or load("artifacts/t2-physical/counterfactual-example.json") != compare(physical_cases[3]).model_dump(mode="json")
     ):
         raise SystemExit("T2P physical counterfactual replay mismatch")
+    t2_endpoint_audit = load("artifacts/t2-independent-endpoint-audit.json")
+    t2_endpoint_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_independent_endpoint.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if t2_endpoint_replay.returncode != 0:
+        raise SystemExit(f"T2 independent endpoint replay failed: {t2_endpoint_replay.stderr.strip()}")
+    t2_endpoint_output = json.loads(t2_endpoint_replay.stdout)
+    if (
+        t2_endpoint_audit.get("schema_version") != "t2-independent-endpoint-audit-v1"
+        or t2_endpoint_audit.get("status") != "verified-synthetic-endpoints-only"
+        or t2_endpoint_audit.get("case_count") != 124
+        or t2_endpoint_audit.get("train_count") != 40
+        or t2_endpoint_audit.get("holdout_count") != 84
+        or len(t2_endpoint_audit.get("rows", [])) != 124
+        or not all(t2_endpoint_audit.get("gates", {}).values())
+        or t2_endpoint_output != {
+            "status": "verified-synthetic-endpoints-only",
+            "case_count": 124,
+            "gates": t2_endpoint_audit["gates"],
+        }
+        or t2_endpoint_audit.get("boundaries") != {
+            "synthetic_simulator_endpoints": True,
+            "independent_event_interval_implementation": True,
+            "observational_causal_identification": False,
+            "real_intervention_data": False,
+            "physical_model_validated": False,
+            "source_rights_reviewed": False,
+            "research_candidate": False,
+            "publication_ready": False,
+        }
+        or not any(
+            item.get("name") == "independent-endpoint-estimator"
+            and item.get("output_path") == "artifacts/t2-independent-endpoint-audit.json"
+            and item.get("input_version") == "t2-independent-endpoint-audit-v1"
+            for item in physical_acceptance["checks"]
+        )
+    ):
+        raise SystemExit("T2 independent endpoint audit or boundary differs")
 
     nbody_acceptance = load("artifacts/t3-nbody/acceptance.json")
     nbody_item = nbody_acceptance["evaluator"]
@@ -1060,6 +1101,12 @@ def main() -> None:
         },
         "t1_optional_orbit_static_provenance": t1_orbit_static,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
+        "t2_independent_endpoint_estimator": {
+            "case_count": t2_endpoint_audit["case_count"],
+            "holdout_count": t2_endpoint_audit["holdout_count"],
+            "metrics": t2_endpoint_audit["metrics"],
+            "gates": t2_endpoint_audit["gates"],
+        },
         "t4_exact_linear_invariant_proof": t4_linear_expected,
         "t4_exact_linear_invariant_run": {
             "run_id": t4_linear_run["run_id"],

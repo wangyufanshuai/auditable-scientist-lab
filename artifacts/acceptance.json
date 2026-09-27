@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T08:46:46Z",
+  "recorded_at": "2026-09-27T08:55:13Z",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,9 +14,9 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 119,
+      "tests_passed": 126,
       "tests_skipped": 1,
-      "recorded_at": "2026-09-27T08:46:46Z",
+      "recorded_at": "2026-09-27T08:55:13Z",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },
@@ -116,6 +116,15 @@
       "verified": true,
       "input_version": "run-t4-linear-6931db19a01bc59b",
       "output_path": "artifacts/t4-linear-run-audit.json"
+    },
+    {
+      "name": "optional-t2-independent-synthetic-endpoint",
+      "command": "python scripts/verify_t2_independent_endpoint.py --verify",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T08:53:38.238165+00:00",
+      "verified": true,
+      "input_version": "t2-independent-endpoint-audit-v1",
+      "output_path": "artifacts/t2-independent-endpoint-audit.json"
     },
     {
       "name": "optional-nasa-factsheet-parameter-sensitivity",

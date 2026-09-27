@@ -47,6 +47,25 @@
     "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
     "verified": true
   },
+  "t2_independent_endpoint_estimator": {
+    "case_count": 124,
+    "gates": {
+      "counterfactual_endpoint_max_1e-8_m": true,
+      "effect_max_1e-8_m": true,
+      "factual_endpoint_max_1e-8_m": true,
+      "holdout_effect_rmse_1e-8_m": true,
+      "ignored_intervention_rejected": true
+    },
+    "holdout_count": 84,
+    "metrics": {
+      "holdout_effect_rmse_m": 8.665194098528724e-16,
+      "ignored_intervention_holdout_rmse_m": 0.2656262607642334,
+      "max_counterfactual_endpoint_error_m": 1.7763568394002505e-15,
+      "max_effect_error_m": 2.6645352591003757e-15,
+      "max_factual_endpoint_error_m": 2.6645352591003757e-15,
+      "train_effect_rmse_m": 7.586975298354787e-16
+    }
+  },
   "t3_optional_external_run_static_replay": {
     "checks": [
       "input_hash",

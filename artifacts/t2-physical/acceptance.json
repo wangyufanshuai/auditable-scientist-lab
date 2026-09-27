@@ -15,6 +15,14 @@
       "name": "joint-counterfactual-example",
       "output_path": "artifacts/t2-physical/counterfactual-example.json",
       "recorded_at": "2026-09-27T07:41:39.667197+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_independent_endpoint.py --verify",
+      "exit_code": 0,
+      "input_version": "t2-independent-endpoint-audit-v1",
+      "name": "independent-endpoint-estimator",
+      "output_path": "artifacts/t2-independent-endpoint-audit.json",
+      "recorded_at": "2026-09-27T08:53:38.238165+00:00"
     }
   ],
   "evaluator": {

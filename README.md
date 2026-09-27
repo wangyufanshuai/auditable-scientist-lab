@@ -77,7 +77,9 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 独立的可选 Tool/Provider Run 见 [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)。
 它未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
-声明的模拟器内部因果效应，不证明真实世界因果识别。T4O 把证明收据接到 T3
+声明的模拟器内部因果效应，不证明真实世界因果识别。独立的整段飞行终点估计器又核对了
+100 个既有场景和 24 个变初态留出场景；仍只属合成模拟器证据，见
+[docs/T2_INDEPENDENT_ENDPOINT.md](docs/T2_INDEPENDENT_ENDPOINT.md)。T4O 把证明收据接到 T3
 谐振子数值模块，核对单位、源码、解析解、RK4 和能量漂移；其形式证明仍未配置，
 见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。
 T4 另有可选的精确有理数线性不变量证明：两个通用系数恒等式证书由独立检查器复核，
@@ -109,6 +111,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
+- [docs/T2_INDEPENDENT_ENDPOINT.md](docs/T2_INDEPENDENT_ENDPOINT.md)：T2 独立终点估计器、124 场景核验与合成证据边界。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)：可选受扰动三体数值交叉核验与边界。
 - [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)：可选受扰动三体 Run 的回放、迁移与篡改负例。
