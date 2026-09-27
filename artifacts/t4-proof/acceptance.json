@@ -6,7 +6,7 @@
       "input_version": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t4-proof/sample-run.json",
-      "recorded_at": "2026-09-27T02:42:01.932745+00:00"
+      "recorded_at": "2026-09-27T03:09:13.541861+00:00"
     }
   ],
   "evaluator": {
@@ -20,10 +20,10 @@
           "offline-fixture",
           "bounded-evaluator"
         ],
-        "bytes": 749,
+        "bytes": 715,
         "path": "examples/proof/fixture.json",
         "provenance_status": "unverified",
-        "sha256": "8236c38bba10ef500e92947a65f2399c5ecd53f8924f1e7aef29bd6dbb03bd76"
+        "sha256": "18abd0385155758c0330f92c78b3f0ac3c135698e39e77b3fd289fa00908d496"
       }
     ],
     "evidence_level": "validated-reproduction",
@@ -43,16 +43,6 @@
       "passed": true
     },
     "source_files": [
-      {
-        "allowed_use": [
-          "offline-evaluator",
-          "source-provenance"
-        ],
-        "bytes": 620,
-        "path": "pyproject.toml",
-        "provenance_status": "unverified",
-        "sha256": "125789bcd422123d81892249cf657762695e0895f3327ac6d3b7765baa3a57d3"
-      },
       {
         "allowed_use": [
           "offline-evaluator",
@@ -78,20 +68,20 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 6668,
+        "bytes": 6697,
         "path": "src/auditable_scientist/tracks/run_package.py",
         "provenance_status": "unverified",
-        "sha256": "ccfd9655f9a3d4918598d1ab86bb17099f8a936c045227c49fba95058b39e388"
+        "sha256": "7ffca53029b0dce0c497668d24a03bff8dd96a462679df0d6d695001079fed0b"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 9092,
+        "bytes": 8872,
         "path": "src/auditable_scientist/tracks/runner.py",
         "provenance_status": "unverified",
-        "sha256": "f1ae5e4ec03ed04415221b0c8d346dcb5523bc92e7e32a2db8a62b38c605b8af"
+        "sha256": "c5c3619261b7430e096f271163067c6637068034157ff8092aa41c6abf64b15b"
       },
       {
         "allowed_use": [
@@ -148,10 +138,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 5459,
+        "bytes": 5473,
         "path": "src/auditable_scientist/runtime/replay.py",
         "provenance_status": "unverified",
-        "sha256": "b9793cca784fe19adf03c07532ec850489fb5eeaa87057cc98ac2fa9c17a5ebe"
+        "sha256": "5b5f0148cb186675177f8d95e66e38727244d840b29111c1c29ba4f569c69d51"
       },
       {
         "allowed_use": [
@@ -168,30 +158,50 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 21007,
+        "bytes": 1651,
+        "path": "src/auditable_scientist/runtime/paths.py",
+        "provenance_status": "unverified",
+        "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 21612,
         "path": "src/auditable_scientist/cli.py",
         "provenance_status": "unverified",
-        "sha256": "3a5e9052dcfc8c86510cce51082090c46b29f95a865e10bfce06b4ec182464fa"
+        "sha256": "d55c1c563399518d59dab339a153248fbedf9920b5e16db989cbbf85c67c3be2"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 6567,
+        "bytes": 7261,
         "path": "src/auditable_scientist/track_cli.py",
         "provenance_status": "unverified",
-        "sha256": "57b53af3bce19f5e3cf37776050a94ee8231c12ecda70dd602ee27d723ab7332"
+        "sha256": "3da9797ffae249b8e44ba60f920551ce4e61fc2a9f7e86f8b4e7e828b107d6e1"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 12986,
+        "bytes": 13080,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "cf8164724bccbe13b5ec8cc4126dabfdd667ca546478fb1bca1ce3dda22b1181"
+        "sha256": "1148781eaa94aad747943f1d2e7930245dc6dfd1fc8738c4f182a0c91afdca8c"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 792,
+        "path": "pyproject.toml",
+        "provenance_status": "unverified",
+        "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1"
       },
       {
         "allowed_use": [

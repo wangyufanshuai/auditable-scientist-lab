@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 from typing import Any
 
 from .domain import ClaimStatus, Run
 from .runtime.canonical import canonical_hash, canonical_json
 from .runtime.replay import ReplayManifest, ReplayMismatch
+from .runtime.paths import resource_path
 from .runtime.run_integrity import verify_run_record
 from .tracks.run_package import make_track_run
 from .tracks.runner import ROOT, run_registered_track, track_source_paths
@@ -20,10 +22,26 @@ TASK_IDS = {
     "T4": "t4-proof-carrying-v1",
     "T5": "t5-bio-chem-protocol-v1",
 }
+FIXTURE_RESOURCES = {
+    "T2": "examples/causal/fixture.json",
+    "T3": "examples/dynamics/fixture.json",
+    "T4": "examples/proof/fixture.json",
+    "T5": "examples/protocol/fixture.json",
+}
+
+
+def init_track_fixture(track_id: str, path: Path) -> Path:
+    if track_id not in FIXTURE_RESOURCES:
+        raise ValueError(f"unsupported track: {track_id}")
+    if path.exists():
+        raise FileExistsError(f"refusing to overwrite existing fixture: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(resource_path(FIXTURE_RESOURCES[track_id]), path)
+    return path
 
 
 def _write_json(path: Path, payload: Any) -> None:
-    path.write_text(canonical_json(payload) + "\n", encoding="utf-8")
+    path.write_text(canonical_json(payload) + "\n", encoding="utf-8", newline="\n")
 
 
 def _render_report(run: Run, result: dict[str, Any], negative_case: dict[str, Any]) -> str:
@@ -81,11 +99,11 @@ def build_track_run(track_id: str, fixture_path: Path, *, seed: int, output_dir:
     _write_json(run_dir / "result.json", result)
     _write_json(run_dir / "run.json", run.model_dump(mode="json"))
     (run_dir / "events.jsonl").write_text(
-        "".join(canonical_json(event) + "\n" for event in run.events), encoding="utf-8"
+        "".join(canonical_json(event) + "\n" for event in run.events), encoding="utf-8", newline="\n"
     )
     manifest.write(run_dir / "replay-manifest.json")
     (run_dir / "report.md").write_text(
-        _render_report(run, execution.receipt.result, execution.negative_case), encoding="utf-8"
+        _render_report(run, execution.receipt.result, execution.negative_case), encoding="utf-8", newline="\n"
     )
     return run_dir
 

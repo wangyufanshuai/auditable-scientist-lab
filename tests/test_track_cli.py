@@ -21,9 +21,20 @@ FIXTURES = {
 
 
 @pytest.mark.parametrize("track_id", FIXTURES)
+def test_init_track_copies_bundled_fixture_without_overwrite(track_id: str, tmp_path: Path, capsys) -> None:
+    fixture = tmp_path / "fixture.json"
+    assert main(["init-track", track_id, str(fixture)]) == 0
+    capsys.readouterr()
+    assert json.loads(fixture.read_text(encoding="utf-8")) == json.loads((ROOT / FIXTURES[track_id]).read_text(encoding="utf-8"))
+    assert main(["init-track", track_id, str(fixture)]) == 2
+    assert "refusing to overwrite" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("track_id", FIXTURES)
 def test_bounded_track_cli_run_replay_and_inspect(track_id: str, tmp_path: Path, capsys) -> None:
     assert main(["run-track", track_id, str(ROOT / FIXTURES[track_id]), "--output-dir", str(tmp_path)]) == 0
     run_dir = Path(capsys.readouterr().out.strip())
+    assert all(bytes([13, 10]) not in path.read_bytes() for path in run_dir.iterdir() if path.is_file())
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     assert run["policy"]["network"] == "disabled"
     assert run["environment"]["network"] == "disabled"

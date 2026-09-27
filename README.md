@@ -35,9 +35,16 @@ python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<inpu
 python scripts/verify_acceptance.py
 ```
 
+独立 wheel 安装后无需源码仓库：先运行 `auditable-scientist init hohmann.json`，
+它会在配置旁复制所需数据；再运行 `auditable-scientist run hohmann.json --offline`
+与 `auditable-scientist replay <run-dir>`。T2–T5 可先运行
+`auditable-scientist init-track T2 t2.json`，再执行
+`auditable-scientist run-track T2 t2.json`。这些命令只使用随 wheel 打包的
+schema、策略文档和示例 fixture。
+
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v11/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
+`artifacts/acceptance-runs-v14/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
 
 ## 当前入口
@@ -51,7 +58,8 @@ seed、源码/证据快照、候选顺序和完整计算输出。正式收据和
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
-- [artifacts/acceptance-runs-v11/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v11/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
+- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与五轨 CLI 回放收据。
+- [artifacts/acceptance-runs-v14/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v14/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
 
 ## 非目标
 

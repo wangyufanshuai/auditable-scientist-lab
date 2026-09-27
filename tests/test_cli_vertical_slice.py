@@ -15,6 +15,7 @@ def test_cli_hohmann_offline_vertical_slice(tmp_path: Path, capsys) -> None:
     run_dir = Path(capsys.readouterr().out.strip())
     assert (run_dir / "run.json").is_file()
     assert (run_dir / "replay-manifest.json").is_file()
+    assert all(bytes([13, 10]) not in path.read_bytes() for path in run_dir.iterdir() if path.is_file())
     study = json.loads((run_dir / "study.json").read_text(encoding="utf-8"))
     assert study["research_question"]["question_id"] == "rq-hohmann-time-of-flight-v1"
     assert study["hypothesis"]["status"] == "reproduced"
@@ -54,8 +55,32 @@ def test_cli_init_refuses_overwrite(tmp_path: Path, capsys) -> None:
     path = tmp_path / "config.json"
     assert main(["init", str(path)]) == 0
     capsys.readouterr()
+    config = json.loads(path.read_text(encoding="utf-8"))
+    assert config["dataset_path"] == "config.dataset.json"
+    assert (tmp_path / config["dataset_path"]).is_file()
     assert main(["init", str(path)]) == 2
     capsys.readouterr()
+
+
+def test_cli_init_preserves_existing_sibling_dataset(tmp_path: Path, capsys) -> None:
+    path = tmp_path / "config.json"
+    sibling = tmp_path / "config.dataset.json"
+    sibling.write_text("protected", encoding="utf-8")
+    assert main(["init", str(path)]) == 2
+    assert "refusing to overwrite" in capsys.readouterr().err
+    assert sibling.read_text(encoding="utf-8") == "protected"
+    assert not path.exists()
+
+
+def test_cli_relative_output_replays_with_copied_dataset(tmp_path: Path, monkeypatch, capsys) -> None:
+    monkeypatch.chdir(tmp_path)
+    assert main(["init", "demo.json"]) == 0
+    capsys.readouterr()
+    assert main(["run", "demo.json", "--offline", "--output-dir", "runs"]) == 0
+    run_dir = Path(capsys.readouterr().out.strip())
+    assert run_dir.is_absolute()
+    assert main(["replay", str(run_dir)]) == 0
+    assert '"verified": true' in capsys.readouterr().out
 
 
 @pytest.mark.parametrize("target", ["input.json", "experiment.json", "run.json", "events.jsonl", "project05-snapshot.json"])

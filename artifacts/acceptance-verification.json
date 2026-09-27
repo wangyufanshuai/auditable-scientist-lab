@@ -18,7 +18,7 @@
       "candidate_order",
       "computational_output"
     ],
-    "manifest_hash": "a5d6259c3c4f7c234e2349404737270b8e5702fb523db2623af98d6d42edddc8",
+    "manifest_hash": "ee1a0564bf20d76da890ecff32786254c62013c9085bbea9a39c0973023b2427",
     "verified": true
   },
   "track_cli_replays": {
@@ -33,7 +33,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "37cac21b56f8eed1bfbdcfbbb0bb7fc021cfb36df4f525111b4148f0f6504439",
+      "manifest_hash": "dd6268c8f77eb918b0707787d80f10c774b53ae74f31f889aae99e1e38a1365b",
       "verified": true
     },
     "T3": {
@@ -47,7 +47,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "6a6b14c99cd3f0c7cc2f996f79d8305cc9e01994a2a2ac38de2a25010e10fdc9",
+      "manifest_hash": "3e2f3bf1240ffe430428c860b5fe00b0125f1bc5514112fb564733c26ef5c0e3",
       "verified": true
     },
     "T4": {
@@ -61,7 +61,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "8b78b43ec9f5ccb8a3bb9beea2b4ec0e3bdda34f321d481f1c546d78fe192889",
+      "manifest_hash": "c088c9a74bf96319fa722eb4565688a24e3eea7c555f7dc65de040659a6b7037",
       "verified": true
     },
     "T5": {
@@ -75,7 +75,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "607479c64b94458012a17bf2d603417d5b7de14cd80a62333ba035982bfefa67",
+      "manifest_hash": "e56be20e51fe562314b861e1047fef1568e9393848c52ebb718b64b679fe2e2f",
       "verified": true
     }
   },

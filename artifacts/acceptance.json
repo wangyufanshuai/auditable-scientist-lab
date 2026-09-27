@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T02:45:14Z",
+  "recorded_at": "2026-09-27T03:12:58Z",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,8 +14,8 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q",
       "exit_code": 0,
-      "tests_passed": 50,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "tests_passed": 58,
+      "recorded_at": "2026-09-27T03:12:58Z",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },
@@ -23,23 +23,23 @@
       "name": "editable-install",
       "command": "python -m pip install -e . --no-deps --no-build-isolation",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "recorded_at": "2026-09-27T03:12:58Z",
       "input_version": "pyproject-v0.1.0",
       "output_path": "artifacts/test-report.md"
     },
     {
       "name": "offline-run",
-      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v11",
+      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v14",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "recorded_at": "2026-09-27T03:12:58Z",
       "input_version": "examples/hohmann/run.json + dataset.json",
-      "output_path": "artifacts/acceptance-runs-v11/run-7a65020acaf83cfc"
+      "output_path": "artifacts/acceptance-runs-v14/run-7a65020acaf83cfc"
     },
     {
       "name": "deterministic-replay",
-      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v11/run-7a65020acaf83cfc",
+      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v14/run-7a65020acaf83cfc",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "recorded_at": "2026-09-27T03:12:58Z",
       "verified": true,
       "checks": [
         "input_hash",
@@ -52,13 +52,13 @@
         "computational_output"
       ],
       "input_version": "replay-manifest-v1",
-      "output_path": "artifacts/acceptance-runs-v11/run-7a65020acaf83cfc/report.md"
+      "output_path": "artifacts/acceptance-runs-v14/run-7a65020acaf83cfc/report.md"
     },
     {
       "name": "inspection",
-      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v11/run-7a65020acaf83cfc",
+      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v14/run-7a65020acaf83cfc",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "recorded_at": "2026-09-27T03:12:58Z",
       "input_version": "run-schema-v1",
       "output_path": "artifacts/demo-transcript.md"
     },
@@ -66,7 +66,7 @@
       "name": "portfolio-verification",
       "command": "python scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T02:45:14Z",
+      "recorded_at": "2026-09-27T03:12:58Z",
       "verified": true,
       "input_version": "acceptance-verification-v1",
       "output_path": "artifacts/acceptance-verification.json"

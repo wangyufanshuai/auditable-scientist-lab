@@ -28,9 +28,13 @@
 - A fresh Python environment installed `.[test]`, passed 50 tests, and replayed newly
   generated T1–T5 runs. Runtime environment and dependency versions are now recorded
   for every track; replay in a mismatched environment fails closed.
-- Next engineering work is a standalone wheel audit, deeper independent backends, and
-  data/proof provenance. Scientific, rights, compute, and human-review gates remain open;
-  public release remains a separate decision.
+- A standalone wheel now carries the offline schemas, evidence policy, and five fixtures.
+  In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
+  and T2–T5 `init-track/run-track/replay` completed. The wheel smoke is an engineering
+  portability check, not an external scientific validation or publication gate.
+- Next engineering work is deeper independent backends and data/proof provenance.
+  Scientific, rights, compute, and human-review gates remain open; public release
+  remains a separate decision.
 
 ## Confirmed decisions
 
@@ -300,10 +304,9 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Audit a standalone wheel install and package all required schemas/docs without a source checkout.
-2. Add a second deterministic numerical backend for T3 only after its implementation,
+1. Add a second deterministic numerical backend for T3 only after its implementation,
    license, and independent-reference provenance are recorded.
-3. Add rights-cleared real-data adapters only after source and data-use gates are closed;
+2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
-4. Reassess the local-only publication boundary from a fresh environment and user review;
+3. Reassess the local-only publication boundary from a fresh environment and user review;
    do not push or publish automatically.

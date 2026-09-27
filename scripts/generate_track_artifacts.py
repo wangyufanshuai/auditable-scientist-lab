@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def evidence_for(path: Path) -> list[dict[str, object]]:
@@ -89,6 +89,7 @@ def write_track_bundle(
     (artifact_dir / "events.jsonl").write_text(
         "".join(canonical_json(event) + "\n" for event in run.events),
         encoding="utf-8",
+        newline="\n",
     )
     (artifact_dir / "test-report.md").write_text(
         f"# {track_id} evaluator test report\n\n"
@@ -98,11 +99,13 @@ def write_track_bundle(
         "- Real-data claim: false\n"
         "- Research-candidate claim: false\n",
         encoding="utf-8",
+        newline="\n",
     )
     (artifact_dir / "demo-transcript.md").write_text(
         f"# {track_id} demo transcript\n\n{demo_text}\n\n"
         "The evaluator is deterministic and offline. The result does not authorize a real-world scientific, clinical, or wet-lab claim.\n",
         encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -198,7 +201,7 @@ def main() -> None:
     for row in status_rows:
         markdown.append(f"| {row['track_id']} | `{row['state']}` | `{row['acceptance']}` | {', '.join(row['open_gates'])} | {row['next_step']} | `{row['public_release']}` |")
     markdown.extend(["", "Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims."])
-    (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8")
+    (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":

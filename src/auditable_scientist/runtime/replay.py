@@ -65,7 +65,7 @@ class ReplayManifest(StrictModel):
     def write(self, path: str | Path) -> Path:
         destination = Path(path)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(self.model_dump_json(indent=2), encoding="utf-8")
+        destination.write_text(self.model_dump_json(indent=2), encoding="utf-8", newline="\n")
         return destination
 
     @classmethod

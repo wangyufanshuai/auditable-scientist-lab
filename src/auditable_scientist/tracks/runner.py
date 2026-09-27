@@ -10,6 +10,7 @@ from typing import Any
 from ..domain import Policy, Tool
 from ..policy import ToolRegistry
 from ..runtime.canonical import canonical_hash
+from ..runtime.paths import checkout_root, project_root, resource_path, source_path
 from ..runtime.replay import ReplayMismatch, fingerprint_file
 from .causal import CausalCase, evaluate_causal_fixture
 from .common import TrackReceipt
@@ -18,7 +19,7 @@ from .proof import ProofPackage, ProofState, verify_proof_package
 from .protocol import ProtocolSpec, verify_protocol
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = project_root()
 TRACK_SOURCES = {"T2": "causal.py", "T3": "dynamics.py", "T4": "proof.py", "T5": "protocol.py"}
 
 
@@ -59,28 +60,21 @@ def track_tool(track_id: str) -> Tool:
 def track_source_paths(track_id: str) -> list[Path]:
     if track_id not in TRACK_SOURCES:
         raise ValueError(f"unsupported track: {track_id}")
-    return [
-        ROOT / "pyproject.toml",
-        ROOT / "src/auditable_scientist/tracks" / TRACK_SOURCES[track_id],
-        ROOT / "src/auditable_scientist/tracks/common.py",
-        ROOT / "src/auditable_scientist/tracks/run_package.py",
-        ROOT / "src/auditable_scientist/tracks/runner.py",
-        ROOT / "src/auditable_scientist/domain/models.py",
-        ROOT / "src/auditable_scientist/policy/runtime.py",
-        ROOT / "src/auditable_scientist/runtime/canonical.py",
-        ROOT / "src/auditable_scientist/runtime/environment.py",
-        ROOT / "src/auditable_scientist/runtime/event_log.py",
-        ROOT / "src/auditable_scientist/runtime/replay.py",
-        ROOT / "src/auditable_scientist/runtime/run_integrity.py",
-        ROOT / "src/auditable_scientist/cli.py",
-        ROOT / "src/auditable_scientist/track_cli.py",
-        ROOT / "scripts/generate_track_artifacts.py",
-        ROOT / "docs/EVIDENCE_POLICY.md",
-        ROOT / "schemas/track-tool-call-v1.json",
-        ROOT / "schemas/track-receipt-v1.json",
-        ROOT / "schemas/track-acceptance-v1.json",
-        ROOT / "schemas/run.schema.json",
+    sources = [
+        f"tracks/{TRACK_SOURCES[track_id]}", "tracks/common.py", "tracks/run_package.py",
+        "tracks/runner.py", "domain/models.py", "policy/runtime.py", "runtime/canonical.py",
+        "runtime/environment.py", "runtime/event_log.py", "runtime/replay.py",
+        "runtime/run_integrity.py", "runtime/paths.py", "cli.py", "track_cli.py",
     ]
+    resources = [
+        "pyproject.toml", "docs/EVIDENCE_POLICY.md", "schemas/track-tool-call-v1.json",
+        "schemas/track-receipt-v1.json", "schemas/track-acceptance-v1.json", "schemas/run.schema.json",
+    ]
+    paths = [source_path(f"src/auditable_scientist/{item}") for item in sources]
+    root = checkout_root()
+    if root is not None:
+        paths.append(root / "scripts/generate_track_artifacts.py")
+    return [*paths, *[resource_path(item) for item in resources]]
 
 
 def _file_record(path: Path, *, allowed_use: list[str]) -> dict[str, Any]:
@@ -169,7 +163,7 @@ def run_registered_track(track_id: str, fixture_path: Path) -> TrackExecution:
     policy = track_policy(track_id, fixture_path)
     registry = ToolRegistry(policy)
     declaration = track_tool(track_id)
-    schema = json.loads((ROOT / declaration.parameter_schema_ref).read_text(encoding="utf-8"))
+    schema = json.loads(resource_path(declaration.parameter_schema_ref).read_text(encoding="utf-8"))
 
     def handler(arguments: dict[str, Any]) -> tuple[TrackReceipt, dict[str, Any]]:
         if arguments["track_id"] != track_id or Path(arguments["fixture_path"]).resolve() != fixture_path:

@@ -34,14 +34,15 @@ from .reporting import render_hohmann_report
 from .runtime.canonical import canonical_hash, canonical_json
 from .runtime.environment import capture_environment
 from .runtime.event_log import EventLog
+from .runtime.paths import installation_revision, project_root, resource_path, source_path
 from .runtime.replay import ReplayManifest, ReplayMismatch, fingerprint_file
 from .runtime.run_integrity import verify_run_record
-from .track_cli import build_track_run, inspect_track_run, replay_track_run
+from .track_cli import build_track_run, init_track_fixture, inspect_track_run, replay_track_run
 
 
 def _json_dump(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(canonical_json(value) + "\n", encoding="utf-8")
+    path.write_text(canonical_json(value) + "\n", encoding="utf-8", newline="\n")
 
 
 def _resolve_dataset(config_path: Path, dataset_path: str) -> Path:
@@ -53,32 +54,19 @@ def _resolve_dataset(config_path: Path, dataset_path: str) -> Path:
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[2]
+    return project_root()
 
 
 def _source_paths() -> list[Path]:
-    root = _repo_root()
-    return [
-        root / "pyproject.toml",
-        root / "src/auditable_scientist/benchmark/hohmann.py",
-        root / "src/auditable_scientist/benchmark/study.py",
-        root / "src/auditable_scientist/tools/dimensions.py",
-        root / "src/auditable_scientist/tools/errors.py",
-        root / "src/auditable_scientist/tools/numerical.py",
-        root / "src/auditable_scientist/runtime/canonical.py",
-        root / "src/auditable_scientist/runtime/environment.py",
-        root / "src/auditable_scientist/runtime/event_log.py",
-        root / "src/auditable_scientist/runtime/replay.py",
-        root / "src/auditable_scientist/reporting/hohmann_report.py",
-        root / "src/auditable_scientist/cli.py",
-        root / "src/auditable_scientist/policy/runtime.py",
-        root / "src/auditable_scientist/domain/models.py",
-        root / "schemas/run.schema.json",
-        root / "docs/EVIDENCE_POLICY.md",
-        root / "src/auditable_scientist/adapters/project05.py",
-        root / "src/auditable_scientist/runtime/run_integrity.py",
-        root / "schemas/hohmann-tool-call-v1.json",
+    sources = [
+        "benchmark/hohmann.py", "benchmark/study.py", "tools/dimensions.py",
+        "tools/errors.py", "tools/numerical.py", "runtime/canonical.py",
+        "runtime/environment.py", "runtime/event_log.py", "runtime/replay.py",
+        "runtime/run_integrity.py", "runtime/paths.py", "reporting/hohmann_report.py",
+        "cli.py", "policy/runtime.py", "domain/models.py", "adapters/project05.py",
     ]
+    resources = ["pyproject.toml", "schemas/run.schema.json", "schemas/hohmann-tool-call-v1.json", "docs/EVIDENCE_POLICY.md"]
+    return [*[source_path(f"src/auditable_scientist/{item}") for item in sources], *[resource_path(item) for item in resources]]
 
 
 def _evidence(evidence_id: str, kind: EvidenceKind, path: Path, *, allowed_use: list[str]) -> Evidence:
@@ -88,7 +76,7 @@ def _evidence(evidence_id: str, kind: EvidenceKind, path: Path, *, allowed_use: 
         kind=kind,
         path_or_uri=str(path),
         sha256=fingerprint.sha256,
-        source_revision="local-working-tree",
+        source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
         allowed_use=allowed_use,
         notes="Local source or fixture; replay verifies bytes but does not establish external licensing or real-data status.",
@@ -108,7 +96,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         allowed_providers=["internal-bounded-generator"],
     )
     registry = ToolRegistry(policy)
-    argument_schema_path = _repo_root() / "schemas/hohmann-tool-call-v1.json"
+    argument_schema_path = resource_path("schemas/hohmann-tool-call-v1.json")
     hohmann_tool = Tool(
             tool_id="hohmann-benchmark",
             name="Hohmann benchmark",
@@ -132,7 +120,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     input_payload = {"config": config.model_dump(mode="json"), "cases": [case.model_dump(mode="json") for case in cases], "seed": seed}
     input_hash = canonical_hash(input_payload)
     run_id = f"run-{input_hash[:16]}"
-    run_dir = output_dir / run_id
+    run_dir = (output_dir / run_id).resolve()
     if run_dir.exists() and any(run_dir.iterdir()):
         raise FileExistsError(f"run directory already exists; choose another output directory: {run_dir}")
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -142,7 +130,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     code_evidence = _evidence(
         "ev-hohmann-baseline-code",
         EvidenceKind.CODE,
-        _repo_root() / "src/auditable_scientist/tools/numerical.py",
+        source_path("src/auditable_scientist/tools/numerical.py"),
         allowed_use=["analytic-reference", "offline-demo"],
     )
     evidence = [dataset_evidence, code_evidence]
@@ -164,7 +152,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         version="1",
         capabilities=["propose-hypothesis", "invoke-registered-tool", "explain-result"],
     )
-    memory_source = _repo_root() / "docs/EVIDENCE_POLICY.md"
+    memory_source = resource_path("docs/EVIDENCE_POLICY.md")
     memory = Memory(
         memory_id="evidence-policy-memory-v1",
         source_ref=str(memory_source),
@@ -318,7 +306,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         environment=environment,
         seed=seed,
         source_paths=[*_source_paths(), dataset_source],
-        evidence_paths=[dataset_source, _repo_root() / "src/auditable_scientist/tools/numerical.py", project05_snapshot_path],
+        evidence_paths=[dataset_source, source_path("src/auditable_scientist/tools/numerical.py"), project05_snapshot_path],
         candidate_order=experiment.candidate_order,
         computational_output=experiment.model_dump(mode="json"),
     )
@@ -328,7 +316,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     manifest.computational_output = {"experiment": experiment.model_dump(mode="json"), "study": study}
     manifest.write(run_dir / "replay-manifest.json")
     report = render_hohmann_report(run=run.model_dump(mode="json"), experiment=experiment.model_dump(mode="json"))
-    (run_dir / "report.md").write_text(report, encoding="utf-8")
+    (run_dir / "report.md").write_text(report, encoding="utf-8", newline="\n")
     return run_dir
 
 
@@ -341,13 +329,15 @@ def _replay(run_dir: Path) -> dict[str, Any]:
     experiment = run_hohmann_experiment(config, typed_cases)
     from .benchmark import make_hohmann_study
 
-    dataset_path = Path(config.dataset_path)
-    if not dataset_path.is_absolute():
-        dataset_path = (_repo_root() / dataset_path).resolve()
+    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
+    if not manifest.evidence_files:
+        raise ReplayMismatch("replay manifest has no dataset evidence")
+    dataset_path = Path(manifest.evidence_files[0].path).resolve()
     if not dataset_path.is_file():
         raise FileNotFoundError(f"dataset file not found during replay: {dataset_path}")
+    if canonical_hash([case.model_dump(mode="json") for case in load_hohmann_dataset(dataset_path)]) != canonical_hash(input_payload["cases"]):
+        raise ReplayMismatch("saved input cases differ from registered dataset")
     study = make_hohmann_study(config, experiment, dataset_path=dataset_path, seed=input_payload["seed"])
-    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     receipt = manifest.verify(
         input_payload=input_payload,
         code_revision=config.source_revision,
@@ -386,22 +376,29 @@ def _replay(run_dir: Path) -> dict[str, Any]:
     }:
         raise ReplayMismatch("holdout event differs from deterministic replay")
     updated = render_hohmann_report(run=run.model_dump(mode="json"), experiment=experiment.model_dump(mode="json"), receipt=receipt.model_dump(mode="json"))
-    (run_dir / "report.md").write_text(updated, encoding="utf-8")
+    (run_dir / "report.md").write_text(updated, encoding="utf-8", newline="\n")
     return receipt.model_dump(mode="json")
 
 
 def _init(path: Path) -> Path:
-    if path.exists():
-        raise FileExistsError(f"refusing to overwrite existing config: {path}")
+    dataset_copy = path.with_name(f"{path.stem}.dataset.json")
+    if path.exists() or dataset_copy.exists():
+        raise FileExistsError(f"refusing to overwrite existing config or dataset: {path}")
     template = {
         "schema_version": "hohmann-config-v1",
         "task_id": "hohmann-time-of-flight-v1",
-        "dataset_path": "examples/hohmann/dataset.json",
+        "dataset_path": dataset_copy.name,
         "target": "time_of_flight_days",
         "max_holdout_rmse": 1e-8,
-        "source_revision": "local-working-tree",
+        "source_revision": installation_revision(),
     }
-    _json_dump(path, template)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(resource_path("examples/hohmann/dataset.json"), dataset_copy)
+    try:
+        _json_dump(path, template)
+    except OSError:
+        dataset_copy.unlink(missing_ok=True)
+        raise
     return path
 
 
@@ -410,12 +407,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
     init_parser = subparsers.add_parser("init", help="write a Hohmann run configuration")
     init_parser.add_argument("path", type=Path)
+    init_track_parser = subparsers.add_parser("init-track", help="copy a bundled T2-T5 fixture for an offline run")
+    init_track_parser.add_argument("track_id", choices=("T2", "T3", "T4", "T5"))
+    init_track_parser.add_argument("path", type=Path)
     run_parser = subparsers.add_parser("run", help="execute the offline Hohmann benchmark")
     run_parser.add_argument("config", type=Path)
     run_parser.add_argument("--offline", action="store_true", help="record that network access is disabled")
     run_parser.add_argument("--seed", type=int, default=17)
     run_parser.add_argument("--output-dir", type=Path, default=Path("artifacts/runs"))
-    track_parser = subparsers.add_parser("run-track", help="execute a bounded T2–T5 fixture through the offline ToolRegistry")
+    track_parser = subparsers.add_parser("run-track", help="execute a bounded T2-T5 fixture through the offline ToolRegistry")
     track_parser.add_argument("track_id", choices=("T2", "T3", "T4", "T5"))
     track_parser.add_argument("fixture", type=Path)
     track_parser.add_argument("--seed", type=int, default=17)
@@ -433,6 +433,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "init":
             print(_init(args.path))
+        elif args.command == "init-track":
+            print(init_track_fixture(args.track_id, args.path))
         elif args.command == "run":
             print(_build_run(args.config, seed=args.seed, output_dir=args.output_dir, offline=args.offline))
         elif args.command == "run-track":

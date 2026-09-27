@@ -1,0 +1,41 @@
+{
+  "schema_version": "wheel-audit-v1",
+  "recorded_at": "2026-09-27T03:11:45Z",
+  "status": "verified-within-offline-fixtures",
+  "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
+  "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "8d11adcfd8a76217fcf44f722aba371892fedc1333e4e8c41fa65bc3ec8c991d",
+  "wheel_artifact_committed": false,
+  "installation": "isolated temporary virtual environment; final wheel force-reinstalled without an editable source checkout",
+  "checkout_root_in_installed_process": null,
+  "bundled_resource_count": 14,
+  "commands_verified": [
+    "auditable-scientist --help",
+    "auditable-scientist init hohmann.json",
+    "auditable-scientist run hohmann.json --offline --seed 17 --output-dir runs",
+    "auditable-scientist replay runs/run-1becdca276205128",
+    "auditable-scientist inspect runs/run-1becdca276205128",
+    "auditable-scientist export-report runs/run-1becdca276205128 --output hohmann-report.md",
+    "auditable-scientist init-track T2..T5 <track>.json",
+    "auditable-scientist run-track T2..T5 <track>.json --output-dir track-runs",
+    "auditable-scientist replay track-runs/<run-id>"
+  ],
+  "replay_manifest_hashes": {
+    "T1": "c3972373d3438ec5950d1b8b321332b331625cdf7279c33f52dffc1a46812e77",
+    "T2": "d3ad7e60a2869b2856dc8c79cea03b7f732b71b3a5a02d9112d9a907fa06b64b",
+    "T3": "04485c177f24362fe4d9785b5f87946785657f028c91bec1b4aa52a5ee27608c",
+    "T4": "96176c345d4a55d6a6f293c8390c38622c8da56a96dbc3be06c887f54a3e5df7",
+    "T5": "ff4ba6ad9be8ba06425c415244b30af720e5d433d09fbc6a40b793e99fcd179f"
+  },
+  "boundaries": {
+    "scientific_validity": false,
+    "real_data": false,
+    "research_candidate": false,
+    "publication_ready": false,
+    "public_release": false
+  },
+  "limitations": [
+    "The exact temporary wheel file is not committed; its SHA-256 records the audited build.",
+    "This is an installation and local-fixture smoke test, not independent scientific validation."
+  ]
+}

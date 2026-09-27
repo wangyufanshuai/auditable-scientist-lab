@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/hohmann-tool-call-v1.json",
+  "title": "Hohmann benchmark tool invocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id"],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1}
+  }
+}

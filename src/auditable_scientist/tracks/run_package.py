@@ -17,16 +17,15 @@ from ..domain import (
     Event,
     Memory,
     Observation,
-    Policy,
     Provider,
     ProvenanceStatus,
     Run,
     RunStatus,
-    Tool,
     Trace,
 )
 from ..runtime.canonical import canonical_hash
 from ..runtime.environment import capture_environment
+from ..runtime.paths import installation_revision, resource_path
 from ..runtime.replay import fingerprint_file
 from .common import TrackReceipt
 from .runner import track_policy, track_tool
@@ -53,7 +52,7 @@ def make_track_run(
         kind=EvidenceKind.DATA,
         path_or_uri=str(fixture_path),
         sha256=fixture.sha256,
-        source_revision="local-working-tree",
+        source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
         allowed_use=["offline-fixture", "bounded-evaluator"],
         notes="Fixture evidence is not real-data or publication evidence.",
@@ -64,7 +63,7 @@ def make_track_run(
         kind=EvidenceKind.CODE,
         path_or_uri=str(evaluator_source),
         sha256=evaluator_fingerprint.sha256,
-        source_revision="local-working-tree",
+        source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
         allowed_use=["offline-evaluator", "source-provenance"],
         notes="Local evaluator source fingerprint; this does not establish external scientific validity.",
@@ -80,7 +79,7 @@ def make_track_run(
         capabilities=["invoke-registered-evaluator", "record-negative-case"],
     )
     tool = track_tool(track_id)
-    memory_source = Path(__file__).resolve().parents[3] / "docs/EVIDENCE_POLICY.md"
+    memory_source = resource_path("docs/EVIDENCE_POLICY.md")
     memory = Memory(
         memory_id="evidence-policy-memory-v1",
         source_ref=str(memory_source),
@@ -155,7 +154,7 @@ def make_track_run(
         task_id=task_id,
         created_at=base_time,
         input_hash=input_hash,
-        code_revision="local-working-tree",
+        code_revision=installation_revision(),
         environment=environment,
         seed=seed,
         evidence_refs=[evidence_id, evaluator_evidence_id],

@@ -10,7 +10,8 @@ The acceptance package is maintained here as bounded local evidence:
 
 The current T1 package is `acceptance.json`, `test-report.md`, `demo-transcript.md`, and
 `sample-run.json`; T2–T5 have the same four files in their track-specific subdirectories.
-`acceptance-runs-v11/` holds the current T1 CLI Run, and `track-runs-v1/` holds one
+`acceptance-runs-v14/` holds the current T1 CLI Run, and `track-runs-v4/` holds one
 policy-guarded CLI Run per bounded T2–T5 fixture. Each runtime bundle includes a replay
 manifest, JSONL event log, and deterministic report.
+`wheel-audit.json` records installation and CLI replay from a temporary wheel-only environment.
 These artifacts do not establish real-data validity, publication readiness, or scientific novelty.

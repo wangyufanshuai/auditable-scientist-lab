@@ -138,7 +138,7 @@ def main() -> None:
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v11/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v14/run-7a65020acaf83cfc"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -252,7 +252,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T3", "T4", "T5"):
         item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v1" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v4" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         if canonical_hash(saved_result["receipt"]) != canonical_hash(item):
             raise SystemExit(f"track {track_id} CLI Run receipt differs from portfolio")
@@ -269,7 +269,7 @@ def main() -> None:
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"
-    destination.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    destination.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 
 

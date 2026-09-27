@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/run.schema.json",
+  "title": "Auditable Scientist Run",
+  "type": "object",
+  "required": [
+    "run_id",
+    "task_id",
+    "created_at",
+    "input_hash",
+    "code_revision",
+    "environment",
+    "seed",
+    "evidence_refs",
+    "status",
+    "events",
+    "traces",
+    "claims",
+    "evidence"
+  ],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "code_revision": {"type": "string", "minLength": 1},
+    "environment": {"type": "object", "additionalProperties": true},
+    "seed": {"type": "integer", "minimum": 0},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "status": {"enum": ["completed", "failed", "unverified"]},
+    "events": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/event"}
+    },
+    "traces": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/trace"}
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    },
+    "evidence": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "observations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/observation"}
+    },
+    "agent": {"$ref": "#/$defs/agent"},
+    "tools": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/tool"}
+    },
+    "memories": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/memory"}
+    },
+    "evaluators": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evaluator"}
+    },
+    "providers": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/provider"}
+    },
+    "policy": {"$ref": "#/$defs/policy"}
+  },
+  "$defs": {
+    "trace": {
+      "type": "object",
+      "required": ["trace_id", "run_id", "input_hash", "entries"],
+      "properties": {
+        "trace_id": {"type": "string", "minLength": 1},
+        "run_id": {"type": "string", "minLength": 1},
+        "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "entries": {"type": "array", "items": {"type": "object", "additionalProperties": true}}
+      },
+      "additionalProperties": false
+    },
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "name", "version", "capabilities"],
+      "properties": {
+        "agent_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "capabilities": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "tool": {
+      "type": "object",
+      "required": ["tool_id", "name", "version", "parameter_schema_ref", "deterministic", "network_required"],
+      "properties": {
+        "tool_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "parameter_schema_ref": {"type": "string", "minLength": 1},
+        "deterministic": {"type": "boolean"},
+        "network_required": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "memory": {
+      "type": "object",
+      "required": ["memory_id", "source_ref", "scope", "version", "content_hash"],
+      "properties": {
+        "memory_id": {"type": "string", "minLength": 1},
+        "source_ref": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "evaluator": {
+      "type": "object",
+      "required": ["evaluator_id", "name", "version", "read_only"],
+      "properties": {
+        "evaluator_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "read_only": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "provider": {
+      "type": "object",
+      "required": ["provider_id", "kind", "name", "version", "source_ref"],
+      "properties": {
+        "provider_id": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "source_ref": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": ["policy_id", "network", "max_seconds", "max_tool_calls", "allowed_paths", "allowed_providers"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "network": {"enum": ["disabled", "allowlisted", "unrestricted"]},
+        "max_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "max_tool_calls": {"type": "integer", "minimum": 0},
+        "allowed_paths": {"type": "array", "items": {"type": "string"}},
+        "allowed_providers": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": ["event_id", "seq", "event_type", "payload_hash", "prev_event_hash"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "seq": {"type": "integer", "minimum": 0},
+        "event_type": {"type": "string", "minLength": 1},
+        "occurred_at": {"type": "string", "format": "date-time"},
+        "payload_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "prev_event_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$|^genesis$"},
+        "payload": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": ["text", "status", "evidence_refs", "falsification_checks"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "status": {"enum": ["candidate", "reproduced", "unverified", "rejected"]},
+        "level": {"enum": ["demo", "validated-reproduction", "real-data", "research-candidate"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}},
+        "falsification_checks": {"type": "array", "items": {"type": "string"}},
+        "holdout_verified": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "observation_id": {"type": "string", "minLength": 1},
+        "dataset_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "split": {"enum": ["train", "holdout", "external"]},
+        "summary": {"type": "object", "additionalProperties": true},
+        "units": {"type": "object", "additionalProperties": {"type": "string"}},
+        "source_ref": {"type": "string", "minLength": 1}
+      },
+      "required": ["observation_id", "dataset_hash", "split", "summary", "source_ref"],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "kind",
+        "path_or_uri",
+        "sha256",
+        "source_revision",
+        "provenance_status",
+        "allowed_use"
+      ],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["data", "formula", "code", "log", "external-reference", "snapshot"]},
+        "path_or_uri": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "source_revision": {"type": "string", "minLength": 1},
+        "provenance_status": {"enum": ["verified", "unverified", "blocked"]},
+        "allowed_use": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
