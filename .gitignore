@@ -9,3 +9,4 @@ artifacts/hohmann-report.md
 data/naif/*.bsp
 data/naif/*.tpc
 data/references/*.pdf
+data/references/maven_anc_events/

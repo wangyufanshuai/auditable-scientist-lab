@@ -1,0 +1,45 @@
+{
+  "schema_version": "t1-maven-ops-event-search-protocol-v1",
+  "status": "predeclared-catalog-inspection-only",
+  "source": {
+    "collection_lidvid": "urn:nasa:pds:maven.anc:data.events::5.20",
+    "product_lidvid": "urn:nasa:pds:maven.anc:data.events:ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00::1.2",
+    "label_url": "https://pds-ppi.igpp.ucla.edu/data/maven-anc/data/events/ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00.xml",
+    "data_url": "https://pds-ppi.igpp.ucla.edu/data/maven-anc/data/events/ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00.csv",
+    "label_sha256": "4443e819fc341c56542497192a0d3e98f2eced436a307befca5caab4fb683f5c",
+    "data_md5_from_label": "2968735ba41ef9813878325a656fe9af",
+    "data_bytes_from_label": 53288544,
+    "records_from_label": 185321,
+    "archive_scope": "Operational events list, including trajectory milestones, commanding, and DSN downlink times; the list is not a maneuver-vector or radiometric measurement product",
+    "rights": "Official PDS public access; redistribution and derivative publication rights not yet reviewed; raw file remains ignored locally"
+  },
+  "frozen_arcs": [
+    {
+      "start_et_tdb_seconds": 452088000.0,
+      "start_utc": "2014-04-29T23:58:52.815Z",
+      "end_utc": "2014-04-30T23:58:52.815Z"
+    },
+    {
+      "start_et_tdb_seconds": 457272000.0,
+      "start_utc": "2014-06-28T23:58:52.816Z",
+      "end_utc": "2014-06-29T23:58:52.816Z"
+    }
+  ],
+  "time_conversion": "ET seconds from J2000 TDB converted to UTC with local astropy 7.2.0 leap-second table before reading the events CSV",
+  "search_contract": {
+    "window_rule": "event interval overlaps [arc start, arc end); if an event has no end, use its start as a point event",
+    "context_days_each_side": 7,
+    "case_insensitive_terms": ["desat", "angular momentum", "reaction wheel", "thruster", "maneuver", "tcm", "amd", "momentum dump"],
+    "fields_to_search": ["event_type_id", "description", "discussion"],
+    "report": "all event counts in each arc, keyword-hit counts and event identifiers/time/type; matching context events are diagnostic only"
+  },
+  "admission_gates": {
+    "event_time_in_fixed_arc": "Only a product row whose event interval overlaps a frozen arc can establish a candidate actual event in that arc",
+    "desaturation_identity": "An event must explicitly identify desaturation or momentum unloading; generic maneuver, commanding, or wheel activity is insufficient",
+    "impulse_vector": "Requires an independent product with time, reference frame, direction and magnitude; this events CSV is not presumed to contain it",
+    "independent_observable": "Requires raw tracking or another measurement with product-level time coverage and a reviewed observation model",
+    "scientific_holdout": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}
