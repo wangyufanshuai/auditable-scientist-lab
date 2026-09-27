@@ -1,0 +1,122 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "8bd3e76cea54eb4efc08e499da8acfee92e3862f0ac9505ac7df11769c4a253e",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T1",
+    "runtime": "maven-saved-nav-short-arc",
+    "network": "disabled",
+    "provider_id": "internal-t1-maven-short-arc-v1"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t1_maven_preflight_run.py",
+      "sha256": "d45284bae3672e89a673833084b67f09416fb2f646353387ed905d77b98bdb03",
+      "bytes": 24925
+    },
+    {
+      "path": "root://scripts/verify_t1_maven_preflight.py",
+      "sha256": "bfc1c6832d54cc6c0478ee5fd46dbd0ab18d9ad02d2e9bdaf469082af4342d17",
+      "bytes": 14151
+    },
+    {
+      "path": "root://artifacts/t1-maven-preflight-snapshot.json",
+      "sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+      "bytes": 3632
+    },
+    {
+      "path": "root://artifacts/t1-maven-preflight-audit.json",
+      "sha256": "e8e059f6fbf7289044dae77f41221d1eb00305c7345b93f79c9fa8582f36a5e7",
+      "bytes": 1992
+    },
+    {
+      "path": "root://docs/T1_MAVEN_PROPAGATION_PREFLIGHT.json",
+      "sha256": "a37b11b983a9ea0765682d4457c8eed9b378566262fa3adc478d7d60ef9e5a47",
+      "bytes": 2064
+    },
+    {
+      "path": "root://docs/T1_MAVEN_PREFLIGHT_RUN.md",
+      "sha256": "a28433ec99d48bae7d4cba4ee45776973424b78dc6c157b3391dd6f0bddbd14d",
+      "bytes": 1430
+    },
+    {
+      "path": "root://docs/contracts/t1-maven-preflight-snapshot-tool-v1.json",
+      "sha256": "c13f677428eb7e85a7cd5e8f59644d3838278f33db07128a69f31bcaf78cb3fe",
+      "bytes": 545
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://nav-snapshot.json",
+      "sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+      "bytes": 3632
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "status": "verified-saved-nav-short-arc-comparison-only",
+    "arc_count": 2,
+    "rows": [
+      {
+        "initial_et_tdb_seconds": 452088000.0,
+        "position_error_km": 0.535836911089304,
+        "velocity_error_km_s": 0.000012340864908121255,
+        "refinement_position_difference_km": 1.043081283569336e-7,
+        "relative_two_body_energy_drift": 9.28040728712446e-16,
+        "wrong_sign_position_error_km": 26308.938251435742,
+        "engineering_gates_passed": true
+      },
+      {
+        "initial_et_tdb_seconds": 457272000.0,
+        "position_error_km": 0.2848350571145478,
+        "velocity_error_km_s": 6.636866558626214e-6,
+        "refinement_position_difference_km": 3.877166459339168e-7,
+        "relative_two_body_energy_drift": 7.733766808136544e-16,
+        "wrong_sign_position_error_km": 22015.819710183594,
+        "engineering_gates_passed": true
+      }
+    ],
+    "source_kernel_sha256": "07c76dfc2a1f66a54b4dd74105b2a5a70d72192813abee3659a74d4d21988dc5",
+    "snapshot_sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+    "mission_claim_status": "unverified",
+    "dynamic_kernel_recomputed": false,
+    "scientific_holdout": false
+  }
+}

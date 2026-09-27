@@ -561,6 +561,59 @@ def verify_optional_t1_maven_preflight() -> dict:
             "scientific_holdout": False}
 
 
+def verify_optional_t1_maven_run() -> dict:
+    """Replay saved NAV short arcs through the shared offline Run contract."""
+
+    audit = load("artifacts/t1-maven-preflight-run-audit.json")
+    expected_boundaries = {
+        "real_mission_source_tracked": True,
+        "dynamic_kernel_recomputed_in_replay": False,
+        "sun_only_short_arc_recomputed": True,
+        "full_force_maneuver_model": False,
+        "scientific_holdout": False,
+        "mission_claim_verified": False,
+        "publication_ready": False,
+    }
+    relative = Path(audit.get("run_path", ""))
+    replay = audit.get("replay", {})
+    if (audit.get("schema_version") != "t1-maven-preflight-run-audit-v1"
+            or audit.get("status") != "verified-offline-short-arc-run-only"
+            or relative.is_absolute() or ".." in relative.parts
+            or relative.parts[:2] != ("artifacts", "t1-maven-preflight-runs")
+            or audit.get("run_id") != relative.name
+            or not relative.name.startswith("run-t1-maven-")
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("relocated_replay_equal") is not True
+            or audit.get("result_tamper_rejected") is not True
+            or audit.get("snapshot_tamper_rejected") is not True
+            or audit.get("policy_denials") != {
+                "wrong_provider_rejected": True,
+                "out_of_scope_path_rejected": True,
+            }
+            or replay.get("verified") is not True
+            or replay.get("checks") != ["input_hash", "code_revision", "environment", "seed",
+                                        "source_files", "evidence_files", "candidate_order",
+                                        "computational_output"]):
+        raise ValueError("MAVEN offline Run identity or boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("MAVEN offline Run has no timezone-aware timestamp")
+    command = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t1_maven_preflight_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+    )
+    if command.returncode != 0:
+        raise ValueError(f"MAVEN offline Run replay failed: {command.stderr.strip()}")
+    observed = json.loads(command.stdout)
+    if (observed.get("status") != audit["status"]
+            or observed.get("run_id") != audit["run_id"]
+            or observed.get("replay") != replay
+            or observed.get("mutation_controls") != [True, True]):
+        raise ValueError("MAVEN offline Run differs from saved receipt")
+    return {"run_id": audit["run_id"], "replay": replay,
+            "saved_nav_short_arc_only": True, "mission_claim_verified": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -1393,6 +1446,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN propagation preflight has no command receipt")
+    maven_run = verify_optional_t1_maven_run()
+    if not any(
+        item.get("name") == "optional-t1-maven-portable-preflight-run"
+        and item.get("output_path") == "artifacts/t1-maven-preflight-run-audit.json"
+        and item.get("input_version") == maven_run["run_id"]
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN portable preflight Run has no command receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1890,6 +1952,7 @@ def main() -> None:
         "t1_mars_center_geometry": mars_center,
         "t1_maven_reconstructed_source": maven_source,
         "t1_maven_sun_only_preflight": maven_preflight,
+        "t1_maven_portable_preflight_run": maven_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

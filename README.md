@@ -133,6 +133,8 @@ kernel 读取火星中心（499）相对质心（4）的状态；两次日期的
 新增的 [MAVEN 短弧传播预检](docs/T1_MAVEN_PROPAGATION_PREFLIGHT.md) 在本地 Git 固定两段
 24 小时太阳二体 RK4 对照后才读取 NAV 端点；位置误差约 0.536 km、0.285 km，错误引力
 方向负例失败。它通过工程预检，不构成完整任务力学、科学 holdout 或会合验证。
+另有 [离线 MAVEN 短弧 Run](docs/T1_MAVEN_PREFLIGHT_RUN.md) 将已保存状态绑定到一次
+Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 RK4，不查询 NAIF kernel。
 
 ## 当前入口
 
@@ -173,6 +175,7 @@ kernel 读取火星中心（499）相对质心（4）的状态；两次日期的
 - [artifacts/t1-de440s-run-audit.json](artifacts/t1-de440s-run-audit.json)：星历快照 Run 的搬移回放、策略拒绝和篡改负例收据。
 - [artifacts/t1-mars-center-ephemeris-audit.json](artifacts/t1-mars-center-ephemeris-audit.json)：MAR099s 来源校验、火星中心状态与任务边界收据。
 - [artifacts/t1-maven-source-audit.json](artifacts/t1-maven-source-audit.json)：MAVEN 重建巡航 SPK 来源、坐标链和探索性采样边界收据。
+- [artifacts/t1-maven-preflight-run-audit.json](artifacts/t1-maven-preflight-run-audit.json)：短弧 RK4 快照 Run 的搬移回放、篡改失败和策略拒绝收据。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装、九个当前 Run 家族与九个历史控制台回放。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
 - [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与八份 manifest 核验。

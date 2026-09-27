@@ -15,8 +15,8 @@
       "input_version": "working-tree-2026-09-27",
       "name": "unit-contract-runtime-tests",
       "output_path": "artifacts/test-report.md",
-      "recorded_at": "2026-09-27T13:24:31.526Z",
-      "tests_passed": 190,
+      "recorded_at": "2026-09-27T13:38:35.930Z",
+      "tests_passed": 192,
       "tests_skipped": 0
     },
     {
@@ -205,6 +205,14 @@
       "name": "optional-t1-maven-sun-only-preflight",
       "output_path": "artifacts/t1-maven-preflight-audit.json",
       "recorded_at": "2026-09-27T13:18:53.362Z"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_preflight_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t1-maven-8bd3e76cea54eb4e",
+      "name": "optional-t1-maven-portable-preflight-run",
+      "output_path": "artifacts/t1-maven-preflight-run-audit.json",
+      "recorded_at": "2026-09-27T13:34:13.766Z"
     },
     {
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",

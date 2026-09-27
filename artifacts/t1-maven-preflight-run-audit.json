@@ -1,0 +1,37 @@
+{
+  "boundaries": {
+    "dynamic_kernel_recomputed_in_replay": false,
+    "full_force_maneuver_model": false,
+    "mission_claim_verified": false,
+    "publication_ready": false,
+    "real_mission_source_tracked": true,
+    "scientific_holdout": false,
+    "sun_only_short_arc_recomputed": true
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "recorded_at": "2026-09-27T13:31:41.132906+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "90c23d1bf4d5f3533d653cd21813489ef0d96a6c7bf294e6f8ac307e8f69b293",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t1-maven-8bd3e76cea54eb4e",
+  "run_path": "artifacts/t1-maven-preflight-runs/run-t1-maven-8bd3e76cea54eb4e",
+  "schema_version": "t1-maven-preflight-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-offline-short-arc-run-only"
+}

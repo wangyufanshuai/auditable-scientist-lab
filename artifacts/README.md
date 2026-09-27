@@ -44,6 +44,9 @@ but that source audit alone does not establish spacecraft propagation or mission
 Sun-only RK4 comparisons with NAV endpoints. They bind a pure-Python solver,
 step refinement, two-body energy, wrong-sign negative and measured errors to
 the fixed protocol; mission-domain dynamics and scientific validation stay open.
+`t1-maven-preflight-run-audit.json` binds that saved comparison to a single
+offline Tool/Policy/Provider Run, with portable replay and tamper/policy
+controls. Replay does not access the original SPK binaries.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
 geometry comparisons. None of these artifacts establishes real-mission validity,

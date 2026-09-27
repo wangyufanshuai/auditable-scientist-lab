@@ -111,6 +111,25 @@
     "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
     "status": "verified-source-tracked-center-geometry-only"
   },
+  "t1_maven_portable_preflight_run": {
+    "mission_claim_verified": false,
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "90c23d1bf4d5f3533d653cd21813489ef0d96a6c7bf294e6f8ac307e8f69b293",
+      "verified": true
+    },
+    "run_id": "run-t1-maven-8bd3e76cea54eb4e",
+    "saved_nav_short_arc_only": true
+  },
   "t1_maven_reconstructed_source": {
     "archived_spacecraft_states_available": true,
     "dynamic_verified_here": true,

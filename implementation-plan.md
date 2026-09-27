@@ -38,6 +38,10 @@
   wrong-sign controls. This is engineering evidence; full force/maneuver
   dynamics, independent mission truth, scientific holdout and review stay open.
   See `docs/T1_MAVEN_PROPAGATION_PREFLIGHT.md`.
+  Its saved-state comparison also has a separate offline Tool/Policy/Provider
+  Run with source/environment/seed bindings, moved replay and mutation
+  controls; replay never substitutes for a fresh SPK check. See
+  `docs/T1_MAVEN_PREFLIGHT_RUN.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.
