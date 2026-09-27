@@ -3,14 +3,14 @@
 状态：`implementing`（T1 acceptance 已形成，T2–T5 bounded slices 已形成；仍有科学与发布 gates）
 
 正式远程仓库：[wangyufanshuai/auditable-scientist-lab](https://github.com/wangyufanshuai/auditable-scientist-lab)
-（MIT，默认分支 `main`）。当前远程仓库只有初始 `README.md` 和 `LICENSE`；本地规划材料
-尚未推送。
+（MIT，默认分支 `main`）。本地实现及验收记录尚未推送。
 
 这是一个离线优先、可回放的科学发现工作台。第一条垂直切片使用
 `E:/xuexi/projects/05_hohmann_mars_transfer`，目标是把 Hohmann 火星转移
 计算包装成：问题形式化 → 候选方程 → 留出集验证 → 反例检查 → 证据报告。
 
-当前实现已经包含离线 CLI、回放与 T1 acceptance，以及 T2–T5 各自的有限 evaluator；
+当前实现已经包含离线 CLI、回放与 T1 acceptance，以及 T2–T5 各自通过同一
+Tool/Policy 入口执行的有限 evaluator；
 这些结果只支持声明范围内的 validated reproduction，不声称复现外部论文、真实世界因果、
 生产 solver、安全湿实验或发现新物理。
 外部 `symbolic-physics-engine` 路径尚未确认，因此首版使用内置的有界符号候选器；
@@ -30,12 +30,15 @@ python -m pytest -q
 python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/local-runs
 python -m auditable_scientist.cli inspect artifacts/local-runs/run-<input-hash-prefix>
 python -m auditable_scientist.cli replay artifacts/local-runs/run-<input-hash-prefix>
+python -m auditable_scientist.cli run-track T2 examples/causal/fixture.json --output-dir artifacts/local-track-runs
+python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<input-hash-prefix>
 python scripts/verify_acceptance.py
 ```
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v8/`。
+`artifacts/acceptance-runs-v11/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
+的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
 
 ## 当前入口
 
@@ -48,7 +51,7 @@ seed、源码/证据快照、候选顺序和完整计算输出。正式收据和
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
-- [artifacts/acceptance-runs-v8/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v8/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
+- [artifacts/acceptance-runs-v11/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v11/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
 
 ## 非目标
 

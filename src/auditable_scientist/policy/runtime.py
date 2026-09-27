@@ -12,6 +12,8 @@ from pathlib import Path
 from time import monotonic
 from typing import Any, Callable
 
+from jsonschema import Draft202012Validator, ValidationError
+
 from ..domain import Policy, Tool
 
 
@@ -103,6 +105,10 @@ class ToolRegistry:
             }.get(expected, True)
             if not valid:
                 raise PolicyDenied(f"tool argument has invalid type: {name}")
+        try:
+            Draft202012Validator(schema).validate(arguments)
+        except ValidationError as exc:
+            raise PolicyDenied(f"tool arguments violate schema: {exc.message}") from exc
 
     def _check_paths(self, path_refs: list[str]) -> None:
         if not path_refs:

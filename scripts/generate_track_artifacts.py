@@ -8,12 +8,12 @@ from pathlib import Path
 
 from auditable_scientist.runtime.canonical import canonical_hash, canonical_json
 from auditable_scientist.runtime.replay import fingerprint_file
-from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
-from auditable_scientist.tracks.common import TrackReceipt, make_track_receipt
-from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
-from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState, verify_proof_package
-from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
+from auditable_scientist.tracks.causal import CausalCase
+from auditable_scientist.tracks.dynamics import DynamicsCase
+from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState
+from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep
 from auditable_scientist.tracks.run_package import make_track_run
+from auditable_scientist.tracks.runner import run_registered_track
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,39 +35,6 @@ def evidence_for(path: Path) -> list[dict[str, object]]:
             "allowed_use": ["offline-fixture", "bounded-evaluator"],
         }
     ]
-
-
-def source_for(track_id: str) -> list[dict[str, object]]:
-    source = {
-        "T2": "causal.py",
-        "T3": "dynamics.py",
-        "T4": "proof.py",
-        "T5": "protocol.py",
-    }[track_id]
-    paths = [
-        ROOT / "src/auditable_scientist/tracks" / source,
-        ROOT / "src/auditable_scientist/tracks/common.py",
-        ROOT / "src/auditable_scientist/tracks/run_package.py",
-        ROOT / "src/auditable_scientist/domain/models.py",
-        ROOT / "src/auditable_scientist/runtime/canonical.py",
-        ROOT / "src/auditable_scientist/runtime/event_log.py",
-        ROOT / "docs/EVIDENCE_POLICY.md",
-        ROOT / "schemas/run.schema.json",
-        ROOT / "schemas/track-receipt-v1.json",
-        ROOT / "schemas/track-acceptance-v1.json",
-        ROOT / "schemas/track-tool-call-v1.json",
-    ]
-    records = []
-    for path in paths:
-        fingerprint = fingerprint_file(path)
-        records.append({
-            "path": path.relative_to(ROOT).as_posix(),
-            "sha256": fingerprint.sha256,
-            "bytes": fingerprint.bytes,
-            "provenance_status": "unverified",
-            "allowed_use": ["offline-evaluator", "source-provenance"],
-        })
-    return records
 
 
 def write_track_bundle(
@@ -160,14 +127,13 @@ def main() -> None:
         CausalCase(case_id="train-2", split="train", context_value=-3, intervention_value=2, expected_outcome=5),
         CausalCase(case_id="holdout-1", split="holdout", context_value=99, intervention_value=3, expected_outcome=7),
     ]
-    causal_eval, _ = evaluate_causal_fixture(causal_cases)
     causal_fixture = ROOT / "examples/causal/fixture.json"
     write_json(causal_fixture, {"schema_version": "causal-fixture-v1", "cases": [item.model_dump(mode="json") for item in causal_cases]})
-    _, causal_receipt = evaluate_causal_fixture(causal_cases)
-    causal_receipt = TrackReceipt.model_validate({**causal_receipt.model_dump(mode="json"), "evidence_files": evidence_for(causal_fixture), "source_files": source_for("T2")})
-    causal_negative = {"wrong_coefficient": 1.0, "rejected": causal_eval.negative_candidate_rejected}
-    causal_run = make_track_run(track_id="T2", task_id="t2-causal-intervention-v1", receipt=causal_receipt, fixture_path=causal_fixture, negative_case=causal_negative)
-    write_track_bundle(track_id="T2", directory="t2-causal", receipt=causal_receipt, run=causal_run, negative_case=causal_negative, demo_text=f"run_id={causal_run.run_id}; holdout_rmse={causal_eval.holdout_rmse}; negative_candidate_rejected={causal_eval.negative_candidate_rejected}")
+    causal_execution = run_registered_track("T2", causal_fixture)
+    causal_receipt = causal_execution.receipt
+    causal_negative = causal_execution.negative_case
+    causal_run = make_track_run(track_id="T2", task_id="t2-causal-intervention-v1", receipt=causal_receipt, fixture_path=causal_fixture, negative_case=causal_negative, calls_used=causal_execution.calls_used)
+    write_track_bundle(track_id="T2", directory="t2-causal", receipt=causal_receipt, run=causal_run, negative_case=causal_negative, demo_text=f"run_id={causal_run.run_id}; holdout_rmse={causal_receipt.result['holdout_rmse']}; negative_candidate_rejected={causal_receipt.result['negative_candidate_rejected']}")
     portfolio.append(causal_receipt.model_dump(mode="json"))
 
     dynamics_cases = [
@@ -175,14 +141,13 @@ def main() -> None:
         DynamicsCase(case_id="train-2", split="train", omega=1.4, dt=0.01, steps=500, x0=0.5, v0=0.2),
         DynamicsCase(case_id="holdout-1", split="holdout", omega=0.8, dt=0.01, steps=700, x0=1.2, v0=-0.1),
     ]
-    dynamics_eval, _ = evaluate_dynamics_fixture(dynamics_cases)
     dynamics_fixture = ROOT / "examples/dynamics/fixture.json"
     write_json(dynamics_fixture, {"schema_version": "dynamics-fixture-v1", "cases": [item.model_dump(mode="json") for item in dynamics_cases]})
-    _, dynamics_receipt = evaluate_dynamics_fixture(dynamics_cases)
-    dynamics_receipt = TrackReceipt.model_validate({**dynamics_receipt.model_dump(mode="json"), "evidence_files": evidence_for(dynamics_fixture), "source_files": source_for("T3")})
-    dynamics_negative = {"solver": "explicit-euler", "rejected": dynamics_eval.negative_euler_rejected}
-    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v1", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative)
-    write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_eval.holdout_max_position_error}; negative_euler_rejected={dynamics_eval.negative_euler_rejected}")
+    dynamics_execution = run_registered_track("T3", dynamics_fixture)
+    dynamics_receipt = dynamics_execution.receipt
+    dynamics_negative = dynamics_execution.negative_case
+    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v1", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative, calls_used=dynamics_execution.calls_used)
+    write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_receipt.result['holdout_max_position_error']}; negative_euler_rejected={dynamics_receipt.result['negative_euler_rejected']}")
     portfolio.append(dynamics_receipt.model_dump(mode="json"))
 
     trajectory = [ProofState(step=0, mass_a=2, mass_b=3), ProofState(step=1, mass_a=1, mass_b=4)]
@@ -192,15 +157,13 @@ def main() -> None:
         ProofObligation(obligation_id="o3", checker_id="trajectory-hash", statement="trajectory hash matches"),
     ]
     proof_package = ProofPackage(package_id="proof-1", trajectory=trajectory, obligations=obligations, trajectory_hash=canonical_hash([item.model_dump(mode="json") for item in trajectory]))
-    proof_verification = verify_proof_package(proof_package)
-    tampered_package = proof_package.model_copy(update={"trajectory": [*trajectory, ProofState(step=2, mass_a=0, mass_b=4)]})
-    tampered_verification = verify_proof_package(tampered_package)
     proof_fixture = ROOT / "examples/proof/fixture.json"
     write_json(proof_fixture, proof_package.model_dump(mode="json"))
-    proof_receipt = make_track_receipt(track_id="T4", evaluator_id=proof_verification.evaluator_id, input_payload=proof_package.model_dump(mode="json"), evidence_level=proof_verification.evidence_level, passed=proof_verification.passed, negative_case_passed=not tampered_verification.passed, result=proof_verification.model_dump(mode="json"), evidence_files=evidence_for(proof_fixture), source_files=source_for("T4"), blocked_gates=["formal proof backend beyond finite obligation check"])
-    proof_negative = tampered_verification.model_dump(mode="json")
-    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v1", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative)
-    write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, run=proof_run, negative_case=proof_negative, demo_text=f"run_id={proof_run.run_id}; checked_obligations={proof_verification.checked_obligations}; tampered_claim_status={tampered_verification.claim_status}")
+    proof_execution = run_registered_track("T4", proof_fixture)
+    proof_receipt = proof_execution.receipt
+    proof_negative = proof_execution.negative_case
+    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v1", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative, calls_used=proof_execution.calls_used)
+    write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, run=proof_run, negative_case=proof_negative, demo_text=f"run_id={proof_run.run_id}; checked_obligations={proof_receipt.result['checked_obligations']}; tampered_claim_status={proof_negative['claim_status']}")
     portfolio.append(proof_receipt.model_dump(mode="json"))
 
     protocol_steps = [
@@ -208,15 +171,13 @@ def main() -> None:
         ProtocolStep(step_id="step-2", action="incubate", reagent="sample", volume_ul=5, temperature_c=24, duration_min=10, provenance_status="verified"),
     ]
     protocol = ProtocolSpec(protocol_id="p-1", steps=protocol_steps, min_temperature_c=20, max_temperature_c=30, max_total_volume_ul=20)
-    protocol_verification = verify_protocol(protocol)
-    bad_protocol = protocol.model_copy(update={"steps": [protocol_steps[0].model_copy(update={"provenance_status": "blocked"}), protocol_steps[1]]})
-    bad_protocol_verification = verify_protocol(bad_protocol)
     protocol_fixture = ROOT / "examples/protocol/fixture.json"
     write_json(protocol_fixture, protocol.model_dump(mode="json"))
-    protocol_receipt = make_track_receipt(track_id="T5", evaluator_id=protocol_verification.evaluator_id, input_payload=protocol.model_dump(mode="json"), evidence_level=protocol_verification.evidence_level, passed=protocol_verification.passed, negative_case_passed=not bad_protocol_verification.passed, result=protocol_verification.model_dump(mode="json"), evidence_files=evidence_for(protocol_fixture), source_files=source_for("T5"), blocked_gates=["real wet-lab validation and human biosafety review"])
-    protocol_negative = bad_protocol_verification.model_dump(mode="json")
-    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-protocol-v1", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative)
-    write_track_bundle(track_id="T5", directory="t5-protocol", receipt=protocol_receipt, run=protocol_run, negative_case=protocol_negative, demo_text=f"run_id={protocol_run.run_id}; passed={protocol_verification.passed}; execution_allowed={protocol_verification.execution_allowed}")
+    protocol_execution = run_registered_track("T5", protocol_fixture)
+    protocol_receipt = protocol_execution.receipt
+    protocol_negative = protocol_execution.negative_case
+    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-protocol-v1", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative, calls_used=protocol_execution.calls_used)
+    write_track_bundle(track_id="T5", directory="t5-protocol", receipt=protocol_receipt, run=protocol_run, negative_case=protocol_negative, demo_text=f"run_id={protocol_run.run_id}; passed={protocol_receipt.result['passed']}; execution_allowed={protocol_receipt.result['execution_allowed']}")
     portfolio.append(protocol_receipt.model_dump(mode="json"))
 
     write_json(ROOT / "artifacts/track-portfolio.json", {"schema_version": "track-portfolio-v1", "status": "bounded-slices-accepted", "tracks": portfolio, "global_boundaries": ["No real-data claim", "No autonomous wet-lab execution", "No publication or novelty claim"]})

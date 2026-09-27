@@ -18,8 +18,66 @@
       "candidate_order",
       "computational_output"
     ],
-    "manifest_hash": "99001e76b442d95977c967b943cde507864782dd2e0c11e68885b058ada6e2bc",
+    "manifest_hash": "a5d6259c3c4f7c234e2349404737270b8e5702fb523db2623af98d6d42edddc8",
     "verified": true
+  },
+  "track_cli_replays": {
+    "T2": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "37cac21b56f8eed1bfbdcfbbb0bb7fc021cfb36df4f525111b4148f0f6504439",
+      "verified": true
+    },
+    "T3": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "6a6b14c99cd3f0c7cc2f996f79d8305cc9e01994a2a2ac38de2a25010e10fdc9",
+      "verified": true
+    },
+    "T4": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "8b78b43ec9f5ccb8a3bb9beea2b4ec0e3bdda34f321d481f1c546d78fe192889",
+      "verified": true
+    },
+    "T5": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "607479c64b94458012a17bf2d603417d5b7de14cd80a62333ba035982bfefa67",
+      "verified": true
+    }
   },
   "track_evaluators_replayed": [
     "T2",

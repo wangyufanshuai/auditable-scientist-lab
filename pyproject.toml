@@ -10,12 +10,12 @@ requires-python = ">=3.10"
 dependencies = [
   "pydantic>=2.7,<3",
   "sympy>=1.12,<2",
+  "jsonschema>=4.20,<5",
 ]
 
 [project.optional-dependencies]
 test = [
   "pytest>=8,<9",
-  "jsonschema>=4.20,<5",
 ]
 
 [project.scripts]

@@ -26,8 +26,10 @@ from ..domain import (
     Trace,
 )
 from ..runtime.canonical import canonical_hash
+from ..runtime.environment import capture_environment
 from ..runtime.replay import fingerprint_file
 from .common import TrackReceipt
+from .runner import track_policy, track_tool
 
 
 def make_track_run(
@@ -38,7 +40,10 @@ def make_track_run(
     fixture_path: Path,
     negative_case: Any,
     seed: int = 17,
+    calls_used: int = 0,
 ) -> Run:
+    if calls_used not in (0, 1):
+        raise ValueError("bounded track Run requires zero or one registered tool call")
     fixture = fingerprint_file(fixture_path)
     evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
     evaluator_fingerprint = fingerprint_file(evaluator_source)
@@ -65,14 +70,7 @@ def make_track_run(
         notes="Local evaluator source fingerprint; this does not establish external scientific validity.",
     )
     provider_id = f"internal-{track_id.lower()}-evaluator"
-    policy = Policy(
-        policy_id=f"offline-{track_id.lower()}-v1",
-        network="disabled",
-        max_seconds=60,
-        max_tool_calls=1,
-        allowed_paths=[str(fixture_path.parent)],
-        allowed_providers=[provider_id],
-    )
+    policy = track_policy(track_id, fixture_path)
     input_hash = receipt.input_hash
     run_id = f"run-{track_id.lower()}-{input_hash[:16]}"
     agent = Agent(
@@ -81,14 +79,7 @@ def make_track_run(
         version="1",
         capabilities=["invoke-registered-evaluator", "record-negative-case"],
     )
-    tool = Tool(
-        tool_id=f"{track_id.lower()}-evaluator",
-        name=f"{track_id} domain evaluator",
-        version="1",
-        parameter_schema_ref="schemas/track-tool-call-v1.json",
-        deterministic=True,
-        network_required=False,
-    )
+    tool = track_tool(track_id)
     memory_source = Path(__file__).resolve().parents[3] / "docs/EVIDENCE_POLICY.md"
     memory = Memory(
         memory_id="evidence-policy-memory-v1",
@@ -121,11 +112,18 @@ def make_track_run(
         units={},
         source_ref=str(fixture_path),
     )
-    environment = {"mode": "offline", "track_id": track_id, "runtime": "bounded-evaluator"}
+    environment = {
+        **capture_environment(["auditable-scientist-lab", "pydantic", "sympy", "jsonschema"]),
+        "mode": "offline",
+        "track_id": track_id,
+        "runtime": "bounded-evaluator",
+        "network": "disabled",
+    }
     base_time = datetime(2026, 9, 21, tzinfo=timezone.utc)
     payloads = [
         ("run.initialized", {"run_id": run_id, "input_hash": input_hash}),
         ("policy.applied", {"policy_id": policy.policy_id, "network": policy.network, "provider_id": provider_id}),
+        *([("tool.invoked", {"tool_id": tool.tool_id, "calls_used": calls_used})] if calls_used else []),
         ("evaluator.completed", {"evaluator_id": receipt.evaluator_id, "result": receipt.result}),
         ("negative_case.checked", {"negative_case": negative_case, "negative_case_passed": receipt.negative_case_passed}),
         ("run.completed", {"status": "completed" if receipt.passed else "unverified"}),

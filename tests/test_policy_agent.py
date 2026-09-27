@@ -79,6 +79,28 @@ def test_registered_tool_arguments_are_schema_checked() -> None:
     assert registry.invoke("echo", {"value": 1}) == 1
 
 
+def test_registered_tool_enforces_enum_and_hash_pattern() -> None:
+    registry = ToolRegistry(Policy(policy_id="offline", network="disabled", max_seconds=5, max_tool_calls=1))
+    registry.register(
+        _tool(),
+        lambda arguments: arguments,
+        argument_schema={
+            "type": "object",
+            "required": ["track_id", "input_hash"],
+            "properties": {
+                "track_id": {"enum": ["T2"]},
+                "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            },
+            "additionalProperties": False,
+        },
+    )
+    with pytest.raises(PolicyDenied, match="violate schema"):
+        registry.invoke("echo", {"track_id": "T3", "input_hash": "0" * 64})
+    with pytest.raises(PolicyDenied, match="violate schema"):
+        registry.invoke("echo", {"track_id": "T2", "input_hash": "bad"})
+    assert registry.calls_used == 0
+
+
 def test_agent_proposal_cannot_encode_a_claim_transition() -> None:
     registry = ToolRegistry(Policy(policy_id="offline", network="disabled", max_seconds=5, max_tool_calls=0))
     agent = OfflineAgent(Agent(agent_id="a1", name="offline", version="1"), registry)

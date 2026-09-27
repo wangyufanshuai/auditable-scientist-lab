@@ -22,9 +22,15 @@
 - Current mutation checks reject altered T1 input, experiment, Run, event log, and project-05
   snapshot, plus altered T2 acceptance boundaries, result, event log, and source hash. T2–T5
   acceptance packages record the evaluator's source SHA-256 and replay their negative cases.
-- Next engineering work is to make T2–T5 evaluator calls operational through the same
-  Policy/ToolRegistry path as T1 and to audit a clean-environment install. Scientific, rights,
-  compute, and human-review gates remain open; public release remains a separate decision.
+- T2–T5 now use registered offline Tool/Policy calls for generated acceptance packages
+  and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
+  and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
+- A fresh Python environment installed `.[test]`, passed 50 tests, and replayed newly
+  generated T1–T5 runs. Runtime environment and dependency versions are now recorded
+  for every track; replay in a mismatched environment fails closed.
+- Next engineering work is a standalone wheel audit, deeper independent backends, and
+  data/proof provenance. Scientific, rights, compute, and human-review gates remain open;
+  public release remains a separate decision.
 
 ## Confirmed decisions
 
@@ -294,8 +300,7 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Turn the T2–T5 recorded Tool/Policy descriptors into actual registered offline calls,
-   and expose their fixture runs through the CLI while retaining replay checks.
+1. Audit a standalone wheel install and package all required schemas/docs without a source checkout.
 2. Add a second deterministic numerical backend for T3 only after its implementation,
    license, and independent-reference provenance are recorded.
 3. Add rights-cleared real-data adapters only after source and data-use gates are closed;

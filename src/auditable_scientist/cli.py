@@ -1,4 +1,4 @@
-"""Offline CLI for the auditable Hohmann vertical slice."""
+"""Offline CLI for the auditable Hohmann and bounded track vertical slices."""
 
 from __future__ import annotations
 
@@ -36,6 +36,7 @@ from .runtime.environment import capture_environment
 from .runtime.event_log import EventLog
 from .runtime.replay import ReplayManifest, ReplayMismatch, fingerprint_file
 from .runtime.run_integrity import verify_run_record
+from .track_cli import build_track_run, inspect_track_run, replay_track_run
 
 
 def _json_dump(path: Path, value: Any) -> None:
@@ -58,12 +59,17 @@ def _repo_root() -> Path:
 def _source_paths() -> list[Path]:
     root = _repo_root()
     return [
+        root / "pyproject.toml",
         root / "src/auditable_scientist/benchmark/hohmann.py",
         root / "src/auditable_scientist/benchmark/study.py",
         root / "src/auditable_scientist/tools/dimensions.py",
         root / "src/auditable_scientist/tools/errors.py",
         root / "src/auditable_scientist/tools/numerical.py",
         root / "src/auditable_scientist/runtime/canonical.py",
+        root / "src/auditable_scientist/runtime/environment.py",
+        root / "src/auditable_scientist/runtime/event_log.py",
+        root / "src/auditable_scientist/runtime/replay.py",
+        root / "src/auditable_scientist/reporting/hohmann_report.py",
         root / "src/auditable_scientist/cli.py",
         root / "src/auditable_scientist/policy/runtime.py",
         root / "src/auditable_scientist/domain/models.py",
@@ -409,6 +415,11 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--offline", action="store_true", help="record that network access is disabled")
     run_parser.add_argument("--seed", type=int, default=17)
     run_parser.add_argument("--output-dir", type=Path, default=Path("artifacts/runs"))
+    track_parser = subparsers.add_parser("run-track", help="execute a bounded T2–T5 fixture through the offline ToolRegistry")
+    track_parser.add_argument("track_id", choices=("T2", "T3", "T4", "T5"))
+    track_parser.add_argument("fixture", type=Path)
+    track_parser.add_argument("--seed", type=int, default=17)
+    track_parser.add_argument("--output-dir", type=Path, default=Path("artifacts/track-runs"))
     for name in ("replay", "inspect", "export-report"):
         command_parser = subparsers.add_parser(name)
         command_parser.add_argument("run_dir", type=Path)
@@ -424,12 +435,19 @@ def main(argv: list[str] | None = None) -> int:
             print(_init(args.path))
         elif args.command == "run":
             print(_build_run(args.config, seed=args.seed, output_dir=args.output_dir, offline=args.offline))
+        elif args.command == "run-track":
+            print(build_track_run(args.track_id, args.fixture, seed=args.seed, output_dir=args.output_dir))
         elif args.command == "replay":
-            print(json.dumps(_replay(args.run_dir), indent=2, sort_keys=True))
+            receipt = replay_track_run(args.run_dir) if (args.run_dir / "result.json").is_file() else _replay(args.run_dir)
+            print(json.dumps(receipt, indent=2, sort_keys=True))
         elif args.command == "inspect":
-            run = json.loads((args.run_dir / "run.json").read_text(encoding="utf-8"))
-            experiment = json.loads((args.run_dir / "experiment.json").read_text(encoding="utf-8"))
-            print(json.dumps({"run_id": run["run_id"], "status": run["status"], "claim": run["claims"][0], "selected_candidate_id": experiment["selected_candidate_id"], "holdout": experiment["gate"]}, indent=2, sort_keys=True))
+            if (args.run_dir / "result.json").is_file():
+                summary = inspect_track_run(args.run_dir)
+            else:
+                run = json.loads((args.run_dir / "run.json").read_text(encoding="utf-8"))
+                experiment = json.loads((args.run_dir / "experiment.json").read_text(encoding="utf-8"))
+                summary = {"run_id": run["run_id"], "status": run["status"], "claim": run["claims"][0], "selected_candidate_id": experiment["selected_candidate_id"], "holdout": experiment["gate"]}
+            print(json.dumps(summary, indent=2, sort_keys=True))
         elif args.command == "export-report":
             source = args.run_dir / "report.md"
             destination = args.output or source
@@ -438,7 +456,7 @@ def main(argv: list[str] | None = None) -> int:
                 shutil.copyfile(source, destination)
             print(destination)
         return 0
-    except (FileNotFoundError, ValueError, OSError) as exc:
+    except (FileNotFoundError, ValueError, OSError, PermissionError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

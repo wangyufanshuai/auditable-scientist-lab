@@ -19,6 +19,8 @@ from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
 from auditable_scientist.tracks.proof import ProofPackage, ProofState, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
+from auditable_scientist.tracks.runner import run_registered_track
+from auditable_scientist.track_cli import replay_track_run
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,7 +114,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
     trace_entries = [{"seq": event.seq, "event_type": event.event_type, "payload_hash": event.payload_hash} for event in events]
     if len(run.traces) != 1 or canonical_hash(run.traces[0].entries) != canonical_hash(trace_entries):
         raise ValueError(f"track {track_id} trace differs from events.jsonl")
-    required_events = {"run.initialized", "policy.applied", "evaluator.completed", "negative_case.checked", "run.completed"}
+    required_events = {"run.initialized", "policy.applied", "tool.invoked", "evaluator.completed", "negative_case.checked", "run.completed"}
     by_type = {event.event_type: event for event in events}
     if not required_events.issubset(by_type):
         raise ValueError(f"track {track_id} event lifecycle is incomplete")
@@ -120,6 +122,8 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         raise ValueError(f"track {track_id} initialization event differs from Run")
     if by_type["run.completed"].payload.get("status") != run.status.value:
         raise ValueError(f"track {track_id} completion event differs from Run")
+    if by_type["tool.invoked"].payload != {"tool_id": run.tools[0].tool_id, "calls_used": 1}:
+        raise ValueError(f"track {track_id} did not record one registered evaluator call")
     if by_type["evaluator.completed"].payload != {"evaluator_id": receipt.evaluator_id, "result": item["result"]}:
         raise ValueError(f"track {track_id} evaluator event differs from receipt")
     if by_type["negative_case.checked"].payload != {
@@ -134,7 +138,7 @@ def main() -> None:
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v8/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v11/run-7a65020acaf83cfc"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -193,6 +197,9 @@ def main() -> None:
         }[track_id]
         bundle_dir = ROOT / "artifacts" / directory
         verify_track_bundle(track_id, item, bundle_dir)
+        live = run_registered_track(track_id, ROOT / item["evidence_files"][0]["path"])
+        if canonical_hash(live.receipt) != canonical_hash(item) or live.calls_used != 1:
+            raise SystemExit(f"track {track_id} registered evaluator replay differs from receipt")
 
     t2_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T2")
     t2_fixture = load("examples/causal/fixture.json")
@@ -242,6 +249,15 @@ def main() -> None:
     if t5["evaluator"]["result"]["execution_allowed"] is not False:
         raise SystemExit("T5 execution boundary was widened")
 
+    cli_replays: dict[str, dict] = {}
+    for track_id in ("T2", "T3", "T4", "T5"):
+        item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
+        run_dir = ROOT / "artifacts/track-runs-v1" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
+        if canonical_hash(saved_result["receipt"]) != canonical_hash(item):
+            raise SystemExit(f"track {track_id} CLI Run receipt differs from portfolio")
+        cli_replays[track_id] = replay_track_run(run_dir)
+
     result = {
         "schema_version": "acceptance-verification-v1",
         "status": "verified",
@@ -249,6 +265,7 @@ def main() -> None:
         "run_status": run.status.value,
         "tracks": [item["track_id"] for item in portfolio["tracks"]],
         "track_evaluators_replayed": ["T2", "T3", "T4", "T5"],
+        "track_cli_replays": cli_replays,
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"
