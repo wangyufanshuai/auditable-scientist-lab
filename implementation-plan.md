@@ -49,6 +49,11 @@
   indirect-term identity, and scientific boundaries are bound in the audit.
   This is still not a maneuver model, scientific holdout, independent observable,
   or validated mission Claim. See `docs/T1_MAVEN_PLANETARY_FORCE_RESULT.md`.
+- An official PDS MAVEN ROSE raw TNF collection has public radiometric records,
+  but its catalog starts in 2016, after the two 2014 cruise arcs. It cannot be
+  used to claim independent validation of those arcs. A 2014 product-level
+  observation source remains unlocated; see
+  `docs/T1_MAVEN_INDEPENDENT_OBSERVABLE_SEARCH.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.
