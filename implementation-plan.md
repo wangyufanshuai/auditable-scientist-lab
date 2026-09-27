@@ -43,6 +43,11 @@
   convergence, normalized energy drift, backend agreement, and Euler rejection.
   `artifacts/t3-sweep.json` is independently recomputed by the acceptance verifier;
   it is still evidence only for the declared oscillator grid.
+- A separate, optional SciPy 1.18.1 / NumPy 2.2.6 DOP853 cross-check passed nine
+  oscillator cases and a wrong-sign negative control. Its Windows wheels, source
+  tags, and installed license notices are recorded in `docs/T3_EXTERNAL_SOLVER.md`
+  and `artifacts/t3-external-scipy.json`. SciPy remains outside the core dependency
+  and the committed Run; this audit does not close multi-body or mission gates.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
   fixture inputs. T1–T5 replayed from a copied checkout in the same dependency
   environment, and five wheel-generated run directories replayed after relocation.
@@ -321,9 +326,9 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Identify and review an independent external T3 solver before integrating it;
-   require its implementation, license, and reference provenance. Keep current
-   RK4 and grid checks at the oscillator-fixture level.
+1. Design an optional versioned T3 external-solver Tool/Provider and per-Run
+   provenance binding before moving the SciPy audit into tracked replay. Keep
+   the present oscillator-only result separate from multi-body claims.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
 3. Reassess the local-only publication boundary from a fresh environment and user review;
