@@ -174,7 +174,7 @@ def desired_outputs() -> dict[Path, str]:
     })
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
-        "T1": {"external symbolic engine", "independent spacecraft propagation and mission comparison", "preregistered mission holdout and uncertainty review"},
+        "T1": {"external symbolic engine", "mission-domain force and maneuver comparison", "preregistered mission holdout and uncertainty review"},
         "T2": {"real interventions", "causal identification", "data rights", "external algorithm source rights"},
         "T3": {"long-horizon/nonintegrable multi-body validation", "real-mission provenance", "long-horizon compute budget"},
         "T4": {"general formal proof backend", "reviewed physical transition model", "real-world validation"},

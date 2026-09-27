@@ -39,7 +39,11 @@ Mars-center geometry diagnostic, not a spacecraft encounter or mission proof.
 `t1-maven-source-snapshot.json` and its audit read three exploratory states
 from a PDS4-archived, checksum-pinned reconstructed MAVEN cruise SPK. They
 record its Sun/Mars-barycenter segment transition and the Mars-center chain,
-but do not establish independent spacecraft propagation or mission validity.
+but that source audit alone does not establish spacecraft propagation or mission validity.
+`t1-maven-preflight-snapshot.json` and its audit add two precommitted 24-hour
+Sun-only RK4 comparisons with NAV endpoints. They bind a pure-Python solver,
+step refinement, two-body energy, wrong-sign negative and measured errors to
+the fixed protocol; mission-domain dynamics and scientific validation stay open.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
 The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
 geometry comparisons. None of these artifacts establishes real-mission validity,

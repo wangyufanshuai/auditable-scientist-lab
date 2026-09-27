@@ -22,7 +22,7 @@
     "mar099s": "data/naif/mar099s.bsp",
     "maven_cruise": "data/naif/maven_cru_rec_131118_140923_v1.bsp"
   },
-  "recorded_at": "2026-09-27T12:56:12.475765+00:00",
+  "recorded_at": "2026-09-27T13:20:36.346044+00:00",
   "schema_version": "t1-maven-source-audit-v1",
   "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
   "source_files": [
@@ -47,9 +47,9 @@
       "sha256": "4d9d13b96d85d3eac337a8f70a14724746b586b1925278ea6b87ace80fc54c35"
     },
     {
-      "bytes": 3575,
+      "bytes": 3629,
       "path": "docs/T1_MAVEN_MISSION_SOURCE.md",
-      "sha256": "b8bb8f52ed7f504d60a665b0085829ad1b72997cd3de2b52ed85bedadb37b3f0"
+      "sha256": "5de144481041db2b04535018b98d344d36cf9bda72959b7ffb6fae7ff9438a3a"
     },
     {
       "bytes": 100,

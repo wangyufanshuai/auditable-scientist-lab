@@ -457,6 +457,110 @@ def verify_optional_t1_maven_source() -> dict:
             "independent_spacecraft_propagation": False, "mission_validation": False}
 
 
+def verify_optional_t1_maven_preflight() -> dict:
+    """Bind a precommitted short-arc comparison to its narrow engineering scope."""
+
+    audit = load("artifacts/t1-maven-preflight-audit.json")
+    snapshot = load("artifacts/t1-maven-preflight-snapshot.json")
+    protocol = load("docs/T1_MAVEN_PROPAGATION_PREFLIGHT.json")
+    expected_sources = {
+        "scripts/verify_t1_maven_preflight.py", "scripts/fetch_maven_cruise.py",
+        "docs/T1_MAVEN_PROPAGATION_PREFLIGHT.json",
+        "docs/T1_MAVEN_PROPAGATION_PREFLIGHT.md",
+        "src/auditable_scientist/adapters/naif_de440s.py",
+        "src/auditable_scientist/adapters/naif_mars_center.py",
+        "requirements-t1-mars-center-win-py312.txt",
+    }
+    expected_boundaries = {
+        "real_mission_source": True, "independent_sun_only_propagation": True,
+        "full_force_model": False, "mission_validation": False,
+        "scientific_holdout": False, "publication_ready": False,
+    }
+    protocol_sha = "a37b11b983a9ea0765682d4457c8eed9b378566262fa3adc478d7d60ef9e5a47"
+    prereg_commit = "27cc842553d3ff888df092883ff9f50225e92aae"
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False) + "\n").encode("utf-8")
+    sources = audit.get("source_files", [])
+    arcs = snapshot.get("arcs", [])
+    gates = protocol["engineering_gates"]
+    if (audit.get("schema_version") != "t1-maven-sun-only-preflight-audit-v1"
+            or audit.get("status") != "passed-engineering-preflight-only"
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("engineering_preflight_passed") is not True
+            or audit.get("mission_only_states_equal") is not True
+            or audit.get("arc_count") != 2
+            or snapshot.get("schema_version") != "t1-maven-sun-only-preflight-snapshot-v1"
+            or snapshot.get("engineering_preflight_passed") is not True
+            or snapshot.get("mission_only_states_equal") is not True
+            or snapshot.get("claim_status") != "unverified"
+            or snapshot.get("scientific_boundaries") != {
+                "mission_validation": False, "full_force_model": False,
+                "maneuver_reconstruction": False, "untouched_scientific_holdout": False}
+            or audit.get("protocol_sha256") != protocol_sha
+            or snapshot.get("protocol_sha256") != protocol_sha
+            or fingerprint_file(ROOT / "docs/T1_MAVEN_PROPAGATION_PREFLIGHT.json").sha256 != protocol_sha
+            or audit.get("preregistration_commit") != prereg_commit
+            or snapshot.get("preregistration_commit") != prereg_commit
+            or snapshot.get("engineering_gates") != gates
+            or snapshot.get("model") != protocol["model"]
+            or snapshot.get("coordinate_contract") != protocol["coordinate_contract"]
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or len(sources) != len(expected_sources)
+            or {item.get("path") for item in sources} != expected_sources
+            or any(fingerprint_file(ROOT / item["path"]).sha256 != item.get("sha256")
+                   or (ROOT / item["path"]).stat().st_size != item.get("bytes")
+                   for item in sources)
+            or snapshot.get("source_hashes", {}).get("maven_cruise", {}).get("sha256") !=
+            "07c76dfc2a1f66a54b4dd74105b2a5a70d72192813abee3659a74d4d21988dc5"
+            or snapshot.get("source_hashes", {}).get("de440s", {}).get("sha256") !=
+            "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+            or snapshot.get("source_hashes", {}).get("mar099s", {}).get("sha256") !=
+            "997dc93ba640e476da7a494d2237dcdeb145e528db37be8ccee588c615e4e1ff"
+            or [arc.get("initial_et_tdb_seconds") for arc in arcs] !=
+            protocol["time_contract"]["initial_et_seconds"]
+            or any(arc.get("endpoint_et_tdb_seconds") != arc["initial_et_tdb_seconds"] +
+                   protocol["time_contract"]["horizon_seconds"] for arc in arcs)
+            or any(arc.get("start_segment_center_id") != 10 or arc.get("endpoint_segment_center_id") != 10
+                   or arc.get("engineering_gates_passed") is not True for arc in arcs)):
+        raise ValueError("MAVEN preflight source, protocol, or boundary differs")
+    for arc in arcs:
+        initial = arc["initial_nav_sun_state_km_kms"]
+        target = arc["held_nav_endpoint_sun_state_km_kms"]
+        predicted = arc["sun_only_rk4_endpoint_state_km_kms"]
+        if any(len(state) != 6 or not all(math.isfinite(value) for value in state)
+               for state in (initial, target, predicted)):
+            raise ValueError("MAVEN preflight state is not a finite six-vector")
+        position_error = math.sqrt(sum((a-b)**2 for a, b in zip(predicted[:3], target[:3], strict=True)))
+        velocity_error = math.sqrt(sum((a-b)**2 for a, b in zip(predicted[3:], target[3:], strict=True)))
+        if (not math.isclose(position_error, arc["position_error_km"], abs_tol=1e-9)
+                or not math.isclose(velocity_error, arc["velocity_error_km_s"], abs_tol=1e-12)
+                or position_error > gates["endpoint_position_error_km_max"]
+                or velocity_error > gates["endpoint_velocity_error_km_s_max"]
+                or not 0 <= arc["refinement_position_difference_km"] <= gates["refinement_position_difference_km_max"]
+                or not 0 <= arc["relative_two_body_energy_drift"] <= gates["relative_two_body_energy_drift_max"]
+                or arc["wrong_sign_position_error_km"] <= gates["endpoint_position_error_km_max"]):
+            raise ValueError("MAVEN preflight metric or engineering gate differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("MAVEN preflight audit has no timezone-aware timestamp")
+    dynamic_verified = False
+    kernels = ("data/naif/de440s.bsp", "data/naif/mar099s.bsp",
+               "data/naif/maven_cru_rec_131118_140923_v1.bsp")
+    if (all((ROOT / path).is_file() for path in kernels)
+            and importlib.util.find_spec("spiceypy") is not None):
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_preflight.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+        )
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN dynamic preflight failed: {command.stderr.strip()}")
+        dynamic_verified = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic_verified, "arc_count": 2,
+            "independent_sun_only_propagation": True, "mission_validation": False,
+            "scientific_holdout": False}
+
+
 def verify_optional_t1_orbit_static() -> dict:
     """Check saved external-solver provenance and bounds without importing SciPy."""
     audit = load("artifacts/t1-external-orbit-audit.json")
@@ -1280,6 +1384,15 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN reconstructed source has no command receipt")
+    maven_preflight = verify_optional_t1_maven_preflight()
+    if not any(
+        item.get("name") == "optional-t1-maven-sun-only-preflight"
+        and item.get("output_path") == "artifacts/t1-maven-preflight-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_maven_preflight.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN propagation preflight has no command receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1776,6 +1889,7 @@ def main() -> None:
         "t1_de440s_snapshot_run": de440s_run,
         "t1_mars_center_geometry": mars_center,
         "t1_maven_reconstructed_source": maven_source,
+        "t1_maven_sun_only_preflight": maven_preflight,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

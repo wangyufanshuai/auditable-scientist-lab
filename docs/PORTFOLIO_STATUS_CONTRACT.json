@@ -7,10 +7,10 @@
   "tracks": [
     {
       "acceptance": "artifacts/acceptance.json",
-      "next_step": "preregister a MAVEN NAV holdout and independently propagate a declared force/maneuver model, then seek expert mission review",
+      "next_step": "expand the precommitted MAVEN comparison to a mission-domain force and maneuver model, quantify uncertainty and seek independent observables and expert review",
       "open_gates": [
         "external symbolic engine",
-        "independent spacecraft propagation and mission comparison",
+        "mission-domain force and maneuver comparison",
         "preregistered mission holdout and uncertainty review"
       ],
       "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",

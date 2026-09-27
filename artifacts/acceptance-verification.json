@@ -119,6 +119,15 @@
     "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
     "status": "verified-source-tracked-reconstructed-mission-geometry-only"
   },
+  "t1_maven_sun_only_preflight": {
+    "arc_count": 2,
+    "dynamic_verified_here": true,
+    "independent_sun_only_propagation": true,
+    "mission_validation": false,
+    "scientific_holdout": false,
+    "snapshot_sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+    "status": "passed-engineering-preflight-only"
+  },
   "t1_nasa_parameter_audit": {
     "real_data_claim": false,
     "scientific_validation_claim": false,

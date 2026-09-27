@@ -31,6 +31,13 @@
   the optional SciPy environment; the core acceptance verifier checks the saved
   Run, manifest, provenance, gate arithmetic, and scientific boundaries without
   importing SciPy. See `docs/T1_EXTERNAL_ORBIT.md`.
+- NAIF/PDS source-tracked DE440s, MAR099s and MAVEN SPKs now supply a bounded
+  Mars-center geometry diagnostic and archived reconstructed spacecraft states.
+  A locally precommitted Sun-only RK4 24-hour preflight matches two separate
+  NAV endpoints within 0.536 km and 0.285 km, with refinement, energy and
+  wrong-sign controls. This is engineering evidence; full force/maneuver
+  dynamics, independent mission truth, scientific holdout and review stay open.
+  See `docs/T1_MAVEN_PROPAGATION_PREFLIGHT.md`.
 - T2–T5: each now has an independent offline evaluator, positive fixture, negative case,
   input hash, acceptance JSON, shared-kernel Run/Event/Trace package, and explicit open gates
   in `artifacts/track-portfolio.json`.

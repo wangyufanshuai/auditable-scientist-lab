@@ -46,7 +46,8 @@ formal citation and domain expert review.
 Run `python scripts/fetch_maven_cruise.py --verify`, then
 `python scripts/verify_t1_maven_source.py --verify` for dynamic recomputation.
 The committed small snapshot can also be checked without the binary, but
-static checking alone cannot authenticate a fresh SPK evaluation. The next
-scientific step is a preregistered, independent spacecraft propagation and
-MAVEN NAV comparison with a declared maneuver and force model, numerical
-tolerances, holdout dates, and uncertainty budget.
+static checking alone cannot authenticate a fresh SPK evaluation. The
+subsequent [Sun-only preflight](T1_MAVEN_PROPAGATION_PREFLIGHT.md) makes a
+locally precommitted short-arc comparison. A mission-domain force and maneuver
+model, independently reviewed observables, a scientific holdout, and an
+uncertainty budget remain open.

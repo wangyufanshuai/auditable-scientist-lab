@@ -2,7 +2,7 @@
   "blocked": [
     "external symbolic-physics-engine implementation, scoped revision, and license",
     "preregistered mission holdout and uncertainty review",
-    "independent spacecraft propagation and mission comparison",
+    "mission-domain force and maneuver comparison",
     "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
     "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
     "T4 general formal proof backend and transition model coverage",
@@ -15,8 +15,8 @@
       "input_version": "working-tree-2026-09-27",
       "name": "unit-contract-runtime-tests",
       "output_path": "artifacts/test-report.md",
-      "recorded_at": "2026-09-27T13:05:19.209Z",
-      "tests_passed": 187,
+      "recorded_at": "2026-09-27T13:24:31.526Z",
+      "tests_passed": 190,
       "tests_skipped": 0
     },
     {
@@ -197,6 +197,14 @@
       "name": "optional-t1-maven-reconstructed-source",
       "output_path": "artifacts/t1-maven-source-audit.json",
       "recorded_at": "2026-09-27T12:57:02.711Z"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_preflight.py --verify",
+      "exit_code": 0,
+      "input_version": "bfc1c6832d54cc6c0478ee5fd46dbd0ab18d9ad02d2e9bdaf469082af4342d17",
+      "name": "optional-t1-maven-sun-only-preflight",
+      "output_path": "artifacts/t1-maven-preflight-audit.json",
+      "recorded_at": "2026-09-27T13:18:53.362Z"
     },
     {
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",
