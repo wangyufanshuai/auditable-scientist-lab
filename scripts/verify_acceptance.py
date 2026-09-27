@@ -569,6 +569,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "exact-linear-invariant-run": load("artifacts/t4-linear-run-audit.json")["run_id"],
         } if track_id == "T4" else ({
             "independent-endpoint-estimator": "t2-independent-endpoint-audit-v1",
+            "independent-endpoint-run": load("artifacts/t2-independent-run-audit.json")["run_id"],
         } if track_id == "T2P" else {})))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
@@ -824,6 +825,33 @@ def main() -> None:
         )
     ):
         raise SystemExit("T2 independent endpoint audit or boundary differs")
+    t2_endpoint_run = load("artifacts/t2-independent-run-audit.json")
+    t2_endpoint_run_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_independent_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if t2_endpoint_run_replay.returncode != 0:
+        raise SystemExit(f"T2 independent endpoint Run failed: {t2_endpoint_run_replay.stderr.strip()}")
+    t2_endpoint_run_output = json.loads(t2_endpoint_run_replay.stdout)
+    if (
+        t2_endpoint_run.get("schema_version") != "t2-independent-run-audit-v1"
+        or t2_endpoint_run_output.get("status") != "verified-synthetic-endpoint-run-only"
+        or t2_endpoint_run_output.get("run_id") != t2_endpoint_run["run_id"]
+        or t2_endpoint_run_output.get("replay") != t2_endpoint_run["replay"]
+        or t2_endpoint_run_output.get("mutation_controls") != [True, True]
+        or t2_endpoint_run.get("relocated_replay_equal") is not True
+        or t2_endpoint_run.get("policy_denials") != {
+            "wrong_provider_rejected": True, "out_of_scope_path_rejected": True,
+        }
+        or t2_endpoint_run.get("boundaries") != t2_endpoint_audit["boundaries"]
+        or not any(
+            item.get("name") == "independent-endpoint-run"
+            and item.get("output_path") == "artifacts/t2-independent-run-audit.json"
+            and item.get("input_version") == t2_endpoint_run["run_id"]
+            for item in physical_acceptance["checks"]
+        )
+    ):
+        raise SystemExit("T2 independent endpoint Run binding or boundary differs")
 
     nbody_acceptance = load("artifacts/t3-nbody/acceptance.json")
     nbody_item = nbody_acceptance["evaluator"]
@@ -1106,6 +1134,12 @@ def main() -> None:
             "holdout_count": t2_endpoint_audit["holdout_count"],
             "metrics": t2_endpoint_audit["metrics"],
             "gates": t2_endpoint_audit["gates"],
+        },
+        "t2_independent_endpoint_run": {
+            "run_id": t2_endpoint_run["run_id"],
+            "replay": t2_endpoint_run["replay"],
+            "mutation_controls": t2_endpoint_run_output["mutation_controls"],
+            "policy_denials": t2_endpoint_run["policy_denials"],
         },
         "t4_exact_linear_invariant_proof": t4_linear_expected,
         "t4_exact_linear_invariant_run": {

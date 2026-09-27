@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/t2-independent-tool-call-v1.json",
+  "title": "T2 independent synthetic endpoint call",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider_id", "input_hash", "base_snapshot_path", "varied_snapshot_path"],
+  "properties": {
+    "provider_id": {"const": "internal-t2-interval-estimator-v1"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "base_snapshot_path": {"type": "string", "minLength": 1},
+    "varied_snapshot_path": {"type": "string", "minLength": 1}
+  }
+}

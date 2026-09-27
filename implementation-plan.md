@@ -69,6 +69,9 @@
   the 100 cases and 24 varied holdout states. It compares both branch endpoints
   and effects against the grid simulator while rejecting a zero-effect negative;
   it does not close real-intervention, identification, rights, or model-validity gates.
+  A separate Tool/Policy/Provider Run binds both inputs, source and environment
+  versions, an event chain, moved replay, result/input mutation controls, and
+  provider/path denials; its real-world Claim remains `unverified`.
   The local `CausalInference` folder was inspected read-only; its untracked revision and scoped
   license are unresolved, so no external code was imported. See `docs/T2_PHYSICAL_METHOD.md`.
 - A 27-case T3 parameter/step-size sweep now checks second- and fourth-order

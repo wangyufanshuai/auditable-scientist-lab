@@ -1,0 +1,38 @@
+{
+  "boundaries": {
+    "independent_event_interval_implementation": true,
+    "observational_causal_identification": false,
+    "physical_model_validated": false,
+    "publication_ready": false,
+    "real_intervention_data": false,
+    "research_candidate": false,
+    "source_rights_reviewed": false,
+    "synthetic_simulator_endpoints": true
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "recorded_at": "2026-09-27T09:00:45.305186+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "4a1726c9cf88165c51a0afefe481ac1d98df30af7897575bf7e6274b42291d61",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t2-endpoint-6333b4e44b5cb4e0",
+  "run_path": "artifacts/t2-independent-runs/run-t2-endpoint-6333b4e44b5cb4e0",
+  "schema_version": "t2-independent-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-synthetic-endpoint-run-only"
+}

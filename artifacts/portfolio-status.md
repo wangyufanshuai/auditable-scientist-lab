@@ -20,6 +20,8 @@ T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared i
 
 An optional independent impact-to-impact endpoint estimator cross-checks the 100 T2P cases and 24 varied holdout states. The [audit](t2-independent-endpoint-audit.json) and mutation tests bind that synthetic computation; real interventions, observational identification, source rights, and external validation remain open.
 
+An offline Tool/Policy/Provider Run now binds the estimator to both input snapshots, one guarded call, event chain, moved replay, and mutation controls. Its real-world Claim stays `unverified`; [the Run audit](t2-independent-run-audit.json) remains synthetic engineering evidence.
+
 T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open.
 
 T4 also has an optional exact rational linear-invariant proof slice: two coefficient-identity certificates are rechecked independently with `Fraction`, and a leaky system is rejected. This establishes the declared linear identities only. It does not validate a physical transition model or close the general formal-backend gate.

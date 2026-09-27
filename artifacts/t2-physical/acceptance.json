@@ -23,6 +23,14 @@
       "name": "independent-endpoint-estimator",
       "output_path": "artifacts/t2-independent-endpoint-audit.json",
       "recorded_at": "2026-09-27T08:53:38.238165+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_independent_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t2-endpoint-6333b4e44b5cb4e0",
+      "name": "independent-endpoint-run",
+      "output_path": "artifacts/t2-independent-run-audit.json",
+      "recorded_at": "2026-09-27T09:00:45.305186+00:00"
     }
   ],
   "evaluator": {

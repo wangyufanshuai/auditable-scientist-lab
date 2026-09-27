@@ -1,0 +1,156 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "6333b4e44b5cb4e06caf99622f03ffa02bc136e966d1cd46fe10b15ecb9a43dd",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T2",
+    "runtime": "optional-independent-endpoint",
+    "network": "disabled",
+    "provider_id": "internal-t2-interval-estimator-v1"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t2_independent_run.py",
+      "sha256": "8e986177c03212b10f27288a77582284d8453df6b804162843c52c0409598bcf",
+      "bytes": 20512
+    },
+    {
+      "path": "root://scripts/verify_t2_independent_endpoint.py",
+      "sha256": "7a4afb0289c522d60633ae914ed5c119cfb4bcaf1adc7ef3ebe05be531d251f6",
+      "bytes": 10745
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/physical_world.py",
+      "sha256": "e98163eedf168139e01dad5808df0ec8141b8dcfdc34e8d089bc837bca6d0fa9",
+      "bytes": 15832
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://examples/causal/physical-fixture.json",
+      "sha256": "664f76332e8fb535867a05aa496fe37cd71c0a95363112080eb1378b45265c3f",
+      "bytes": 61074
+    },
+    {
+      "path": "root://artifacts/t2-independent-endpoint-input.json",
+      "sha256": "c562631f1ee7d1ce0e54aad740eb7666d7ead756ebc1ddf98a02ace973b803c9",
+      "bytes": 15518
+    },
+    {
+      "path": "root://artifacts/t2-independent-endpoint-audit.json",
+      "sha256": "72b58f4f22d38f45f8bb9d7347e07dd5d5e72be25be627c6bea08e0b717d1d27",
+      "bytes": 41962
+    },
+    {
+      "path": "root://docs/T2_INDEPENDENT_ENDPOINT.md",
+      "sha256": "f5a6d4cb50730ef4e7760270e11f73bc5872c222f106c41ea320a7c9b36b6efe",
+      "bytes": 2268
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://docs/contracts/t2-independent-tool-call-v1.json",
+      "sha256": "3c35670b99601b7189e311512e4723dc98694cfdc4752bf8734183b6f688b1bd",
+      "bytes": 630
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://base-fixture.json",
+      "sha256": "664f76332e8fb535867a05aa496fe37cd71c0a95363112080eb1378b45265c3f",
+      "bytes": 61074
+    },
+    {
+      "path": "run://varied-fixture.json",
+      "sha256": "c562631f1ee7d1ce0e54aad740eb7666d7ead756ebc1ddf98a02ace973b803c9",
+      "bytes": 15518
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "status": "verified-synthetic-endpoints-only",
+    "case_count": 124,
+    "train_count": 40,
+    "holdout_count": 84,
+    "metrics": {
+      "max_factual_endpoint_error_m": 2.6645352591003757e-15,
+      "max_counterfactual_endpoint_error_m": 1.7763568394002505e-15,
+      "max_effect_error_m": 2.6645352591003757e-15,
+      "train_effect_rmse_m": 7.586975298354787e-16,
+      "holdout_effect_rmse_m": 8.665194098528724e-16,
+      "ignored_intervention_holdout_rmse_m": 0.2656262607642334
+    },
+    "gates": {
+      "factual_endpoint_max_1e-8_m": true,
+      "counterfactual_endpoint_max_1e-8_m": true,
+      "effect_max_1e-8_m": true,
+      "holdout_effect_rmse_1e-8_m": true,
+      "ignored_intervention_rejected": true
+    },
+    "rows_sha256": "55bdcb2861c76ffc5e0864ac6928e91ec42823bb78e100f6adaf140cb978bdf4",
+    "boundaries": {
+      "synthetic_simulator_endpoints": true,
+      "independent_event_interval_implementation": true,
+      "observational_causal_identification": false,
+      "real_intervention_data": false,
+      "physical_model_validated": false,
+      "source_rights_reviewed": false,
+      "research_candidate": false,
+      "publication_ready": false
+    },
+    "standalone_audit_sha256": "72b58f4f22d38f45f8bb9d7347e07dd5d5e72be25be627c6bea08e0b717d1d27"
+  }
+}

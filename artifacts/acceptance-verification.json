@@ -66,6 +66,31 @@
       "train_effect_rmse_m": 7.586975298354787e-16
     }
   },
+  "t2_independent_endpoint_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "4a1726c9cf88165c51a0afefe481ac1d98df30af7897575bf7e6274b42291d61",
+      "verified": true
+    },
+    "run_id": "run-t2-endpoint-6333b4e44b5cb4e0"
+  },
   "t3_optional_external_run_static_replay": {
     "checks": [
       "input_hash",
