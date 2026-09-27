@@ -19,12 +19,14 @@
     },
     {
       "acceptance": "artifacts/t2-causal/acceptance.json",
-      "next_step": "add a rights-cleared intervention dataset",
+      "next_step": "add a rights-cleared physical intervention dataset and independent estimator",
       "open_gates": [
         "real interventions",
         "causal identification",
-        "data rights"
+        "data rights",
+        "external algorithm source rights"
       ],
+      "physical_subtrack": "artifacts/t2-physical/acceptance.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T2"

@@ -6,14 +6,14 @@
   "additionalProperties": false,
   "required": ["track", "status", "evaluator", "negative_case", "evidence_boundaries", "execution", "checks"],
   "properties": {
-    "track": {"type": "string", "enum": ["T2", "T3", "T3N", "T4", "T5"]},
+    "track": {"type": "string", "enum": ["T2", "T2P", "T3", "T3N", "T4", "T5"]},
     "status": {"const": "accepted-with-bounded-scope"},
     "evaluator": {
       "type": "object",
       "additionalProperties": false,
       "required": ["track_id", "evaluator_id", "evidence_level", "input_hash", "passed", "negative_case_passed", "evidence_files", "source_files", "blocked_gates", "result"],
       "properties": {
-        "track_id": {"type": "string", "enum": ["T2", "T3", "T3N", "T4", "T5"]},
+        "track_id": {"type": "string", "enum": ["T2", "T2P", "T3", "T3N", "T4", "T5"]},
         "evaluator_id": {"type": "string", "minLength": 1},
         "evidence_level": {"type": "string", "enum": ["demo", "validated-reproduction", "real-data", "research-candidate"]},
         "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},

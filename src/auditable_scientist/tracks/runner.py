@@ -16,12 +16,13 @@ from .causal import CausalCase, evaluate_causal_fixture
 from .common import TrackReceipt
 from .dynamics import DynamicsCase, evaluate_dynamics_fixture
 from .nbody import NBodyCase, evaluate_nbody_fixture
+from .physical_world import PhysicalCase, evaluate_physical_fixture
 from .proof import ProofPackage, verify_proof_package
 from .protocol import ProtocolSpec, verify_protocol
 
 
 ROOT = project_root()
-TRACK_SOURCES = {"T2": "causal.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}
+TRACK_SOURCES = {"T2": "causal.py", "T2P": "physical_world.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}
 
 
 @dataclass(frozen=True)
@@ -77,6 +78,8 @@ def track_source_paths(track_id: str) -> list[Path]:
     ]
     if track_id == "T3":
         resources.append("docs/T3_METHOD.md")
+    if track_id == "T2P":
+        resources.append("docs/T2_PHYSICAL_METHOD.md")
     if track_id == "T3N":
         resources.append("docs/T3_NBODY_METHOD.md")
     if track_id == "T4":
@@ -118,6 +121,11 @@ def load_track_input(track_id: str, fixture_path: Path) -> Any:
             raise ValueError("T3 fixture version differs")
         cases = [DynamicsCase.model_validate(row) for row in data["cases"]]
         return [case.model_dump(mode="json") for case in cases]
+    if track_id == "T2P":
+        if data.get("schema_version") != "physical-world-fixture-v1":
+            raise ValueError("T2P fixture version differs")
+        cases = [PhysicalCase.model_validate(row) for row in data["cases"]]
+        return [case.model_dump(mode="json") for case in cases]
     if track_id == "T3N":
         if data.get("schema_version") != "nbody-fixture-v1":
             raise ValueError("T3N fixture version differs")
@@ -139,6 +147,10 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
         cases = [DynamicsCase.model_validate(row) for row in input_payload]
         result, receipt = evaluate_dynamics_fixture(cases)
         negative = {"solver": "explicit-euler", "rejected": result.negative_euler_rejected}
+    elif track_id == "T2P":
+        cases = [PhysicalCase.model_validate(row) for row in input_payload]
+        result, receipt = evaluate_physical_fixture(cases)
+        negative = {"estimator": "ignores-intervention", "holdout_rmse": result.ignored_intervention_holdout_rmse, "rejected": result.ignored_intervention_rejected}
     elif track_id == "T3N":
         cases = [NBodyCase.model_validate(row) for row in input_payload]
         result, receipt = evaluate_nbody_fixture(cases)

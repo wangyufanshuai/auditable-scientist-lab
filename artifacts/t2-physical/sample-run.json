@@ -1,0 +1,556 @@
+{
+  "evaluator": {
+    "case_count": 100,
+    "direction_passed": true,
+    "evaluator_id": "planar-ball-counterfactual-v1",
+    "holdout_count": 60,
+    "ignored_intervention_holdout_rmse": 0.24218293514086056,
+    "ignored_intervention_rejected": true,
+    "max_first_impact_time_error": 0.0,
+    "max_first_rebound_apex_error": 0.0,
+    "max_free_flight_energy_residual": 7.105427357601002e-15,
+    "max_impact_energy_gain": 0.0,
+    "max_noop_trajectory_delta": 0.0,
+    "notes": [
+      "Exactly specified two-dimensional ballistic flight with floor collisions; horizontal friction acts only at impact.",
+      "Factual and counterfactual share the same initial state; do(parameter=value) replaces a parameter, not an observational association.",
+      "Deterministic simulator uncertainty is zero only within its equations; real-world model discrepancy is not quantified."
+    ],
+    "passed": true,
+    "query_counts": {
+      "joint": 20,
+      "policy": 20,
+      "single": 60
+    },
+    "simulator_id": "analytic-flight-event-collision-v1",
+    "train_count": 40
+  },
+  "evidence_files": [
+    {
+      "allowed_use": [
+        "offline-fixture",
+        "bounded-evaluator"
+      ],
+      "bytes": 61074,
+      "path": "examples/causal/physical-fixture.json",
+      "provenance_status": "unverified",
+      "sha256": "664f76332e8fb535867a05aa496fe37cd71c0a95363112080eb1378b45265c3f"
+    }
+  ],
+  "input_hash": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
+  "negative_case": {
+    "estimator": "ignores-intervention",
+    "holdout_rmse": 0.24218293514086056,
+    "rejected": true
+  },
+  "run": {
+    "agent": {
+      "agent_id": "offline-t2p-agent-v1",
+      "capabilities": [
+        "invoke-registered-evaluator",
+        "record-negative-case"
+      ],
+      "name": "Offline T2P evaluator agent",
+      "version": "1"
+    },
+    "claims": [
+      {
+        "evidence_refs": [
+          "ev-t2p-fixture",
+          "ev-t2p-evaluator-code"
+        ],
+        "falsification_checks": [
+          "positive-evaluator-replay",
+          "negative-case-rejection",
+          "fixture-hash"
+        ],
+        "holdout_verified": false,
+        "level": "validated-reproduction",
+        "status": "unverified",
+        "text": "The T2P evaluator passed its bounded fixture gate; this is not a real-world scientific claim."
+      }
+    ],
+    "code_revision": "local-working-tree",
+    "created_at": "2026-09-21T00:00:00Z",
+    "environment": {
+      "implementation": "CPython",
+      "machine": "AMD64",
+      "mode": "offline",
+      "network": "disabled",
+      "packages": {
+        "auditable-scientist-lab": "0.1.0",
+        "jsonschema": "4.24.0",
+        "pydantic": "2.11.10",
+        "sympy": "1.13.3"
+      },
+      "python": "3.12.3",
+      "runtime": "bounded-evaluator",
+      "system": "Windows",
+      "track_id": "T2P"
+    },
+    "evaluators": [
+      {
+        "evaluator_id": "planar-ball-counterfactual-v1",
+        "name": "T2P independent evaluator",
+        "read_only": true,
+        "version": "1"
+      }
+    ],
+    "events": [
+      {
+        "event_id": "t2p-event-0",
+        "event_type": "run.initialized",
+        "occurred_at": "2026-09-21T00:00:00Z",
+        "payload": {
+          "input_hash": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
+          "run_id": "run-t2p-0971a9036e84aa5a"
+        },
+        "payload_hash": "9f371f52da045f1e156d4d48dcd7fb6cf11e03f71b6c93d17197dbee9a29775b",
+        "prev_event_hash": "genesis",
+        "seq": 0
+      },
+      {
+        "event_id": "t2p-event-1",
+        "event_type": "policy.applied",
+        "occurred_at": "2026-09-21T00:00:01Z",
+        "payload": {
+          "network": "disabled",
+          "policy_id": "offline-t2p-v1",
+          "provider_id": "internal-t2p-evaluator"
+        },
+        "payload_hash": "f3d7e1c2298bfc1ad777952096de5f604b17bb39dd69671f312c63c5c563fe0e",
+        "prev_event_hash": "9f371f52da045f1e156d4d48dcd7fb6cf11e03f71b6c93d17197dbee9a29775b",
+        "seq": 1
+      },
+      {
+        "event_id": "t2p-event-2",
+        "event_type": "tool.invoked",
+        "occurred_at": "2026-09-21T00:00:02Z",
+        "payload": {
+          "calls_used": 1,
+          "tool_id": "t2p-evaluator"
+        },
+        "payload_hash": "13934e85cea11a829802649f187e84608d8f7f2780f750be4fb2e001141fdbb7",
+        "prev_event_hash": "f3d7e1c2298bfc1ad777952096de5f604b17bb39dd69671f312c63c5c563fe0e",
+        "seq": 2
+      },
+      {
+        "event_id": "t2p-event-3",
+        "event_type": "evaluator.completed",
+        "occurred_at": "2026-09-21T00:00:03Z",
+        "payload": {
+          "evaluator_id": "planar-ball-counterfactual-v1",
+          "result": {
+            "case_count": 100,
+            "direction_passed": true,
+            "evaluator_id": "planar-ball-counterfactual-v1",
+            "holdout_count": 60,
+            "ignored_intervention_holdout_rmse": 0.24218293514086056,
+            "ignored_intervention_rejected": true,
+            "max_first_impact_time_error": 0.0,
+            "max_first_rebound_apex_error": 0.0,
+            "max_free_flight_energy_residual": 7.105427357601002e-15,
+            "max_impact_energy_gain": 0.0,
+            "max_noop_trajectory_delta": 0.0,
+            "notes": [
+              "Exactly specified two-dimensional ballistic flight with floor collisions; horizontal friction acts only at impact.",
+              "Factual and counterfactual share the same initial state; do(parameter=value) replaces a parameter, not an observational association.",
+              "Deterministic simulator uncertainty is zero only within its equations; real-world model discrepancy is not quantified."
+            ],
+            "passed": true,
+            "query_counts": {
+              "joint": 20,
+              "policy": 20,
+              "single": 60
+            },
+            "simulator_id": "analytic-flight-event-collision-v1",
+            "train_count": 40
+          }
+        },
+        "payload_hash": "54cfc9802e8faf209a7bf6f28847e814f894ed2aeb8731075dbf1e4f7881bd08",
+        "prev_event_hash": "13934e85cea11a829802649f187e84608d8f7f2780f750be4fb2e001141fdbb7",
+        "seq": 3
+      },
+      {
+        "event_id": "t2p-event-4",
+        "event_type": "negative_case.checked",
+        "occurred_at": "2026-09-21T00:00:04Z",
+        "payload": {
+          "negative_case": {
+            "estimator": "ignores-intervention",
+            "holdout_rmse": 0.24218293514086056,
+            "rejected": true
+          },
+          "negative_case_passed": true
+        },
+        "payload_hash": "fc6c1dac28e244293a8a90625cce0ad8f07531b47619b2be6aee66ba24b5c987",
+        "prev_event_hash": "54cfc9802e8faf209a7bf6f28847e814f894ed2aeb8731075dbf1e4f7881bd08",
+        "seq": 4
+      },
+      {
+        "event_id": "t2p-event-5",
+        "event_type": "run.completed",
+        "occurred_at": "2026-09-21T00:00:05Z",
+        "payload": {
+          "status": "completed"
+        },
+        "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+        "prev_event_hash": "fc6c1dac28e244293a8a90625cce0ad8f07531b47619b2be6aee66ba24b5c987",
+        "seq": 5
+      }
+    ],
+    "evidence": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "evidence_id": "ev-t2p-fixture",
+        "kind": "data",
+        "notes": "Fixture evidence is not real-data or publication evidence.",
+        "path_or_uri": "root://examples/causal/physical-fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "664f76332e8fb535867a05aa496fe37cd71c0a95363112080eb1378b45265c3f",
+        "source_revision": "local-working-tree"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "evidence_id": "ev-t2p-evaluator-code",
+        "kind": "code",
+        "notes": "Local evaluator source fingerprint; this does not establish external scientific validity.",
+        "path_or_uri": "root://src/auditable_scientist/tracks/physical_world.py",
+        "provenance_status": "unverified",
+        "sha256": "e98163eedf168139e01dad5808df0ec8141b8dcfdc34e8d089bc837bca6d0fa9",
+        "source_revision": "local-working-tree"
+      }
+    ],
+    "evidence_refs": [
+      "ev-t2p-fixture",
+      "ev-t2p-evaluator-code"
+    ],
+    "input_hash": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
+    "memories": [
+      {
+        "content_hash": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+        "memory_id": "evidence-policy-memory-v1",
+        "scope": "claim-level evidence boundaries",
+        "source_ref": "root://docs/EVIDENCE_POLICY.md",
+        "version": "local-snapshot"
+      }
+    ],
+    "observations": [
+      {
+        "dataset_hash": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
+        "observation_id": "obs-t2p-fixture",
+        "source_ref": "root://examples/causal/physical-fixture.json",
+        "split": "external",
+        "summary": {
+          "evaluator_id": "planar-ball-counterfactual-v1",
+          "evidence_level": "validated-reproduction",
+          "track_id": "T2P"
+        },
+        "units": {}
+      }
+    ],
+    "policy": {
+      "allowed_paths": [
+        "root://examples/causal/physical-fixture.json"
+      ],
+      "allowed_providers": [
+        "internal-t2p-evaluator"
+      ],
+      "max_seconds": 60.0,
+      "max_tool_calls": 1,
+      "network": "disabled",
+      "policy_id": "offline-t2p-v1"
+    },
+    "providers": [
+      {
+        "kind": "deterministic-domain-evaluator",
+        "name": "Internal T2P evaluator",
+        "provider_id": "internal-t2p-evaluator",
+        "source_ref": "src/auditable_scientist/tracks",
+        "version": "1"
+      }
+    ],
+    "run_id": "run-t2p-0971a9036e84aa5a",
+    "seed": 17,
+    "status": "completed",
+    "task_id": "t2-planar-ball-counterfactual-v1",
+    "tools": [
+      {
+        "deterministic": true,
+        "name": "T2P domain evaluator",
+        "network_required": false,
+        "parameter_schema_ref": "schemas/track-tool-call-v1.json",
+        "tool_id": "t2p-evaluator",
+        "version": "1"
+      }
+    ],
+    "traces": [
+      {
+        "entries": [
+          {
+            "event_type": "run.initialized",
+            "payload_hash": "9f371f52da045f1e156d4d48dcd7fb6cf11e03f71b6c93d17197dbee9a29775b",
+            "seq": 0
+          },
+          {
+            "event_type": "policy.applied",
+            "payload_hash": "f3d7e1c2298bfc1ad777952096de5f604b17bb39dd69671f312c63c5c563fe0e",
+            "seq": 1
+          },
+          {
+            "event_type": "tool.invoked",
+            "payload_hash": "13934e85cea11a829802649f187e84608d8f7f2780f750be4fb2e001141fdbb7",
+            "seq": 2
+          },
+          {
+            "event_type": "evaluator.completed",
+            "payload_hash": "54cfc9802e8faf209a7bf6f28847e814f894ed2aeb8731075dbf1e4f7881bd08",
+            "seq": 3
+          },
+          {
+            "event_type": "negative_case.checked",
+            "payload_hash": "fc6c1dac28e244293a8a90625cce0ad8f07531b47619b2be6aee66ba24b5c987",
+            "seq": 4
+          },
+          {
+            "event_type": "run.completed",
+            "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+            "seq": 5
+          }
+        ],
+        "input_hash": "0971a9036e84aa5a2f0fe25749641850b3a623794acbf818d0c0520da8f6e798",
+        "run_id": "run-t2p-0971a9036e84aa5a",
+        "trace_id": "trace-run-t2p-0971a9036e84aa5a"
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 15832,
+      "path": "src/auditable_scientist/tracks/physical_world.py",
+      "provenance_status": "unverified",
+      "sha256": "e98163eedf168139e01dad5808df0ec8141b8dcfdc34e8d089bc837bca6d0fa9"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1933,
+      "path": "src/auditable_scientist/tracks/common.py",
+      "provenance_status": "unverified",
+      "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 8402,
+      "path": "src/auditable_scientist/tracks/run_package.py",
+      "provenance_status": "unverified",
+      "sha256": "ec2fa3ca7bf43534895e9925a4aedfdeedde8e219117596f5aa355473a0a10dc"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 11176,
+      "path": "src/auditable_scientist/tracks/runner.py",
+      "provenance_status": "unverified",
+      "sha256": "af3f27a8fb9a8a51acc9d71aed710245dd2cf417166c11d7bf1ff4fb631e9114"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 11495,
+      "path": "src/auditable_scientist/domain/models.py",
+      "provenance_status": "unverified",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 5093,
+      "path": "src/auditable_scientist/policy/runtime.py",
+      "provenance_status": "unverified",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1432,
+      "path": "src/auditable_scientist/runtime/canonical.py",
+      "provenance_status": "unverified",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 829,
+      "path": "src/auditable_scientist/runtime/environment.py",
+      "provenance_status": "unverified",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 2790,
+      "path": "src/auditable_scientist/runtime/event_log.py",
+      "provenance_status": "unverified",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 7943,
+      "path": "src/auditable_scientist/runtime/replay.py",
+      "provenance_status": "unverified",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 2116,
+      "path": "src/auditable_scientist/runtime/run_integrity.py",
+      "provenance_status": "unverified",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1651,
+      "path": "src/auditable_scientist/runtime/paths.py",
+      "provenance_status": "unverified",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 25072,
+      "path": "src/auditable_scientist/cli.py",
+      "provenance_status": "unverified",
+      "sha256": "06846b73047db69d18457031ce4c13902531666cc9e647287b01b5de184c1ece"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 8820,
+      "path": "src/auditable_scientist/track_cli.py",
+      "provenance_status": "unverified",
+      "sha256": "a8d0886d912428d2868cabdaca8cb4a96f118f0e3db506272b529d961d04740b"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 20717,
+      "path": "scripts/generate_track_artifacts.py",
+      "provenance_status": "unverified",
+      "sha256": "0f6ed743533ecbb3c6dfc2a9f81f8eeb6dd0cf5d84a493928dd4ffccc2a0b57c"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 792,
+      "path": "pyproject.toml",
+      "provenance_status": "unverified",
+      "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1318,
+      "path": "docs/EVIDENCE_POLICY.md",
+      "provenance_status": "unverified",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 508,
+      "path": "schemas/track-tool-call-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "e03a3f22059a56ce5609482ba7445238b18fa1d6c2a1ee32b955403e53410dd1"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1740,
+      "path": "schemas/track-receipt-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "152c1f70a20d6a62b1746aa2c4a6330eca4e47de10cf27ed4a49d59687d743a4"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 3260,
+      "path": "schemas/track-acceptance-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "88e7302f377e60b1c69e6a022b8a3d650c8359f3d05dd6de7613af7660a258d7"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 8072,
+      "path": "schemas/run.schema.json",
+      "provenance_status": "unverified",
+      "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 2722,
+      "path": "docs/T2_PHYSICAL_METHOD.md",
+      "provenance_status": "unverified",
+      "sha256": "1e511644a15e2379a083da8e87165de67338cc2d9f987a742e136c376480c4e4"
+    }
+  ],
+  "track": "T2P"
+}

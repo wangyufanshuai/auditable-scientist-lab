@@ -46,7 +46,7 @@ def make_track_run(
         raise ValueError("bounded track Run requires zero or one registered tool call")
     fixture = fingerprint_file(fixture_path)
     ref = (bindings.ref if bindings is not None else lambda path: str(path))
-    evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
+    evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T2P": "physical_world.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
     evaluator_fingerprint = fingerprint_file(evaluator_source)
     evidence_id = f"ev-{track_id.lower()}-fixture"
     evidence = Evidence(

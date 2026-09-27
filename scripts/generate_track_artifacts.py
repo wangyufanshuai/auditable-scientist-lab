@@ -10,6 +10,7 @@ from auditable_scientist.runtime.canonical import canonical_hash, canonical_json
 from auditable_scientist.runtime.replay import BoundPaths, fingerprint_file
 from auditable_scientist.tracks.causal import CausalCase
 from auditable_scientist.tracks.dynamics import DynamicsCase
+from auditable_scientist.tracks.physical_world import PhysicalCase, compare, standard_cases
 from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep
 from auditable_scientist.tracks.run_package import make_track_run
@@ -163,6 +164,49 @@ def main() -> None:
     write_track_bundle(track_id="T2", directory="t2-causal", receipt=causal_receipt, run=causal_run, negative_case=causal_negative, demo_text=f"run_id={causal_run.run_id}; holdout_rmse={causal_receipt.result['holdout_rmse']}; negative_candidate_rejected={causal_receipt.result['negative_candidate_rejected']}")
     portfolio.append(causal_receipt.model_dump(mode="json"))
 
+    physical_fixture = ROOT / "examples/causal/physical-fixture.json"
+    physical_cases = [PhysicalCase.model_validate(row) for row in json.loads(physical_fixture.read_text(encoding="utf-8"))["cases"]]
+    if [case.model_dump(mode="json") for case in physical_cases] != [case.model_dump(mode="json") for case in standard_cases()]:
+        raise ValueError("physical fixture differs from the fixed 100-case suite")
+    physical_execution = run_registered_track("T2P", physical_fixture)
+    physical_receipt = physical_execution.receipt
+    physical_negative = physical_execution.negative_case
+    physical_run = make_track_run(
+        track_id="T2P", task_id="t2-planar-ball-counterfactual-v1", receipt=physical_receipt,
+        fixture_path=physical_fixture, negative_case=physical_negative,
+        calls_used=physical_execution.calls_used,
+        bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t2-physical"),
+    )
+    write_track_bundle(
+        track_id="T2P", directory="t2-physical", receipt=physical_receipt, run=physical_run,
+        negative_case=physical_negative,
+        demo_text=f"run_id={physical_run.run_id}; case_count={physical_receipt.result['case_count']}; ignored_intervention_rejected={physical_receipt.result['ignored_intervention_rejected']}",
+    )
+    example_path = ROOT / "artifacts/t2-physical/counterfactual-example.json"
+    write_json(example_path, compare(physical_cases[3]).model_dump(mode="json"))
+    physical_acceptance = ROOT / "artifacts/t2-physical/acceptance.json"
+    physical_package = json.loads(physical_acceptance.read_text(encoding="utf-8"))
+    physical_package["checks"].append({
+        "name": "joint-counterfactual-example",
+        "command": "python scripts/generate_track_artifacts.py",
+        "exit_code": 0,
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "input_version": physical_receipt.input_hash,
+        "output_path": "artifacts/t2-physical/counterfactual-example.json",
+    })
+    write_json(physical_acceptance, physical_package)
+    causal_acceptance = ROOT / "artifacts/t2-causal/acceptance.json"
+    causal_package = json.loads(causal_acceptance.read_text(encoding="utf-8"))
+    causal_package["checks"].append({
+        "name": "physical-counterfactual-subtrack",
+        "command": "python scripts/generate_track_artifacts.py",
+        "exit_code": 0,
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "input_version": physical_receipt.input_hash,
+        "output_path": "artifacts/t2-physical/acceptance.json",
+    })
+    write_json(causal_acceptance, causal_package)
+
     dynamics_cases = [
         DynamicsCase(case_id="train-1", split="train", omega=1.0, dt=0.01, steps=500, x0=1, v0=0),
         DynamicsCase(case_id="train-2", split="train", omega=1.4, dt=0.01, steps=500, x0=0.5, v0=0.2),
@@ -243,7 +287,7 @@ def main() -> None:
     write_json(ROOT / "artifacts/track-portfolio.json", {"schema_version": "track-portfolio-v1", "status": "bounded-slices-accepted", "tracks": portfolio, "global_boundaries": ["No real-data claim", "No autonomous wet-lab execution", "No publication or novelty claim"]})
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
-        {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights"], "next_step": "add a rights-cleared intervention dataset", "public_release": False},
+        {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "physical_subtrack": "artifacts/t2-physical/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights", "external algorithm source rights"], "next_step": "add a rights-cleared physical intervention dataset and independent estimator", "public_release": False},
         {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "open_gates": ["perturbed/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a rights-cleared perturbed multi-body validation set and independent reference", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
@@ -265,6 +309,7 @@ def main() -> None:
             "replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.",
         ])
     markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. It does not close the perturbed multi-body or real-mission gates."])
+    markdown.extend(["", "T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only."])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 

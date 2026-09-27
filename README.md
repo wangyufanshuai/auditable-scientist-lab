@@ -64,7 +64,7 @@ schema、策略文档和示例 fixture。
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v16/`。`run-track` 还接受 `T3`、`T3N`、`T4`、`T5` 和相应
+`artifacts/acceptance-runs-v17/`。`run-track` 还接受 `T2P`、`T3`、`T3N`、`T4`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
 新版运行包保存输入快照，并使用 `run://`、`root://` 受限路径；五轨已在复制的
 源码目录和移动后的 wheel 运行目录中回放。回放仍要求记录的依赖环境与源码字节一致；
@@ -72,8 +72,10 @@ seed、源码/证据快照、候选顺序和完整计算输出。正式收据和
 T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler 负例比较
 见 [docs/T3_METHOD.md](docs/T3_METHOD.md)。T3N 是等边三体解析轨道子轨道，
 对照独立 RK4 并拒绝错误力方向；它不代表一般多体或真实任务验证，
-见 [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)。当前 T2–T5 与 T3N CLI 收据在
-`artifacts/track-runs-v10/`。
+见 [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)。T2P 是 100 场景二维小球干预与
+反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
+声明的模拟器内部因果效应，不证明真实世界因果识别。当前七份 CLI 收据在
+`artifacts/track-runs-v11/` 和 `artifacts/acceptance-runs-v17/`。
 
 ## 当前入口
 
@@ -83,6 +85,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [docs/EVIDENCE_POLICY.md](docs/EVIDENCE_POLICY.md)：证据等级和禁止性表述。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
+- [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_SWEEP.md](docs/T3_SWEEP.md)：T3 固定参数与步长网格、收敛门槛和边界。
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。
@@ -92,10 +95,10 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
-- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与五轨 CLI 回放收据。
-- [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的五轨回放与篡改失败收据。
-- [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：全新匹配环境的版本闭包与五轨 manifest 核验。
-- [artifacts/acceptance-runs-v16/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v16/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
+- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与七份 CLI 回放收据。
+- [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的七份回放与篡改失败收据。
+- [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与七份 manifest 核验。
+- [artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
 
 ## 非目标
 

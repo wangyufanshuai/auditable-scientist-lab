@@ -18,7 +18,7 @@
       "candidate_order",
       "computational_output"
     ],
-    "manifest_hash": "7efa72113897979cd81576cea0708c5daf175f9e3cfdff3386c751833fc3a0a8",
+    "manifest_hash": "c5ce48247a0a855723e5367533fe81b7e5859363ad85b6d695b95b9af40b8615",
     "verified": true
   },
   "t3_optional_external_run_static_replay": {
@@ -47,7 +47,21 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "42f60ddaeff14aec661f5e290ceb4793279b89078f62742bbe7548838db329fd",
+      "manifest_hash": "9c3659e50a3d1749474d3aa9bf810ad1ab5d775091688d645303fced0c0617eb",
+      "verified": true
+    },
+    "T2P": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "b02281d6bdf22a6a62e81021042ac44ac5a7c444d7c5c2a933fbfd0f5f836048",
       "verified": true
     },
     "T3": {
@@ -61,7 +75,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "6b557beffc12e619b06e87f8a5871f486e311e4d159718cc486e5241b67c081b",
+      "manifest_hash": "bbabebafd015212e3d55679105e99fa52afbbe0daff73073b55479350c3ccaf2",
       "verified": true
     },
     "T3N": {
@@ -75,7 +89,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "0bd3622abbe2371c9f90e453c3b124c50be633ec21f7c6543798767935cb6507",
+      "manifest_hash": "f81e391a4fba8cc5d11b314286a0eb81f6f3e9fc4b400e730e5974b256f270ce",
       "verified": true
     },
     "T4": {
@@ -89,7 +103,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "6e544595c1dce4097cfc9e033f84093c23a0211d0c3858a41c11b42933369607",
+      "manifest_hash": "9e3d2fc1fa0012d4998824031c62a2d91e3c15c1625dc8a52427868b928c5128",
       "verified": true
     },
     "T5": {
@@ -103,12 +117,13 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "9b765c048fb464fcdbd106b66c10e80a717524c2b696bd8e0ea4bf50fedb70bd",
+      "manifest_hash": "7ab048491eb5178ef77f148032a4796c0f5d3c12b2b196b5bd53b748e2d4cd8c",
       "verified": true
     }
   },
   "track_evaluators_replayed": [
     "T2",
+    "T2P",
     "T3",
     "T3N",
     "T4",

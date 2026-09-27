@@ -37,7 +37,7 @@ from .runtime.event_log import EventLog
 from .runtime.paths import installation_revision, project_root, resource_path, source_path
 from .runtime.replay import BoundPaths, ReplayManifest, ReplayMismatch, fingerprint_file
 from .runtime.run_integrity import verify_run_record
-from .track_cli import build_track_run, init_track_fixture, inspect_track_run, replay_track_run
+from .track_cli import FIXTURE_RESOURCES, build_track_run, init_track_fixture, inspect_track_run, replay_track_run
 
 
 def _json_dump(path: Path, value: Any) -> None:
@@ -452,7 +452,7 @@ def build_parser() -> argparse.ArgumentParser:
     init_parser = subparsers.add_parser("init", help="write a Hohmann run configuration")
     init_parser.add_argument("path", type=Path)
     init_track_parser = subparsers.add_parser("init-track", help="copy a bundled T2-T5 fixture for an offline run")
-    init_track_parser.add_argument("track_id", choices=("T2", "T3", "T3N", "T4", "T5"))
+    init_track_parser.add_argument("track_id", choices=tuple(FIXTURE_RESOURCES))
     init_track_parser.add_argument("path", type=Path)
     run_parser = subparsers.add_parser("run", help="execute the offline Hohmann benchmark")
     run_parser.add_argument("config", type=Path)
@@ -460,7 +460,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--seed", type=int, default=17)
     run_parser.add_argument("--output-dir", type=Path, default=Path("artifacts/runs"))
     track_parser = subparsers.add_parser("run-track", help="execute a bounded T2-T5 fixture through the offline ToolRegistry")
-    track_parser.add_argument("track_id", choices=("T2", "T3", "T3N", "T4", "T5"))
+    track_parser.add_argument("track_id", choices=tuple(FIXTURE_RESOURCES))
     track_parser.add_argument("fixture", type=Path)
     track_parser.add_argument("--seed", type=int, default=17)
     track_parser.add_argument("--output-dir", type=Path, default=Path("artifacts/track-runs"))

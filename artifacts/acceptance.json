@@ -1,7 +1,7 @@
 {
   "schema_version": "acceptance-v1",
   "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+  "recorded_at": "2026-09-27T06:03:41.348525+00:00",
   "status": "accepted-with-bounded-scope",
   "scope": {
     "track": "T1",
@@ -14,8 +14,8 @@
       "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 68,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "tests_passed": 74,
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "input_version": "working-tree-2026-09-27",
       "output_path": "artifacts/test-report.md"
     },
@@ -29,17 +29,17 @@
     },
     {
       "name": "offline-run",
-      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v16",
+      "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v17",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "input_version": "examples/hohmann/run.json + dataset.json",
-      "output_path": "artifacts/acceptance-runs-v16/run-02a00f229aabd3d2"
+      "output_path": "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2"
     },
     {
       "name": "deterministic-replay",
-      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v16/run-02a00f229aabd3d2",
+      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v17/run-02a00f229aabd3d2",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "checks": [
         "input_hash",
@@ -52,13 +52,13 @@
         "computational_output"
       ],
       "input_version": "replay-manifest-v2",
-      "output_path": "artifacts/acceptance-runs-v16/run-02a00f229aabd3d2/report.md"
+      "output_path": "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/report.md"
     },
     {
       "name": "inspection",
-      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v16/run-02a00f229aabd3d2",
+      "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v17/run-02a00f229aabd3d2",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "input_version": "run-schema-v1",
       "output_path": "artifacts/demo-transcript.md"
     },
@@ -66,7 +66,7 @@
       "name": "portfolio-verification",
       "command": "python scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "input_version": "acceptance-verification-v1",
       "output_path": "artifacts/acceptance-verification.json"
@@ -75,7 +75,7 @@
       "name": "relocated-run-replay",
       "command": "python scripts/verify_committed_relocation.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/relocation-audit.json"
@@ -84,25 +84,25 @@
       "name": "fresh-pinned-replay-environment",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_replay_environment.py --output artifacts/replay-environment-audit.json",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "input_version": "requirements-replay-win-py312.txt",
       "output_path": "artifacts/replay-environment-audit.json"
     },
     {
-      "name": "pinned-six-run-replay",
+      "name": "pinned-seven-run-replay",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/acceptance-verification.json"
     },
     {
-      "name": "fresh-wheel-six-run-replay",
+      "name": "fresh-wheel-seven-run-replay",
       "command": "python scripts/verify_wheel_install.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T05:49:50.326343+00:00",
+      "recorded_at": "2026-09-27T06:03:41.348525+00:00",
       "verified": true,
       "input_version": "wheel-audit-v2",
       "output_path": "artifacts/wheel-audit.json"
@@ -121,7 +121,7 @@
     "external symbolic-physics-engine path, revision, and license",
     "real-data provenance and rights",
     "independent numerical backend",
-    "T2 real intervention data, causal identification, and data rights",
+    "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
     "T3 perturbed/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
     "T4 general formal proof backend and transition model coverage",
     "T5 real protocol provenance, biosafety review, and human acceptance"

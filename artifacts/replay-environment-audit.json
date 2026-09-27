@@ -1,6 +1,6 @@
 {
   "schema_version": "replay-environment-audit-v1",
-  "recorded_at": "2026-09-27T05:50:46.201628+00:00",
+  "recorded_at": "2026-09-27T06:03:58.311983+00:00",
   "status": "matched-committed-replay-environment",
   "isolated_venv": true,
   "platform": {
@@ -31,17 +31,18 @@
   },
   "constraints_sha256": "cd74e847377d90eb7ac33a7679d75f5a1ff0f69b9c196bc7f0969d25d2077e06",
   "manifest_sha256": {
-    "T1": "1ab7eadd29eb476afb21956c8d600f3772dc6bb53c1904085f45dc1ab7756b2c",
-    "T2": "7b374d69891ef9995091baf8f17482d7b5ba355bc7c26141d9b0a640f53545db",
-    "T3": "39bac08fd44a2ec5b5c8aac0bafdc34da4ab92cc47709cdd45cbcda10f416933",
-    "T3N": "6572ee006a8ea1906376cf19040256fda1d18402494f9edae99f07247b9d3ff3",
-    "T4": "8b4a6b5485903a54a2a56c3ab0c4cbf99b5f351f0ea6548df8cac9e8a20d7c44",
-    "T5": "337cfd54a14102e791e04fbf852adc3ecafff437dba371346723c69e2bdbf2ca"
+    "T1": "e0fdd6e061eaa6aa62f567f7344bdd276ec5caafc1b3c25b1297122c0a87dda9",
+    "T2": "2eeabfab09f227097bd76bf406b8ceb163bd91a352dcc78b93663fa4e07ff278",
+    "T2P": "ac91f87fd7b05d9b3e6985d88b4fa79f0aacfb39c1651d3fecd1fc6d5832c79d",
+    "T3": "84520420de2af251029065bc2b7459316d20e846a381a751ceedafdb82476e4d",
+    "T3N": "13b118850cc439bf9e45f59e67b0574b520a166a27b98341a9ce97539c693458",
+    "T4": "175253db30e8ab0cf22f3f9c4fa5c39a6dd523cd018659a5fdf2a3270a50db16",
+    "T5": "353e5addce5e707e535aa368518ce5ebd318016887145757525087e6e13b6bd6"
   },
-  "script_sha256": "7eb089943b9ade2304fe753801be25992c61775298e4741d7f2d6d3f98b637a9",
+  "script_sha256": "0b0bf5d20c22b66a1db5ee47d90933c89850e358d8f43ef018291bfac4a26aaa",
   "limitations": [
     "Version pins do not lock downloaded wheel bytes or Python executable bytes.",
     "This audit checks the environment; scripts/verify_acceptance.py checks replay outputs.",
-    "The six committed Runs cover five tracks and one T3 subtrack; they are bounded fixture evidence, not scientific validation or publication approval."
+    "The seven committed Runs cover five tracks and two bounded subtracks; they are fixture evidence, not real-world scientific validation or publication approval."
   ]
 }

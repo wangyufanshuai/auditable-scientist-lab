@@ -25,15 +25,15 @@
 - T2–T5 now use registered offline Tool/Policy calls for generated acceptance packages
   and `run-track` CLI runs. Their runtime bundles support deterministic `replay`, `inspect`,
   and `export-report`; the claim remains `unverified` outside the bounded fixture scope.
-- A fresh Python environment installed `.[test]`, passed 63 tests, and replayed newly
-  generated T1–T5 runs. A second new Windows AMD64 / CPython 3.12.3 virtual environment
-  installed the exact dependency closure from `requirements-replay-win-py312.txt`, passed
-  `pip check` and 63 tests, and replayed the five committed Run packages. The resulting
+- An earlier fresh Python environment installed `.[test]` and passed 63 tests.
+  The pinned Windows AMD64 / CPython 3.12.3 environment now passes 74 tests and
+  matches all seven current Run manifests. Its exact dependency closure was installed
+  from `requirements-replay-win-py312.txt` and passed `pip check`. The resulting
   `artifacts/replay-environment-audit.json` binds installed versions and manifest bytes.
   Replay in a mismatched environment fails closed; wheel and interpreter bytes are not locked.
-- A standalone wheel now carries the offline schemas, evidence policy, and six fixtures.
+- A standalone wheel now carries the offline schemas, evidence policy, and seven fixtures.
   In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
-  and T2–T5 plus T3N `init-track/run-track/replay` completed. The wheel smoke is an engineering
+  and T2–T5 plus T2P/T3N `init-track/run-track/replay` completed. The wheel smoke is an engineering
   portability check, not an external scientific validation or publication gate.
 - T3 now compares Velocity-Verlet against a separately implemented fixed-step RK4,
   plus the analytic oscillator and Euler negative control. The method citation,
@@ -44,6 +44,11 @@
   barycenter, separation, and a repulsive-force negative control pass the declared
   dimensionless fixture gates in `docs/T3_NBODY_METHOD.md`. This does not validate
   nonintegrable trajectories or real missions.
+- The T2P subtrack supplies a 100-case planar ball-and-floor simulator with paired
+  parameter and policy counterfactuals, analytic first-impact and rebound references,
+  a zero-effect negative estimator, and a full example trajectory. The local
+  `CausalInference` folder was inspected read-only; its untracked revision and scoped
+  license are unresolved, so no external code was imported. See `docs/T2_PHYSICAL_METHOD.md`.
 - A 27-case T3 parameter/step-size sweep now checks second- and fourth-order
   convergence, normalized energy drift, backend agreement, and Euler rejection.
   `artifacts/t3-sweep.json` is independently recomputed by the acceptance verifier;
@@ -61,8 +66,8 @@
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
   The v2 package remains bounded to this declared rule and is not a general proof backend.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
-  fixture inputs. T1–T5 replayed from a copied checkout in the same dependency
-  environment, and five wheel-generated run directories replayed after relocation.
+  fixture inputs. T1–T5 plus T2P/T3N replayed from a copied checkout in the same dependency
+  environment, and seven wheel-generated run directories replayed after relocation.
   `artifacts/relocation-audit.json` records the copied-checkout commands and hashes.
   Cross-OS and dependency-version drift remain unverified or fail closed; the
   project-05 upstream snapshot still records its original host path for provenance.

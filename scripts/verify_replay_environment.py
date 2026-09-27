@@ -20,12 +20,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONSTRAINTS = ROOT / "requirements-replay-win-py312.txt"
 RUNS = {
-    "T1": ROOT / "artifacts/acceptance-runs-v16/run-02a00f229aabd3d2/replay-manifest.json",
-    "T2": ROOT / "artifacts/track-runs-v10/run-t2-e8c0533775f1ab69/replay-manifest.json",
-    "T3": ROOT / "artifacts/track-runs-v10/run-t3-1c4eb6b867515637/replay-manifest.json",
-    "T3N": ROOT / "artifacts/track-runs-v10/run-t3n-7ea57acea8cc3bb1/replay-manifest.json",
-    "T4": ROOT / "artifacts/track-runs-v10/run-t4-6497f62cc5a8ff84/replay-manifest.json",
-    "T5": ROOT / "artifacts/track-runs-v10/run-t5-cc6170f111df81a8/replay-manifest.json",
+    "T1": ROOT / "artifacts/acceptance-runs-v17/run-02a00f229aabd3d2/replay-manifest.json",
+    "T2": ROOT / "artifacts/track-runs-v11/run-t2-e8c0533775f1ab69/replay-manifest.json",
+    "T2P": ROOT / "artifacts/track-runs-v11/run-t2p-0971a9036e84aa5a/replay-manifest.json",
+    "T3": ROOT / "artifacts/track-runs-v11/run-t3-1c4eb6b867515637/replay-manifest.json",
+    "T3N": ROOT / "artifacts/track-runs-v11/run-t3n-7ea57acea8cc3bb1/replay-manifest.json",
+    "T4": ROOT / "artifacts/track-runs-v11/run-t4-6497f62cc5a8ff84/replay-manifest.json",
+    "T5": ROOT / "artifacts/track-runs-v11/run-t5-cc6170f111df81a8/replay-manifest.json",
 }
 BUILD_TOOLS = {"pip", "setuptools", "wheel"}
 
@@ -106,7 +107,7 @@ def verify() -> dict[str, object]:
         "limitations": [
             "Version pins do not lock downloaded wheel bytes or Python executable bytes.",
             "This audit checks the environment; scripts/verify_acceptance.py checks replay outputs.",
-            "The six committed Runs cover five tracks and one T3 subtrack; they are bounded fixture evidence, not scientific validation or publication approval.",
+            "The seven committed Runs cover five tracks and two bounded subtracks; they are fixture evidence, not real-world scientific validation or publication approval.",
         ],
     }
 
