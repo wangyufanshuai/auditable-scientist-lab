@@ -1,0 +1,47 @@
+{
+  "schema_version": "t1-maven-sun-only-preflight-v1",
+  "status": "predeclared-engineering-comparison-not-scientific-validation",
+  "mission_product_lidvid": "urn:nasa:pds:maven.spice:spice_kernels:spk_maven_cru_rec_131118_140923_v1.bsp::1.0",
+  "spacecraft_id": -202,
+  "time_contract": {
+    "scale": "TDB",
+    "origin": "J2000 JD 2451545.0",
+    "unit": "seconds",
+    "horizon_seconds": 86400.0,
+    "initial_et_seconds": [452088000.0, 457272000.0]
+  },
+  "coordinate_contract": {
+    "frame": "J2000",
+    "aberration": "NONE",
+    "observer": "SUN",
+    "position_unit": "km",
+    "velocity_unit": "km/s"
+  },
+  "model": {
+    "name": "Sun point-mass two-body baseline",
+    "mu_sun_km3_s2": 132712440041.27942,
+    "initial_state": "MAVEN NAV SPK state at each initial ET; held endpoint is queried only after this protocol is committed",
+    "acceleration": "-mu_sun * position / norm(position)^3",
+    "excluded_forces": ["planetary gravity", "maneuvers", "solar radiation pressure", "relativity"],
+    "integrator": "independently implemented fixed-step classical RK4",
+    "step_seconds": 600.0,
+    "refinement_step_seconds": 300.0
+  },
+  "engineering_gates": {
+    "endpoint_position_error_km_max": 100.0,
+    "endpoint_velocity_error_km_s_max": 0.01,
+    "relative_two_body_energy_drift_max": 1e-8,
+    "refinement_position_difference_km_max": 0.001,
+    "wrong_sign_gravity_must_fail": true
+  },
+  "selection_statement": "The two epochs are fixed inside the published cruise coverage and do not overlap the three previously inspected MAVEN samples. They were selected before querying their NAV states or endpoints. Failed thresholds will be reported, not retuned in this protocol.",
+  "scientific_boundaries": {
+    "source_tracked_real_mission_states": true,
+    "independent_numerical_propagation": true,
+    "full_force_model": false,
+    "maneuver_reconstruction": false,
+    "untouched_scientific_holdout": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}
