@@ -79,8 +79,10 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
 声明的模拟器内部因果效应，不证明真实世界因果识别。T4O 把证明收据接到 T3
 谐振子数值模块，核对单位、源码、解析解、RK4 和能量漂移；其形式证明仍未配置，
-见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。当前八份 CLI 收据在
-`artifacts/track-runs-v15/` 和 `artifacts/acceptance-runs-v18/`。
+见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。T5 是带逐字段文本位置与文档哈希的合成教学审查；
+它只给 `demo/text-reviewed`，始终要求人工复核且禁止实验执行，见
+[docs/T5_METHOD.md](docs/T5_METHOD.md)。当前八份 CLI 收据在
+`artifacts/track-runs-v16/` 和 `artifacts/acceptance-runs-v18/`。
 
 ## 当前入口
 
@@ -100,6 +102,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。
 - [artifacts/t3-external-run-audit.json](artifacts/t3-external-run-audit.json)：可选 SciPy Tool/Provider Run 的回放、搬移与篡改负例收据。
 - [docs/T4_METHOD.md](docs/T4_METHOD.md)：T4 精确转移见证与 T4O 振子携证收据的边界。
+- [docs/T5_METHOD.md](docs/T5_METHOD.md)：T5 文本字段引用、确定性检查与执行边界。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。

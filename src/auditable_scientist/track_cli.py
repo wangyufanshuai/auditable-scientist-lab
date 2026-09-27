@@ -23,7 +23,7 @@ TASK_IDS = {
     "T3N": "t3-equilateral-three-body-v1",
     "T4": "t4-proof-carrying-v2",
     "T4O": "t4-oscillator-proof-v1",
-    "T5": "t5-bio-chem-protocol-v1",
+    "T5": "t5-bio-chem-text-review-v2",
 }
 FIXTURE_RESOURCES = {
     "T2": "examples/causal/fixture.json",

@@ -87,6 +87,8 @@ def track_source_paths(track_id: str) -> list[Path]:
         resources.append("docs/T3_NBODY_METHOD.md")
     if track_id in ("T4", "T4O"):
         resources.append("docs/T4_METHOD.md")
+    if track_id == "T5":
+        resources.append("docs/T5_METHOD.md")
     paths = [source_path(f"src/auditable_scientist/{item}") for item in sources]
     root = checkout_root()
     if root is not None:
@@ -202,8 +204,12 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
     elif track_id == "T5":
         protocol = ProtocolSpec.model_validate(input_payload)
         result = verify_protocol(protocol)
-        bad_steps = [protocol.steps[0].model_copy(update={"provenance_status": "blocked"}), *protocol.steps[1:]]
-        negative_result = verify_protocol(protocol.model_copy(update={"steps": bad_steps}))
+        changed_document = protocol.documents[0].model_copy(update={
+            "text": protocol.documents[0].text.replace("buffer", "water", 1),
+        })
+        negative_result = verify_protocol(protocol.model_copy(update={
+            "documents": [changed_document, *protocol.documents[1:]],
+        }))
         from .common import make_track_receipt
 
         receipt = make_track_receipt(
@@ -211,7 +217,7 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
             evidence_level=result.evidence_level, passed=result.passed,
             negative_case_passed=not negative_result.passed,
             result=result.model_dump(mode="json"),
-            blocked_gates=["real wet-lab validation and human biosafety review"],
+            blocked_gates=["independent source and rights validation", "real wet-lab validation and human biosafety review"],
         )
         negative = negative_result.model_dump(mode="json")
     else:

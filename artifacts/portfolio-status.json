@@ -62,14 +62,14 @@
     },
     {
       "acceptance": "artifacts/t5-protocol/acceptance.json",
-      "next_step": "rights and safety review before real-data use",
+      "next_step": "add a rights-cleared document adapter with independent citation checks",
       "open_gates": [
-        "real protocol provenance",
+        "independent protocol source and rights",
         "biosafety review",
         "human acceptance"
       ],
       "public_release": false,
-      "state": "reproduced-within-scope",
+      "state": "text-demo-within-scope",
       "track_id": "T5"
     }
   ]

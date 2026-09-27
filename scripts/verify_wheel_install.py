@@ -97,7 +97,7 @@ def main() -> None:
             [str(python), "-c", "from auditable_scientist.runtime.paths import PACKAGE_ROOT; print(sum(p.is_file() for p in (PACKAGE_ROOT / '_resources').rglob('*')))"],
             cwd=temporary_root, environment=base_environment,
         ))
-        if resource_count < 24:
+        if resource_count < 25:
             raise RuntimeError("wheel omitted an offline resource")
         invoke([str(venv / "Scripts/auditable-scientist.exe"), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -128,6 +128,13 @@ def main() -> None:
         t4o_run = json.loads((runs["T4O"] / "run.json").read_text(encoding="utf-8"))
         if t4o_result["receipt"]["result"]["claim_status"] != "bounded-verified" or t4o_run["claims"][0]["status"] != "unverified":
             raise RuntimeError("wheel T4O proof boundary differs")
+        t5_result = json.loads((runs["T5"] / "result.json").read_text(encoding="utf-8"))
+        t5_run = json.loads((runs["T5"] / "run.json").read_text(encoding="utf-8"))
+        if (t5_result["receipt"]["result"]["review_status"] != "text-reviewed"
+                or t5_result["receipt"]["evidence_level"] != "demo"
+                or t5_run["claims"][0]["level"] != "demo"
+                or t5_run["claims"][0]["status"] != "unverified"):
+            raise RuntimeError("wheel T5 text-review boundary differs")
 
         original = {track_id: replay(python, path, cwd=temporary_root, environment=base_environment) for track_id, path in runs.items()}
         moved_root = temporary_root / "moved-runs"
@@ -141,7 +148,7 @@ def main() -> None:
                 raise RuntimeError(f"wheel run changed on relocation: {track_id}")
 
     result = {
-        "schema_version": "wheel-audit-v3",
+        "schema_version": "wheel-audit-v4",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "status": "verified-within-offline-fixtures",
         "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
@@ -157,6 +164,7 @@ def main() -> None:
         "all_eight_relocated_replays_equal": moved == original,
         "t4_bounded_result_and_unverified_run_claim": True,
         "t4o_bounded_result_and_unverified_run_claim": True,
+        "t5_demo_text_review_and_unverified_run_claim": True,
         "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "boundaries": {
             "scientific_validity": False,

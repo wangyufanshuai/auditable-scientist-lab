@@ -43,6 +43,8 @@ def test_bounded_track_cli_run_replay_and_inspect(track_id: str, tmp_path: Path,
     assert run["environment"]["network"] == "disabled"
     assert {"auditable-scientist-lab", "pydantic", "sympy", "jsonschema"}.issubset(run["environment"]["packages"])
     assert run["claims"][0]["status"] == "unverified"
+    if track_id == "T5":
+        assert run["claims"][0]["level"] == "demo"
     assert [event["event_type"] for event in run["events"]] == [
         "run.initialized", "policy.applied", "tool.invoked", "evaluator.completed",
         "negative_case.checked", "run.completed",

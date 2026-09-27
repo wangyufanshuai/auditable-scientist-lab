@@ -141,7 +141,7 @@ def make_track_run(
     claim = Claim(
         text=f"The {track_id} evaluator passed its bounded fixture gate; this is not a real-world scientific claim.",
         status=ClaimStatus.UNVERIFIED,
-        level=EvidenceLevel.VALIDATED_REPRODUCTION if receipt.passed else EvidenceLevel.DEMO,
+        level=EvidenceLevel.VALIDATED_REPRODUCTION if receipt.evidence_level == "validated-reproduction" else EvidenceLevel.DEMO,
         evidence_refs=[evidence_id, *[item.evidence_id for item in code_evidence]],
         falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash", *(["rk4-backend-agreement"] if track_id in ("T3", "T3N", "T4O") else [])],
         holdout_verified=False,

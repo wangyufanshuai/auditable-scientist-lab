@@ -358,7 +358,9 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         raise ValueError(f"track {track_id} shared kernel records are incomplete")
     if run.policy.network != "disabled" or run.providers[0].provider_id not in run.policy.allowed_providers:
         raise ValueError(f"track {track_id} policy/provider binding is inconsistent")
-    if run.evaluators[0].evaluator_id != receipt.evaluator_id or len(run.claims) != 1 or run.claims[0].status.value != "unverified":
+    if (run.evaluators[0].evaluator_id != receipt.evaluator_id or len(run.claims) != 1
+            or run.claims[0].status.value != "unverified"
+            or run.claims[0].level.value != receipt.evidence_level):
         raise ValueError(f"track {track_id} evaluator or claim boundary differs from receipt")
     if run.tools[0].parameter_schema_ref != "schemas/track-tool-call-v1.json":
         raise ValueError(f"track {track_id} tool schema reference is inconsistent")
@@ -598,9 +600,20 @@ def main() -> None:
     t5_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T5")
     t5_protocol = ProtocolSpec.model_validate(load("examples/protocol/fixture.json"))
     t5_result = verify_protocol(t5_protocol)
-    t5_bad_steps = [t5_protocol.steps[0].model_copy(update={"provenance_status": "blocked"}), *t5_protocol.steps[1:]]
-    t5_bad = t5_protocol.model_copy(update={"steps": t5_bad_steps})
-    if t5_result.model_dump(mode="json") != t5_item["result"] or t5_item["input_hash"] != canonical_hash(t5_protocol.model_dump(mode="json")) or not t5_result.passed or verify_protocol(t5_bad).passed:
+    t5_changed_document = t5_protocol.documents[0].model_copy(update={
+        "text": t5_protocol.documents[0].text.replace("buffer", "water", 1),
+    })
+    t5_bad = t5_protocol.model_copy(update={"documents": [t5_changed_document, *t5_protocol.documents[1:]]})
+    if (
+        t5_result.model_dump(mode="json") != t5_item["result"]
+        or t5_item["input_hash"] != canonical_hash(t5_protocol.model_dump(mode="json"))
+        or not t5_result.passed or verify_protocol(t5_bad).passed
+        or t5_result.review_status != "text-reviewed"
+        or t5_result.evidence_level != "demo"
+        or t5_result.execution_allowed is not False
+        or t5_result.requires_human_review is not True
+        or any(document.provenance_status != "unverified" for document in t5_protocol.documents)
+    ):
         raise SystemExit("T5 protocol evaluator replay mismatch")
     if load("artifacts/t5-protocol/acceptance.json")["negative_case"] != verify_protocol(t5_bad).model_dump(mode="json"):
         raise SystemExit("T5 negative case replay mismatch")
@@ -625,7 +638,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"):
         item = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else t4o_item if track_id == "T4O" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v15" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v16" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -663,7 +676,7 @@ def main() -> None:
     for track_id in ("T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"):
         receipt = physical_item if track_id == "T2P" else nbody_item if track_id == "T3N" else t4o_item if track_id == "T4O" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v15" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v16" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -679,13 +692,14 @@ def main() -> None:
 
     wheel = load("artifacts/wheel-audit.json")
     if (
-        wheel.get("schema_version") != "wheel-audit-v3"
+        wheel.get("schema_version") != "wheel-audit-v4"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
         or wheel.get("all_eight_relocated_replays_equal") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t4o_bounded_result_and_unverified_run_claim") is not True
-        or wheel.get("bundled_resource_count", 0) < 24
+        or wheel.get("t5_demo_text_review_and_unverified_run_claim") is not True
+        or wheel.get("bundled_resource_count", 0) < 25
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
         or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}

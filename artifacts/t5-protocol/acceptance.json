@@ -3,43 +3,48 @@
     {
       "command": "python scripts/generate_track_artifacts.py",
       "exit_code": 0,
-      "input_version": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
+      "input_version": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t5-protocol/sample-run.json",
-      "recorded_at": "2026-09-27T07:26:20.822737+00:00"
+      "recorded_at": "2026-09-27T07:41:39.908408+00:00"
     }
   ],
   "evaluator": {
     "blocked_gates": [
+      "independent source and rights validation",
       "real wet-lab validation and human biosafety review"
     ],
-    "evaluator_id": "bio-chem-protocol-v1",
+    "evaluator_id": "bio-chem-text-protocol-v2",
     "evidence_files": [
       {
         "allowed_use": [
           "offline-fixture",
           "bounded-evaluator"
         ],
-        "bytes": 595,
+        "bytes": 3165,
         "path": "examples/protocol/fixture.json",
         "provenance_status": "unverified",
-        "sha256": "63a646290b28f1da3a081c07db662c232cfb6313b6b476e38d9bbe273874d91e"
+        "sha256": "b86e5ad27ceef1eceeb55113bf1614a0283503c9397b53e143c94a4a812201ee"
       }
     ],
-    "evidence_level": "validated-reproduction",
-    "input_hash": "cc6170f111df81a8fb62b3440a8525540af1a4a4f745dedf367ff451537f2a13",
+    "evidence_level": "demo",
+    "input_hash": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
     "negative_case_passed": true,
     "passed": true,
     "result": {
-      "evaluator_id": "bio-chem-protocol-v1",
-      "evidence_level": "validated-reproduction",
+      "checked_citations": 10,
+      "evaluator_id": "bio-chem-text-protocol-v2",
+      "evidence_level": "demo",
       "execution_allowed": false,
       "failures": [],
       "notes": [
-        "This evaluator checks declarative constraints only.",
+        "The evaluator checks a bounded synthetic text fixture and declared constraints only.",
+        "Source rights, real materials, equipment, safety, and human acceptance are unverified.",
         "It never schedules, controls, or authorizes wet-lab execution."
       ],
-      "passed": true
+      "passed": true,
+      "requires_human_review": true,
+      "review_status": "text-reviewed"
     },
     "source_files": [
       {
@@ -47,10 +52,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 2495,
+        "bytes": 9809,
         "path": "src/auditable_scientist/tracks/protocol.py",
         "provenance_status": "unverified",
-        "sha256": "f365b7d61ec903383aaa3e3464ffd4dc0a459f8b4eb6fe83b44ea07fd21e5c41"
+        "sha256": "ab93754059671b2bf4018ebe2e43cc991da3c474e22a4402c5df3107eacac059"
       },
       {
         "allowed_use": [
@@ -67,20 +72,20 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 9310,
+        "bytes": 9346,
         "path": "src/auditable_scientist/tracks/run_package.py",
         "provenance_status": "unverified",
-        "sha256": "7f9cac2e63c795169a3b5e41f3d6dd868aee41f61de8b701208bbb1b2dd53adf"
+        "sha256": "1b1327d0915a6ad18add0b38dda7e59fdad0ec176ed002124f5da9352dae186c"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 12562,
+        "bytes": 12783,
         "path": "src/auditable_scientist/tracks/runner.py",
         "provenance_status": "unverified",
-        "sha256": "f5257480663fdbbeaeece9aad8659716bfc1bfe9ef53eb4bf2e71f6cf405d170"
+        "sha256": "d57371c5be3ae203fc2c1841552000eeb646f57d54123daefef04aca671a2396"
       },
       {
         "allowed_use": [
@@ -177,20 +182,20 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 8910,
+        "bytes": 8913,
         "path": "src/auditable_scientist/track_cli.py",
         "provenance_status": "unverified",
-        "sha256": "0bead5c481e61cea6430c5267605548f7819c4e7e900e2406f6b2b63592ebe88"
+        "sha256": "0f2d782da641301f9221dc74b26c9d921602284ec623212ba1c582770312aa65"
       },
       {
         "allowed_use": [
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 25345,
+        "bytes": 25634,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "8f2a3d9f76070ac676dd60fa1420fa15bc9ffd2a032ce4849a23076c8a4cbb04"
+        "sha256": "c1b57235e6aee4358da7e439df6b4cb6d94e1b5ffebaf25fabb946e5df17f8c0"
       },
       {
         "allowed_use": [
@@ -251,6 +256,16 @@
         "path": "schemas/run.schema.json",
         "provenance_status": "unverified",
         "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2010,
+        "path": "docs/T5_METHOD.md",
+        "provenance_status": "unverified",
+        "sha256": "85a88b36e07893c86215b795fe7b10d286761e15b11b321c3a171aaf0ff27cee"
       }
     ],
     "track_id": "T5"
@@ -259,21 +274,36 @@
     "demo": true,
     "real_data": false,
     "research_candidate": false,
-    "validated_reproduction": true
+    "validated_reproduction": false
   },
   "execution": "offline",
   "negative_case": {
-    "evaluator_id": "bio-chem-protocol-v1",
+    "checked_citations": 10,
+    "evaluator_id": "bio-chem-text-protocol-v2",
     "evidence_level": "demo",
     "execution_allowed": false,
     "failures": [
-      "provenance:step-1"
+      "document-hash:synthetic-buffer-plan-v1",
+      "citation-span:step-1:reagent",
+      "citation-span:step-1:volume_ul",
+      "citation-span:step-1:temperature_c",
+      "citation-span:step-1:duration_min",
+      "citation-step:step-1:duration_min",
+      "citation-span:step-2:action",
+      "citation-span:step-2:reagent",
+      "citation-span:step-2:volume_ul",
+      "citation-span:step-2:temperature_c",
+      "citation-span:step-2:duration_min",
+      "citation-step:step-2:duration_min"
     ],
     "notes": [
-      "This evaluator checks declarative constraints only.",
+      "The evaluator checks a bounded synthetic text fixture and declared constraints only.",
+      "Source rights, real materials, equipment, safety, and human acceptance are unverified.",
       "It never schedules, controls, or authorizes wet-lab execution."
     ],
-    "passed": false
+    "passed": false,
+    "requires_human_review": true,
+    "review_status": "blocked"
   },
   "status": "accepted-with-bounded-scope",
   "track": "T5"

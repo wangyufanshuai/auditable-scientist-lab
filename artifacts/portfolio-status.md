@@ -6,7 +6,7 @@
 | T2 | `reproduced-within-scope` | `artifacts/t2-causal/acceptance.json` | real interventions, causal identification, data rights, external algorithm source rights | add a rights-cleared physical intervention dataset and independent estimator | `False` |
 | T3 | `reproduced-within-scope` | `artifacts/t3-dynamics/acceptance.json` | long-horizon/nonintegrable multi-body validation, real-mission provenance, compute budget | specify a wider validation grid and finite compute budget before long-horizon claims | `False` |
 | T4 | `reproduced-within-scope` | `artifacts/t4-proof/acceptance.json` | general formal proof backend, reviewed physical transition model, real-world validation | review a physical model and add independent source-backed validation | `False` |
-| T5 | `reproduced-within-scope` | `artifacts/t5-protocol/acceptance.json` | real protocol provenance, biosafety review, human acceptance | rights and safety review before real-data use | `False` |
+| T5 | `text-demo-within-scope` | `artifacts/t5-protocol/acceptance.json` | independent protocol source and rights, biosafety review, human acceptance | add a rights-cleared document adapter with independent citation checks | `False` |
 
 Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims.
 The separate SciPy audit records source tags, installed license notices, pinned wheel hashes,
@@ -18,3 +18,5 @@ T3N is a bounded symmetric three-body subtrack with an analytic orbit and an ind
 T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only.
 
 T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open.
+
+T5 is a synthetic text-review demonstration. Each field is located in an embedded LF document with a SHA-256 hash and exact character span. An altered document is rejected. Source rights, real materials, safety, and human acceptance are unverified; execution remains forbidden.

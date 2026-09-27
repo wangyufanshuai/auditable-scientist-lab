@@ -13,7 +13,7 @@ from auditable_scientist.tracks.dynamics import DynamicsCase
 from auditable_scientist.tracks.physical_world import PhysicalCase, compare, standard_cases
 from auditable_scientist.tracks.oscillator_proof import create_oscillator_package
 from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState
-from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep
+from auditable_scientist.tracks.protocol import extract_teaching_protocol
 from auditable_scientist.tracks.run_package import make_track_run
 from auditable_scientist.tracks.runner import run_registered_track
 
@@ -336,17 +336,20 @@ def main() -> None:
     })
     write_json(proof_acceptance, proof_acceptance_payload)
 
-    protocol_steps = [
-        ProtocolStep(step_id="step-1", action="mix", reagent="buffer", volume_ul=10, temperature_c=22, duration_min=5, provenance_status="verified"),
-        ProtocolStep(step_id="step-2", action="incubate", reagent="sample", volume_ul=5, temperature_c=24, duration_min=10, provenance_status="verified"),
-    ]
-    protocol = ProtocolSpec(protocol_id="p-1", steps=protocol_steps, min_temperature_c=20, max_temperature_c=30, max_total_volume_ul=20)
+    protocol_text = (
+        "step-1 action=mix reagent=buffer volume=10 uL temperature=22 C duration=5 min\n"
+        "step-2 action=mix reagent=water volume=5 uL temperature=24 C duration=10 min\n"
+    )
+    protocol = extract_teaching_protocol(
+        protocol_text, protocol_id="p-1", document_id="synthetic-buffer-plan-v1",
+        min_temperature_c=20, max_temperature_c=30, max_total_volume_ul=20,
+    )
     protocol_fixture = ROOT / "examples/protocol/fixture.json"
     write_json(protocol_fixture, protocol.model_dump(mode="json"))
     protocol_execution = run_registered_track("T5", protocol_fixture)
     protocol_receipt = protocol_execution.receipt
     protocol_negative = protocol_execution.negative_case
-    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-protocol-v1", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative, calls_used=protocol_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t5-protocol"))
+    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-text-review-v2", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative, calls_used=protocol_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t5-protocol"))
     write_track_bundle(track_id="T5", directory="t5-protocol", receipt=protocol_receipt, run=protocol_run, negative_case=protocol_negative, demo_text=f"run_id={protocol_run.run_id}; passed={protocol_receipt.result['passed']}; execution_allowed={protocol_receipt.result['execution_allowed']}")
     portfolio.append(protocol_receipt.model_dump(mode="json"))
 
@@ -356,7 +359,7 @@ def main() -> None:
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "physical_subtrack": "artifacts/t2-physical/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights", "external algorithm source rights"], "next_step": "add a rights-cleared physical intervention dataset and independent estimator", "public_release": False},
         {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json", "optional_perturbed_run": "artifacts/t3-perturbed-run-audit.json", "open_gates": ["long-horizon/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a wider validation grid and finite compute budget before long-horizon claims", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json", "open_gates": ["general formal proof backend", "reviewed physical transition model", "real-world validation"], "next_step": "review a physical model and add independent source-backed validation", "public_release": False},
-        {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
+        {"track_id": "T5", "state": "text-demo-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["independent protocol source and rights", "biosafety review", "human acceptance"], "next_step": "add a rights-cleared document adapter with independent citation checks", "public_release": False},
     ]
     write_json(ROOT / "artifacts/portfolio-status.json", {"schema_version": "portfolio-status-v1", "status": "implementing", "remote": "https://github.com/wangyufanshuai/auditable-scientist-lab", "pushed": False, "public_release_allowed": False, "tracks": status_rows})
     markdown = [
@@ -377,6 +380,7 @@ def main() -> None:
     markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. A separate pinned-SciPy Tool/Provider Run replays two short perturbed trajectories and rejects altered result or license bytes; long-horizon/nonintegrable and real-mission gates remain open."])
     markdown.extend(["", "T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared initial state per pair, analytic impact checks, and an ignored-intervention negative control. It remains synthetic simulator evidence only."])
     markdown.extend(["", "T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open."])
+    markdown.extend(["", "T5 is a synthetic text-review demonstration. Each field is located in an embedded LF document with a SHA-256 hash and exact character span. An altered document is rejected. Source rights, real materials, safety, and human acceptance are unverified; execution remains forbidden."])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 

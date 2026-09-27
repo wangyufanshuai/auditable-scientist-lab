@@ -81,6 +81,12 @@
   and rejects a forged output even when its hash is recomputed. The optional formal
   prover reports `not_applicable`; the Run Claim remains `unverified`. This is not a
   reviewed physical model, general solver proof, or real-data validation.
+- T5 v2 extracts every field from a bounded synthetic text fixture and checks its
+  UTF-8 document hash, exact character span, value and unit, declared limits,
+  ordering, and a narrow teaching vocabulary. Altered text is rejected even when
+  the structured fields remain unchanged. Passing T5 is `demo/text-reviewed`,
+  requires human review, and never permits execution. Real source rights and
+  wet-lab evidence remain open.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
   fixture inputs. T1–T5 plus T2P/T3N/T4O replayed from a copied checkout in the same dependency
   environment, and eight wheel-generated run directories replayed after relocation.

@@ -6,7 +6,7 @@ from auditable_scientist.runtime.canonical import canonical_hash
 from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
 from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState, verify_proof_package
-from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
+from auditable_scientist.tracks.protocol import extract_teaching_protocol, verify_protocol
 
 
 def test_t2_causal_intervention_and_negative_control() -> None:
@@ -112,16 +112,19 @@ def test_t4_proof_obligations_block_tampered_trajectory() -> None:
     assert "o4" in verify_proof_package(broken).failed_obligations
 
 
-def test_t5_protocol_constraints_pass_without_execution_and_fail_bad_provenance() -> None:
-    steps = [
-        ProtocolStep(step_id="step-1", action="mix", reagent="buffer", volume_ul=10, temperature_c=22, duration_min=5, provenance_status="verified"),
-        ProtocolStep(step_id="step-2", action="incubate", reagent="sample", volume_ul=5, temperature_c=24, duration_min=10, provenance_status="verified"),
-    ]
-    protocol = ProtocolSpec(protocol_id="p-1", steps=steps, min_temperature_c=20, max_temperature_c=30, max_total_volume_ul=20)
+def test_t5_protocol_text_review_rejects_changed_source_without_execution() -> None:
+    protocol = extract_teaching_protocol(
+        "step-1 action=mix reagent=buffer volume=10 uL temperature=22 C duration=5 min\n",
+        protocol_id="p-1", document_id="fixture-1", min_temperature_c=20,
+        max_temperature_c=30, max_total_volume_ul=20,
+    )
     result = verify_protocol(protocol)
     assert result.passed is True
+    assert result.review_status == "text-reviewed"
+    assert result.evidence_level == "demo"
     assert result.execution_allowed is False
-    bad = protocol.model_copy(update={"steps": [steps[0].model_copy(update={"provenance_status": "blocked"}), steps[1]]})
+    changed = protocol.documents[0].model_copy(update={"text": protocol.documents[0].text.replace("buffer", "water")})
+    bad = protocol.model_copy(update={"documents": [changed]})
     failed = verify_protocol(bad)
     assert failed.passed is False
-    assert "provenance:step-1" in failed.failures
+    assert "document-hash:fixture-1" in failed.failures
