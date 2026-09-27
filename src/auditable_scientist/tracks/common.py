@@ -29,6 +29,7 @@ class TrackReceipt(BaseModel):
     passed: bool
     negative_case_passed: bool
     evidence_files: list[TrackEvidence] = Field(default_factory=list)
+    source_files: list[TrackEvidence] = Field(default_factory=list)
     blocked_gates: list[str] = Field(default_factory=list)
     result: dict[str, Any]
 
@@ -43,6 +44,7 @@ def make_track_receipt(
     negative_case_passed: bool,
     result: dict[str, Any],
     evidence_files: list[dict[str, Any]] | None = None,
+    source_files: list[dict[str, Any]] | None = None,
     blocked_gates: list[str] | None = None,
 ) -> TrackReceipt:
     return TrackReceipt(
@@ -53,6 +55,7 @@ def make_track_receipt(
         passed=passed,
         negative_case_passed=negative_case_passed,
         evidence_files=list(evidence_files or []),
+        source_files=list(source_files or []),
         blocked_gates=list(blocked_gates or []),
         result=result,
     )

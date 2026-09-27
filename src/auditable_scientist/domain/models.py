@@ -9,12 +9,21 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import StrEnum
+import hashlib
+import json
 from typing import Any, ClassVar
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 HASH_PATTERN = r"^[a-f0-9]{64}$"
+
+
+def _payload_hash(payload: dict[str, Any]) -> str:
+    """Hash JSON event payloads without importing the runtime package."""
+
+    encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 class StrictModel(BaseModel):
@@ -271,6 +280,8 @@ class Run(StrictModel):
                 raise ValueError("event sequence must be contiguous starting at zero")
             if event.prev_event_hash != previous:
                 raise ValueError("event hash chain is not contiguous")
+            if event.payload_hash != _payload_hash(event.payload):
+                raise ValueError(f"event payload hash mismatch: {event.event_id}")
             previous = event.payload_hash
         return self
 

@@ -40,6 +40,8 @@ def make_track_run(
     seed: int = 17,
 ) -> Run:
     fixture = fingerprint_file(fixture_path)
+    evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
+    evaluator_fingerprint = fingerprint_file(evaluator_source)
     evidence_id = f"ev-{track_id.lower()}-fixture"
     evidence = Evidence(
         evidence_id=evidence_id,
@@ -50,6 +52,17 @@ def make_track_run(
         provenance_status=ProvenanceStatus.UNVERIFIED,
         allowed_use=["offline-fixture", "bounded-evaluator"],
         notes="Fixture evidence is not real-data or publication evidence.",
+    )
+    evaluator_evidence_id = f"ev-{track_id.lower()}-evaluator-code"
+    evaluator_evidence = Evidence(
+        evidence_id=evaluator_evidence_id,
+        kind=EvidenceKind.CODE,
+        path_or_uri=str(evaluator_source),
+        sha256=evaluator_fingerprint.sha256,
+        source_revision="local-working-tree",
+        provenance_status=ProvenanceStatus.UNVERIFIED,
+        allowed_use=["offline-evaluator", "source-provenance"],
+        notes="Local evaluator source fingerprint; this does not establish external scientific validity.",
     )
     provider_id = f"internal-{track_id.lower()}-evaluator"
     policy = Policy(
@@ -72,7 +85,7 @@ def make_track_run(
         tool_id=f"{track_id.lower()}-evaluator",
         name=f"{track_id} domain evaluator",
         version="1",
-        parameter_schema_ref="schemas/track-receipt-v1.json",
+        parameter_schema_ref="schemas/track-tool-call-v1.json",
         deterministic=True,
         network_required=False,
     )
@@ -96,7 +109,7 @@ def make_track_run(
         text=f"The {track_id} evaluator passed its bounded fixture gate; this is not a real-world scientific claim.",
         status=ClaimStatus.UNVERIFIED,
         level=EvidenceLevel.VALIDATED_REPRODUCTION if receipt.passed else EvidenceLevel.DEMO,
-        evidence_refs=[evidence_id],
+        evidence_refs=[evidence_id, evaluator_evidence_id],
         falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash"],
         holdout_verified=False,
     )
@@ -147,7 +160,7 @@ def make_track_run(
         code_revision="local-working-tree",
         environment=environment,
         seed=seed,
-        evidence_refs=[evidence_id],
+        evidence_refs=[evidence_id, evaluator_evidence_id],
         status=RunStatus.COMPLETED if receipt.passed else RunStatus.UNVERIFIED,
         agent=agent,
         tools=[tool],
@@ -159,5 +172,5 @@ def make_track_run(
         traces=[trace],
         claims=[claim],
         observations=[observation],
-        evidence=[evidence],
+        evidence=[evidence, evaluator_evidence],
     )

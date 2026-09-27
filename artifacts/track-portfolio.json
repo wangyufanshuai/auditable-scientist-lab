@@ -20,10 +20,10 @@
             "offline-fixture",
             "bounded-evaluator"
           ],
-          "bytes": 8406,
+          "bytes": 11126,
           "path": "artifacts/sample-run.json",
           "provenance_status": "unverified",
-          "sha256": "441e187cbea79c8bc12518000a2e4deb1b68d26bd4df96bac5784fd8e4e9e1eb"
+          "sha256": "4aab48d6b4fab292ff0be608288464cc06bab385a8c2531d4baf719d56e4c797"
         }
       ],
       "evidence_level": "validated-reproduction",
@@ -72,6 +72,118 @@
         "passed": true,
         "train_rmse": 0.0
       },
+      "source_files": [
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 3268,
+          "path": "src/auditable_scientist/tracks/causal.py",
+          "provenance_status": "unverified",
+          "sha256": "f35d397499777edfab301198824daa9066c8b1f6a18eb10faceba82520c6acb4"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1933,
+          "path": "src/auditable_scientist/tracks/common.py",
+          "provenance_status": "unverified",
+          "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 6588,
+          "path": "src/auditable_scientist/tracks/run_package.py",
+          "provenance_status": "unverified",
+          "sha256": "8dfc50bde43b9b871896115a5942d1382ade9d284aec8a9b595c5bedace7821e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 11495,
+          "path": "src/auditable_scientist/domain/models.py",
+          "provenance_status": "unverified",
+          "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1432,
+          "path": "src/auditable_scientist/runtime/canonical.py",
+          "provenance_status": "unverified",
+          "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2790,
+          "path": "src/auditable_scientist/runtime/event_log.py",
+          "provenance_status": "unverified",
+          "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1318,
+          "path": "docs/EVIDENCE_POLICY.md",
+          "provenance_status": "unverified",
+          "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 8072,
+          "path": "schemas/run.schema.json",
+          "provenance_status": "unverified",
+          "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1726,
+          "path": "schemas/track-receipt-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 3232,
+          "path": "schemas/track-acceptance-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 494,
+          "path": "schemas/track-tool-call-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf"
+        }
+      ],
       "track_id": "T2"
     },
     {
@@ -108,6 +220,118 @@
         "solver_id": "velocity-verlet-v1",
         "train_max_position_error": 1.9977752245103897e-05
       },
+      "source_files": [
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 4063,
+          "path": "src/auditable_scientist/tracks/dynamics.py",
+          "provenance_status": "unverified",
+          "sha256": "84d0a6f1b8543b9c4586f1be0c40783be0bc940725c4b6af787e3ddeafe686a0"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1933,
+          "path": "src/auditable_scientist/tracks/common.py",
+          "provenance_status": "unverified",
+          "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 6588,
+          "path": "src/auditable_scientist/tracks/run_package.py",
+          "provenance_status": "unverified",
+          "sha256": "8dfc50bde43b9b871896115a5942d1382ade9d284aec8a9b595c5bedace7821e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 11495,
+          "path": "src/auditable_scientist/domain/models.py",
+          "provenance_status": "unverified",
+          "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1432,
+          "path": "src/auditable_scientist/runtime/canonical.py",
+          "provenance_status": "unverified",
+          "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2790,
+          "path": "src/auditable_scientist/runtime/event_log.py",
+          "provenance_status": "unverified",
+          "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1318,
+          "path": "docs/EVIDENCE_POLICY.md",
+          "provenance_status": "unverified",
+          "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 8072,
+          "path": "schemas/run.schema.json",
+          "provenance_status": "unverified",
+          "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1726,
+          "path": "schemas/track-receipt-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 3232,
+          "path": "schemas/track-acceptance-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 494,
+          "path": "schemas/track-tool-call-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf"
+        }
+      ],
       "track_id": "T3"
     },
     {
@@ -143,6 +367,118 @@
         "failed_obligations": [],
         "passed": true
       },
+      "source_files": [
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2386,
+          "path": "src/auditable_scientist/tracks/proof.py",
+          "provenance_status": "unverified",
+          "sha256": "4c439c6b71dfa241ffc48d03c2b75ba65af5a57de82fbee52828ca01151ea3a4"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1933,
+          "path": "src/auditable_scientist/tracks/common.py",
+          "provenance_status": "unverified",
+          "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 6588,
+          "path": "src/auditable_scientist/tracks/run_package.py",
+          "provenance_status": "unverified",
+          "sha256": "8dfc50bde43b9b871896115a5942d1382ade9d284aec8a9b595c5bedace7821e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 11495,
+          "path": "src/auditable_scientist/domain/models.py",
+          "provenance_status": "unverified",
+          "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1432,
+          "path": "src/auditable_scientist/runtime/canonical.py",
+          "provenance_status": "unverified",
+          "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2790,
+          "path": "src/auditable_scientist/runtime/event_log.py",
+          "provenance_status": "unverified",
+          "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1318,
+          "path": "docs/EVIDENCE_POLICY.md",
+          "provenance_status": "unverified",
+          "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 8072,
+          "path": "schemas/run.schema.json",
+          "provenance_status": "unverified",
+          "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1726,
+          "path": "schemas/track-receipt-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 3232,
+          "path": "schemas/track-acceptance-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 494,
+          "path": "schemas/track-tool-call-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf"
+        }
+      ],
       "track_id": "T4"
     },
     {
@@ -177,6 +513,118 @@
         ],
         "passed": true
       },
+      "source_files": [
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2495,
+          "path": "src/auditable_scientist/tracks/protocol.py",
+          "provenance_status": "unverified",
+          "sha256": "f365b7d61ec903383aaa3e3464ffd4dc0a459f8b4eb6fe83b44ea07fd21e5c41"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1933,
+          "path": "src/auditable_scientist/tracks/common.py",
+          "provenance_status": "unverified",
+          "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 6588,
+          "path": "src/auditable_scientist/tracks/run_package.py",
+          "provenance_status": "unverified",
+          "sha256": "8dfc50bde43b9b871896115a5942d1382ade9d284aec8a9b595c5bedace7821e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 11495,
+          "path": "src/auditable_scientist/domain/models.py",
+          "provenance_status": "unverified",
+          "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1432,
+          "path": "src/auditable_scientist/runtime/canonical.py",
+          "provenance_status": "unverified",
+          "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 2790,
+          "path": "src/auditable_scientist/runtime/event_log.py",
+          "provenance_status": "unverified",
+          "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1318,
+          "path": "docs/EVIDENCE_POLICY.md",
+          "provenance_status": "unverified",
+          "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 8072,
+          "path": "schemas/run.schema.json",
+          "provenance_status": "unverified",
+          "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1726,
+          "path": "schemas/track-receipt-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 3232,
+          "path": "schemas/track-acceptance-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 494,
+          "path": "schemas/track-tool-call-v1.json",
+          "provenance_status": "unverified",
+          "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf"
+        }
+      ],
       "track_id": "T5"
     }
   ]

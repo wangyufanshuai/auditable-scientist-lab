@@ -34,7 +34,8 @@ from .reporting import render_hohmann_report
 from .runtime.canonical import canonical_hash, canonical_json
 from .runtime.environment import capture_environment
 from .runtime.event_log import EventLog
-from .runtime.replay import ReplayManifest, fingerprint_file
+from .runtime.replay import ReplayManifest, ReplayMismatch, fingerprint_file
+from .runtime.run_integrity import verify_run_record
 
 
 def _json_dump(path: Path, value: Any) -> None:
@@ -69,6 +70,8 @@ def _source_paths() -> list[Path]:
         root / "schemas/run.schema.json",
         root / "docs/EVIDENCE_POLICY.md",
         root / "src/auditable_scientist/adapters/project05.py",
+        root / "src/auditable_scientist/runtime/run_integrity.py",
+        root / "schemas/hohmann-tool-call-v1.json",
     ]
 
 
@@ -99,23 +102,19 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         allowed_providers=["internal-bounded-generator"],
     )
     registry = ToolRegistry(policy)
+    argument_schema_path = _repo_root() / "schemas/hohmann-tool-call-v1.json"
     hohmann_tool = Tool(
             tool_id="hohmann-benchmark",
             name="Hohmann benchmark",
             version="1",
-            parameter_schema_ref="schemas/hohmann-config-v1.json",
+            parameter_schema_ref="schemas/hohmann-tool-call-v1.json",
             deterministic=True,
             network_required=False,
         )
     registry.register(
         hohmann_tool,
         lambda _: run_hohmann_experiment(config, cases),
-        argument_schema={
-            "type": "object",
-            "required": ["task_id"],
-            "properties": {"task_id": {"type": "string"}},
-            "additionalProperties": False,
-        },
+        argument_schema=json.loads(argument_schema_path.read_text(encoding="utf-8")),
     )
     experiment = registry.invoke(
         "hohmann-benchmark",
@@ -235,6 +234,16 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     event_log = EventLog(run_dir / "events.jsonl")
     event_log.append("run.initialized", {"run_id": run_id, "input_hash": input_hash})
     event_log.append(
+        "plan.created",
+        {
+            "plan_id": study["experiment_plan"]["plan_id"],
+            "question_id": study["experiment_plan"]["question_id"],
+            "train_split": study["experiment_plan"]["train_split"],
+            "holdout_split": study["experiment_plan"]["holdout_split"],
+            "seed": study["experiment_plan"]["seed"],
+        },
+    )
+    event_log.append(
         "policy.applied",
         {
             "policy_id": policy.policy_id,
@@ -242,6 +251,15 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
             "max_seconds": policy.max_seconds,
             "max_tool_calls": policy.max_tool_calls,
             "allowed_provider": "internal-bounded-generator",
+        },
+    )
+    event_log.append(
+        "data.summarized",
+        {
+            "dataset_hash": experiment.dataset_hash,
+            "evidence_id": dataset_evidence.evidence_id,
+            "train_count": len(train_ids),
+            "holdout_count": len(holdout_ids),
         },
     )
     event_log.append("tool.invoked", {"tool_id": "hohmann-benchmark", "calls_used": registry.calls_used})
@@ -252,6 +270,22 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     event_log.append(
         "holdout.evaluated",
         {"selected_candidate_id": experiment.selected_candidate_id, "gate": experiment.gate.model_dump(mode="json")},
+    )
+    event_log.append(
+        "calculation.completed",
+        {
+            "selected_candidate_id": experiment.selected_candidate_id,
+            "train_rmse": experiment.gate.train.rmse,
+            "holdout_rmse": experiment.gate.holdout.rmse,
+        },
+    )
+    event_log.append(
+        "failure.checked",
+        {"failures": [] if experiment.gate.passed else ["holdout-gate-failed"], "gate_passed": experiment.gate.passed},
+    )
+    event_log.append(
+        "approval.recorded",
+        {"decision": "not-required", "scope": "offline-fixture", "human_approval": False},
     )
     event_log.append("run.completed", {"status": run.status.value, "claim_status": claim.status.value})
     events = event_log.verify()
@@ -318,8 +352,34 @@ def _replay(run_dir: Path) -> dict[str, Any]:
         candidate_order=experiment.candidate_order,
         computational_output={"experiment": experiment.model_dump(mode="json"), "study": study},
     )
-    run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
-    updated = render_hohmann_report(run=run, experiment=experiment.model_dump(mode="json"), receipt=receipt.model_dump(mode="json"))
+    saved_experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
+    saved_study = json.loads((run_dir / "study.json").read_text(encoding="utf-8"))
+    if canonical_hash(saved_experiment) != canonical_hash(experiment.model_dump(mode="json")):
+        raise ReplayMismatch("saved experiment differs from deterministic replay")
+    if canonical_hash(saved_study) != canonical_hash(study):
+        raise ReplayMismatch("saved study differs from deterministic replay")
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=_repo_root())
+    if run.input_hash != manifest.input_hash or run.seed != manifest.seed or run.code_revision != manifest.code_revision:
+        raise ReplayMismatch("saved Run identity differs from replay manifest")
+    if run.status.value != ("completed" if experiment.gate.passed else "unverified"):
+        raise ReplayMismatch("saved Run status differs from holdout gate")
+    if len(run.claims) != 1 or run.claims[0].holdout_verified != experiment.gate.passed:
+        raise ReplayMismatch("saved claim differs from holdout gate")
+    events_by_type = {event.event_type: event for event in run.events}
+    required_events = {"run.initialized", "plan.created", "policy.applied", "data.summarized", "tool.invoked", "candidate_set.committed", "holdout.evaluated", "calculation.completed", "failure.checked", "approval.recorded", "run.completed"}
+    if not required_events.issubset(events_by_type):
+        raise ReplayMismatch("saved Run is missing a required lifecycle event")
+    if events_by_type["candidate_set.committed"].payload != {
+        "candidate_order": experiment.candidate_order,
+        "candidate_set_hash": experiment.candidate_set_hash,
+    }:
+        raise ReplayMismatch("candidate-set event differs from deterministic replay")
+    if events_by_type["holdout.evaluated"].payload != {
+        "selected_candidate_id": experiment.selected_candidate_id,
+        "gate": experiment.gate.model_dump(mode="json"),
+    }:
+        raise ReplayMismatch("holdout event differs from deterministic replay")
+    updated = render_hohmann_report(run=run.model_dump(mode="json"), experiment=experiment.model_dump(mode="json"), receipt=receipt.model_dump(mode="json"))
     (run_dir / "report.md").write_text(updated, encoding="utf-8")
     return receipt.model_dump(mode="json")
 

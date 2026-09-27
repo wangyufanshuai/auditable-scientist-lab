@@ -2,8 +2,8 @@
 
 The acceptance package is maintained here as bounded local evidence:
 
-- `acceptance.json` — one row per acceptance criterion, with command, exit code,
-  timestamp, input/version, result path, and status.
+- `acceptance.json` — command receipts with exit code, timestamp, input/version,
+  and result path, plus explicit scope and remaining scientific gates.
 - `test-report.md` — unit, contract, replay, and failure-path results.
 - `demo-transcript.md` — a bounded offline CLI transcript.
 - `sample-run.json` — a complete replayable Run with claims and evidence refs.

@@ -8,6 +8,8 @@ import pytest
 from jsonschema import Draft202012Validator
 from pydantic import ValidationError
 
+from auditable_scientist.runtime import canonical_hash
+
 from auditable_scientist.domain import (
     Claim,
     ClaimStatus,
@@ -43,14 +45,15 @@ def evidence(evidence_id: str = "holdout-report") -> Evidence:
 
 
 def valid_run() -> Run:
+    event_payload = {"question": "Hohmann transfer"}
     event = Event(
         event_id="event-0",
         seq=0,
         event_type="input",
         occurred_at=datetime(2026, 9, 20, tzinfo=timezone.utc),
-        payload_hash=HASH,
+        payload_hash=canonical_hash(event_payload),
         prev_event_hash="genesis",
-        payload={"question": "Hohmann transfer"},
+        payload=event_payload,
     )
     return Run(
         run_id="run-1",
@@ -164,6 +167,13 @@ def test_run_rejects_broken_event_sequence_or_chain() -> None:
     run = valid_run().model_dump(mode="python")
     run["events"][0]["seq"] = 4
     with pytest.raises(ValidationError, match="contiguous"):
+        Run.model_validate(run)
+
+
+def test_run_rejects_event_payload_hash_tampering() -> None:
+    run = valid_run().model_dump(mode="python")
+    run["events"][0]["payload"]["question"] = "tampered"
+    with pytest.raises(ValidationError, match="payload hash mismatch"):
         Run.model_validate(run)
 
 

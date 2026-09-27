@@ -1,4 +1,14 @@
 {
+  "checks": [
+    {
+      "command": "python scripts/generate_track_artifacts.py",
+      "exit_code": 0,
+      "input_version": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+      "name": "bounded-domain-evaluator",
+      "output_path": "artifacts/t4-proof/sample-run.json",
+      "recorded_at": "2026-09-27T02:23:33.313197+00:00"
+    }
+  ],
   "evaluator": {
     "blocked_gates": [
       "formal proof backend beyond finite obligation check"
@@ -32,6 +42,118 @@
       "failed_obligations": [],
       "passed": true
     },
+    "source_files": [
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2386,
+        "path": "src/auditable_scientist/tracks/proof.py",
+        "provenance_status": "unverified",
+        "sha256": "4c439c6b71dfa241ffc48d03c2b75ba65af5a57de82fbee52828ca01151ea3a4"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1933,
+        "path": "src/auditable_scientist/tracks/common.py",
+        "provenance_status": "unverified",
+        "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 6588,
+        "path": "src/auditable_scientist/tracks/run_package.py",
+        "provenance_status": "unverified",
+        "sha256": "8dfc50bde43b9b871896115a5942d1382ade9d284aec8a9b595c5bedace7821e"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 11495,
+        "path": "src/auditable_scientist/domain/models.py",
+        "provenance_status": "unverified",
+        "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1432,
+        "path": "src/auditable_scientist/runtime/canonical.py",
+        "provenance_status": "unverified",
+        "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2790,
+        "path": "src/auditable_scientist/runtime/event_log.py",
+        "provenance_status": "unverified",
+        "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1318,
+        "path": "docs/EVIDENCE_POLICY.md",
+        "provenance_status": "unverified",
+        "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 8072,
+        "path": "schemas/run.schema.json",
+        "provenance_status": "unverified",
+        "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1726,
+        "path": "schemas/track-receipt-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 3232,
+        "path": "schemas/track-acceptance-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 494,
+        "path": "schemas/track-tool-call-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf"
+      }
+    ],
     "track_id": "T4"
   },
   "evidence_boundaries": {

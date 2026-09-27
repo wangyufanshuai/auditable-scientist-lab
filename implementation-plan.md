@@ -10,7 +10,7 @@
 - Delivery boundary: implement against the public MIT repository, but do not push until
   the first acceptance package is complete
 
-## Current implementation checkpoint (2026-09-21)
+## Current implementation checkpoint (2026-09-27)
 
 - P0–P7 T1 package: implemented locally. `artifacts/acceptance.json` records the CLI,
   policy receipt, replay checks, and bounded evidence boundary.
@@ -19,8 +19,12 @@
   in `artifacts/track-portfolio.json`.
 - The portfolio is still `implementing` locally. No claim of real-data validity, formal
   proof completeness, wet-lab authorization, production readiness, or public release is closed.
-- Next engineering work is hardening the portfolio verifier, adding common artifact schema
-  validation, and running mutation/failure-path audits before deciding whether to publish.
+- Current mutation checks reject altered T1 input, experiment, Run, event log, and project-05
+  snapshot, plus altered T2 acceptance boundaries, result, event log, and source hash. T2–T5
+  acceptance packages record the evaluator's source SHA-256 and replay their negative cases.
+- Next engineering work is to make T2–T5 evaluator calls operational through the same
+  Policy/ToolRegistry path as T1 and to audit a clean-environment install. Scientific, rights,
+  compute, and human-review gates remain open; public release remains a separate decision.
 
 ## Confirmed decisions
 
@@ -290,8 +294,11 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Add `pyproject.toml` with Python `>=3.10` and pinned test/runtime profiles.
-2. Implement the P1 records and validate them against `schemas/run.schema.json`.
-3. Create a fixed Hohmann input table and train/holdout manifest.
-4. Implement the append-only event writer and a two-run replay test.
-5. Only after G2, add the three deterministic tools and the CLI.
+1. Turn the T2–T5 recorded Tool/Policy descriptors into actual registered offline calls,
+   and expose their fixture runs through the CLI while retaining replay checks.
+2. Add a second deterministic numerical backend for T3 only after its implementation,
+   license, and independent-reference provenance are recorded.
+3. Add rights-cleared real-data adapters only after source and data-use gates are closed;
+   until then, keep all track claims at their current bounded fixture scope.
+4. Reassess the local-only publication boundary from a fresh environment and user review;
+   do not push or publish automatically.
