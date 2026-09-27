@@ -15,7 +15,7 @@ from ..runtime.replay import BoundPaths, ReplayMismatch, fingerprint_file
 from .causal import CausalCase, evaluate_causal_fixture
 from .common import TrackReceipt
 from .dynamics import DynamicsCase, evaluate_dynamics_fixture
-from .proof import ProofPackage, ProofState, verify_proof_package
+from .proof import ProofPackage, verify_proof_package
 from .protocol import ProtocolSpec, verify_protocol
 
 
@@ -74,6 +74,8 @@ def track_source_paths(track_id: str) -> list[Path]:
     ]
     if track_id == "T3":
         resources.append("docs/T3_METHOD.md")
+    if track_id == "T4":
+        resources.append("docs/T4_METHOD.md")
     paths = [source_path(f"src/auditable_scientist/{item}") for item in sources]
     root = checkout_root()
     if root is not None:
@@ -130,7 +132,12 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
     elif track_id == "T4":
         package = ProofPackage.model_validate(input_payload)
         result = verify_proof_package(package)
-        tampered = package.model_copy(update={"trajectory": [*package.trajectory, ProofState(step=len(package.trajectory), mass_a=0, mass_b=4)]})
+        changed_state = package.trajectory[-1].model_copy(update={"mass_b": package.trajectory[-1].mass_b + 1})
+        changed_trajectory = [*package.trajectory[:-1], changed_state]
+        tampered = package.model_copy(update={
+            "trajectory": changed_trajectory,
+            "trajectory_hash": canonical_hash([item.model_dump(mode="json") for item in changed_trajectory]),
+        })
         negative_result = verify_proof_package(tampered)
         from .common import make_track_receipt
 
@@ -139,7 +146,7 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
             evidence_level=result.evidence_level, passed=result.passed,
             negative_case_passed=not negative_result.passed,
             result=result.model_dump(mode="json"),
-            blocked_gates=["formal proof backend beyond finite obligation check"],
+            blocked_gates=["general formal proof backend beyond this fixed transfer rule"],
         )
         negative = negative_result.model_dump(mode="json")
     elif track_id == "T5":

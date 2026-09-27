@@ -75,7 +75,7 @@
       "name": "relocated-run-replay",
       "command": "python scripts/verify_committed_relocation.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T03:47:23.227853+00:00",
+      "recorded_at": "2026-09-27T04:28:40.413742+00:00",
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/relocation-audit.json"
@@ -84,7 +84,7 @@
       "name": "fresh-pinned-replay-environment",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_replay_environment.py --output artifacts/replay-environment-audit.json",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T03:53:19.227239+00:00",
+      "recorded_at": "2026-09-27T04:28:33.770849+00:00",
       "verified": true,
       "input_version": "requirements-replay-win-py312.txt",
       "output_path": "artifacts/replay-environment-audit.json"
@@ -93,10 +93,19 @@
       "name": "fresh-pinned-five-track-replay",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T03:53:57Z",
+      "recorded_at": "2026-09-27T04:29:40.865525+00:00",
       "verified": true,
       "input_version": "replay-manifest-v2",
       "output_path": "artifacts/acceptance-verification.json"
+    },
+    {
+      "name": "fresh-wheel-five-track-replay",
+      "command": "python scripts/verify_wheel_install.py",
+      "exit_code": 0,
+      "recorded_at": "2026-09-27T04:29:15.922225+00:00",
+      "verified": true,
+      "input_version": "wheel-audit-v2",
+      "output_path": "artifacts/wheel-audit.json"
     }
   ],
   "scientific_boundaries": {
@@ -114,7 +123,7 @@
     "independent numerical backend",
     "T2 real intervention data, causal identification, and data rights",
     "T3 multi-body validation, independent production solver, and compute budget",
-    "T4 formal proof backend and obligation completeness",
+    "T4 general formal proof backend and transition model coverage",
     "T5 real protocol provenance, biosafety review, and human acceptance"
   ],
   "sample_run": "artifacts/sample-run.json"

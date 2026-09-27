@@ -48,6 +48,10 @@
   tags, and installed license notices are recorded in `docs/T3_EXTERNAL_SOLVER.md`
   and `artifacts/t3-external-scipy.json`. SciPy remains outside the core dependency
   and the committed Run; this audit does not close multi-body or mission gates.
+- T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
+  five-obligation set. A fixed-rule symbolic conservation identity and every finite
+  transition are checked; a modified mass with a recomputed trajectory hash is rejected.
+  The v2 package remains bounded to this declared rule and is not a general proof backend.
 - Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
   fixture inputs. T1–T5 replayed from a copied checkout in the same dependency
   environment, and five wheel-generated run directories replayed after relocation.

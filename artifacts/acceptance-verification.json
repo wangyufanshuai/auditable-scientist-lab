@@ -33,7 +33,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "9fad105f2f5872f8334386be1e1cfb68cad7c14f5ed30e6061f6b2a0a1fe1326",
+      "manifest_hash": "4fefdfd8fb3a3c3a8ec44ecba02ad0be5b0723aa1da019bed7e37de7b76dfd8a",
       "verified": true
     },
     "T3": {
@@ -47,7 +47,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "341999bb8d09146fd18c207ddf9a3cad50df72ddc3e03ac5631edf90d1785c5c",
+      "manifest_hash": "d7d6248df08e0581a78a321df1733ee78fdcb543ad3fffe2713e10ec5dabdf8c",
       "verified": true
     },
     "T4": {
@@ -61,7 +61,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "34f1b6d97884b5e9014503a79bdb9573f9e538f022333354f12722ad19e8aa65",
+      "manifest_hash": "e43c6394066166a0cbbf5f164f2eabcdc3e49ef1f7e38dbef551617e19aca0e6",
       "verified": true
     },
     "T5": {
@@ -75,7 +75,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "b6ce0f05a67c43f04457635fff64123e8fbd6e06f378939c861de644b3965481",
+      "manifest_hash": "07242b6af4be64d4af22ca12530f94262cca904673703f5271fbc84a8a23822d",
       "verified": true
     }
   },
@@ -91,5 +91,6 @@
     "T3",
     "T4",
     "T5"
-  ]
+  ],
+  "wheel_audit_verified": true
 }

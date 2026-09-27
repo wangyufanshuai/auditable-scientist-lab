@@ -19,7 +19,7 @@ from .tracks.runner import ROOT, load_track_input, run_registered_track, track_s
 TASK_IDS = {
     "T2": "t2-causal-intervention-v1",
     "T3": "t3-harmonic-dynamics-v2",
-    "T4": "t4-proof-carrying-v1",
+    "T4": "t4-proof-carrying-v2",
     "T5": "t5-bio-chem-protocol-v1",
 }
 FIXTURE_RESOURCES = {

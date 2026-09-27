@@ -108,10 +108,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 9237,
+          "bytes": 9556,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "1b1d027045e4d78b3646259f9ac4c002ab93dae03dcbd0c0c320d610b14976a1"
+          "sha256": "98c8936a5ec6ee0632b4f18f8106854b4940473a789863bd21ed47476aa66aff"
         },
         {
           "allowed_use": [
@@ -211,17 +211,17 @@
           "bytes": 8627,
           "path": "src/auditable_scientist/track_cli.py",
           "provenance_status": "unverified",
-          "sha256": "ece73796a9a3438afe5c9c04e6c0c40663103531cd6457a60215fc96307f1869"
+          "sha256": "02b3f72a1adcd7efd01fd2c4506b68e4a42e9a1cb15ba11a43a8a7c66b2963c4"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13501,
+          "bytes": 14872,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "35cef39ad69ce3deb362db0bbcd73916f17d23e16c9f63865297f9e742e7629b"
+          "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
         },
         {
           "allowed_use": [
@@ -373,10 +373,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 9237,
+          "bytes": 9556,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "1b1d027045e4d78b3646259f9ac4c002ab93dae03dcbd0c0c320d610b14976a1"
+          "sha256": "98c8936a5ec6ee0632b4f18f8106854b4940473a789863bd21ed47476aa66aff"
         },
         {
           "allowed_use": [
@@ -476,17 +476,17 @@
           "bytes": 8627,
           "path": "src/auditable_scientist/track_cli.py",
           "provenance_status": "unverified",
-          "sha256": "ece73796a9a3438afe5c9c04e6c0c40663103531cd6457a60215fc96307f1869"
+          "sha256": "02b3f72a1adcd7efd01fd2c4506b68e4a42e9a1cb15ba11a43a8a7c66b2963c4"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13501,
+          "bytes": 14872,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "35cef39ad69ce3deb362db0bbcd73916f17d23e16c9f63865297f9e742e7629b"
+          "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
         },
         {
           "allowed_use": [
@@ -563,36 +563,40 @@
     },
     {
       "blocked_gates": [
-        "formal proof backend beyond finite obligation check"
+        "general formal proof backend beyond this fixed transfer rule"
       ],
-      "evaluator_id": "proof-carrying-simulation-v1",
+      "evaluator_id": "proof-carrying-simulation-v2",
       "evidence_files": [
         {
           "allowed_use": [
             "offline-fixture",
             "bounded-evaluator"
           ],
-          "bytes": 715,
+          "bytes": 1093,
           "path": "examples/proof/fixture.json",
           "provenance_status": "unverified",
-          "sha256": "18abd0385155758c0330f92c78b3f0ac3c135698e39e77b3fd289fa00908d496"
+          "sha256": "7d8b874245d70b7b1c4c4bd8d5c6977ea8e9ba58d90aefa5c377cd9a025352d9"
         }
       ],
       "evidence_level": "validated-reproduction",
-      "input_hash": "12ff428e6a112d759f951d771563acf36d36b1f806db523dd73e3e9379055115",
+      "input_hash": "6497f62cc5a8ff8440eb4abab7754f1045ec10aa919de669f51eff8e25a59e00",
       "negative_case_passed": true,
       "passed": true,
       "result": {
         "checked_obligations": [
           "o1",
           "o2",
-          "o3"
+          "o3",
+          "o4",
+          "o5"
         ],
-        "claim_status": "verified",
-        "evaluator_id": "proof-carrying-simulation-v1",
+        "claim_status": "bounded-verified",
+        "evaluator_id": "proof-carrying-simulation-v2",
         "evidence_level": "validated-reproduction",
         "failed_obligations": [],
-        "passed": true
+        "passed": true,
+        "proof_method": "exact-rational-transfer-witness-plus-symbolic-conservation-identity",
+        "rule_id": "conservative-transfer-v1"
       },
       "source_files": [
         {
@@ -600,10 +604,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 2386,
+          "bytes": 5407,
           "path": "src/auditable_scientist/tracks/proof.py",
           "provenance_status": "unverified",
-          "sha256": "4c439c6b71dfa241ffc48d03c2b75ba65af5a57de82fbee52828ca01151ea3a4"
+          "sha256": "261c1e9184d11864a0fedb845446f88e3f1f7cb37bff8293ff4298cdb8b32863"
         },
         {
           "allowed_use": [
@@ -630,10 +634,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 9237,
+          "bytes": 9556,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "1b1d027045e4d78b3646259f9ac4c002ab93dae03dcbd0c0c320d610b14976a1"
+          "sha256": "98c8936a5ec6ee0632b4f18f8106854b4940473a789863bd21ed47476aa66aff"
         },
         {
           "allowed_use": [
@@ -733,17 +737,17 @@
           "bytes": 8627,
           "path": "src/auditable_scientist/track_cli.py",
           "provenance_status": "unverified",
-          "sha256": "ece73796a9a3438afe5c9c04e6c0c40663103531cd6457a60215fc96307f1869"
+          "sha256": "02b3f72a1adcd7efd01fd2c4506b68e4a42e9a1cb15ba11a43a8a7c66b2963c4"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13501,
+          "bytes": 14872,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "35cef39ad69ce3deb362db0bbcd73916f17d23e16c9f63865297f9e742e7629b"
+          "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
         },
         {
           "allowed_use": [
@@ -804,6 +808,16 @@
           "path": "schemas/run.schema.json",
           "provenance_status": "unverified",
           "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+        },
+        {
+          "allowed_use": [
+            "offline-evaluator",
+            "source-provenance"
+          ],
+          "bytes": 1940,
+          "path": "docs/T4_METHOD.md",
+          "provenance_status": "unverified",
+          "sha256": "f272555a845451ac71eed61071743eb4693d48e64f7ffc831b63db7369ef99cb"
         }
       ],
       "track_id": "T4"
@@ -876,10 +890,10 @@
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 9237,
+          "bytes": 9556,
           "path": "src/auditable_scientist/tracks/runner.py",
           "provenance_status": "unverified",
-          "sha256": "1b1d027045e4d78b3646259f9ac4c002ab93dae03dcbd0c0c320d610b14976a1"
+          "sha256": "98c8936a5ec6ee0632b4f18f8106854b4940473a789863bd21ed47476aa66aff"
         },
         {
           "allowed_use": [
@@ -979,17 +993,17 @@
           "bytes": 8627,
           "path": "src/auditable_scientist/track_cli.py",
           "provenance_status": "unverified",
-          "sha256": "ece73796a9a3438afe5c9c04e6c0c40663103531cd6457a60215fc96307f1869"
+          "sha256": "02b3f72a1adcd7efd01fd2c4506b68e4a42e9a1cb15ba11a43a8a7c66b2963c4"
         },
         {
           "allowed_use": [
             "offline-evaluator",
             "source-provenance"
           ],
-          "bytes": 13501,
+          "bytes": 14872,
           "path": "scripts/generate_track_artifacts.py",
           "provenance_status": "unverified",
-          "sha256": "35cef39ad69ce3deb362db0bbcd73916f17d23e16c9f63865297f9e742e7629b"
+          "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
         },
         {
           "allowed_use": [

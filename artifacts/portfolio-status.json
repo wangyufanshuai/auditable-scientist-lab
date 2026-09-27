@@ -31,10 +31,10 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "extend bounded parameter sweep and external solver provenance",
+      "next_step": "bind optional solver provenance to a versioned Tool/Provider",
       "open_gates": [
         "multi-body validation",
-        "external solver and source-rights review",
+        "external solver Run integration",
         "compute budget"
       ],
       "public_release": false,
@@ -43,10 +43,10 @@
     },
     {
       "acceptance": "artifacts/t4-proof/acceptance.json",
-      "next_step": "bind obligations to a formal checker",
+      "next_step": "extend the fixed transfer witness to reviewed transition systems",
       "open_gates": [
-        "formal proof backend",
-        "obligation completeness"
+        "general formal proof backend",
+        "transition model coverage"
       ],
       "public_release": false,
       "state": "reproduced-within-scope",

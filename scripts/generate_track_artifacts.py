@@ -73,6 +73,18 @@ def write_track_bundle(
             }
         ],
     }
+    if track_id == "T3" and (ROOT / "artifacts/t3-sweep.json").is_file():
+        sweep = json.loads((ROOT / "artifacts/t3-sweep.json").read_text(encoding="utf-8"))
+        if sweep.get("schema_version") != "t3-sweep-v1" or sweep.get("passed") is not True:
+            raise ValueError("T3 sweep audit is present but did not pass")
+        acceptance["checks"].append({
+            "name": "bounded-parameter-step-sweep",
+            "command": "python scripts/verify_t3_sweep.py --write",
+            "exit_code": 0,
+            "recorded_at": sweep["recorded_at"],
+            "input_version": "t3-sweep-v1",
+            "output_path": "artifacts/t3-sweep.json",
+        })
     write_json(artifact_dir / "acceptance.json", acceptance)
     write_json(
         artifact_dir / "sample-run.json",
@@ -158,14 +170,20 @@ def main() -> None:
         ProofObligation(obligation_id="o1", checker_id="mass-conservation", statement="total mass is constant"),
         ProofObligation(obligation_id="o2", checker_id="nonnegative-state", statement="masses are nonnegative"),
         ProofObligation(obligation_id="o3", checker_id="trajectory-hash", statement="trajectory hash matches"),
+        ProofObligation(obligation_id="o4", checker_id="transition-rule", statement="each step follows the declared transfer witness"),
+        ProofObligation(obligation_id="o5", checker_id="symbolic-invariant", statement="the conservative transfer rule preserves total mass"),
     ]
-    proof_package = ProofPackage(package_id="proof-1", trajectory=trajectory, obligations=obligations, trajectory_hash=canonical_hash([item.model_dump(mode="json") for item in trajectory]))
+    proof_package = ProofPackage(
+        package_id="proof-1", rule_id="conservative-transfer-v1", trajectory=trajectory,
+        transfers=["1"], obligations=obligations,
+        trajectory_hash=canonical_hash([item.model_dump(mode="json") for item in trajectory]),
+    )
     proof_fixture = ROOT / "examples/proof/fixture.json"
     write_json(proof_fixture, proof_package.model_dump(mode="json"))
     proof_execution = run_registered_track("T4", proof_fixture)
     proof_receipt = proof_execution.receipt
     proof_negative = proof_execution.negative_case
-    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v1", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative, calls_used=proof_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t4-proof"))
+    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v2", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative, calls_used=proof_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t4-proof"))
     write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, run=proof_run, negative_case=proof_negative, demo_text=f"run_id={proof_run.run_id}; checked_obligations={proof_receipt.result['checked_obligations']}; tampered_claim_status={proof_negative['claim_status']}")
     portfolio.append(proof_receipt.model_dump(mode="json"))
 
@@ -187,8 +205,8 @@ def main() -> None:
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights"], "next_step": "add a rights-cleared intervention dataset", "public_release": False},
-        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "open_gates": ["multi-body validation", "external solver and source-rights review", "compute budget"], "next_step": "extend bounded parameter sweep and external solver provenance", "public_release": False},
-        {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["formal proof backend", "obligation completeness"], "next_step": "bind obligations to a formal checker", "public_release": False},
+        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "open_gates": ["multi-body validation", "external solver Run integration", "compute budget"], "next_step": "bind optional solver provenance to a versioned Tool/Provider", "public_release": False},
+        {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]
     write_json(ROOT / "artifacts/portfolio-status.json", {"schema_version": "portfolio-status-v1", "status": "implementing", "remote": "https://github.com/wangyufanshuai/auditable-scientist-lab", "pushed": False, "public_release_allowed": False, "tracks": status_rows})
@@ -201,6 +219,11 @@ def main() -> None:
     for row in status_rows:
         markdown.append(f"| {row['track_id']} | `{row['state']}` | `{row['acceptance']}` | {', '.join(row['open_gates'])} | {row['next_step']} | `{row['public_release']}` |")
     markdown.extend(["", "Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims."])
+    if (ROOT / "artifacts/t3-external-scipy.json").is_file():
+        markdown.extend([
+            "The separate SciPy audit records source tags, installed license notices, exact wheel hashes,",
+            "and a nine-case oscillator cross-check; it is not yet evidence inside the T3 Run.",
+        ])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 

@@ -20,10 +20,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = {
     "T1": "acceptance-runs-v15/run-02a00f229aabd3d2",
-    "T2": "track-runs-v6/run-t2-e8c0533775f1ab69",
-    "T3": "track-runs-v6/run-t3-1c4eb6b867515637",
-    "T4": "track-runs-v6/run-t4-12ff428e6a112d75",
-    "T5": "track-runs-v6/run-t5-cc6170f111df81a8",
+    "T2": "track-runs-v7/run-t2-e8c0533775f1ab69",
+    "T3": "track-runs-v7/run-t3-1c4eb6b867515637",
+    "T4": "track-runs-v7/run-t4-6497f62cc5a8ff84",
+    "T5": "track-runs-v7/run-t5-cc6170f111df81a8",
 }
 
 

@@ -21,7 +21,7 @@ from auditable_scientist.runtime.replay import BoundPaths, ReplayReceipt, finger
 from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
 from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
-from auditable_scientist.tracks.proof import ProofPackage, ProofState, verify_proof_package
+from auditable_scientist.tracks.proof import ProofPackage, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
 from auditable_scientist.tracks.runner import run_registered_track
 from auditable_scientist.track_cli import replay_track_run
@@ -32,6 +32,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def load(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
+
+
+def wheel_source_snapshot_hash(root: Path = ROOT) -> str:
+    digest = hashlib.sha256()
+    paths = [root / "pyproject.toml", *sorted(
+        path for path in (root / "src/auditable_scientist").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
+    )]
+    for path in paths:
+        digest.update(path.relative_to(root).as_posix().encode("utf-8") + b"\0")
+        digest.update(hashlib.sha256(path.read_bytes()).digest())
+    return digest.hexdigest()
 
 
 def verify_check_rows(checks: list[dict], *, root: Path, expected_input: str | None = None) -> None:
@@ -241,7 +253,12 @@ def main() -> None:
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
     t4_result = verify_proof_package(t4_package)
-    t4_tampered = t4_package.model_copy(update={"trajectory": [*t4_package.trajectory, ProofState(step=2, mass_a=0, mass_b=4)]})
+    changed_state = t4_package.trajectory[-1].model_copy(update={"mass_b": t4_package.trajectory[-1].mass_b + 1})
+    changed_trajectory = [*t4_package.trajectory[:-1], changed_state]
+    t4_tampered = t4_package.model_copy(update={
+        "trajectory": changed_trajectory,
+        "trajectory_hash": canonical_hash([item.model_dump(mode="json") for item in changed_trajectory]),
+    })
     if t4_result.model_dump(mode="json") != t4_item["result"] or t4_item["input_hash"] != canonical_hash(t4_package.model_dump(mode="json")) or verify_proof_package(t4_tampered).passed:
         raise SystemExit("T4 proof evaluator replay mismatch")
     if load("artifacts/t4-proof/acceptance.json")["negative_case"] != verify_proof_package(t4_tampered).model_dump(mode="json"):
@@ -269,7 +286,7 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T3", "T4", "T5"):
         item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v6" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v7" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -307,7 +324,7 @@ def main() -> None:
     for track_id in ("T2", "T3", "T4", "T5"):
         receipt = next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v6" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v7" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -321,6 +338,24 @@ def main() -> None:
     ):
         raise SystemExit("fresh replay environment audit is missing or differs from current inputs")
 
+    wheel = load("artifacts/wheel-audit.json")
+    if (
+        wheel.get("schema_version") != "wheel-audit-v2"
+        or wheel.get("status") != "verified-within-offline-fixtures"
+        or wheel.get("checkout_root_in_installed_process") is not None
+        or wheel.get("all_five_relocated_replays_equal") is not True
+        or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
+        or wheel.get("bundled_resource_count", 0) < 16
+        or wheel.get("python") != run.environment["python"]
+        or wheel.get("wheel_artifact_committed") is not False
+        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T3", "T4", "T5"}
+        or wheel.get("source_snapshot_sha256") != wheel_source_snapshot_hash()
+        or wheel.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_wheel_install.py").sha256
+        or not re.fullmatch(r"[a-f0-9]{64}", wheel.get("wheel_sha256", ""))
+        or any(wheel.get("boundaries", {}).get(key) is not False for key in ("scientific_validity", "real_data", "research_candidate", "publication_ready", "public_release"))
+    ):
+        raise SystemExit("wheel audit is missing or differs from the current package")
+
     result = {
         "schema_version": "acceptance-verification-v1",
         "status": "verified",
@@ -329,6 +364,7 @@ def main() -> None:
         "tracks": [item["track_id"] for item in portfolio["tracks"]],
         "track_evaluators_replayed": ["T2", "T3", "T4", "T5"],
         "track_cli_replays": cli_replays,
+        "wheel_audit_verified": True,
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"

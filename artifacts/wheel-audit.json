@@ -1,43 +1,35 @@
 {
-  "schema_version": "wheel-audit-v1",
-  "recorded_at": "2026-09-27T03:43:37Z",
-  "status": "verified-within-offline-fixtures",
-  "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "623b594283c30bbaf5e9ba7c84c3e00118ae20d3966f2db7748d6f307a14a2d7",
-  "wheel_artifact_committed": false,
-  "installation": "final wheel force-reinstalled in an existing isolated temporary virtual environment with dependencies already present; CLI executed outside the source checkout",
-  "checkout_root_in_installed_process": null,
-  "bundled_resource_count": 15,
-  "manifest_schema": "replay-manifest-v2",
-  "run_bundle_relocation": "all five run directories copied to another path and replayed in the same installed wheel environment",
-  "commands_verified": [
-    "auditable-scientist --help",
-    "auditable-scientist init hohmann.json",
-    "auditable-scientist run hohmann.json --offline --seed 17 --output-dir runs",
-    "auditable-scientist replay runs/run-1becdca276205128",
-    "auditable-scientist inspect runs/run-1becdca276205128",
-    "auditable-scientist export-report runs/run-1becdca276205128 --output hohmann-report.md",
-    "auditable-scientist init-track T2..T5 <track>.json",
-    "auditable-scientist run-track T2..T5 <track>.json --output-dir track-runs",
-    "auditable-scientist replay track-runs/<run-id>"
-  ],
-  "replay_manifest_hashes": {
-    "T1": "e2422757b409153791a08fffe0c311d1343d70d188c9fe1e36f4d4ed9b292cdc",
-    "T2": "9e766beadeff8c2895d252518602b920d49940d6cd577d7f9e9cc5678cf9fa3c",
-    "T3": "bda290cda8ac06c5de89bfe3e96e7e33534d10c03c62edd8bb015abde57bbc4e",
-    "T4": "0c1a45f577b1e286de622bf140e7b885bdc09059d7ff4a72036b1c1a23a21af0",
-    "T5": "cf26dd26178b0f5eaf3b272407606590063cd61aa3f7c211e10696101b6ed5c4"
-  },
+  "all_five_relocated_replays_equal": true,
   "boundaries": {
-    "scientific_validity": false,
+    "public_release": false,
+    "publication_ready": false,
     "real_data": false,
     "research_candidate": false,
-    "publication_ready": false,
-    "public_release": false
+    "scientific_validity": false
   },
+  "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
+  "bundled_resource_count": 16,
+  "checkout_root_in_installed_process": null,
   "limitations": [
-    "The exact temporary wheel file is not committed; its SHA-256 records the audited build.",
-    "This is an installation and local-fixture smoke test, not independent scientific validation."
-  ]
+    "The audited wheel was built and installed in a temporary directory; it is not committed.",
+    "The runtime CLI tests used only bundled offline fixtures and the same installed wheel environment."
+  ],
+  "manifest_schema": "replay-manifest-v2",
+  "python": "3.12.3",
+  "recorded_at": "2026-09-27T04:29:15.922225+00:00",
+  "replay_manifest_hashes": {
+    "T1": "98f36f4b3746b80a6bb5f2eb40f88bf7bdadb9ffc0966f050269c184e9e544da",
+    "T2": "9de1f64c1747ec46b7c43fa126c02f726f332e04d0ab26f70d691eda8e17fda9",
+    "T3": "aefcbf628ea27d0ec459c5a4f755678f196498c04e3f25f3a95b3af35b357d56",
+    "T4": "77022171356f044931fd7a31dc7d1159c0db5a6366464112c43b9edc7fd77d2a",
+    "T5": "c339df159594f48fda460c32ed647f15963d03869d6f1384ade62253ce721655"
+  },
+  "schema_version": "wheel-audit-v2",
+  "script_sha256": "7aa42f17167e01f74c8485fc63b2e9dd250b2d2b1a40aafa1d9fbbedc18a7ffc",
+  "source_snapshot_sha256": "d67b79335f8f3d50621fca68225505e227f8404359dc732946b5f88ab293972d",
+  "status": "verified-within-offline-fixtures",
+  "t4_bounded_result_and_unverified_run_claim": true,
+  "wheel_artifact_committed": false,
+  "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "a32cf7b7376d1cca8fb0cd1236324072eb3afb5aa24cc1489d50c95a3cf27fc1"
 }
