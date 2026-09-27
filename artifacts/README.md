@@ -10,7 +10,8 @@ The acceptance package is maintained here as bounded local evidence:
 
 The current T1 package is `acceptance.json`, `test-report.md`, `demo-transcript.md`, and
 `sample-run.json`; T2–T5 have the same four files in their track-specific subdirectories.
-`acceptance-runs-v18/` holds the current T1 CLI Run, and `track-runs-v14/` holds one
+`acceptance-runs-v18/` holds the historical T1 CLI Run, `t1-combined-runs-v3/`
+holds the combined analytic/RK4 T1 Run, and `track-runs-v16/` holds one
 policy-guarded CLI Run per bounded T2–T5 fixture plus the T2P and T3N subtracks. Each runtime bundle includes a replay
 manifest, snapshotted input, JSONL event log, and deterministic report. The v2 manifests
 use bounded `run://` and `root://` references. A copied checkout replays in the recorded
@@ -24,5 +25,15 @@ T3 Run does not require SciPy.
 `t3-perturbed-audit.json` records a pinned-SciPy check of two short, synthetic velocity perturbations. `t3-perturbed-runs/` and `t3-perturbed-run-audit.json` bind the same grid to an optional replayable Tool/Provider Run with moved-run and mutation controls. It is separate from the core T3N Run and cannot support long-horizon, chaotic, or mission accuracy.
 `t2-physical/` records 100 synthetic ball-and-floor interventions and a complete paired counterfactual example. Its evidence concerns only the declared simulator; real interventions, causal identification, and external algorithm rights remain open gates.
 `wheel-audit.json` records installation and CLI replay from a temporary wheel-only environment.
+`t1-combined-cli-audit-v4.json` records the versioned console and package-module router,
+including historical source-bundle replay and tamper rejection.
+`t1-de440s-ephemeris-snapshot.json` and its audit record two fixed-date NAIF
+DE440s geometry comparisons. The optional kernel is ignored by Git; the saved
+snapshot is not a spacecraft trajectory or independent mission validation.
+`t1-de440s-run-audit.json` binds that small snapshot to an offline Tool/Policy/
+Provider Run with moved replay and mutation controls. Run replay recomputes
+geometry from saved states; it does not rerun the NAIF kernel.
 `symbolic-engine-audit.json` is a read-only observation of a newly located local source directory; it binds file hashes and preserves the blocked external-provider gate without importing its code.
-These artifacts do not establish real-data validity, publication readiness, or scientific novelty.
+The DE440s snapshot is source-tracked ephemeris-model data for two fixed-date
+geometry comparisons. None of these artifacts establishes real-mission validity,
+publication readiness, or scientific novelty.

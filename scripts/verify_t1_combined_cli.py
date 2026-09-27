@@ -13,20 +13,22 @@ import subprocess
 import sys
 import tempfile
 
-from auditable_scientist import cli as legacy_cli
-from auditable_scientist.cli_v2 import replay_run
+from auditable_scientist.cli_v3 import replay_verified_run
 from auditable_scientist.runtime.replay import ReplayMismatch
 
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = ROOT / "artifacts/t1-combined-runs-v3"
-AUDIT = ROOT / "artifacts/t1-combined-cli-audit-v3.json"
+AUDIT = ROOT / "artifacts/t1-combined-cli-audit-v4.json"
 METHOD = ROOT / "docs/T1_COMBINED_CLI_V2.md"
 LEGACY_RUN = ROOT / "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2"
 SOURCE_FILES = (
     Path(__file__).resolve(), METHOD,
     ROOT / "src/auditable_scientist/__main__.py",
     ROOT / "src/auditable_scientist/cli_v2.py",
+    ROOT / "src/auditable_scientist/cli_v3.py",
+    ROOT / "src/auditable_scientist/_resources/legacy-runtime-8c26a26.zip",
+    ROOT / "pyproject.toml",
     ROOT / "src/auditable_scientist/tools/orbit_audit_v2.py",
 )
 
@@ -78,7 +80,7 @@ def _tamper_rejected(source: Path, *, target: str, temporary: Path) -> bool:
     else:
         raise ValueError(f"unsupported mutation: {target}")
     try:
-        replay_run(moved)
+        replay_verified_run(moved)
     except (ValueError, FileNotFoundError):
         replay_rejected = True
     else:
@@ -105,20 +107,20 @@ def build_audit(run_dir: Path) -> dict:
     run_dir = run_dir.resolve()
     if not run_dir.is_relative_to(RUNS.resolve()) or run_dir.parent != RUNS.resolve():
         raise ReplayMismatch("T1 combined Run is outside its artifact directory")
-    original = replay_run(run_dir)
+    original = replay_verified_run(run_dir)
     cli_replay = json.loads(_invoke(["replay", str(run_dir)]))
     inspected = json.loads(_invoke(["inspect", str(run_dir)]))
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     orbit = json.loads((run_dir / "numerical.json").read_text(encoding="utf-8"))
     experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
-    old_replay = legacy_cli._replay(LEGACY_RUN)
+    old_replay = replay_verified_run(LEGACY_RUN)
     with tempfile.TemporaryDirectory(prefix="scientist-t1-combined-audit-") as temporary:
         temporary_root = Path(temporary).resolve()
         if not temporary_root.is_relative_to(Path(tempfile.gettempdir()).resolve()):
             raise ReplayMismatch("temporary T1 combined audit escaped the temp directory")
         relocated = temporary_root / run_dir.name
         shutil.copytree(run_dir, relocated)
-        moved_replay = replay_run(relocated)
+        moved_replay = replay_verified_run(relocated)
         exported = temporary_root / "exported-report.md"
         _invoke(["export-report", str(run_dir), "--output", str(exported)])
         report_equal = exported.read_bytes() == (run_dir / "report.md").read_bytes()
@@ -145,7 +147,7 @@ def build_audit(run_dir: Path) -> dict:
         **{f"{target}_tamper_rejected": value for target, value in mutations.items()},
     }
     return {
-        "schema_version": "t1-combined-cli-audit-v3",
+        "schema_version": "t1-combined-cli-audit-v4",
         "status": "verified-bounded-combined-cli-run" if all(checks.values()) else "failed",
         "run_path": run_dir.relative_to(ROOT).as_posix(),
         "run_id": run_dir.name,
@@ -155,7 +157,7 @@ def build_audit(run_dir: Path) -> dict:
         "source_files": [_fingerprint(path) for path in SOURCE_FILES],
         "boundaries": {
             "package_module_cli_integrated": True,
-            "console_script_routed_to_v2": False,
+            "console_script_versioned_router": True,
             "independent_time_propagation": True,
             "independent_orbit_derivation": False,
             "synthetic_fixture_only": True,
@@ -168,6 +170,11 @@ def build_audit(run_dir: Path) -> dict:
 
 
 def _write_run() -> Path:
+    existing = list(RUNS.glob("run-t1-v2-*/replay-manifest.json")) if RUNS.is_dir() else []
+    if len(existing) == 1:
+        return existing[0].parent
+    if existing:
+        raise ReplayMismatch("T1 combined artifact directory has multiple Runs")
     with tempfile.TemporaryDirectory(prefix="scientist-t1-combined-build-") as temporary:
         temporary_root = Path(temporary).resolve()
         if not temporary_root.is_relative_to(Path(tempfile.gettempdir()).resolve()):
@@ -178,7 +185,7 @@ def _write_run() -> Path:
             "run", str(config), "--offline", "--seed", "17",
             "--output-dir", str(temporary_root / "runs"),
         ])).resolve()
-        replay_run(generated)
+        replay_verified_run(generated)
         destination = RUNS / generated.name
         if destination.exists():
             raise FileExistsError(f"refusing to overwrite existing T1 combined Run: {destination}")

@@ -6,3 +6,4 @@ build/
 artifacts/runs/
 artifacts/p4-runs/
 artifacts/hohmann-report.md
+data/naif/*.bsp

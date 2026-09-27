@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import math
 import re
@@ -13,7 +14,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-from auditable_scientist.cli import _replay
+from auditable_scientist.cli_v3 import historical_source_matches, replay_verified_run
 from auditable_scientist.benchmark.hohmann import GRAMMAR_VERSION
 from auditable_scientist.domain import Run
 from auditable_scientist.adapters import Project05Adapter, Project05Snapshot, built_in_manifests
@@ -30,7 +31,6 @@ from auditable_scientist.tracks.physical_world import PhysicalCase, compare, eva
 from auditable_scientist.tracks.proof import ProofPackage, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
 from auditable_scientist.tracks.runner import run_registered_track
-from auditable_scientist.track_cli import replay_track_run
 from auditable_scientist.tools.numerical import hohmann_baseline
 if __package__:
     from .verify_t1_core_orbit import build_audit as build_t1_core_orbit_audit
@@ -125,7 +125,7 @@ def verify_core_t1_orbit_run() -> dict:
 
 def verify_combined_t1_cli() -> dict:
     """Recompute the v2 package CLI Run without weakening historical replay."""
-    audit = load("artifacts/t1-combined-cli-audit-v3.json")
+    audit = load("artifacts/t1-combined-cli-audit-v4.json")
     relative = Path(audit.get("run_path", ""))
     expected_checks = {
         "one_combined_run", "fixed_holdout_passed", "numerical_grid_passed",
@@ -136,14 +136,14 @@ def verify_combined_t1_cli() -> dict:
         "missing_numerical_tamper_rejected",
     }
     expected_boundaries = {
-        "package_module_cli_integrated": True, "console_script_routed_to_v2": False,
+        "package_module_cli_integrated": True, "console_script_versioned_router": True,
         "independent_time_propagation": True, "independent_orbit_derivation": False,
         "synthetic_fixture_only": True, "real_data": False,
         "dated_ephemeris": False, "mission_trajectory_validated": False,
         "publication_ready": False,
     }
     sources = audit.get("source_files", [])
-    if (audit.get("schema_version") != "t1-combined-cli-audit-v3"
+    if (audit.get("schema_version") != "t1-combined-cli-audit-v4"
             or audit.get("status") != "verified-bounded-combined-cli-run"
             or audit.get("boundaries") != expected_boundaries
             or set(audit.get("checks", {})) != expected_checks
@@ -157,8 +157,10 @@ def verify_combined_t1_cli() -> dict:
             or {item.get("path") for item in sources} != {
                 "scripts/verify_t1_combined_cli.py", "docs/T1_COMBINED_CLI_V2.md",
                 "src/auditable_scientist/__main__.py", "src/auditable_scientist/cli_v2.py",
-                "src/auditable_scientist/tools/orbit_audit_v2.py",
-            } or len(sources) != 5):
+                "src/auditable_scientist/cli_v3.py",
+                "src/auditable_scientist/_resources/legacy-runtime-8c26a26.zip",
+                "src/auditable_scientist/tools/orbit_audit_v2.py", "pyproject.toml",
+            } or len(sources) != 8):
         raise ValueError("T1 combined CLI audit identity, checks, or boundary differs")
     for item in sources:
         path = ROOT / item["path"]
@@ -181,7 +183,123 @@ def verify_combined_t1_cli() -> dict:
             or observed.get("replay") != audit["replay"] or observed.get("checks") != audit["checks"]):
         raise ValueError("T1 v2 CLI dynamic audit differs from saved receipt")
     return {"run_id": audit["run_id"], "replay": audit["replay"],
-            "checks": audit["checks"], "console_script_routed_to_v2": False}
+            "checks": audit["checks"], "console_script_versioned_router": True}
+
+
+def verify_optional_t1_de440s() -> dict:
+    """Check the saved source contract; rerun only when the optional kernel is present."""
+
+    audit = load("artifacts/t1-de440s-ephemeris-audit.json")
+    snapshot = load("artifacts/t1-de440s-ephemeris-snapshot.json")
+    expected_sources = {
+        "scripts/verify_t1_de440s_ephemeris.py", "scripts/fetch_de440s.py",
+        "src/auditable_scientist/adapters/naif_de440s.py",
+        "docs/T1_DE440S_EPHEMERIS.md", "requirements-t1-de440s-win-py312.txt",
+    }
+    sources = audit.get("source_files", [])
+    boundaries = audit.get("boundaries", {})
+    rights = audit.get("source_rights", {})
+    snapshot_bytes = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                                 allow_nan=False) + "\n").encode("utf-8")
+    if (audit.get("schema_version") != "t1-de440s-ephemeris-audit-v1"
+            or audit.get("status") != "verified-source-tracked-geometry-only"
+            or set(audit.get("checks", {})) != {
+                "official_md5_matched", "pinned_sha256_matched", "fixed_departure_dates",
+                "finite_dated_geometry", "reader_and_frame_explicit",
+                "mission_claim_unverified", "wrong_kernel_rejected",
+            }
+            or not all(audit["checks"].values())
+            or {item.get("path") for item in sources} != expected_sources
+            or len(sources) != len(expected_sources)
+            or any(fingerprint_file(ROOT / item["path"]).sha256 != item.get("sha256")
+                   or (ROOT / item["path"]).stat().st_size != item.get("bytes")
+                   for item in sources)
+            or audit.get("snapshot_sha256") != hashlib.sha256(snapshot_bytes).hexdigest()
+            or audit.get("kernel_source") != snapshot.get("source")
+            or audit.get("kernel_local_path") != "data/naif/de440s.bsp"
+            or snapshot.get("source", {}).get("sha256") != "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+            or snapshot.get("source", {}).get("md5") != "3917ee56769db332790c751e2168843d"
+            or snapshot.get("claim_status") != "unverified"
+            or snapshot.get("evidence_level") != "real-data"
+            or [row.get("departure_jd_tdb") for row in snapshot.get("cases", [])] != [2460584.5, 2461375.5]
+            or snapshot.get("coordinate_contract", {}).get("mars_target") != "MARS BARYCENTER (4), not Mars center (499)"
+            or rights.get("rules_url") != "https://naif.jpl.nasa.gov/naif/rules.html"
+            or rights.get("kernel_redistributed_in_repository") is not False
+            or rights.get("applies_to_unrelated_sources") is not False
+            or boundaries != {
+                "external_ephemeris_model_used": True,
+                "real_ephemeris_source_tracked": True,
+                "mars_center_state_available": False,
+                "spacecraft_trajectory_propagated": False,
+                "mission_trajectory_validated": False,
+                "scientific_holdout": False,
+                "publication_ready": False,
+            }):
+        raise ValueError("DE440s saved source, rights, or scientific boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("DE440s audit has no timezone-aware timestamp")
+    kernel = ROOT / "data/naif/de440s.bsp"
+    dynamic_verified = False
+    if kernel.is_file() and importlib.util.find_spec("spiceypy") is not None:
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_de440s_ephemeris.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+        )
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"DE440s optional dynamic audit failed: {command.stderr.strip()}")
+        dynamic_verified = True
+    return {"status": audit["status"], "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic_verified,
+            "mission_trajectory_validated": False}
+
+
+def verify_optional_t1_de440s_run() -> dict:
+    """Replay the copied ephemeris snapshot without requiring the NAIF kernel."""
+
+    audit = load("artifacts/t1-de440s-run-audit.json")
+    expected_boundaries = {
+        "real_ephemeris_source_tracked": True,
+        "dynamic_kernel_recomputed_in_replay": False,
+        "mars_center_encounter_validated": False,
+        "spacecraft_trajectory_validated": False,
+        "scientific_holdout": False,
+        "mission_claim_verified": False,
+        "publication_ready": False,
+    }
+    relative = Path(audit.get("run_path", ""))
+    if (audit.get("schema_version") != "t1-de440s-run-audit-v1"
+            or audit.get("status") != "verified-offline-snapshot-geometry-run-only"
+            or relative.is_absolute() or ".." in relative.parts
+            or relative.parts[:1] != ("artifacts",)
+            or audit.get("run_id") != relative.name
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("relocated_replay_equal") is not True
+            or audit.get("result_tamper_rejected") is not True
+            or audit.get("snapshot_tamper_rejected") is not True
+            or audit.get("policy_denials") != {
+                "wrong_provider_rejected": True,
+                "out_of_scope_path_rejected": True,
+            }
+            or audit.get("replay", {}).get("verified") is not True):
+        raise ValueError("DE440s portable Run identity or boundary differs")
+    recorded_at = audit.get("recorded_at")
+    if not isinstance(recorded_at, str) or datetime.fromisoformat(recorded_at).tzinfo is None:
+        raise ValueError("DE440s portable Run has no timezone-aware timestamp")
+    command = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t1_de440s_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+    )
+    if command.returncode != 0:
+        raise ValueError(f"DE440s portable Run replay failed: {command.stderr.strip()}")
+    observed = json.loads(command.stdout)
+    if (observed.get("status") != audit["status"]
+            or observed.get("run_id") != audit["run_id"]
+            or observed.get("replay") != audit["replay"]
+            or observed.get("mutation_controls") != [True, True]):
+        raise ValueError("DE440s portable Run differs from saved receipt")
+    return {"run_id": audit["run_id"], "replay": audit["replay"],
+            "snapshot_geometry_only": True, "mission_claim_verified": False}
 
 
 def verify_optional_t1_orbit_static() -> dict:
@@ -796,6 +914,17 @@ def verify_check_rows(checks: list[dict], *, root: Path, expected_input: str | N
             raise ValueError("acceptance command input version differs from fixture hash")
 
 
+def same_evaluator_receipt_except_source(live: TrackReceipt, saved: dict) -> bool:
+    """Compare rerun semantics after historical source bytes are checked separately."""
+
+    def without_source_inventory(payload: dict) -> dict:
+        return {key: value for key, value in payload.items() if key != "source_files"}
+
+    return canonical_hash(without_source_inventory(live.model_dump(mode="json"))) == canonical_hash(
+        without_source_inventory(saved)
+    )
+
+
 def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Path = ROOT) -> None:
     receipt = TrackReceipt.model_validate(item)
     if receipt.track_id != track_id or not receipt.passed or not receipt.negative_case_passed:
@@ -807,7 +936,8 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         if relative.is_absolute() or ".." in relative.parts:
             raise ValueError(f"track {track_id} has an unsafe source or evidence path")
         fingerprint = fingerprint_file(root / relative)
-        if fingerprint.sha256 != record.sha256 or fingerprint.bytes != record.bytes:
+        if ((fingerprint.sha256 != record.sha256 or fingerprint.bytes != record.bytes)
+                and not historical_source_matches(record.path, record.sha256, record.bytes)):
             raise ValueError(f"track {track_id} source or evidence changed: {record.path}")
     for filename in ("acceptance.json", "test-report.md", "demo-transcript.md", "sample-run.json", "events.jsonl"):
         if not (bundle_dir / filename).is_file():
@@ -954,11 +1084,29 @@ def main() -> None:
     t1_combined_cli = verify_combined_t1_cli()
     if not any(
         item.get("name") == "t1-combined-package-cli-run"
-        and item.get("output_path") == "artifacts/t1-combined-cli-audit-v3.json"
+        and item.get("output_path") == "artifacts/t1-combined-cli-audit-v4.json"
         and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_combined_cli.py").sha256
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 v2 package CLI Run is missing its dynamic acceptance receipt")
+    de440s = verify_optional_t1_de440s()
+    if not any(
+        item.get("name") == "optional-t1-de440s-fixed-date-geometry"
+        and item.get("output_path") == "artifacts/t1-de440s-ephemeris-audit.json"
+        and item.get("input_version") == fingerprint_file(ROOT / "scripts/verify_t1_de440s_ephemeris.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 DE440s optional geometry audit has no command receipt")
+    de440s_run = verify_optional_t1_de440s_run()
+    if not any(
+        item.get("name") == "optional-t1-de440s-portable-snapshot-run"
+        and item.get("output_path") == "artifacts/t1-de440s-run-audit.json"
+        and item.get("input_version") == de440s_run["run_id"]
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 DE440s portable Run has no command receipt")
     t1_orbit_static = verify_optional_t1_orbit_static()
     orbit_script_sha = fingerprint_file(ROOT / "scripts/verify_t1_external_orbit.py").sha256
     if not any(
@@ -1033,7 +1181,7 @@ def main() -> None:
         [{"seq": event.seq, "event_type": event.event_type, "payload_hash": event.payload_hash} for event in t1_events]
     ):
         raise SystemExit("T1 trace does not cover the event log")
-    replay_receipt = ReplayReceipt.model_validate(_replay(run_dir))
+    replay_receipt = ReplayReceipt.model_validate(replay_verified_run(run_dir))
     if not replay_receipt.verified:
         raise SystemExit("T1 replay receipt did not verify")
     if canonical_hash(load("artifacts/sample-run.json")) != canonical_hash(run_payload):
@@ -1060,7 +1208,10 @@ def main() -> None:
         bundle_dir = ROOT / "artifacts" / directory
         verify_track_bundle(track_id, item, bundle_dir)
         live = run_registered_track(track_id, ROOT / item["evidence_files"][0]["path"])
-        if canonical_hash(live.receipt) != canonical_hash(item) or live.calls_used != 1:
+        # Historical source bytes are checked against the pinned archive in
+        # verify_track_bundle; current rerun compares evaluator output and
+        # evidence without pretending the new pyproject is the old source.
+        if not same_evaluator_receipt_except_source(live.receipt, item) or live.calls_used != 1:
             raise SystemExit(f"track {track_id} registered evaluator replay differs from receipt")
 
     physical_acceptance = load("artifacts/t2-physical/acceptance.json")
@@ -1076,7 +1227,10 @@ def main() -> None:
         or physical_evaluation.model_dump(mode="json") != physical_item["result"]
         or physical_receipt.input_hash != physical_item["input_hash"]
         or not physical_evaluation.ignored_intervention_rejected
-        or canonical_hash(run_registered_track("T2P", ROOT / "examples/causal/physical-fixture.json").receipt) != canonical_hash(physical_item)
+        or not same_evaluator_receipt_except_source(
+            run_registered_track("T2P", ROOT / "examples/causal/physical-fixture.json").receipt,
+            physical_item,
+        )
         or load("artifacts/t2-physical/counterfactual-example.json") != compare(physical_cases[3]).model_dump(mode="json")
     ):
         raise SystemExit("T2P physical counterfactual replay mismatch")
@@ -1159,7 +1313,10 @@ def main() -> None:
         nbody_evaluation.model_dump(mode="json") != nbody_item["result"]
         or nbody_receipt.input_hash != nbody_item["input_hash"]
         or not nbody_evaluation.negative_force_rejected
-        or canonical_hash(run_registered_track("T3N", ROOT / "examples/dynamics/nbody-fixture.json").receipt) != canonical_hash(nbody_item)
+        or not same_evaluator_receipt_except_source(
+            run_registered_track("T3N", ROOT / "examples/dynamics/nbody-fixture.json").receipt,
+            nbody_item,
+        )
     ):
         raise SystemExit("T3N analytic and numerical evaluator replay mismatch")
 
@@ -1291,7 +1448,10 @@ def main() -> None:
         or t4o_item["input_hash"] != canonical_hash(t4o_package.model_dump(mode="json"))
         or not t4o_result.passed or t4o_negative.passed
         or t4o_acceptance["negative_case"] != t4o_negative.model_dump(mode="json")
-        or canonical_hash(run_registered_track("T4O", ROOT / "examples/proof/oscillator-fixture.json").receipt) != canonical_hash(t4o_item)
+        or not same_evaluator_receipt_except_source(
+            run_registered_track("T4O", ROOT / "examples/proof/oscillator-fixture.json").receipt,
+            t4o_item,
+        )
     ):
         raise SystemExit("T4O oscillator proof evaluator replay mismatch")
     if not any(item.get("name") == "oscillator-physical-module-subtrack" and item.get("output_path") == "artifacts/t4-oscillator/acceptance.json" for item in load("artifacts/t4-proof/acceptance.json")["checks"]):
@@ -1342,13 +1502,14 @@ def main() -> None:
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
-                **receipt,
+                **{key: value for key, value in receipt.items() if key != "source_files"},
                 "evidence_files": [{**record, "path": "<bound>"} for record in receipt["evidence_files"]],
-                "source_files": [{**record, "path": "<bound>"} for record in receipt["source_files"]],
             }
+        # Saved source bytes are checked by the versioned replay; regeneration
+        # records the current source inventory, which can include newer CLI files.
         if canonical_hash(without_paths(saved_result["receipt"])) != canonical_hash(without_paths(item)):
             raise SystemExit(f"track {track_id} CLI Run receipt differs from portfolio")
-        cli_replays[track_id] = replay_track_run(run_dir)
+        cli_replays[track_id] = replay_verified_run(run_dir)
 
     relocation = load("artifacts/relocation-audit.json")
     if (
@@ -1392,10 +1553,11 @@ def main() -> None:
 
     wheel = load("artifacts/wheel-audit.json")
     if (
-        wheel.get("schema_version") != "wheel-audit-v5"
+        wheel.get("schema_version") != "wheel-audit-v6"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
         or wheel.get("all_nine_relocated_replays_equal") is not True
+        or wheel.get("all_nine_committed_console_replays_verified") is not True
         or wheel.get("t1v2_combined_run_and_unverified_mission_claim") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t4o_bounded_result_and_unverified_run_claim") is not True
@@ -1404,6 +1566,7 @@ def main() -> None:
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
         or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T1V2", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}
+        or set(wheel.get("committed_manifest_hashes", {})) != {"T1", "T1V2", "T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"}
         or wheel.get("source_snapshot_sha256") != wheel_source_snapshot_hash()
         or wheel.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_wheel_install.py").sha256
         or not re.fullmatch(r"[a-f0-9]{64}", wheel.get("wheel_sha256", ""))
@@ -1436,6 +1599,8 @@ def main() -> None:
         "t1_core_orbit_recomputation": t1_core_orbit,
         "t1_core_orbit_tool_run": t1_core_orbit_run,
         "t1_combined_package_cli": t1_combined_cli,
+        "t1_de440s_geometry": de440s,
+        "t1_de440s_snapshot_run": de440s_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {
             "case_count": t2_endpoint_audit["case_count"],

@@ -1,6 +1,6 @@
-"""Versioned package CLI entry point; historical console-script CLI remains intact."""
+"""Versioned package CLI entry point with historical replay routing."""
 
-from .cli_v2 import main
+from .cli_v3 import main
 
 
 if __name__ == "__main__":

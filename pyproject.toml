@@ -19,7 +19,7 @@ test = [
 ]
 
 [project.scripts]
-auditable-scientist = "auditable_scientist.cli:main"
+auditable-scientist = "auditable_scientist.cli_v3:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -27,6 +27,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 auditable_scientist = [
   "_resources/*.toml",
+  "_resources/*.zip",
   "_resources/schemas/*.json",
   "_resources/docs/*.md",
   "_resources/examples/*/*.json",

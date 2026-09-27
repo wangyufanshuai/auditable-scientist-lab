@@ -1,6 +1,7 @@
 """The wheel's bundled offline inputs must match checkout originals byte for byte."""
 
 from pathlib import Path
+from zipfile import ZipFile
 
 from auditable_scientist.cli import _source_paths
 from auditable_scientist.tracks.runner import track_source_paths
@@ -39,5 +40,9 @@ def test_replayed_sources_use_stable_lf_bytes() -> None:
         *PACKAGE_DATA.rglob("*")
     }
     for path in paths:
-        if path.is_file():
+        if path.is_file() and path.suffix != ".zip":
             assert bytes([13, 10]) not in path.read_bytes(), path
+    bundle = PACKAGE_DATA / "legacy-runtime-8c26a26.zip"
+    with ZipFile(bundle) as archive:
+        for name in archive.namelist():
+            assert bytes([13, 10]) not in archive.read(name), name

@@ -32,7 +32,7 @@ RUNS = {
 
 def _invoke(root: Path, relative: str, environment: dict[str, str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, "-m", "auditable_scientist.cli", "replay", str(root / "artifacts" / relative)],
+        [sys.executable, "-m", "auditable_scientist", "replay", str(root / "artifacts" / relative)],
         cwd=root, env=environment, capture_output=True, text=True, timeout=60, check=False,
     )
 

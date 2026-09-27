@@ -38,3 +38,20 @@ Use `https://github.com/wangyufanshuai/auditable-scientist-lab` as the formal re
 It is public and MIT-licensed, with only the initial commit at planning time. Keep
 implementation changes local until the first acceptance package exists; then push a
 reviewable commit or pull request rather than a partial release.
+
+## 2026-09-27 — Historical CLI routing
+
+The console and package-module commands use a version router. Runs bound to the
+old `pyproject.toml` or `__main__.py` execute against a SHA-256-pinned source
+bundle built from Git commit `8c26a26`; new Runs use current source bytes.
+The router validates a copied historical Run before inspect or report export.
+This preserves existing replay manifests without treating a changed source
+fingerprint as equivalent.
+
+## 2026-09-27 — Optional NAIF DE440s geometry source
+
+NAIF explicitly permits use of its kernels and redistribution of unmodified
+NAIF-distributed kernels. Keep the large `de440s.bsp` binary outside Git, pin
+its official MD5 and downloaded SHA-256, and commit only a small derived
+snapshot and bounded audit. DE440s supplies Mars-barycenter states, not a Mars
+center or spacecraft trajectory; its mission Claim remains unverified.

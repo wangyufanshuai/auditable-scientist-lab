@@ -1,47 +1,41 @@
 {
-  "schema_version": "acceptance-v1",
-  "project": "auditable-scientist-lab",
-  "recorded_at": "2026-09-27T09:37:31Z",
-  "status": "accepted-with-bounded-scope",
-  "scope": {
-    "track": "T1",
-    "benchmark": "05 Hohmann Mars transfer",
-    "delivery": "offline CLI plus Markdown and JSON",
-    "evidence_level": "validated-reproduction-within-analytic-fixture"
-  },
+  "blocked": [
+    "external symbolic-physics-engine implementation, scoped revision, and license",
+    "real-data provenance and rights",
+    "independent numerical backend",
+    "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
+    "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
+    "T4 general formal proof backend and transition model coverage",
+    "T5 real protocol provenance, biosafety review, and human acceptance"
+  ],
   "checks": [
     {
-      "name": "unit-contract-runtime-tests",
       "command": "python -m pytest -q -o addopts=''",
       "exit_code": 0,
-      "tests_passed": 147,
-      "tests_skipped": 1,
-      "recorded_at": "2026-09-27T09:37:31Z",
       "input_version": "working-tree-2026-09-27",
-      "output_path": "artifacts/test-report.md"
+      "name": "unit-contract-runtime-tests",
+      "output_path": "artifacts/test-report.md",
+      "recorded_at": "2026-09-27T12:24:27Z",
+      "tests_passed": 182,
+      "tests_skipped": 1
     },
     {
-      "name": "editable-install",
       "command": "python -m pip install -e . --no-deps --no-build-isolation",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T03:12:58Z",
       "input_version": "pyproject-v0.1.0",
-      "output_path": "artifacts/test-report.md"
+      "name": "editable-install",
+      "output_path": "artifacts/test-report.md",
+      "recorded_at": "2026-09-27T03:12:58Z"
     },
     {
-      "name": "offline-run",
       "command": "python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/acceptance-runs-v18",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T06:20:08.929987Z",
       "input_version": "examples/hohmann/run.json + dataset.json",
-      "output_path": "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2"
+      "name": "offline-run",
+      "output_path": "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2",
+      "recorded_at": "2026-09-27T06:20:08.929987Z"
     },
     {
-      "name": "deterministic-replay",
-      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v18/run-02a00f229aabd3d2",
-      "exit_code": 0,
-      "recorded_at": "2026-09-27T06:20:53Z",
-      "verified": true,
       "checks": [
         "input_hash",
         "code_revision",
@@ -52,171 +46,193 @@
         "candidate_order",
         "computational_output"
       ],
+      "command": "python -m auditable_scientist.cli replay artifacts/acceptance-runs-v18/run-02a00f229aabd3d2",
+      "exit_code": 0,
       "input_version": "replay-manifest-v2",
-      "output_path": "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md"
+      "name": "deterministic-replay",
+      "output_path": "artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md",
+      "recorded_at": "2026-09-27T06:20:53Z",
+      "verified": true
     },
     {
-      "name": "inspection",
       "command": "python -m auditable_scientist.cli inspect artifacts/acceptance-runs-v18/run-02a00f229aabd3d2",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T06:20:53Z",
       "input_version": "run-schema-v1",
-      "output_path": "artifacts/demo-transcript.md"
+      "name": "inspection",
+      "output_path": "artifacts/demo-transcript.md",
+      "recorded_at": "2026-09-27T06:20:53Z"
     },
     {
-      "name": "portfolio-verification",
       "command": "python scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:23:35Z",
-      "verified": true,
       "input_version": "acceptance-verification-v1",
-      "output_path": "artifacts/acceptance-verification.json"
+      "name": "portfolio-verification",
+      "output_path": "artifacts/acceptance-verification.json",
+      "recorded_at": "2026-09-27T08:23:35Z",
+      "verified": true
     },
     {
-      "name": "relocated-run-replay",
       "command": "python scripts/verify_committed_relocation.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T07:42:12.774351Z",
-      "verified": true,
       "input_version": "replay-manifest-v2",
-      "output_path": "artifacts/relocation-audit.json"
+      "name": "relocated-run-replay",
+      "output_path": "artifacts/relocation-audit.json",
+      "recorded_at": "2026-09-27T07:42:12.774351Z",
+      "verified": true
     },
     {
-      "name": "fresh-pinned-replay-environment",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_replay_environment.py --output artifacts/replay-environment-audit.json",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T07:42:05.946110Z",
-      "verified": true,
       "input_version": "requirements-replay-win-py312.txt",
-      "output_path": "artifacts/replay-environment-audit.json"
+      "name": "fresh-pinned-replay-environment",
+      "output_path": "artifacts/replay-environment-audit.json",
+      "recorded_at": "2026-09-27T07:42:05.946110Z",
+      "verified": true
     },
     {
-      "name": "pinned-eight-run-replay",
       "command": "& \"$env:TEMP\\auditable-scientist-replay-pinned-20260927\\Scripts\\python.exe\" scripts/verify_acceptance.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:23:35Z",
-      "verified": true,
       "input_version": "replay-manifest-v2",
-      "output_path": "artifacts/acceptance-verification.json"
+      "name": "pinned-eight-run-replay",
+      "output_path": "artifacts/acceptance-verification.json",
+      "recorded_at": "2026-09-27T08:23:35Z",
+      "verified": true
     },
     {
-      "name": "fresh-wheel-nine-run-replay",
       "command": "python scripts/verify_wheel_install.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T11:17:45.952717+00:00",
-      "verified": true,
       "input_version": "wheel-audit-v5",
-      "output_path": "artifacts/wheel-audit.json"
+      "name": "fresh-wheel-nine-run-replay",
+      "output_path": "artifacts/wheel-audit.json",
+      "recorded_at": "2026-09-27T11:17:45.952717+00:00",
+      "verified": true
     },
     {
-      "name": "optional-t4-exact-linear-run",
       "command": "python scripts/verify_t4_linear_run.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:42:58.943409+00:00",
-      "verified": true,
       "input_version": "run-t4-linear-6931db19a01bc59b",
-      "output_path": "artifacts/t4-linear-run-audit.json"
+      "name": "optional-t4-exact-linear-run",
+      "output_path": "artifacts/t4-linear-run-audit.json",
+      "recorded_at": "2026-09-27T08:42:58.943409+00:00",
+      "verified": true
     },
     {
-      "name": "optional-t2-independent-synthetic-endpoint",
       "command": "python scripts/verify_t2_independent_endpoint.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:53:38.238165+00:00",
-      "verified": true,
       "input_version": "t2-independent-endpoint-audit-v1",
-      "output_path": "artifacts/t2-independent-endpoint-audit.json"
+      "name": "optional-t2-independent-synthetic-endpoint",
+      "output_path": "artifacts/t2-independent-endpoint-audit.json",
+      "recorded_at": "2026-09-27T08:53:38.238165+00:00",
+      "verified": true
     },
     {
-      "name": "optional-t2-independent-endpoint-run",
       "command": "python scripts/verify_t2_independent_run.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T09:00:45.305186+00:00",
-      "verified": true,
       "input_version": "run-t2-endpoint-6333b4e44b5cb4e0",
-      "output_path": "artifacts/t2-independent-run-audit.json"
+      "name": "optional-t2-independent-endpoint-run",
+      "output_path": "artifacts/t2-independent-run-audit.json",
+      "recorded_at": "2026-09-27T09:00:45.305186+00:00",
+      "verified": true
     },
     {
-      "name": "optional-nasa-factsheet-parameter-sensitivity",
       "command": "python scripts/verify_t1_nasa_factsheets.py verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T07:58:32Z",
       "input_version": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
-      "output_path": "artifacts/t1-nasa-factsheet-audit.json"
+      "name": "optional-nasa-factsheet-parameter-sensitivity",
+      "output_path": "artifacts/t1-nasa-factsheet-audit.json",
+      "recorded_at": "2026-09-27T07:58:32Z"
     },
     {
-      "name": "t1-core-offline-orbit-propagation",
       "command": "python scripts/verify_t1_core_orbit.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T10:33:03.326116+00:00",
       "input_version": "25b041013fbbc4dd047167ced167b476c3ea560013386cda5730e839891ea6e9",
-      "output_path": "artifacts/t1-core-orbit-audit.json"
+      "name": "t1-core-offline-orbit-propagation",
+      "output_path": "artifacts/t1-core-orbit-audit.json",
+      "recorded_at": "2026-09-27T10:33:03.326116+00:00"
     },
     {
-      "name": "t1-versioned-core-orbit-tool-run",
       "command": "python scripts/verify_t1_core_orbit_run.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T10:43:29.450584+00:00",
       "input_version": "1cc9dd08a94b980e968840aaabdea88ccacced873afc97455fcb1e8c8c843321",
-      "output_path": "artifacts/t1-core-orbit-run-audit.json"
+      "name": "t1-versioned-core-orbit-tool-run",
+      "output_path": "artifacts/t1-core-orbit-run-audit.json",
+      "recorded_at": "2026-09-27T10:43:29.450584+00:00"
     },
     {
-      "name": "t1-combined-package-cli-run",
       "command": "python scripts/verify_t1_combined_cli.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T11:16:35.382000+00:00",
-      "input_version": "cd242c787239211745339ca125851252556be76118084731129fdd79e1077921",
-      "output_path": "artifacts/t1-combined-cli-audit-v3.json"
+      "input_version": "5ca07f3ba98b867b783dc4c69e7b653c6427bb1c20e77bc61d445da51dc1dd32",
+      "name": "t1-combined-package-cli-run",
+      "output_path": "artifacts/t1-combined-cli-audit-v4.json",
+      "recorded_at": "2026-09-27T11:58:15.417814+00:00"
     },
     {
-      "name": "optional-t1-external-orbit-cross-check",
+      "command": "python scripts/verify_t1_de440s_ephemeris.py --verify",
+      "exit_code": 0,
+      "input_version": "49d6ca87d1a499405a08933f61adf68f446e0cfc74335cc0b5715b12574722d0",
+      "name": "optional-t1-de440s-fixed-date-geometry",
+      "output_path": "artifacts/t1-de440s-ephemeris-audit.json",
+      "recorded_at": "2026-09-27T11:51:01.192856+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_de440s_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t1-de440s-075f3221475bc496",
+      "name": "optional-t1-de440s-portable-snapshot-run",
+      "output_path": "artifacts/t1-de440s-run-audit.json",
+      "recorded_at": "2026-09-27T12:18:34.427503+00:00"
+    },
+    {
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:09:01Z",
       "input_version": "7fe132ac8aac4f4afd76f66ee78b788fa310e3bd77d21b3b283c037fbd4b5fa0",
-      "output_path": "artifacts/t1-external-orbit-audit.json"
+      "name": "optional-t1-external-orbit-cross-check",
+      "output_path": "artifacts/t1-external-orbit-audit.json",
+      "recorded_at": "2026-09-27T08:09:01Z"
     },
     {
-      "name": "optional-t1-external-orbit-tool-run",
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t1_external_orbit_run.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T08:21:59Z",
       "input_version": "0a6b382ffd8a0ca79d87c1a690c55be581dd547d0e0c53f5eab1bc8c7a668453",
-      "output_path": "artifacts/t1-external-run-audit.json"
+      "name": "optional-t1-external-orbit-tool-run",
+      "output_path": "artifacts/t1-external-run-audit.json",
+      "recorded_at": "2026-09-27T08:21:59Z"
     },
     {
-      "name": "optional-t3-expanded-horizon-grid",
       "command": "& \"$env:TEMP\\auditable-scientist-scipy-20260927\\Scripts\\python.exe\" scripts/verify_t3_horizon_grid.py --verify",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T09:17:35.341718+00:00",
       "input_version": "t3-horizon-grid-audit-v1",
-      "output_path": "artifacts/t3-horizon-grid-audit.json"
+      "name": "optional-t3-expanded-horizon-grid",
+      "output_path": "artifacts/t3-horizon-grid-audit.json",
+      "recorded_at": "2026-09-27T09:17:35.341718+00:00"
     },
     {
-      "name": "read-only-symbolic-source-audit",
       "command": "python scripts/audit_symbolic_engine.py",
       "exit_code": 0,
-      "recorded_at": "2026-09-27T06:11:31.158532+00:00",
       "input_version": "15bc135cb2fa61a623c6de2579f1f2eeb9a777da1e849693b9204f2de8ffe09d",
-      "output_path": "artifacts/symbolic-engine-audit.json"
+      "name": "read-only-symbolic-source-audit",
+      "output_path": "artifacts/symbolic-engine-audit.json",
+      "recorded_at": "2026-09-27T06:11:31.158532+00:00"
     }
   ],
+  "project": "auditable-scientist-lab",
+  "recorded_at": "2026-09-27T09:37:31Z",
+  "sample_run": "artifacts/sample-run.json",
+  "schema_version": "acceptance-v1",
   "scientific_boundaries": {
     "demo": true,
-    "validated_reproduction": true,
-    "real_data": false,
-    "research_candidate": false,
     "novel_physics": false,
     "production_readiness": false,
-    "publication_readiness": false
+    "publication_readiness": false,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": true
   },
-  "blocked": [
-    "external symbolic-physics-engine implementation, scoped revision, and license",
-    "real-data provenance and rights",
-    "independent numerical backend",
-    "T2 real intervention data, causal identification, data rights, and external algorithm source rights",
-    "T3 long-horizon/nonintegrable multi-body validation, independent mission-domain solver, and compute budget",
-    "T4 general formal proof backend and transition model coverage",
-    "T5 real protocol provenance, biosafety review, and human acceptance"
-  ],
-  "sample_run": "artifacts/sample-run.json"
+  "scope": {
+    "benchmark": "05 Hohmann Mars transfer",
+    "delivery": "offline CLI plus Markdown and JSON",
+    "evidence_level": "validated-reproduction-within-analytic-fixture",
+    "track": "T1"
+  },
+  "status": "accepted-with-bounded-scope"
 }

@@ -1,4 +1,5 @@
 {
+  "all_nine_committed_console_replays_verified": true,
   "all_nine_relocated_replays_equal": true,
   "boundaries": {
     "public_release": false,
@@ -8,29 +9,40 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 26,
+  "bundled_resource_count": 27,
   "checkout_root_in_installed_process": null,
+  "committed_manifest_hashes": {
+    "T1": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
+    "T1V2": "f4335f841b453eaa99bed866ddba0b57f4fe04fc6a2050f7eccdb0cf55b66615",
+    "T2": "0dd0970d6f0ea09d7a9a9f5ddb6df2404db513f0755b7a427bca8d860bed3ab3",
+    "T2P": "289ee2d2761ff1d09068be988a611d061eceaf4d26e76ea198deaed56f7b9cec",
+    "T3": "c5a6a403aa9393fd267d387df7931b0e357cc260e4ac9c5abfaa0a48e36d9b07",
+    "T3N": "72960321aa3305b0b60baa9f07f0a4015c57167d98cbd98f1ff449e1c213ca8f",
+    "T4": "1eda4b5e14157278a6cd22f1900e3108bec6ac71e5e4b9401924979a37373a88",
+    "T4O": "de1aabb448c771ba76d2f215ecc8ec18204d5ba554fa23444c07499e6275158d",
+    "T5": "45979e3681e2f1ab8cd573ef8cf3110c4852668df7ec0ca1ab2a8813c004e307"
+  },
   "limitations": [
     "The audited wheel was built and installed in a temporary directory; it is not committed.",
     "The runtime CLI tests used only bundled offline fixtures and the same installed wheel environment."
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-27T11:17:45.952717+00:00",
+  "recorded_at": "2026-09-27T12:00:04.206828+00:00",
   "replay_manifest_hashes": {
-    "T1": "b2ccb3516d17093d01b328f642eb5907aaa8a647fa40dc32432938c31d1b5942",
-    "T1V2": "8cfa79590c4b966ff90c638c47558c06cebc1f7c1a197cb3601e7596228c98ed",
-    "T2": "6b08706e31b76d0e9800c769dcf3c9e87b981dd0cfc6d6b38a42433511342a62",
-    "T2P": "a9af10980cefebadde178a1d6ddac7525678a97b18b2ed0f9e9eb36ac07674c2",
-    "T3": "8272946c3d0e58b4b813386d2f7c5ddacd10aaeec99c4b690b451e64ad939897",
-    "T3N": "987291776fd311c394a07fcb67acca52717202d6464efe67d9f83d1cfc08e929",
-    "T4": "407dffa58636a0bd72885b9e5d72db8593f584c2d49bcd8748dfe4200480fa1a",
-    "T4O": "e9374d4be93fa4628969f52384960a27614d6555bbac6689625659e4d75d0bd3",
-    "T5": "6fdc7b9ee8a81e06cc05c1d9819de9770a461c72c5f82266e1d005e653ba1f2a"
+    "T1": "1508118b0b6811b98c20da6aa3c76025e7c45128c0546e5bd69f2a523a3cd8e0",
+    "T1V2": "a14844621f89528392f92cff7f6d146d4e28d994090bc3de62c932197d8f52fb",
+    "T2": "4073f58c862edacdeddc2ac833b6530158f407a8d143f7babfe44d99ca2c8112",
+    "T2P": "ecf5da6b43ba14c6db1aff67c4547054d4c9af5792b3db3722be6ede9ad36e9c",
+    "T3": "d126457c6a150725aefdc6607a868ed8d46399569fa21684184347e7ea04a07a",
+    "T3N": "def71a1a9f532f3786b807494c90c20b80e930fdf879a61bf8c600c142c65274",
+    "T4": "7525b5732b7ad50aa0e945a2a451b3c9e66cc2d3ddb2c98624b5230fec32b320",
+    "T4O": "e799c9224399436aa320d0fde34b81ea1a8a5e4487cc0e6d3d30f2b0381b6a31",
+    "T5": "727d92ea5296780bf35adee242f4bd2092e26395bf8970b0cba303facd2f390b"
   },
-  "schema_version": "wheel-audit-v5",
-  "script_sha256": "bd848678a3a6467400a4a26e3571cc46ba5c44eae25af1ed97446b65dfc7cb52",
-  "source_snapshot_sha256": "fcdfbcdeb698c1660422470629f11a50aa9963d51a4cdbd97f6fafe18ad1aec5",
+  "schema_version": "wheel-audit-v6",
+  "script_sha256": "6ac4160e0ee684593bc4e3f085f8c91a71b4758eb9ab1ba42be4574365fd01e5",
+  "source_snapshot_sha256": "c9c52b8bc5c659337cd983b4892f03f59c6835671e50c277111de4c6fab2e10a",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t4_bounded_result_and_unverified_run_claim": true,
@@ -38,5 +50,5 @@
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "9d01be8fb8274c0255b38743283406a82c086d3215ebe27ac559bc17f22fe140"
+  "wheel_sha256": "bc833873fbcd3f6bc9f13de3b87fc78ab3a2246e90b5d30b24c8e8a7e3bd8926"
 }

@@ -27,11 +27,14 @@ Tool/Policy 入口执行的有限 evaluator；
 ```powershell
 python -m pip install -e ".[test]"
 python -m pytest -q
-python -m auditable_scientist.cli run examples/hohmann/run.json --offline --seed 17 --output-dir artifacts/local-runs
-python -m auditable_scientist.cli inspect artifacts/local-runs/run-<input-hash-prefix>
-python -m auditable_scientist.cli replay artifacts/local-runs/run-<input-hash-prefix>
-python -m auditable_scientist.cli run-track T2 examples/causal/fixture.json --output-dir artifacts/local-track-runs
-python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<input-hash-prefix>
+auditable-scientist init hohmann.json
+$runPath = auditable-scientist run hohmann.json --offline --seed 17 --output-dir artifacts/local-runs
+auditable-scientist replay $runPath
+auditable-scientist inspect $runPath
+auditable-scientist export-report $runPath --output artifacts/local-report.md
+auditable-scientist init-track T2 causal.json
+$trackPath = auditable-scientist run-track T2 causal.json --output-dir artifacts/local-track-runs
+auditable-scientist replay $trackPath
 ```
 
 仓库中已提交的验收收据另用 `python scripts/verify_acceptance.py` 核查；该命令
@@ -44,7 +47,7 @@ python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<inpu
 `python scripts/verify_acceptance.py`；第二步从已保存的 T2/T3/T4 可选审计重建验收行，
 并按 [状态契约](docs/PORTFOLIO_STATUS_CONTRACT.json) 重建状态表。
 `python scripts/sync_optional_acceptance.py --verify` 可只读检查当前收据。
-仓库测试会在临时副本执行完整生成链，确认七个历史 CLI Run 仍可回放。
+仓库测试会在临时副本执行完整生成链，确认历史 CLI Run 仍可回放。
 详细边界见 [再生成方法](docs/REGENERATION_METHOD.md)。
 
 重放**已提交**的五轨运行包时，在 Windows AMD64 的 CPython 3.12.3 上新建
@@ -70,6 +73,9 @@ $replayPython = Join-Path $replayVenv "Scripts\python.exe"
 `auditable-scientist init-track T2 t2.json`，再执行
 `auditable-scientist run-track T2 t2.json`。这些命令只使用随 wheel 打包的
 schema、策略文档和示例 fixture。
+`python -m auditable_scientist` 与控制台命令使用同一版本路由；旧 Run 通过固定的
+历史源码包回放，新 Run 绑定当前源码。底层 `python -m auditable_scientist.cli`
+保留供历史实现检查，不是跨版本回放入口。
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
@@ -110,7 +116,14 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 可选的固定 SciPy DOP853 环境还从初始状态积分到远日点，对九个合成样例和一个圆整参数样例
 核对飞行时间、末态和守恒量；它只覆盖圆轨道出发的二体模型，见
 [docs/T1_EXTERNAL_ORBIT.md](docs/T1_EXTERNAL_ORBIT.md)。
-该核对另有独立的离线 Tool/Policy/Provider Run 和搬移回放、篡改负例；核心 T1 CLI Run 仍使用解析基准。
+该核对另有独立的离线 Tool/Policy/Provider Run 和搬移回放、篡改负例；新版 T1 Run
+另调用内置 RK4 工具，仍只覆盖合成圆轨道二体假设。
+可选的 [DE440s 固定日期几何核对](docs/T1_DE440S_EPHEMERIS.md) 使用 NAIF
+未修改 kernel 的官方校验值、来源规则与本地 SHA-256，比较地球与火星质心的星历状态。
+kernel 不入 Git，运行时不联网；它不能验证火星中心会合或航天器任务轨迹。
+独立的[离线星历快照 Run](docs/T1_DE440S_RUN.md)将两组状态向量绑定到 Tool/Policy/Provider、
+事件链与可搬移回放，并验证输出及快照篡改会失败。回放只从已保存状态重算几何；
+若要重新向 NAIF kernel 查询，仍需单独执行星历动态核对。任务 Claim 保持 `unverified`。
 
 ## 当前入口
 
@@ -122,6 +135,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [docs/T1_SYMBOLIC_GRAMMAR.md](docs/T1_SYMBOLIC_GRAMMAR.md)：T1 十表达式语法、训练集选择与发现边界。
 - [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)：外部圆整参数的离线敏感性审计与来源边界。
 - [docs/T1_EXTERNAL_ORBIT.md](docs/T1_EXTERNAL_ORBIT.md)：可选外部求解器的二体数值核对、负例与适用边界。
+- [docs/T1_DE440S_EPHEMERIS.md](docs/T1_DE440S_EPHEMERIS.md)：NAIF DE440s 来源权利、固定日期坐标契约和任务边界。
 - [docs/DECISIONS.md](docs/DECISIONS.md)：已确认的范围决策。
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
@@ -145,7 +159,10 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [artifacts/t1-nasa-factsheet-audit.json](artifacts/t1-nasa-factsheet-audit.json)：T1 圆整参数敏感性与未通过的外部来源 gate。
 - [artifacts/t1-external-orbit-audit.json](artifacts/t1-external-orbit-audit.json)：十例远日点积分及错误引力方向负例的固定环境收据。
 - [artifacts/t1-external-run-audit.json](artifacts/t1-external-run-audit.json)：可选外部求解器 Run 的回放、策略拒绝与篡改负例。
-- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与八份 CLI 回放收据。
+- [artifacts/t1-combined-cli-audit-v4.json](artifacts/t1-combined-cli-audit-v4.json)：组合式 T1 Run 与历史版本路由回放。
+- [artifacts/t1-de440s-ephemeris-audit.json](artifacts/t1-de440s-ephemeris-audit.json)：固定日期、来源哈希和使命边界收据。
+- [artifacts/t1-de440s-run-audit.json](artifacts/t1-de440s-run-audit.json)：星历快照 Run 的搬移回放、策略拒绝和篡改负例收据。
+- [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装、九个当前 Run 家族与九个历史控制台回放。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
 - [artifacts/replay-environment-audit.json](artifacts/replay-environment-audit.json)：固定环境的版本闭包与八份 manifest 核验。
 - [artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v18/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。

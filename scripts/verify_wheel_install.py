@@ -25,6 +25,17 @@ TRACKS = {
     "T4O": "oscillator-proof",
     "T5": "protocol",
 }
+COMMITTED_RUNS = {
+    "T1": "acceptance-runs-v18/run-02a00f229aabd3d2",
+    "T2": "track-runs-v16/run-t2-e8c0533775f1ab69",
+    "T2P": "track-runs-v16/run-t2p-0971a9036e84aa5a",
+    "T3": "track-runs-v16/run-t3-1c4eb6b867515637",
+    "T3N": "track-runs-v16/run-t3n-7ea57acea8cc3bb1",
+    "T4": "track-runs-v16/run-t4-6497f62cc5a8ff84",
+    "T4O": "track-runs-v16/run-t4o-1d00e31fd06b3dde",
+    "T5": "track-runs-v16/run-t5-beabca5b5d2177aa",
+    "T1V2": "t1-combined-runs-v3/run-t1-v2-bd8e4e217fae77f1",
+}
 
 
 def source_snapshot_hash() -> str:
@@ -100,7 +111,8 @@ def main() -> None:
         ))
         if resource_count < 25:
             raise RuntimeError("wheel omitted an offline resource")
-        invoke([str(venv / "Scripts/auditable-scientist.exe"), "--help"], cwd=temporary_root, environment=base_environment)
+        console = venv / "Scripts/auditable-scientist.exe"
+        invoke([str(console), "--help"], cwd=temporary_root, environment=base_environment)
 
         runs: dict[str, Path] = {}
         config = temporary_root / "hohmann.json"
@@ -177,8 +189,22 @@ def main() -> None:
             if moved[track_id] != original[track_id]:
                 raise RuntimeError(f"wheel run changed on relocation: {track_id}")
 
+        historical: dict[str, dict[str, object]] = {}
+        for track_id, relative in COMMITTED_RUNS.items():
+            source = ROOT / "artifacts" / relative
+            destination = temporary_root / "committed" / source.name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(source, destination)
+            receipt = json.loads(invoke(
+                [str(console), "replay", str(destination)],
+                cwd=temporary_root, environment=base_environment,
+            ))
+            if receipt.get("verified") is not True or len(receipt.get("checks", [])) != 8:
+                raise RuntimeError(f"installed console did not replay historical {track_id}")
+            historical[track_id] = receipt
+
     result = {
-        "schema_version": "wheel-audit-v5",
+        "schema_version": "wheel-audit-v6",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "status": "verified-within-offline-fixtures",
         "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
@@ -192,6 +218,8 @@ def main() -> None:
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
         "all_nine_relocated_replays_equal": moved == original,
+        "all_nine_committed_console_replays_verified": len(historical) == 9,
+        "committed_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in historical.items()},
         "t1v2_combined_run_and_unverified_mission_claim": True,
         "t4_bounded_result_and_unverified_run_claim": True,
         "t4o_bounded_result_and_unverified_run_claim": True,

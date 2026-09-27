@@ -42,6 +42,7 @@ Can a fixed ten-expression grammar select the heliocentric Hohmann transfer time
 - The selected formula reproduces the declared calculation within this input domain; this is not a novelty, production, or publication claim.
 - The correct formula is already in the bounded grammar; this is not open-ended symbolic discovery.
 - The external symbolic-physics-engine adapter remains blocked: its located entrypoint is a stub and scoped revision/license are absent.
+- A separate DE440s snapshot compares two fixed dates against NAIF Mars-barycenter states. It is not part of this analytic Run and does not validate a spacecraft encounter or mission Claim.
 
 ## Replay
 

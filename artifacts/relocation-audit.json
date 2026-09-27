@@ -7,7 +7,7 @@
     "The project-05 upstream source path remains an origin record, not a relocated source audit."
   ],
   "original_examples_copied": false,
-  "recorded_at": "2026-09-27T07:42:12.774351+00:00",
+  "recorded_at": "2026-09-27T11:37:30.602852+00:00",
   "runs_replayed": {
     "T1": {
       "checks": [
@@ -123,7 +123,7 @@
     }
   },
   "schema_version": "relocation-audit-v1",
-  "script_sha256": "2a4d976118000f345be20ffe76720fc2db8508531c8ffdebc2144ec720016fb2",
+  "script_sha256": "aaff02b59c55724427526d8b08e0b4ac200de55aab9afa7ee17e8c60d370513d",
   "status": "verified-in-recorded-environment",
   "tampered_t3_fixture_rejected": true
 }
