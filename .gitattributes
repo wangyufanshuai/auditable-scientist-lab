@@ -5,5 +5,6 @@
 *.toml text eol=lf
 .gitattributes text eol=lf
 .gitignore text eol=lf
+requirements-*.txt -text
 artifacts/t3-external-runs/**/scipy-license.txt -text -diff
 artifacts/t3-external-runs/**/numpy-license.txt -text -diff
