@@ -80,6 +80,12 @@
     "scope": "static-source-and-boundary-check-only",
     "source_files_match": true
   },
+  "t4_exact_linear_invariant_proof": {
+    "negative_controls": 1,
+    "positive_proofs": 2,
+    "systems": 3,
+    "verified": true
+  },
   "track_cli_replays": {
     "T2": {
       "checks": [

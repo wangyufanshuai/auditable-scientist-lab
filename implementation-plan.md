@@ -93,6 +93,11 @@
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
   The v2 package remains bounded to this declared rule and is not a general proof backend.
+- An optional T4 linear-invariant class now proves `cA-c=0` and `cB=0` over exact
+  rational matrices for two declared systems, with a leaky counterexample. An
+  independent `Fraction` checker binds source bytes and rejects forged coefficients,
+  negative-case changes, and boundary inflation. It is mathematical evidence about
+  declared matrices, not a reviewed physical transition or general formal backend.
 - T4O now binds a finite T3 harmonic oscillator case, SI units, input/output hashes,
   and T3 source bytes to nine required checker results. It recomputes velocity-Verlet,
   compares the closed form and independent RK4, checks maximum specific-energy drift,

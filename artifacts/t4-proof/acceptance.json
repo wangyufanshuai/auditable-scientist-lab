@@ -15,6 +15,14 @@
       "name": "oscillator-physical-module-subtrack",
       "output_path": "artifacts/t4-oscillator/acceptance.json",
       "recorded_at": "2026-09-27T07:41:39.883091+00:00"
+    },
+    {
+      "command": "python scripts/verify_t4_linear_formal.py --verify",
+      "exit_code": 0,
+      "input_version": "91c95ca1b557eff6a016e956b5de54d0aaf9ca51110de26cb86a28796277dfe1",
+      "name": "exact-linear-invariant-subtrack",
+      "output_path": "artifacts/t4-linear-formal-audit.json",
+      "recorded_at": "2026-09-27T08:32:46.876348+00:00"
     }
   ],
   "evaluator": {

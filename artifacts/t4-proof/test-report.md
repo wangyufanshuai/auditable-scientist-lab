@@ -5,3 +5,10 @@
 - Evidence level: bounded local fixture
 - Real-data claim: false
 - Research-candidate claim: false
+
+The optional exact linear-invariant audit proves two declared rational linear
+identities for all states and controls, and rejects a leaky negative control.
+`python scripts/verify_t4_linear_formal.py --verify` and the independent
+`python scripts/check_t4_linear_certificate.py` both passed. Twelve targeted
+tests cover a new matrix and malformed or forged certificates. This is a
+mathematical statement about declared matrices, not physical-model validation.

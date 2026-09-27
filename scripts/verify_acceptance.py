@@ -565,6 +565,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T2" else ({
             "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
+            "exact-linear-invariant-subtrack": load("artifacts/t4-linear-formal-audit.json")["input_sha256"],
         } if track_id == "T4" else {}))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
@@ -853,6 +854,22 @@ def main() -> None:
         raise SystemExit("T4 proof evaluator replay mismatch")
     if load("artifacts/t4-proof/acceptance.json")["negative_case"] != verify_proof_package(t4_tampered).model_dump(mode="json"):
         raise SystemExit("T4 negative case replay mismatch")
+    t4_linear_audit = load("artifacts/t4-linear-formal-audit.json")
+    t4_linear_expected = {"verified": True, "systems": 3, "positive_proofs": 2, "negative_controls": 1}
+    for command in (
+        [sys.executable, str(ROOT / "scripts/check_t4_linear_certificate.py")],
+        [sys.executable, str(ROOT / "scripts/verify_t4_linear_formal.py"), "--verify"],
+    ):
+        process = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+        if process.returncode != 0 or json.loads(process.stdout) != t4_linear_expected:
+            raise SystemExit(f"T4 exact linear-invariant certificate failed: {process.stderr.strip()}")
+    if not any(
+        item.get("name") == "exact-linear-invariant-subtrack"
+        and item.get("output_path") == "artifacts/t4-linear-formal-audit.json"
+        and item.get("input_version") == t4_linear_audit["input_sha256"]
+        for item in load("artifacts/t4-proof/acceptance.json")["checks"]
+    ):
+        raise SystemExit("T4 exact linear-invariant proof is missing from track acceptance")
     t4o_acceptance = load("artifacts/t4-oscillator/acceptance.json")
     t4o_item = t4o_acceptance["evaluator"]
     verify_track_bundle("T4O", t4o_item, ROOT / "artifacts/t4-oscillator")
@@ -1009,6 +1026,7 @@ def main() -> None:
         },
         "t1_optional_orbit_static_provenance": t1_orbit_static,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
+        "t4_exact_linear_invariant_proof": t4_linear_expected,
         "scientific_boundaries": portfolio["global_boundaries"],
     }
     destination = ROOT / "artifacts/acceptance-verification.json"

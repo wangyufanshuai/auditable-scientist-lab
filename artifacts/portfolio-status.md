@@ -20,4 +20,6 @@ T2P adds a 100-case planar ball-and-floor counterfactual suite with one shared i
 
 T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open.
 
+T4 also has an optional exact rational linear-invariant proof slice: two coefficient-identity certificates are rechecked independently with `Fraction`, and a leaky system is rejected. This establishes the declared linear identities only. It does not validate a physical transition model or close the general formal-backend gate.
+
 T5 is a synthetic text-review demonstration. Each field is located in an embedded LF document with a SHA-256 hash and exact character span. An altered document is rejected. Source rights, real materials, safety, and human acceptance are unverified; execution remains forbidden.
