@@ -17,6 +17,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
         ROOT / "docs/EVIDENCE_POLICY.md",
         ROOT / "docs/DECISIONS.md",
         ROOT / "docs/T3_METHOD.md",
+        ROOT / "docs/T3_NBODY_METHOD.md",
         ROOT / "docs/T4_METHOD.md",
         *(ROOT / "examples").glob("*/*.json"),
     ]
@@ -30,7 +31,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
 def test_replayed_sources_use_stable_lf_bytes() -> None:
     paths = {
         *_source_paths(),
-        *(path for track_id in ("T2", "T3", "T4", "T5") for path in track_source_paths(track_id)),
+        *(path for track_id in ("T2", "T3", "T3N", "T4", "T5") for path in track_source_paths(track_id)),
         *(ROOT / "examples").glob("*/*.json"),
         *PACKAGE_DATA.rglob("*")
     }

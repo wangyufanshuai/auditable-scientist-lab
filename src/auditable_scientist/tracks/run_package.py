@@ -46,7 +46,7 @@ def make_track_run(
         raise ValueError("bounded track Run requires zero or one registered tool call")
     fixture = fingerprint_file(fixture_path)
     ref = (bindings.ref if bindings is not None else lambda path: str(path))
-    evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
+    evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T3N": "nbody.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
     evaluator_fingerprint = fingerprint_file(evaluator_source)
     evidence_id = f"ev-{track_id.lower()}-fixture"
     evidence = Evidence(
@@ -83,6 +83,18 @@ def make_track_run(
             allowed_use=["offline-evaluator", "source-provenance"],
             notes="Local independent numerical method; academic formula citation does not establish source rights or real-world validation.",
         ))
+    if track_id == "T3N":
+        reference_source = Path(__file__).with_name("reference_nbody_rk4.py")
+        code_evidence.append(Evidence(
+            evidence_id="ev-t3n-rk4-reference-code",
+            kind=EvidenceKind.CODE,
+            path_or_uri=ref(reference_source),
+            sha256=fingerprint_file(reference_source).sha256,
+            source_revision=installation_revision(),
+            provenance_status=ProvenanceStatus.UNVERIFIED,
+            allowed_use=["offline-evaluator", "source-provenance"],
+            notes="Independent local RK4 reference for the symmetric fixture only.",
+        ))
     provider_id = f"internal-{track_id.lower()}-evaluator"
     policy = track_policy(track_id, fixture_path)
     input_hash = receipt.input_hash
@@ -115,7 +127,7 @@ def make_track_run(
         status=ClaimStatus.UNVERIFIED,
         level=EvidenceLevel.VALIDATED_REPRODUCTION if receipt.passed else EvidenceLevel.DEMO,
         evidence_refs=[evidence_id, *[item.evidence_id for item in code_evidence]],
-        falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash", *(["rk4-backend-agreement"] if track_id == "T3" else [])],
+        falsification_checks=["positive-evaluator-replay", "negative-case-rejection", "fixture-hash", *(["rk4-backend-agreement"] if track_id in ("T3", "T3N") else [])],
         holdout_verified=False,
     )
     observation = Observation(

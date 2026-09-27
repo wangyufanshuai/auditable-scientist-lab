@@ -1,5 +1,5 @@
 {
-  "all_five_relocated_replays_equal": true,
+  "all_six_relocated_replays_equal": true,
   "boundaries": {
     "public_release": false,
     "publication_ready": false,
@@ -8,7 +8,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 17,
+  "bundled_resource_count": 19,
   "checkout_root_in_installed_process": null,
   "limitations": [
     "The audited wheel was built and installed in a temporary directory; it is not committed.",
@@ -16,20 +16,21 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-27T05:24:49.099350+00:00",
+  "recorded_at": "2026-09-27T05:46:10.049299+00:00",
   "replay_manifest_hashes": {
-    "T1": "98f36f4b3746b80a6bb5f2eb40f88bf7bdadb9ffc0966f050269c184e9e544da",
-    "T2": "9de1f64c1747ec46b7c43fa126c02f726f332e04d0ab26f70d691eda8e17fda9",
-    "T3": "aefcbf628ea27d0ec459c5a4f755678f196498c04e3f25f3a95b3af35b357d56",
-    "T4": "77022171356f044931fd7a31dc7d1159c0db5a6366464112c43b9edc7fd77d2a",
-    "T5": "c339df159594f48fda460c32ed647f15963d03869d6f1384ade62253ce721655"
+    "T1": "bba5dfe7ba32fe959c9cf7feb26edf44f5ec05c68680e0d4193ce6fb07dddabb",
+    "T2": "942fc5f24c1af4f3b3a4a303c117ae31c664e5d87f7e0381628e1610c317d429",
+    "T3": "c779cc0ad255654436788db286f8446ecdd7da2dc8235effa76f9444174a7886",
+    "T3N": "293adedccad236160b4f1d5cf8dfd614edd2c1461f16ba599a706ad793e3a3e9",
+    "T4": "862c8a8c62d984874ec7b8fd992a28b8d41f545d3be9e1c0228298fe4e47f2aa",
+    "T5": "ffb96c9d0b51b9cb0659db6140275f2acef73aba7a130bad24706c3c53110653"
   },
   "schema_version": "wheel-audit-v2",
-  "script_sha256": "841f8aaad4b45c14c18a7ead7adb86c16f6f8de1212bf30c9b912b9b027f103a",
-  "source_snapshot_sha256": "fec826d174e5ef72aa60702f12154ed680b01bd8433933164f6a52d1611f7e76",
+  "script_sha256": "9cfbb0632e863bfb6a179e49f414e07e0c2e91856666f97da4b038777db8ac49",
+  "source_snapshot_sha256": "b198f5ec56374aecb70d6389f2b10973c147d0ae04f156f4c42dcc9288721518",
   "status": "verified-within-offline-fixtures",
   "t4_bounded_result_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "80e4644f1da4822db741dad9badce386c9068ecada5ae6b8401e1a65af73300b"
+  "wheel_sha256": "65527b615160d6ccdbfd55cd02da579e62ea2d6b4c513c07be8acfb121ebb151"
 }

@@ -177,6 +177,33 @@ def main() -> None:
     write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_receipt.result['holdout_max_position_error']}; max_backend_position_delta={dynamics_receipt.result['max_backend_position_delta']}; negative_euler_rejected={dynamics_receipt.result['negative_euler_rejected']}")
     portfolio.append(dynamics_receipt.model_dump(mode="json"))
 
+    nbody_fixture = ROOT / "examples/dynamics/nbody-fixture.json"
+    nbody_execution = run_registered_track("T3N", nbody_fixture)
+    nbody_receipt = nbody_execution.receipt
+    nbody_negative = nbody_execution.negative_case
+    nbody_run = make_track_run(
+        track_id="T3N", task_id="t3-equilateral-three-body-v1", receipt=nbody_receipt,
+        fixture_path=nbody_fixture, negative_case=nbody_negative,
+        calls_used=nbody_execution.calls_used,
+        bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t3-nbody"),
+    )
+    write_track_bundle(
+        track_id="T3N", directory="t3-nbody", receipt=nbody_receipt, run=nbody_run,
+        negative_case=nbody_negative,
+        demo_text=f"run_id={nbody_run.run_id}; max_verlet_position_error={nbody_receipt.result['max_verlet_position_error']}; negative_force_rejected={nbody_receipt.result['negative_force_rejected']}",
+    )
+    dynamics_acceptance = ROOT / "artifacts/t3-dynamics/acceptance.json"
+    dynamics_package = json.loads(dynamics_acceptance.read_text(encoding="utf-8"))
+    dynamics_package["checks"].append({
+        "name": "symmetric-three-body-subtrack",
+        "command": "python scripts/generate_track_artifacts.py",
+        "exit_code": 0,
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "input_version": nbody_receipt.input_hash,
+        "output_path": "artifacts/t3-nbody/acceptance.json",
+    })
+    write_json(dynamics_acceptance, dynamics_package)
+
     trajectory = [ProofState(step=0, mass_a=2, mass_b=3), ProofState(step=1, mass_a=1, mass_b=4)]
     obligations = [
         ProofObligation(obligation_id="o1", checker_id="mass-conservation", statement="total mass is constant"),
@@ -217,7 +244,7 @@ def main() -> None:
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights"], "next_step": "add a rights-cleared intervention dataset", "public_release": False},
-        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "open_gates": ["multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a rights-cleared multi-body validation set and independent reference", "public_release": False},
+        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "open_gates": ["perturbed/nonintegrable multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a rights-cleared perturbed multi-body validation set and independent reference", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]
@@ -237,6 +264,7 @@ def main() -> None:
             "and a nine-case oscillator cross-check. An optional versioned Tool/Provider Run now",
             "replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.",
         ])
+    markdown.extend(["", "T3N is a bounded symmetric three-body subtrack with an analytic orbit and an independent local RK4 cross-check. It does not close the perturbed multi-body or real-mission gates."])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 
 

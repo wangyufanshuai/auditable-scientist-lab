@@ -1,6 +1,6 @@
 {
   "schema_version": "replay-environment-audit-v1",
-  "recorded_at": "2026-09-27T05:23:45.509094+00:00",
+  "recorded_at": "2026-09-27T05:50:46.201628+00:00",
   "status": "matched-committed-replay-environment",
   "isolated_venv": true,
   "platform": {
@@ -10,9 +10,9 @@
     "machine": "AMD64"
   },
   "installed_packages": {
+    "auditable-scientist-lab": "0.1.0",
     "annotated-types": "0.7.0",
     "attrs": "23.2.0",
-    "auditable-scientist-lab": "0.1.0",
     "colorama": "0.4.6",
     "iniconfig": "2.3.0",
     "jsonschema": "4.24.0",
@@ -31,16 +31,17 @@
   },
   "constraints_sha256": "cd74e847377d90eb7ac33a7679d75f5a1ff0f69b9c196bc7f0969d25d2077e06",
   "manifest_sha256": {
-    "T1": "72b8b5ace2714fa1654af0e6fe4d35f987def904444a2ea6b716175bf48f273c",
-    "T2": "c9263c0d41ba96126e7523fd5982308d318444342b957822d289a913f45c3ecb",
-    "T3": "bd7c9bcebd33a61474c0a20106b80b07245b1b017d9b0be78aaad3b289935d60",
-    "T4": "d966cbbad44ee8df761b2a4691cfd0c1bda02af534d3a31abccd18372a540309",
-    "T5": "3dc7d5eb72633f75552c261104543ea672959570843137f635794cfc6ed3aae4"
+    "T1": "1ab7eadd29eb476afb21956c8d600f3772dc6bb53c1904085f45dc1ab7756b2c",
+    "T2": "7b374d69891ef9995091baf8f17482d7b5ba355bc7c26141d9b0a640f53545db",
+    "T3": "39bac08fd44a2ec5b5c8aac0bafdc34da4ab92cc47709cdd45cbcda10f416933",
+    "T3N": "6572ee006a8ea1906376cf19040256fda1d18402494f9edae99f07247b9d3ff3",
+    "T4": "8b4a6b5485903a54a2a56c3ab0c4cbf99b5f351f0ea6548df8cac9e8a20d7c44",
+    "T5": "337cfd54a14102e791e04fbf852adc3ecafff437dba371346723c69e2bdbf2ca"
   },
-  "script_sha256": "3a75ce214bc77afb0a62c4b9c08227c6973fe6a15dd61b2351e1b920fc69160a",
+  "script_sha256": "7eb089943b9ade2304fe753801be25992c61775298e4741d7f2d6d3f98b637a9",
   "limitations": [
     "Version pins do not lock downloaded wheel bytes or Python executable bytes.",
     "This audit checks the environment; scripts/verify_acceptance.py checks replay outputs.",
-    "The five committed Runs are bounded fixture evidence, not scientific validation or publication approval."
+    "The six committed Runs cover five tracks and one T3 subtrack; they are bounded fixture evidence, not scientific validation or publication approval."
   ]
 }

@@ -1,4 +1,4 @@
-"""Build the current wheel and replay T1-T5 outside the source checkout."""
+"""Build the current wheel and replay T1-T5 plus T3N outside the checkout."""
 
 from __future__ import annotations
 
@@ -19,6 +19,7 @@ OUTPUT = ROOT / "artifacts/wheel-audit.json"
 TRACKS = {
     "T2": "causal",
     "T3": "dynamics",
+    "T3N": "nbody",
     "T4": "proof",
     "T5": "protocol",
 }
@@ -94,7 +95,7 @@ def main() -> None:
             [str(python), "-c", "from auditable_scientist.runtime.paths import PACKAGE_ROOT; print(sum(p.is_file() for p in (PACKAGE_ROOT / '_resources').rglob('*')))"],
             cwd=temporary_root, environment=base_environment,
         ))
-        if resource_count < 17:
+        if resource_count < 19:
             raise RuntimeError("wheel omitted an offline resource")
         invoke([str(venv / "Scripts/auditable-scientist.exe"), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -147,7 +148,7 @@ def main() -> None:
         "bundled_resource_count": resource_count,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
-        "all_five_relocated_replays_equal": moved == original,
+        "all_six_relocated_replays_equal": moved == original,
         "t4_bounded_result_and_unverified_run_claim": True,
         "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "boundaries": {

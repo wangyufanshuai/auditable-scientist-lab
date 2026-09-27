@@ -31,14 +31,19 @@
   `pip check` and 63 tests, and replayed the five committed Run packages. The resulting
   `artifacts/replay-environment-audit.json` binds installed versions and manifest bytes.
   Replay in a mismatched environment fails closed; wheel and interpreter bytes are not locked.
-- A standalone wheel now carries the offline schemas, evidence policy, and five fixtures.
+- A standalone wheel now carries the offline schemas, evidence policy, and six fixtures.
   In a fresh installation outside the checkout, T1 `init/run/replay/inspect/export-report`
-  and T2–T5 `init-track/run-track/replay` completed. The wheel smoke is an engineering
+  and T2–T5 plus T3N `init-track/run-track/replay` completed. The wheel smoke is an engineering
   portability check, not an external scientific validation or publication gate.
 - T3 now compares Velocity-Verlet against a separately implemented fixed-step RK4,
   plus the analytic oscillator and Euler negative control. The method citation,
   source-rights boundary, and fixture scope are recorded in `docs/T3_METHOD.md`;
-  an external production solver and multi-body validation remain open.
+  an external production solver and perturbed multi-body validation remain open.
+- The T3N subtrack compares two local numerical methods against a directly derived
+  equilateral three-body circular orbit for equal and unequal masses. Conservation,
+  barycenter, separation, and a repulsive-force negative control pass the declared
+  dimensionless fixture gates in `docs/T3_NBODY_METHOD.md`. This does not validate
+  nonintegrable trajectories or real missions.
 - A 27-case T3 parameter/step-size sweep now checks second- and fourth-order
   convergence, normalized energy drift, backend agreement, and Euler rejection.
   `artifacts/t3-sweep.json` is independently recomputed by the acceptance verifier;
@@ -333,10 +338,10 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Extend T3 beyond the linear oscillator only with a separately specified
-   multi-body validation set, independent references, numerical error budget,
-   and rights-cleared source provenance. Keep the present oscillator Run separate
-   from any real-mission claim.
+1. Extend the new T3 equilateral three-body subtrack to perturbed and nonintegrable
+   multi-body cases only after a separately specified validation set, independent
+   references, numerical error budget, and rights-cleared source provenance are ready.
+   Keep oscillator, symmetric fixture, and any real-mission claim separate.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
 3. Reassess the local-only publication boundary from a fresh environment and user review;

@@ -19,12 +19,14 @@ from .tracks.runner import ROOT, load_track_input, run_registered_track, track_s
 TASK_IDS = {
     "T2": "t2-causal-intervention-v1",
     "T3": "t3-harmonic-dynamics-v2",
+    "T3N": "t3-equilateral-three-body-v1",
     "T4": "t4-proof-carrying-v2",
     "T5": "t5-bio-chem-protocol-v1",
 }
 FIXTURE_RESOURCES = {
     "T2": "examples/causal/fixture.json",
     "T3": "examples/dynamics/fixture.json",
+    "T3N": "examples/dynamics/nbody-fixture.json",
     "T4": "examples/proof/fixture.json",
     "T5": "examples/protocol/fixture.json",
 }

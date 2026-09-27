@@ -22,6 +22,7 @@ from auditable_scientist.runtime.run_integrity import verify_run_record
 from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
 from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
+from auditable_scientist.tracks.nbody import NBodyCase, evaluate_nbody_fixture
 from auditable_scientist.tracks.proof import ProofPackage, verify_proof_package
 from auditable_scientist.tracks.protocol import ProtocolSpec, ProtocolStep, verify_protocol
 from auditable_scientist.tracks.runner import run_registered_track
@@ -180,6 +181,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         special_inputs = {
             "bounded-parameter-step-sweep": "t3-sweep-v1",
             "optional-external-solver-run": "t3-external-run-audit-v1",
+            "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else {}
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
@@ -221,7 +223,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         path = BoundPaths(root=root, run_dir=bundle_dir).resolve(evidence.path_or_uri)
         if fingerprint_file(path).sha256 != evidence.sha256:
             raise ValueError(f"track {track_id} Run evidence changed: {evidence.evidence_id}")
-    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "dynamics.py", "reference_rk4.py", "proof.py", "protocol.py"))}
+    evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "dynamics.py", "reference_rk4.py", "nbody.py", "reference_nbody_rk4.py", "proof.py", "protocol.py"))}
     if {evidence.sha256 for evidence in run.evidence if evidence.kind.value == "code"} != evaluator_sources:
         raise ValueError(f"track {track_id} Run code evidence differs from source receipt")
     events = EventLog(bundle_dir / "events.jsonl").verify()
@@ -254,7 +256,7 @@ def main() -> None:
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v15/run-02a00f229aabd3d2"
+    run_dir = ROOT / "artifacts/acceptance-runs-v16/run-02a00f229aabd3d2"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -317,6 +319,22 @@ def main() -> None:
         if canonical_hash(live.receipt) != canonical_hash(item) or live.calls_used != 1:
             raise SystemExit(f"track {track_id} registered evaluator replay differs from receipt")
 
+    nbody_acceptance = load("artifacts/t3-nbody/acceptance.json")
+    nbody_item = nbody_acceptance["evaluator"]
+    verify_track_bundle("T3N", nbody_item, ROOT / "artifacts/t3-nbody")
+    nbody_fixture = load("examples/dynamics/nbody-fixture.json")
+    if nbody_fixture.get("schema_version") != "nbody-fixture-v1":
+        raise SystemExit("T3N fixture version differs")
+    nbody_cases = [NBodyCase.model_validate(row) for row in nbody_fixture["cases"]]
+    nbody_evaluation, nbody_receipt = evaluate_nbody_fixture(nbody_cases)
+    if (
+        nbody_evaluation.model_dump(mode="json") != nbody_item["result"]
+        or nbody_receipt.input_hash != nbody_item["input_hash"]
+        or not nbody_evaluation.negative_force_rejected
+        or canonical_hash(run_registered_track("T3N", ROOT / "examples/dynamics/nbody-fixture.json").receipt) != canonical_hash(nbody_item)
+    ):
+        raise SystemExit("T3N analytic and numerical evaluator replay mismatch")
+
     t2_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T2")
     t2_fixture = load("examples/causal/fixture.json")
     t2_cases = [CausalCase.model_validate(item) for item in t2_fixture["cases"]]
@@ -347,6 +365,8 @@ def main() -> None:
         raise SystemExit(f"T3 parameter sweep replay failed: {sweep.stderr.strip()}")
     if not any(item.get("name") == "optional-external-solver-run" and item.get("output_path") == "artifacts/t3-external-run-audit.json" for item in t3_checks):
         raise SystemExit("optional T3 external Run is missing from acceptance")
+    if not any(item.get("name") == "symmetric-three-body-subtrack" and item.get("output_path") == "artifacts/t3-nbody/acceptance.json" for item in t3_checks):
+        raise SystemExit("T3 symmetric three-body subtrack is missing from acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
@@ -383,9 +403,9 @@ def main() -> None:
         raise SystemExit("T5 execution boundary was widened")
 
     cli_replays: dict[str, dict] = {}
-    for track_id in ("T2", "T3", "T4", "T5"):
-        item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v8" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+    for track_id in ("T2", "T3", "T3N", "T4", "T5"):
+        item = nbody_item if track_id == "T3N" else next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
+        run_dir = ROOT / "artifacts/track-runs-v10" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
         def without_paths(receipt: dict) -> dict:
             return {
@@ -419,11 +439,11 @@ def main() -> None:
                 raise SystemExit("replay environment constraint is not an exact version")
             name, version = line.split("==")
             pins[re.sub(r"[-_.]+", "-", name).lower()] = version
-    manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/replay-manifest.json"}
-    for track_id in ("T2", "T3", "T4", "T5"):
-        receipt = next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
+    manifest_paths = {"T1": ROOT / "artifacts/acceptance-runs-v16/run-02a00f229aabd3d2/replay-manifest.json"}
+    for track_id in ("T2", "T3", "T3N", "T4", "T5"):
+        receipt = nbody_item if track_id == "T3N" else next(item for item in portfolio["tracks"] if item["track_id"] == track_id)
         run_id = f"run-{track_id.lower()}-{receipt['input_hash'][:16]}"
-        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v8" / run_id / "replay-manifest.json"
+        manifest_paths[track_id] = ROOT / "artifacts/track-runs-v10" / run_id / "replay-manifest.json"
     manifest_hashes = {track_id: hashlib.sha256(path.read_bytes()).hexdigest() for track_id, path in manifest_paths.items()}
     if (
         environment_audit.get("schema_version") != "replay-environment-audit-v1"
@@ -442,12 +462,12 @@ def main() -> None:
         wheel.get("schema_version") != "wheel-audit-v2"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
-        or wheel.get("all_five_relocated_replays_equal") is not True
+        or wheel.get("all_six_relocated_replays_equal") is not True
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
-        or wheel.get("bundled_resource_count", 0) < 17
+        or wheel.get("bundled_resource_count", 0) < 19
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
-        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T3", "T4", "T5"}
+        or set(wheel.get("replay_manifest_hashes", {})) != {"T1", "T2", "T3", "T3N", "T4", "T5"}
         or wheel.get("source_snapshot_sha256") != wheel_source_snapshot_hash()
         or wheel.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_wheel_install.py").sha256
         or not re.fullmatch(r"[a-f0-9]{64}", wheel.get("wheel_sha256", ""))
@@ -461,7 +481,7 @@ def main() -> None:
         "t1_replay": replay_receipt.model_dump(mode="json"),
         "run_status": run.status.value,
         "tracks": [item["track_id"] for item in portfolio["tracks"]],
-        "track_evaluators_replayed": ["T2", "T3", "T4", "T5"],
+        "track_evaluators_replayed": ["T2", "T3", "T3N", "T4", "T5"],
         "track_cli_replays": cli_replays,
         "t3_optional_external_run_static_replay": optional_t3_static_replay,
         "wheel_audit_verified": True,

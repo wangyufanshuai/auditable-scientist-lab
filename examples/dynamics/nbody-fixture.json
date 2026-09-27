@@ -1,0 +1,7 @@
+{
+  "schema_version": "nbody-fixture-v1",
+  "cases": [
+    {"case_id": "equal-train", "split": "train", "masses": [1, 1, 1], "gravitational_constant": 1, "side_length": 1, "orbit_fraction": 0.5, "steps": 1200},
+    {"case_id": "unequal-holdout", "split": "holdout", "masses": [1, 1.5, 0.75], "gravitational_constant": 1, "side_length": 1.5, "orbit_fraction": 0.75, "steps": 1800}
+  ]
+}

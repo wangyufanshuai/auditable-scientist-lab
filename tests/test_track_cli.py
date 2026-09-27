@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = {
     "T2": "examples/causal/fixture.json",
     "T3": "examples/dynamics/fixture.json",
+    "T3N": "examples/dynamics/nbody-fixture.json",
     "T4": "examples/proof/fixture.json",
     "T5": "examples/protocol/fixture.json",
 }
