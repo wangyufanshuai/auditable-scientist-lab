@@ -96,6 +96,14 @@
   the same grid to replay, source/license snapshots, network-disabled policy,
   moved-run verification, and altered-result/license rejection. Its claim stays
   unverified and does not expand the numerical scope.
+- A preflight-selected optional T3 grid extends both perturbed source configurations
+  to 0.75 unperturbed periods and records one-period close-approach cases as excluded.
+  The pinned DOP853 recomputation, local Verlet refinement, independent RK4, event
+  detection, 12,000-reference-call/35,000-fixed-step budget, source hashes, and
+  fail-closed static checks are in `docs/T3_HORIZON_GRID.md` and
+  `artifacts/t3-horizon-grid-audit.json`. The inherited holdout label is not an
+  untouched scientific holdout after the feasibility preflight. Long-horizon,
+  general multi-body, real-mission, and source-rights gates remain open.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.

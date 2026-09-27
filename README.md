@@ -75,7 +75,9 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 见 [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)。另有可选的受扰动三体有限时域
 交叉核验，使用已审计的 SciPy DOP853 环境，见 [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)；
 独立的可选 Tool/Provider Run 见 [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)。
-它未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
+扩展的 [0.75 周期数值网格](docs/T3_HORIZON_GRID.md) 通过预设误差和守恒门槛，
+1.0 周期近距离案例被排除；这组网格经过可行性预探，不能视作未触碰的科学留出集。
+它们未纳入核心 T3N Run，也不证明混沌长时精度。T2P 是 100 场景二维小球干预与
 反事实子轨道，见 [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)；它只支持
 声明的模拟器内部因果效应，不证明真实世界因果识别。独立的整段飞行终点估计器又核对了
 100 个既有场景和 24 个变初态留出场景；仍只属合成模拟器证据，见
@@ -118,6 +120,7 @@ T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利
 - [artifacts/t2-independent-run-audit.json](artifacts/t2-independent-run-audit.json)：T2 独立估计器的可选 Tool/Policy/Provider Run 回放与篡改收据。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)：可选受扰动三体数值交叉核验与边界。
+- [docs/T3_HORIZON_GRID.md](docs/T3_HORIZON_GRID.md)：0.75 周期平滑网格、1.0 周期近距离排除案例与计算预算。
 - [artifacts/t3-perturbed-run-audit.json](artifacts/t3-perturbed-run-audit.json)：可选受扰动三体 Run 的回放、迁移与篡改负例。
 - [docs/T3_SWEEP.md](docs/T3_SWEEP.md)：T3 固定参数与步长网格、收敛门槛和边界。
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。

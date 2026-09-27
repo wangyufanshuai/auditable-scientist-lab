@@ -41,6 +41,14 @@
       "recorded_at": "2026-09-27T06:45:07.467490+00:00"
     },
     {
+      "command": "python scripts/verify_t3_horizon_grid.py --verify",
+      "exit_code": 0,
+      "input_version": "t3-horizon-grid-audit-v1",
+      "name": "optional-expanded-horizon-grid",
+      "output_path": "artifacts/t3-horizon-grid-audit.json",
+      "recorded_at": "2026-09-27T09:17:35.341718+00:00"
+    },
+    {
       "command": "python scripts/generate_track_artifacts.py",
       "exit_code": 0,
       "input_version": "7ea57acea8cc3bb10fcafc25f5dba4ce605accc108f2b5532e2407da8fddeaa8",

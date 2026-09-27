@@ -1,0 +1,213 @@
+{
+  "admitted_grid": [
+    {
+      "case_id": "equal-train",
+      "horizon_fraction": 0.75,
+      "perturbation_fraction": 0.02
+    },
+    {
+      "case_id": "unequal-holdout",
+      "horizon_fraction": 0.75,
+      "perturbation_fraction": 0.02
+    }
+  ],
+  "admitted_rows": [
+    {
+      "case_id": "equal-train",
+      "center_of_mass_drift": 4.23556371494153e-15,
+      "coarse_steps": 2571,
+      "coarse_verlet_position_error": 5.250569877502215e-06,
+      "dop853_function_calls": 1937,
+      "fine_steps": 5142,
+      "fine_verlet_position_error": 1.312644197032241e-06,
+      "fine_verlet_velocity_error": 1.5562235209473282e-06,
+      "horizon_fraction": 0.75,
+      "inward_threshold_event_count": 0,
+      "perturbation_fraction": 0.02,
+      "relative_angular_momentum_drift": 4.84011016300625e-15,
+      "relative_energy_drift": 1.5782053991722785e-07,
+      "rk4_position_error": 1.191449465385674e-13,
+      "sampled_minimum_pair_separation_ratio": 0.6430289034516135,
+      "source_split": "train",
+      "verlet_convergence_ratio": 3.999994735338971
+    },
+    {
+      "case_id": "unequal-holdout",
+      "center_of_mass_drift": 3.4610050448992967e-15,
+      "coarse_steps": 3857,
+      "coarse_verlet_position_error": 2.608809662020422e-06,
+      "dop853_function_calls": 1937,
+      "fine_steps": 7714,
+      "fine_verlet_position_error": 6.522033744472223e-07,
+      "fine_verlet_velocity_error": 6.037400311285809e-07,
+      "horizon_fraction": 0.75,
+      "inward_threshold_event_count": 0,
+      "perturbation_fraction": 0.02,
+      "relative_angular_momentum_drift": 4.739685443761012e-15,
+      "relative_energy_drift": 3.425765794654362e-08,
+      "rk4_position_error": 1.2810560459621739e-14,
+      "sampled_minimum_pair_separation_ratio": 0.6512861210966269,
+      "source_split": "holdout",
+      "verlet_convergence_ratio": 3.9999941187540307
+    }
+  ],
+  "boundaries": {
+    "chaotic_long_horizon_validated": false,
+    "core_t3_run_changed": false,
+    "general_nbody_validated": false,
+    "mission_validation": false,
+    "one_period_stress_cases_admitted": false,
+    "publication_ready": false,
+    "real_ephemerides": false,
+    "smooth_synthetic_0_75_period_grid": true
+  },
+  "budget": {
+    "dop853_function_calls_total_max": 12000,
+    "fixed_steps_total_max": 35000
+  },
+  "checks": {
+    "angular_momentum_drift": true,
+    "center_of_mass_drift": true,
+    "compute_budget": true,
+    "energy_drift": true,
+    "fine_verlet_position": true,
+    "fine_verlet_velocity": true,
+    "rk4_position": true,
+    "smooth_separation": true,
+    "stress_excluded": true,
+    "two_smooth_source_configurations": true,
+    "verlet_convergence": true
+  },
+  "excluded_stress_rows": [
+    {
+      "admission": "excluded-close-approach",
+      "case_id": "equal-train",
+      "dop853_function_calls": 2627,
+      "first_inward_event_fraction_of_horizon": 0.7833232207584309,
+      "horizon_fraction": 1.0,
+      "inward_threshold_event_count": 1,
+      "perturbation_fraction": 0.02,
+      "sampled_minimum_pair_separation_ratio": 0.16457030788149485,
+      "source_split": "train"
+    },
+    {
+      "admission": "excluded-close-approach",
+      "case_id": "unequal-holdout",
+      "dop853_function_calls": 3005,
+      "first_inward_event_fraction_of_horizon": 0.7850822785024357,
+      "horizon_fraction": 1.0,
+      "inward_threshold_event_count": 1,
+      "perturbation_fraction": 0.02,
+      "sampled_minimum_pair_separation_ratio": 0.09585266030770247,
+      "source_split": "holdout"
+    }
+  ],
+  "gates": {
+    "center_of_mass_drift_max": 1e-10,
+    "fine_verlet_position_error_max": 1e-05,
+    "fine_verlet_velocity_error_max": 1e-05,
+    "minimum_sampled_pair_separation_ratio_min": 0.5,
+    "relative_angular_momentum_drift_max": 1e-10,
+    "relative_energy_drift_max": 1e-05,
+    "rk4_position_error_max": 1e-08,
+    "verlet_convergence_ratio_min": 3.0
+  },
+  "observed_budget": {
+    "dop853_function_calls_total": 9506,
+    "fixed_steps_total": 32140
+  },
+  "provider_environment": {
+    "lock_sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+    "numpy_installed_license_sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d",
+    "numpy_source_commit": "bbb76e7d76c3748fb2747fc3d8e06b944005362a",
+    "numpy_source_tag": "v2.2.6",
+    "platform_and_packages": {
+      "implementation": "CPython",
+      "machine": "AMD64",
+      "numpy": "2.2.6",
+      "python": "3.12.3",
+      "scipy": "1.18.1",
+      "system": "Windows"
+    },
+    "scipy_installed_license_sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+    "scipy_source_commit": "c2df8ace0d9859f090e79058b2bd2ffc584f19e6",
+    "scipy_source_tag": "v1.18.1",
+    "wheel_sha256": {
+      "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+    }
+  },
+  "recorded_at": "2026-09-27T09:17:35.341718+00:00",
+  "schema_version": "t3-horizon-grid-audit-v1",
+  "scope": "synthetic momentum-balanced planar three-body initial states; preflight-selected finite grid",
+  "solver": {
+    "atol": 1e-14,
+    "event_threshold_ratio": 0.5,
+    "local": "velocity-Verlet",
+    "max_step_fraction_of_horizon": 0.0078125,
+    "reference": "scipy.integrate.solve_ivp:DOP853",
+    "rtol": 1e-12,
+    "secondary": "independent Cartesian RK4"
+  },
+  "source_files": [
+    {
+      "bytes": 13615,
+      "path": "scripts/verify_t3_horizon_grid.py",
+      "sha256": "0e782a9291982b273730389587b54e1774fda382dcc839f1e40f441070968d04"
+    },
+    {
+      "bytes": 13534,
+      "path": "scripts/verify_t3_perturbed.py",
+      "sha256": "aa95eaedd1bc7557c7d0e036d72cc295e50795c7fb2b399814fd07d12623e24a"
+    },
+    {
+      "bytes": 9741,
+      "path": "scripts/verify_t3_external_scipy.py",
+      "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13"
+    },
+    {
+      "bytes": 10609,
+      "path": "src/auditable_scientist/tracks/nbody.py",
+      "sha256": "07dba583fe425e0c8ddd1fd6ad4198f2d4429ec620c61f68554243e98a3a1393"
+    },
+    {
+      "bytes": 2177,
+      "path": "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+      "sha256": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5"
+    },
+    {
+      "bytes": 385,
+      "path": "requirements-t3-scipy-win-py312.txt",
+      "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b"
+    },
+    {
+      "bytes": 3396,
+      "path": "docs/T3_HORIZON_GRID.md",
+      "sha256": "d5d1fc6f83549b9b8b1d01f68b9e0de8a8f2dac5ab666a856b624f442f71190a"
+    },
+    {
+      "bytes": 386,
+      "path": "examples/dynamics/nbody-fixture.json",
+      "sha256": "0b1b997ffb038fb8c17a43e6b3041856ec6d1be84b4341947a8e674f5eea3df3"
+    },
+    {
+      "bytes": 5596,
+      "normalization": "crlf-to-lf",
+      "path": "artifacts/t3-perturbed-audit.json",
+      "sha256": "c52519d61c62c4ecc03c790afb6cc3bc0c66f480ffc01813f07b7876200c5217"
+    }
+  ],
+  "status": "verified-finite-0.75-period-and-stress-rejection",
+  "stress_grid": [
+    {
+      "case_id": "equal-train",
+      "horizon_fraction": 1.0,
+      "perturbation_fraction": 0.02
+    },
+    {
+      "case_id": "unequal-holdout",
+      "horizon_fraction": 1.0,
+      "perturbation_fraction": 0.02
+    }
+  ]
+}

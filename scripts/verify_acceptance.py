@@ -425,6 +425,137 @@ def verify_optional_t3_perturbed_static() -> dict:
             "pinned_scipy_recomputation_required": True}
 
 
+def verify_optional_t3_horizon_static(audit: dict | None = None) -> dict:
+    """Fail closed on the saved finite-horizon grid without importing SciPy."""
+
+    audit = audit if audit is not None else load("artifacts/t3-horizon-grid-audit.json")
+    sources = {
+        "scripts/verify_t3_horizon_grid.py", "scripts/verify_t3_perturbed.py",
+        "scripts/verify_t3_external_scipy.py", "src/auditable_scientist/tracks/nbody.py",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "requirements-t3-scipy-win-py312.txt", "docs/T3_HORIZON_GRID.md",
+        "examples/dynamics/nbody-fixture.json", "artifacts/t3-perturbed-audit.json",
+    }
+    identities = [("equal-train", "train"), ("unequal-holdout", "holdout")]
+    admitted = audit.get("admitted_rows", [])
+    stress = audit.get("excluded_stress_rows", [])
+    gates = {
+        "fine_verlet_position_error_max": 1e-5,
+        "fine_verlet_velocity_error_max": 1e-5,
+        "rk4_position_error_max": 1e-8,
+        "verlet_convergence_ratio_min": 3.0,
+        "relative_energy_drift_max": 1e-5,
+        "relative_angular_momentum_drift_max": 1e-10,
+        "center_of_mass_drift_max": 1e-10,
+        "minimum_sampled_pair_separation_ratio_min": 0.5,
+    }
+    budget = {"dop853_function_calls_total_max": 12000, "fixed_steps_total_max": 35000}
+    boundaries = {
+        "smooth_synthetic_0_75_period_grid": True,
+        "one_period_stress_cases_admitted": False,
+        "chaotic_long_horizon_validated": False,
+        "general_nbody_validated": False,
+        "real_ephemerides": False,
+        "mission_validation": False,
+        "publication_ready": False,
+        "core_t3_run_changed": False,
+    }
+    expected_grid = lambda horizon: [
+        {"case_id": case_id, "perturbation_fraction": 0.02, "horizon_fraction": horizon}
+        for case_id, _ in identities
+    ]
+    checks = {
+        "two_smooth_source_configurations", "fine_verlet_position", "fine_verlet_velocity",
+        "rk4_position", "verlet_convergence", "energy_drift", "angular_momentum_drift",
+        "center_of_mass_drift", "smooth_separation", "stress_excluded", "compute_budget",
+    }
+    if (
+        audit.get("schema_version") != "t3-horizon-grid-audit-v1"
+        or audit.get("status") != "verified-finite-0.75-period-and-stress-rejection"
+        or audit.get("scope") != "synthetic momentum-balanced planar three-body initial states; preflight-selected finite grid"
+        or audit.get("provider_environment") != load("artifacts/t3-external-scipy.json").get("environment")
+        or audit.get("solver") != {
+            "reference": "scipy.integrate.solve_ivp:DOP853", "rtol": 1e-12, "atol": 1e-14,
+            "max_step_fraction_of_horizon": 1 / 128, "local": "velocity-Verlet",
+            "secondary": "independent Cartesian RK4", "event_threshold_ratio": 0.5,
+        }
+        or audit.get("admitted_grid") != expected_grid(0.75)
+        or audit.get("stress_grid") != expected_grid(1.0)
+        or audit.get("gates") != gates or audit.get("budget") != budget
+        or audit.get("boundaries") != boundaries
+        or not isinstance(admitted, list) or not isinstance(stress, list)
+        or [(row.get("case_id"), row.get("source_split")) for row in admitted] != identities
+        or [(row.get("case_id"), row.get("source_split")) for row in stress] != identities
+        or not isinstance(audit.get("checks"), dict)
+        or set(audit["checks"]) != checks or not all(value is True for value in audit["checks"].values())
+        or len(audit.get("source_files", [])) != len(sources)
+        or {item.get("path") for item in audit["source_files"]} != sources
+    ):
+        raise ValueError("optional T3 horizon grid is missing or exceeds its finite scope")
+    recorded_at = datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00"))
+    if recorded_at.tzinfo is None or recorded_at.utcoffset() is None:
+        raise ValueError("optional T3 horizon grid timestamp is naive")
+
+    def number(row: dict, key: str) -> float:
+        value = row.get(key)
+        if isinstance(value, bool) or not isinstance(value, (float, int)) or not math.isfinite(value):
+            raise ValueError(f"optional T3 horizon grid has invalid {key}")
+        return float(value)
+
+    for row in admitted:
+        if (number(row, "horizon_fraction") != 0.75
+                or number(row, "perturbation_fraction") != 0.02
+                or number(row, "coarse_steps") <= 0
+                or number(row, "fine_steps") != 2 * number(row, "coarse_steps")
+                or number(row, "dop853_function_calls") <= 0
+                or not 0 < number(row, "fine_verlet_position_error") <= gates["fine_verlet_position_error_max"]
+                or not 0 <= number(row, "fine_verlet_velocity_error") <= gates["fine_verlet_velocity_error_max"]
+                or not 0 <= number(row, "rk4_position_error") <= gates["rk4_position_error_max"]
+                or number(row, "coarse_verlet_position_error") / number(row, "fine_verlet_position_error")
+                != number(row, "verlet_convergence_ratio")
+                or number(row, "verlet_convergence_ratio") < gates["verlet_convergence_ratio_min"]
+                or not 0 <= number(row, "relative_energy_drift") <= gates["relative_energy_drift_max"]
+                or not 0 <= number(row, "relative_angular_momentum_drift") <= gates["relative_angular_momentum_drift_max"]
+                or not 0 <= number(row, "center_of_mass_drift") <= gates["center_of_mass_drift_max"]
+                or number(row, "sampled_minimum_pair_separation_ratio") <= 0.5
+                or row.get("inward_threshold_event_count") != 0):
+            raise ValueError("optional T3 admitted horizon row violates its numerical gate")
+    for row in stress:
+        if (number(row, "horizon_fraction") != 1.0
+                or number(row, "perturbation_fraction") != 0.02
+                or number(row, "dop853_function_calls") <= 0
+                or not 0 < number(row, "sampled_minimum_pair_separation_ratio") < 0.5
+                or number(row, "inward_threshold_event_count") < 1
+                or not 0 < number(row, "first_inward_event_fraction_of_horizon") < 1
+                or row.get("admission") != "excluded-close-approach"):
+            raise ValueError("optional T3 stress row was incorrectly admitted")
+    observed = audit.get("observed_budget", {})
+    nfev = sum(number(row, "dop853_function_calls") for row in [*admitted, *stress])
+    fixed = sum(number(row, "coarse_steps") + 2 * number(row, "fine_steps") for row in admitted)
+    if (observed != {"dop853_function_calls_total": nfev, "fixed_steps_total": fixed}
+            or nfev > budget["dop853_function_calls_total_max"]
+            or fixed > budget["fixed_steps_total_max"]):
+        raise ValueError("optional T3 horizon grid exceeds its compute budget")
+    for item in audit["source_files"]:
+        path = ROOT / item["path"]
+        if item["path"] == "artifacts/t3-perturbed-audit.json":
+            data = path.read_bytes().replace(b"\r\n", b"\n")
+            if item.get("normalization") != "crlf-to-lf":
+                raise ValueError("optional T3 parent audit line-ending normalization differs")
+            source_sha = hashlib.sha256(data).hexdigest()
+            source_bytes = len(data)
+        else:
+            if item.get("normalization") is not None:
+                raise ValueError("optional T3 source declares unexpected normalization")
+            fingerprint = fingerprint_file(path)
+            source_sha, source_bytes = fingerprint.sha256, fingerprint.bytes
+        if item.get("sha256") != source_sha or item.get("bytes") != source_bytes:
+            raise ValueError(f"optional T3 horizon grid source differs: {item['path']}")
+    return {"scope": "static-source-boundary-and-numeric-gate-check-only",
+            "source_files_match": True, "pinned_scipy_recomputation_required": True,
+            "admitted_case_count": len(admitted), "excluded_stress_case_count": len(stress)}
+
+
 def verify_optional_t3_perturbed_run_static() -> dict:
     """Verify the optional shared Run and its manifest without importing SciPy."""
 
@@ -560,6 +691,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "optional-external-solver-run": "t3-external-run-audit-v1",
             "optional-perturbed-three-body-cross-check": "t3-perturbed-audit-v1",
             "optional-perturbed-three-body-run": "t3-perturbed-run-audit-v1",
+            "optional-expanded-horizon-grid": "t3-horizon-grid-audit-v1",
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
@@ -907,9 +1039,17 @@ def main() -> None:
         raise SystemExit("T3 perturbed cross-check is missing from acceptance")
     if not any(item.get("name") == "optional-perturbed-three-body-run" and item.get("output_path") == "artifacts/t3-perturbed-run-audit.json" for item in t3_checks):
         raise SystemExit("T3 optional perturbed Run is missing from acceptance")
+    if not any(item.get("name") == "optional-expanded-horizon-grid" and item.get("output_path") == "artifacts/t3-horizon-grid-audit.json" for item in t3_checks):
+        raise SystemExit("T3 optional expanded horizon grid is missing from acceptance")
+    if not any(item.get("name") == "optional-t3-expanded-horizon-grid"
+               and item.get("output_path") == "artifacts/t3-horizon-grid-audit.json"
+               and item.get("input_version") == "t3-horizon-grid-audit-v1"
+               for item in acceptance["checks"]):
+        raise SystemExit("T3 expanded horizon grid is missing from root acceptance")
     optional_t3_static_replay = verify_optional_t3_run_static()
     optional_t3_perturbed_static = verify_optional_t3_perturbed_static()
     optional_t3_perturbed_run_static = verify_optional_t3_perturbed_run_static()
+    optional_t3_horizon_static = verify_optional_t3_horizon_static()
 
     t4_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T4")
     t4_package = ProofPackage.model_validate(load("examples/proof/fixture.json"))
@@ -1119,6 +1259,7 @@ def main() -> None:
         "t3_optional_external_run_static_replay": optional_t3_static_replay,
         "t3_perturbed_static_provenance": optional_t3_perturbed_static,
         "t3_optional_perturbed_run_static_replay": optional_t3_perturbed_run_static,
+        "t3_optional_horizon_static_provenance": optional_t3_horizon_static,
         "wheel_audit_verified": True,
         "t1_nasa_parameter_audit": {
             "status": nasa_audit["status"],
