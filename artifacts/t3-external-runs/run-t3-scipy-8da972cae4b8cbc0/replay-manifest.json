@@ -1,0 +1,352 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "8da972cae4b8cbc0785afe9b13b046979ae1611b036df77d8ba11c1905d05e40",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "numpy": "2.2.6",
+      "pydantic": "2.11.10",
+      "scipy": "1.18.1",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T3",
+    "runtime": "optional-external-solver",
+    "network": "disabled",
+    "provider_id": "scipy-dop853-v1",
+    "pinned_wheel_sha256": {
+      "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+    },
+    "installed_license_sha256": {
+      "scipy": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    }
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t3_external_run.py",
+      "sha256": "52b64d50ff17a1f3e6d826dc0e466a044551d82f49c4ecb63367d0bb015c36cd",
+      "bytes": 20335
+    },
+    {
+      "path": "root://scripts/verify_t3_external_scipy.py",
+      "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+      "bytes": 9741
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/dynamics.py",
+      "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b",
+      "bytes": 5756
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/reference_rk4.py",
+      "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792",
+      "bytes": 1553
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://requirements-t3-scipy-win-py312.txt",
+      "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "bytes": 385
+    },
+    {
+      "path": "root://docs/T3_EXTERNAL_SOLVER.md",
+      "sha256": "bde981f9161a425e8994b90d84ab5c89a8520d3f109dd377b059a69cd27b9703",
+      "bytes": 3808
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://schemas/t3-external-tool-call-v1.json",
+      "sha256": "873be3437498f674958a5d85530210bb471fc20ae1ae2f3ff92a46e5dfc87210",
+      "bytes": 418
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://scipy-license.txt",
+      "sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "bytes": 45881
+    },
+    {
+      "path": "run://numpy-license.txt",
+      "sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d",
+      "bytes": 47709
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "schema_version": "t3-external-scipy-audit-v1",
+    "status": "passed-optional-oscillator-cross-check",
+    "scope": "optional SciPy DOP853 cross-check of nine unit-mass linear-oscillator cases",
+    "environment": {
+      "platform_and_packages": {
+        "python": "3.12.3",
+        "implementation": "CPython",
+        "system": "Windows",
+        "machine": "AMD64",
+        "numpy": "2.2.6",
+        "scipy": "1.18.1"
+      },
+      "lock_sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "wheel_sha256": {
+        "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+        "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+      },
+      "scipy_source_tag": "v1.18.1",
+      "scipy_source_commit": "c2df8ace0d9859f090e79058b2bd2ffc584f19e6",
+      "scipy_installed_license_sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy_source_tag": "v2.2.6",
+      "numpy_source_commit": "bbb76e7d76c3748fb2747fc3d8e06b944005362a",
+      "numpy_installed_license_sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    },
+    "solver": {
+      "api": "scipy.integrate.solve_ivp",
+      "method": "DOP853",
+      "rtol": 1e-11,
+      "atol": 1e-13
+    },
+    "grid": {
+      "omegas": [
+        0.7,
+        1.0,
+        1.6
+      ],
+      "initial_states": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.8,
+          0.25
+        ],
+        [
+          -1.2,
+          -0.3
+        ]
+      ],
+      "steps": 512,
+      "end_phase": 10.995574287564276
+    },
+    "gates": {
+      "position_error_max": 1e-8,
+      "velocity_error_max": 1e-8,
+      "energy_drift_max": 1e-8,
+      "verlet_position_delta_max": 0.001,
+      "rk4_position_delta_max": 1e-6,
+      "wrong_sign_position_error_min": 0.01
+    },
+    "rows": [
+      {
+        "case_id": "scipy-omega-0.7-state-1",
+        "omega": 0.7,
+        "x0": 1.0,
+        "v0": 0.0,
+        "success": true,
+        "function_calls": 722,
+        "max_position_error": 1.8826384895476167e-11,
+        "max_velocity_error": 1.7846359310981695e-11,
+        "max_energy_drift": 3.8209684849239615e-11,
+        "final_verlet_delta": 0.00021131247436154078,
+        "final_rk4_delta": 1.9479504849428952e-8
+      },
+      {
+        "case_id": "scipy-omega-0.7-state-2",
+        "omega": 0.7,
+        "x0": 0.8,
+        "v0": 0.25,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.8015876753276436e-11,
+        "max_velocity_error": 1.633880199858977e-11,
+        "max_energy_drift": 3.7544342062872343e-11,
+        "final_verlet_delta": 0.00016946306557152793,
+        "final_rk4_delta": 1.7645679930164124e-8
+      },
+      {
+        "case_id": "scipy-omega-0.7-state-3",
+        "omega": 0.7,
+        "x0": -1.2,
+        "v0": -0.3,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.6811991825876288e-11,
+        "max_velocity_error": 1.5386915962446115e-11,
+        "max_energy_drift": 3.8485777885051596e-11,
+        "final_verlet_delta": 0.0001796175573351088,
+        "final_rk4_delta": 1.8227704411141658e-8
+      },
+      {
+        "case_id": "scipy-omega-1.0-state-1",
+        "omega": 1.0,
+        "x0": 1.0,
+        "v0": 0.0,
+        "success": true,
+        "function_calls": 722,
+        "max_position_error": 1.834010721069035e-11,
+        "max_velocity_error": 1.6736945163131622e-11,
+        "max_energy_drift": 3.8381076095106437e-11,
+        "final_verlet_delta": 0.00021131247435408846,
+        "final_rk4_delta": 1.947951323161279e-8
+      },
+      {
+        "case_id": "scipy-omega-1.0-state-2",
+        "omega": 1.0,
+        "x0": 0.8,
+        "v0": 0.25,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.5505452864556854e-11,
+        "max_velocity_error": 1.743103414796633e-11,
+        "max_energy_drift": 3.8361563826674353e-11,
+        "final_verlet_delta": 0.00018450288296202716,
+        "final_rk4_delta": 1.8489117021581697e-8
+      },
+      {
+        "case_id": "scipy-omega-1.0-state-3",
+        "omega": 1.0,
+        "x0": -1.2,
+        "v0": -0.3,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.787764225352273e-11,
+        "max_velocity_error": 1.599258229464893e-11,
+        "max_energy_drift": 3.798094736321575e-11,
+        "final_verlet_delta": 0.0001910250261508822,
+        "final_rk4_delta": 1.881364897588121e-8
+      },
+      {
+        "case_id": "scipy-omega-1.6-state-1",
+        "omega": 1.6,
+        "x0": 1.0,
+        "v0": 0.0,
+        "success": true,
+        "function_calls": 722,
+        "max_position_error": 1.8595791573261522e-11,
+        "max_velocity_error": 1.566066720748438e-11,
+        "max_energy_drift": 3.905695211692261e-11,
+        "final_verlet_delta": 0.0002113124743988544,
+        "final_rk4_delta": 1.9479469037797514e-8
+      },
+      {
+        "case_id": "scipy-omega-1.6-state-2",
+        "omega": 1.6,
+        "x0": 0.8,
+        "v0": 0.25,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.7344391899100015e-11,
+        "max_velocity_error": 1.5981020896736153e-11,
+        "max_energy_drift": 3.9008259390704086e-11,
+        "final_verlet_delta": 0.0001963459716696659,
+        "final_rk4_delta": 1.905160807156488e-8
+      },
+      {
+        "case_id": "scipy-omega-1.6-state-3",
+        "omega": 1.6,
+        "x0": -1.2,
+        "v0": -0.3,
+        "success": true,
+        "function_calls": 707,
+        "max_position_error": 1.6357725677666247e-11,
+        "max_velocity_error": 1.703404153604922e-11,
+        "max_energy_drift": 3.918366413973625e-11,
+        "final_verlet_delta": 0.00019988198180052947,
+        "final_rk4_delta": 1.9192395106457004e-8
+      }
+    ],
+    "summary": {
+      "case_count": 9,
+      "max_position_error": 1.8826384895476167e-11,
+      "max_velocity_error": 1.7846359310981695e-11,
+      "max_energy_drift": 3.918366413973625e-11,
+      "max_verlet_position_delta": 0.0002113124743988544,
+      "max_rk4_position_delta": 1.947951323161279e-8,
+      "wrong_sign_position_error": 29804.87075455391
+    },
+    "checks": {
+      "external_solver_success": true,
+      "analytic_position": true,
+      "analytic_velocity": true,
+      "energy_drift": true,
+      "verlet_agreement": true,
+      "rk4_agreement": true,
+      "wrong_sign_rejected": true
+    },
+    "source_files": [
+      {
+        "path": "src/auditable_scientist/tracks/dynamics.py",
+        "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b",
+        "bytes": 5756
+      },
+      {
+        "path": "src/auditable_scientist/tracks/reference_rk4.py",
+        "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792",
+        "bytes": 1553
+      },
+      {
+        "path": "scripts/verify_t3_external_scipy.py",
+        "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "bytes": 9741
+      }
+    ],
+    "boundaries": {
+      "core_dependency": false,
+      "oscillator_grid_validated": true,
+      "multi_body_validated": false,
+      "real_mission_validated": false,
+      "publication_ready": false
+    }
+  }
+}

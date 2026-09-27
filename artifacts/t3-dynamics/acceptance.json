@@ -6,7 +6,7 @@
       "input_version": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t3-dynamics/sample-run.json",
-      "recorded_at": "2026-09-27T04:27:43.170367+00:00"
+      "recorded_at": "2026-09-27T05:22:35.282902+00:00"
     },
     {
       "command": "python scripts/verify_t3_sweep.py --write",
@@ -15,6 +15,14 @@
       "name": "bounded-parameter-step-sweep",
       "output_path": "artifacts/t3-sweep.json",
       "recorded_at": "2026-09-27T03:59:59.079349+00:00"
+    },
+    {
+      "command": "python scripts/verify_t3_external_run.py --verify",
+      "exit_code": 0,
+      "input_version": "t3-external-run-audit-v1",
+      "name": "optional-external-solver-run",
+      "output_path": "artifacts/t3-external-run-audit.json",
+      "recorded_at": "2026-09-27T05:19:37.160810+00:00"
     }
   ],
   "evaluator": {
@@ -214,10 +222,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 14872,
+        "bytes": 15872,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
+        "sha256": "155816c73cb0f8830d11dfe8f2df9d9fa4a5025189858583ec14bea1c8ef24fe"
       },
       {
         "allowed_use": [

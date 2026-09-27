@@ -46,8 +46,11 @@
 - A separate, optional SciPy 1.18.1 / NumPy 2.2.6 DOP853 cross-check passed nine
   oscillator cases and a wrong-sign negative control. Its Windows wheels, source
   tags, and installed license notices are recorded in `docs/T3_EXTERNAL_SOLVER.md`
-  and `artifacts/t3-external-scipy.json`. SciPy remains outside the core dependency
-  and the committed Run; this audit does not close multi-body or mission gates.
+  and `artifacts/t3-external-scipy.json`. A separate versioned Tool/Provider Run
+  in `artifacts/t3-external-runs/` now replays this pinned computation, records
+  license snapshots and a network-disabled policy, and rejects altered output
+  and license bytes. SciPy remains outside the core dependency and T3 core Run;
+  the optional Run does not close multi-body or mission gates.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.
@@ -330,9 +333,10 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Design an optional versioned T3 external-solver Tool/Provider and per-Run
-   provenance binding before moving the SciPy audit into tracked replay. Keep
-   the present oscillator-only result separate from multi-body claims.
+1. Extend T3 beyond the linear oscillator only with a separately specified
+   multi-body validation set, independent references, numerical error budget,
+   and rights-cleared source provenance. Keep the present oscillator Run separate
+   from any real-mission claim.
 2. Add rights-cleared real-data adapters only after source and data-use gates are closed;
    until then, keep all track claims at their current bounded fixture scope.
 3. Reassess the local-only publication boundary from a fresh environment and user review;

@@ -21,6 +21,20 @@
     "manifest_hash": "1d2467c8726368ec04ea46b546aaf734be845be7f50961b9569c6a3ec16a77e9",
     "verified": true
   },
+  "t3_optional_external_run_static_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "7d5f79dc99a8ae871afd4cd883f52abad0e9bcca706c4036300d28fb7544168d",
+    "verified": true
+  },
   "track_cli_replays": {
     "T2": {
       "checks": [
@@ -33,7 +47,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "4fefdfd8fb3a3c3a8ec44ecba02ad0be5b0723aa1da019bed7e37de7b76dfd8a",
+      "manifest_hash": "4317219e1611e475183152151bf501752ed84124011c5f28db223a8b940e502b",
       "verified": true
     },
     "T3": {
@@ -47,7 +61,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "d7d6248df08e0581a78a321df1733ee78fdcb543ad3fffe2713e10ec5dabdf8c",
+      "manifest_hash": "4c4a0e0824aa7a0762661e9f0f83bb0234ef15a953c3792a0b65d891bbfee181",
       "verified": true
     },
     "T4": {
@@ -61,7 +75,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "e43c6394066166a0cbbf5f164f2eabcdc3e49ef1f7e38dbef551617e19aca0e6",
+      "manifest_hash": "7b74767d20012d2a13148253869cf513376e9c5057a62eb4613053e53941d4af",
       "verified": true
     },
     "T5": {
@@ -75,7 +89,7 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "07242b6af4be64d4af22ca12530f94262cca904673703f5271fbc84a8a23822d",
+      "manifest_hash": "d9af477ece96b7f0586979beb846dfcda83a2bbe6522dc18a13a639926841246",
       "verified": true
     }
   },

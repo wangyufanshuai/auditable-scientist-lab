@@ -21,10 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CONSTRAINTS = ROOT / "requirements-replay-win-py312.txt"
 RUNS = {
     "T1": ROOT / "artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/replay-manifest.json",
-    "T2": ROOT / "artifacts/track-runs-v7/run-t2-e8c0533775f1ab69/replay-manifest.json",
-    "T3": ROOT / "artifacts/track-runs-v7/run-t3-1c4eb6b867515637/replay-manifest.json",
-    "T4": ROOT / "artifacts/track-runs-v7/run-t4-6497f62cc5a8ff84/replay-manifest.json",
-    "T5": ROOT / "artifacts/track-runs-v7/run-t5-cc6170f111df81a8/replay-manifest.json",
+    "T2": ROOT / "artifacts/track-runs-v8/run-t2-e8c0533775f1ab69/replay-manifest.json",
+    "T3": ROOT / "artifacts/track-runs-v8/run-t3-1c4eb6b867515637/replay-manifest.json",
+    "T4": ROOT / "artifacts/track-runs-v8/run-t4-6497f62cc5a8ff84/replay-manifest.json",
+    "T5": ROOT / "artifacts/track-runs-v8/run-t5-cc6170f111df81a8/replay-manifest.json",
 }
 BUILD_TOOLS = {"pip", "setuptools", "wheel"}
 

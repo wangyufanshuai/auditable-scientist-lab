@@ -85,6 +85,18 @@ def write_track_bundle(
             "input_version": "t3-sweep-v1",
             "output_path": "artifacts/t3-sweep.json",
         })
+    if track_id == "T3" and (ROOT / "artifacts/t3-external-run-audit.json").is_file():
+        external = json.loads((ROOT / "artifacts/t3-external-run-audit.json").read_text(encoding="utf-8"))
+        if external.get("schema_version") != "t3-external-run-audit-v1" or external.get("status") != "verified-within-pinned-oscillator-grid":
+            raise ValueError("optional T3 external Run audit is present but did not pass")
+        acceptance["checks"].append({
+            "name": "optional-external-solver-run",
+            "command": "python scripts/verify_t3_external_run.py --verify",
+            "exit_code": 0,
+            "recorded_at": external["recorded_at"],
+            "input_version": "t3-external-run-audit-v1",
+            "output_path": "artifacts/t3-external-run-audit.json",
+        })
     write_json(artifact_dir / "acceptance.json", acceptance)
     write_json(
         artifact_dir / "sample-run.json",
@@ -205,7 +217,7 @@ def main() -> None:
     status_rows = [
         {"track_id": "T1", "state": "reproduced-within-scope", "acceptance": "artifacts/acceptance.json", "open_gates": ["external symbolic engine", "real-data provenance", "independent backend"], "next_step": "decide local-only release boundary", "public_release": False},
         {"track_id": "T2", "state": "reproduced-within-scope", "acceptance": "artifacts/t2-causal/acceptance.json", "open_gates": ["real interventions", "causal identification", "data rights"], "next_step": "add a rights-cleared intervention dataset", "public_release": False},
-        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "open_gates": ["multi-body validation", "external solver Run integration", "compute budget"], "next_step": "bind optional solver provenance to a versioned Tool/Provider", "public_release": False},
+        {"track_id": "T3", "state": "reproduced-within-scope", "acceptance": "artifacts/t3-dynamics/acceptance.json", "optional_external_run": "artifacts/t3-external-run-audit.json", "open_gates": ["multi-body validation", "real-mission provenance", "compute budget"], "next_step": "specify a rights-cleared multi-body validation set and independent reference", "public_release": False},
         {"track_id": "T4", "state": "reproduced-within-scope", "acceptance": "artifacts/t4-proof/acceptance.json", "open_gates": ["general formal proof backend", "transition model coverage"], "next_step": "extend the fixed transfer witness to reviewed transition systems", "public_release": False},
         {"track_id": "T5", "state": "reproduced-within-scope", "acceptance": "artifacts/t5-protocol/acceptance.json", "open_gates": ["real protocol provenance", "biosafety review", "human acceptance"], "next_step": "rights and safety review before real-data use", "public_release": False},
     ]
@@ -221,8 +233,9 @@ def main() -> None:
     markdown.extend(["", "Remote is configured locally but not pushed. The bounded fixture results do not support real-data, novelty, publication, or production claims."])
     if (ROOT / "artifacts/t3-external-scipy.json").is_file():
         markdown.extend([
-            "The separate SciPy audit records source tags, installed license notices, exact wheel hashes,",
-            "and a nine-case oscillator cross-check; it is not yet evidence inside the T3 Run.",
+            "The separate SciPy audit records source tags, installed license notices, pinned wheel hashes,",
+            "and a nine-case oscillator cross-check. An optional versioned Tool/Provider Run now",
+            "replays that scope separately; the core T3 Run remains SciPy-free and multi-body gates remain open.",
         ])
     (ROOT / "artifacts/portfolio-status.md").write_text("\n".join(markdown) + "\n", encoding="utf-8", newline="\n")
 

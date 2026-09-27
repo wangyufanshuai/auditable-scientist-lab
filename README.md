@@ -71,7 +71,7 @@ seed、源码/证据快照、候选顺序和完整计算输出。正式收据和
 跨操作系统和不同依赖版本尚未验收。
 T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler 负例比较
 见 [docs/T3_METHOD.md](docs/T3_METHOD.md)；当前 T2–T5 CLI 收据在
-`artifacts/track-runs-v7/`。
+`artifacts/track-runs-v8/`。
 
 ## 当前入口
 
@@ -83,6 +83,7 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [docs/T3_METHOD.md](docs/T3_METHOD.md)：T3 双后端方法、来源和适用边界。
 - [docs/T3_SWEEP.md](docs/T3_SWEEP.md)：T3 固定参数与步长网格、收敛门槛和边界。
 - [docs/T3_EXTERNAL_SOLVER.md](docs/T3_EXTERNAL_SOLVER.md)：可选 SciPy 交叉核验、版本与许可证来源。
+- [artifacts/t3-external-run-audit.json](artifacts/t3-external-run-audit.json)：可选 SciPy Tool/Provider Run 的回放、搬移与篡改负例收据。
 - [docs/T4_METHOD.md](docs/T4_METHOD.md)：T4 精确转移见证、完整义务集和证明边界。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。

@@ -1,0 +1,172 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "1c4eb6b86751563709009d6f51af52d67422de512a8279b1cb552b58d56f5f86",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T3",
+    "runtime": "bounded-evaluator",
+    "network": "disabled"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://src/auditable_scientist/tracks/dynamics.py",
+      "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b",
+      "bytes": 5756
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/reference_rk4.py",
+      "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792",
+      "bytes": 1553
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/common.py",
+      "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75",
+      "bytes": 1933
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/run_package.py",
+      "sha256": "1d72c15cb899370f2ebd2532dc3a3c1a0448889a868e03b0f80bc9c349309c04",
+      "bytes": 7729
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/runner.py",
+      "sha256": "98c8936a5ec6ee0632b4f18f8106854b4940473a789863bd21ed47476aa66aff",
+      "bytes": 9556
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://src/auditable_scientist/cli.py",
+      "sha256": "6d88e1d61df408a8f27b2a9dab7535a22f12b79a1100eb46765fd447a4b49185",
+      "bytes": 25053
+    },
+    {
+      "path": "root://src/auditable_scientist/track_cli.py",
+      "sha256": "02b3f72a1adcd7efd01fd2c4506b68e4a42e9a1cb15ba11a43a8a7c66b2963c4",
+      "bytes": 8627
+    },
+    {
+      "path": "root://scripts/generate_track_artifacts.py",
+      "sha256": "155816c73cb0f8830d11dfe8f2df9d9fa4a5025189858583ec14bea1c8ef24fe",
+      "bytes": 15872
+    },
+    {
+      "path": "root://pyproject.toml",
+      "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1",
+      "bytes": 792
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://schemas/track-tool-call-v1.json",
+      "sha256": "2329578097b55bee5d64dc58e21842337ad6fc387661b3e6bb4a8f1532c87abf",
+      "bytes": 494
+    },
+    {
+      "path": "root://schemas/track-receipt-v1.json",
+      "sha256": "33fa718b4d9ab68586271b89dfe7e25a886c5952fd9a796fc62a6fc85b4f104f",
+      "bytes": 1726
+    },
+    {
+      "path": "root://schemas/track-acceptance-v1.json",
+      "sha256": "e2a6591acc427f9d9578ddeac5791e76c66cc05fcdcabc2d6695df87569eba50",
+      "bytes": 3232
+    },
+    {
+      "path": "root://schemas/run.schema.json",
+      "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc",
+      "bytes": 8072
+    },
+    {
+      "path": "root://docs/T3_METHOD.md",
+      "sha256": "87e00e838d16cbaf05ffb6861750f547a8dac3818bb2a56fc57c904ce744b0d4",
+      "bytes": 1479
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://fixture.json",
+      "sha256": "1e28db56d300c42755fd6614c2137abc34f21caf9b2e22ff3026d47f7d0ccd37",
+      "bytes": 536
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "result": {
+      "evaluator_id": "harmonic-dynamics-v2",
+      "solver_id": "velocity-verlet-v1",
+      "reference_solver_id": "fixed-step-rk4-v1",
+      "train_max_position_error": 0.000019977752245103897,
+      "holdout_max_position_error": 0.000010495796261222878,
+      "max_energy_drift": 0.000012499992203318655,
+      "max_reference_position_error": 4.824394772562357e-10,
+      "max_reference_energy_drift": 1.3855472325019491e-11,
+      "max_backend_position_delta": 0.000019978152767885504,
+      "backend_agreement_passed": true,
+      "negative_euler_rejected": true,
+      "passed": true,
+      "notes": [
+        "Velocity-Verlet and independently implemented fixed-step RK4 are compared with the closed-form harmonic solution.",
+        "Explicit Euler is a required negative control for conservation drift.",
+        "The RK4 method citation is a reference, not an imported software or data dependency."
+      ]
+    },
+    "negative_case": {
+      "solver": "explicit-euler",
+      "rejected": true
+    }
+  }
+}

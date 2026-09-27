@@ -31,12 +31,13 @@
     },
     {
       "acceptance": "artifacts/t3-dynamics/acceptance.json",
-      "next_step": "bind optional solver provenance to a versioned Tool/Provider",
+      "next_step": "specify a rights-cleared multi-body validation set and independent reference",
       "open_gates": [
         "multi-body validation",
-        "external solver Run integration",
+        "real-mission provenance",
         "compute budget"
       ],
+      "optional_external_run": "artifacts/t3-external-run-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T3"

@@ -6,7 +6,7 @@
       "input_version": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
       "name": "bounded-domain-evaluator",
       "output_path": "artifacts/t2-causal/sample-run.json",
-      "recorded_at": "2026-09-27T04:27:43.139383+00:00"
+      "recorded_at": "2026-09-27T05:22:35.243159+00:00"
     }
   ],
   "evaluator": {
@@ -190,10 +190,10 @@
           "offline-evaluator",
           "source-provenance"
         ],
-        "bytes": 14872,
+        "bytes": 15872,
         "path": "scripts/generate_track_artifacts.py",
         "provenance_status": "unverified",
-        "sha256": "b4c239fbeba60bafb57c721f7036b9bb8a8f8f5b220b395a4acb7d26db3d0de0"
+        "sha256": "155816c73cb0f8830d11dfe8f2df9d9fa4a5025189858583ec14bea1c8ef24fe"
       },
       {
         "allowed_use": [

@@ -41,6 +41,7 @@ $solverPython = Join-Path $solverVenv "Scripts\python.exe"
 & $solverPython -m pip install -r requirements-t3-scipy-win-py312.txt
 & $solverPython -m pip check
 & $solverPython scripts/verify_t3_external_scipy.py --verify
+& $solverPython scripts/verify_t3_external_run.py --verify
 ```
 
 The nine cases passed solver success, analytic position/velocity accuracy,
@@ -49,6 +50,16 @@ the wrong-sign negative control. The maximum normalized SciPy position error
 was `1.883e-11`; its maximum energy drift was `3.919e-11`. These measurements
 apply only to the declared linear oscillator grid and tolerance settings.
 They do not validate multi-body mechanics, real mission trajectories, long-run
-stability, or scientific publication. Incorporating an external solver into a
-tracked Run would require its own versioned Tool/Provider contract, wheel and
-license provenance, resource budget, and replay evidence.
+stability, or scientific publication.
+
+The optional [T3 SciPy Run audit](../artifacts/t3-external-run-audit.json) now
+binds these nine cases to a versioned SciPy Tool/Provider, a network-disabled
+policy, the source and requirements snapshots, and the installed license
+notices copied into its own Run. It recomputes the solver output on replay,
+checks eight manifest fields, replays after moving the Run directory, and
+rejects altered result and license snapshots. The pinned wheel hashes are
+recorded from the requirements file; a later replay verifies installed versions
+and license bytes but cannot reconstruct which wheel was originally installed
+unless installation history is independently attested. The ToolRegistry checks
+declared paths and providers; it is not an operating-system sandbox or an
+in-process timeout interrupt. The core T3 Run and wheel remain SciPy-free.
