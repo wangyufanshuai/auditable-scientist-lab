@@ -8,3 +8,4 @@ artifacts/p4-runs/
 artifacts/hohmann-report.md
 data/naif/*.bsp
 data/naif/*.tpc
+data/references/*.pdf
