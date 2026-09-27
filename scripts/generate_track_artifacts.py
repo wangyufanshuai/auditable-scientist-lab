@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from auditable_scientist.runtime.canonical import canonical_hash, canonical_json
-from auditable_scientist.runtime.replay import fingerprint_file
+from auditable_scientist.runtime.replay import BoundPaths, fingerprint_file
 from auditable_scientist.tracks.causal import CausalCase
 from auditable_scientist.tracks.dynamics import DynamicsCase
 from auditable_scientist.tracks.proof import ProofObligation, ProofPackage, ProofState
@@ -135,7 +135,7 @@ def main() -> None:
     causal_execution = run_registered_track("T2", causal_fixture)
     causal_receipt = causal_execution.receipt
     causal_negative = causal_execution.negative_case
-    causal_run = make_track_run(track_id="T2", task_id="t2-causal-intervention-v1", receipt=causal_receipt, fixture_path=causal_fixture, negative_case=causal_negative, calls_used=causal_execution.calls_used)
+    causal_run = make_track_run(track_id="T2", task_id="t2-causal-intervention-v1", receipt=causal_receipt, fixture_path=causal_fixture, negative_case=causal_negative, calls_used=causal_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t2-causal"))
     write_track_bundle(track_id="T2", directory="t2-causal", receipt=causal_receipt, run=causal_run, negative_case=causal_negative, demo_text=f"run_id={causal_run.run_id}; holdout_rmse={causal_receipt.result['holdout_rmse']}; negative_candidate_rejected={causal_receipt.result['negative_candidate_rejected']}")
     portfolio.append(causal_receipt.model_dump(mode="json"))
 
@@ -149,7 +149,7 @@ def main() -> None:
     dynamics_execution = run_registered_track("T3", dynamics_fixture)
     dynamics_receipt = dynamics_execution.receipt
     dynamics_negative = dynamics_execution.negative_case
-    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v2", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative, calls_used=dynamics_execution.calls_used)
+    dynamics_run = make_track_run(track_id="T3", task_id="t3-harmonic-dynamics-v2", receipt=dynamics_receipt, fixture_path=dynamics_fixture, negative_case=dynamics_negative, calls_used=dynamics_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t3-dynamics"))
     write_track_bundle(track_id="T3", directory="t3-dynamics", receipt=dynamics_receipt, run=dynamics_run, negative_case=dynamics_negative, demo_text=f"run_id={dynamics_run.run_id}; holdout_max_position_error={dynamics_receipt.result['holdout_max_position_error']}; max_backend_position_delta={dynamics_receipt.result['max_backend_position_delta']}; negative_euler_rejected={dynamics_receipt.result['negative_euler_rejected']}")
     portfolio.append(dynamics_receipt.model_dump(mode="json"))
 
@@ -165,7 +165,7 @@ def main() -> None:
     proof_execution = run_registered_track("T4", proof_fixture)
     proof_receipt = proof_execution.receipt
     proof_negative = proof_execution.negative_case
-    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v1", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative, calls_used=proof_execution.calls_used)
+    proof_run = make_track_run(track_id="T4", task_id="t4-proof-carrying-v1", receipt=proof_receipt, fixture_path=proof_fixture, negative_case=proof_negative, calls_used=proof_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t4-proof"))
     write_track_bundle(track_id="T4", directory="t4-proof", receipt=proof_receipt, run=proof_run, negative_case=proof_negative, demo_text=f"run_id={proof_run.run_id}; checked_obligations={proof_receipt.result['checked_obligations']}; tampered_claim_status={proof_negative['claim_status']}")
     portfolio.append(proof_receipt.model_dump(mode="json"))
 
@@ -179,7 +179,7 @@ def main() -> None:
     protocol_execution = run_registered_track("T5", protocol_fixture)
     protocol_receipt = protocol_execution.receipt
     protocol_negative = protocol_execution.negative_case
-    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-protocol-v1", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative, calls_used=protocol_execution.calls_used)
+    protocol_run = make_track_run(track_id="T5", task_id="t5-bio-chem-protocol-v1", receipt=protocol_receipt, fixture_path=protocol_fixture, negative_case=protocol_negative, calls_used=protocol_execution.calls_used, bindings=BoundPaths(root=ROOT, run_dir=ROOT / "artifacts/t5-protocol"))
     write_track_bundle(track_id="T5", directory="t5-protocol", receipt=protocol_receipt, run=protocol_run, negative_case=protocol_negative, demo_text=f"run_id={protocol_run.run_id}; passed={protocol_receipt.result['passed']}; execution_allowed={protocol_receipt.result['execution_allowed']}")
     portfolio.append(protocol_receipt.model_dump(mode="json"))
 

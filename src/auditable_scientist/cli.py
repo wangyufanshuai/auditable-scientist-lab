@@ -35,7 +35,7 @@ from .runtime.canonical import canonical_hash, canonical_json
 from .runtime.environment import capture_environment
 from .runtime.event_log import EventLog
 from .runtime.paths import installation_revision, project_root, resource_path, source_path
-from .runtime.replay import ReplayManifest, ReplayMismatch, fingerprint_file
+from .runtime.replay import BoundPaths, ReplayManifest, ReplayMismatch, fingerprint_file
 from .runtime.run_integrity import verify_run_record
 from .track_cli import build_track_run, init_track_fixture, inspect_track_run, replay_track_run
 
@@ -69,12 +69,12 @@ def _source_paths() -> list[Path]:
     return [*[source_path(f"src/auditable_scientist/{item}") for item in sources], *[resource_path(item) for item in resources]]
 
 
-def _evidence(evidence_id: str, kind: EvidenceKind, path: Path, *, allowed_use: list[str]) -> Evidence:
+def _evidence(evidence_id: str, kind: EvidenceKind, path: Path, *, allowed_use: list[str], bindings: BoundPaths | None = None) -> Evidence:
     fingerprint = fingerprint_file(path)
     return Evidence(
         evidence_id=evidence_id,
         kind=kind,
-        path_or_uri=str(path),
+        path_or_uri=bindings.ref(path) if bindings is not None else str(path),
         sha256=fingerprint.sha256,
         source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
@@ -85,14 +85,27 @@ def _evidence(evidence_id: str, kind: EvidenceKind, path: Path, *, allowed_use: 
 
 def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool) -> Path:
     config = load_hohmann_config(config_path)
-    dataset_path = _resolve_dataset(config_path, config.dataset_path)
-    cases = load_hohmann_dataset(dataset_path)
+    original_dataset = _resolve_dataset(config_path, config.dataset_path)
+    cases = load_hohmann_dataset(original_dataset)
+    portable_config = config.model_copy(update={"dataset_path": "run://dataset.json"})
+    input_payload = {"config": portable_config.model_dump(mode="json"), "cases": [case.model_dump(mode="json") for case in cases], "seed": seed}
+    input_hash = canonical_hash(input_payload)
+    run_id = f"run-{input_hash[:16]}"
+    run_dir = (output_dir / run_id).resolve()
+    if run_dir.exists() and any(run_dir.iterdir()):
+        raise FileExistsError(f"run directory already exists; choose another output directory: {run_dir}")
+    run_dir.mkdir(parents=True, exist_ok=True)
+    dataset_path = run_dir / "dataset.json"
+    shutil.copyfile(original_dataset, dataset_path)
+    if canonical_hash([case.model_dump(mode="json") for case in load_hohmann_dataset(dataset_path)]) != canonical_hash(input_payload["cases"]):
+        raise ReplayMismatch("dataset changed while creating the run snapshot")
+    bindings = BoundPaths(root=_repo_root(), run_dir=run_dir)
     policy = Policy(
         policy_id="offline-hohmann-v1",
         network="disabled",
         max_seconds=60,
         max_tool_calls=1,
-        allowed_paths=[str(dataset_path.parent), str(_repo_root())],
+        allowed_paths=[str(dataset_path)],
         allowed_providers=["internal-bounded-generator"],
     )
     registry = ToolRegistry(policy)
@@ -107,7 +120,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         )
     registry.register(
         hohmann_tool,
-        lambda _: run_hohmann_experiment(config, cases),
+        lambda _: run_hohmann_experiment(portable_config, cases),
         argument_schema=json.loads(argument_schema_path.read_text(encoding="utf-8")),
     )
     experiment = registry.invoke(
@@ -116,22 +129,16 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         path_refs=[str(dataset_path)],
         provider_id="internal-bounded-generator",
     )
-    study = make_hohmann_study(config, experiment, dataset_path=dataset_path, seed=seed)
-    input_payload = {"config": config.model_dump(mode="json"), "cases": [case.model_dump(mode="json") for case in cases], "seed": seed}
-    input_hash = canonical_hash(input_payload)
-    run_id = f"run-{input_hash[:16]}"
-    run_dir = (output_dir / run_id).resolve()
-    if run_dir.exists() and any(run_dir.iterdir()):
-        raise FileExistsError(f"run directory already exists; choose another output directory: {run_dir}")
-    run_dir.mkdir(parents=True, exist_ok=True)
+    study = make_hohmann_study(portable_config, experiment, dataset_path=bindings.ref(dataset_path), seed=seed)
     _json_dump(run_dir / "input.json", input_payload)
 
-    dataset_evidence = _evidence("ev-hohmann-dataset", EvidenceKind.DATA, dataset_path, allowed_use=["offline-demo", "fixture"])
+    dataset_evidence = _evidence("ev-hohmann-dataset", EvidenceKind.DATA, dataset_path, allowed_use=["offline-demo", "fixture"], bindings=bindings)
     code_evidence = _evidence(
         "ev-hohmann-baseline-code",
         EvidenceKind.CODE,
         source_path("src/auditable_scientist/tools/numerical.py"),
         allowed_use=["analytic-reference", "offline-demo"],
+        bindings=bindings,
     )
     evidence = [dataset_evidence, code_evidence]
     project05_snapshot = Project05Adapter().snapshot()
@@ -144,6 +151,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
                 EvidenceKind.SNAPSHOT,
                 project05_snapshot_path,
                 allowed_use=["source-provenance", "offline-demo"],
+                bindings=bindings,
             )
         )
     agent = Agent(
@@ -155,7 +163,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
     memory_source = resource_path("docs/EVIDENCE_POLICY.md")
     memory = Memory(
         memory_id="evidence-policy-memory-v1",
-        source_ref=str(memory_source),
+        source_ref=bindings.ref(memory_source),
         scope="claim-level evidence boundaries",
         version="local-snapshot",
         content_hash=fingerprint_file(memory_source).sha256,
@@ -182,7 +190,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
             split="train",
             summary={"case_ids": train_ids, "target": config.target, "count": len(train_ids)},
             units={"r1_km": "km", "r2_km": "km", "mu_km3_s2": "km^3/s^2", "target": "day"},
-            source_ref=str(dataset_path),
+            source_ref=bindings.ref(dataset_path),
         ),
         Observation(
             observation_id="obs-holdout",
@@ -190,7 +198,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
             split="holdout",
             summary={"case_ids": holdout_ids, "target": config.target, "count": len(holdout_ids)},
             units={"r1_km": "km", "r2_km": "km", "mu_km3_s2": "km^3/s^2", "target": "day"},
-            source_ref=str(dataset_path),
+            source_ref=bindings.ref(dataset_path),
         ),
     ]
     claim_status = ClaimStatus.REPRODUCED if experiment.gate.passed else ClaimStatus.CANDIDATE
@@ -220,7 +228,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         memories=[memory],
         evaluators=[evaluator],
         providers=[provider],
-        policy=policy,
+        policy=policy.model_copy(update={"allowed_paths": [bindings.ref(dataset_path)]}),
         claims=[claim],
         observations=observations,
         evidence=evidence,
@@ -309,6 +317,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
         evidence_paths=[dataset_source, source_path("src/auditable_scientist/tools/numerical.py"), project05_snapshot_path],
         candidate_order=experiment.candidate_order,
         computational_output=experiment.model_dump(mode="json"),
+        bindings=bindings,
     )
     _json_dump(run_dir / "run.json", run.model_dump(mode="json"))
     _json_dump(run_dir / "experiment.json", experiment.model_dump(mode="json"))
@@ -321,6 +330,7 @@ def _build_run(config_path: Path, *, seed: int, output_dir: Path, offline: bool)
 
 
 def _replay(run_dir: Path) -> dict[str, Any]:
+    run_dir = run_dir.resolve()
     input_payload = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
     config = HohmannConfig.model_validate(input_payload["config"])
     from .benchmark.hohmann import HohmannCase
@@ -332,21 +342,40 @@ def _replay(run_dir: Path) -> dict[str, Any]:
     manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     if not manifest.evidence_files:
         raise ReplayMismatch("replay manifest has no dataset evidence")
-    dataset_path = Path(manifest.evidence_files[0].path).resolve()
+    bindings = BoundPaths(root=_repo_root(), run_dir=run_dir) if manifest.schema_version == "replay-manifest-v2" else None
+    if bindings is not None:
+        if config.dataset_path != "run://dataset.json" or manifest.evidence_files[0].path != config.dataset_path:
+            raise ReplayMismatch("portable Hohmann dataset reference differs")
+        dataset_path = bindings.resolve(config.dataset_path)
+        expected_sources = [bindings.ref(path) for path in [*_source_paths(), dataset_path]]
+        expected_evidence = [
+            bindings.ref(dataset_path),
+            bindings.ref(source_path("src/auditable_scientist/tools/numerical.py")),
+            bindings.ref(run_dir / "project05-snapshot.json"),
+        ]
+        if [item.path for item in manifest.source_files] != expected_sources or [item.path for item in manifest.evidence_files] != expected_evidence:
+            raise ReplayMismatch("portable Hohmann source or evidence inventory differs")
+        source_paths = [bindings.resolve(item.path) for item in manifest.source_files]
+        evidence_paths = [bindings.resolve(item.path) for item in manifest.evidence_files]
+    else:
+        dataset_path = Path(manifest.evidence_files[0].path).resolve()
+        source_paths = [item.path for item in manifest.source_files]
+        evidence_paths = [item.path for item in manifest.evidence_files]
     if not dataset_path.is_file():
         raise FileNotFoundError(f"dataset file not found during replay: {dataset_path}")
     if canonical_hash([case.model_dump(mode="json") for case in load_hohmann_dataset(dataset_path)]) != canonical_hash(input_payload["cases"]):
         raise ReplayMismatch("saved input cases differ from registered dataset")
-    study = make_hohmann_study(config, experiment, dataset_path=dataset_path, seed=input_payload["seed"])
+    study = make_hohmann_study(config, experiment, dataset_path=config.dataset_path if bindings is not None else dataset_path, seed=input_payload["seed"])
     receipt = manifest.verify(
         input_payload=input_payload,
         code_revision=config.source_revision,
         environment=capture_environment(["auditable-scientist-lab", "pydantic", "sympy"]),
         seed=input_payload["seed"],
-        source_paths=[item.path for item in manifest.source_files],
-        evidence_paths=[item.path for item in manifest.evidence_files],
+        source_paths=source_paths,
+        evidence_paths=evidence_paths,
         candidate_order=experiment.candidate_order,
         computational_output={"experiment": experiment.model_dump(mode="json"), "study": study},
+        bindings=bindings,
     )
     saved_experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
     saved_study = json.loads((run_dir / "study.json").read_text(encoding="utf-8"))
@@ -354,7 +383,22 @@ def _replay(run_dir: Path) -> dict[str, Any]:
         raise ReplayMismatch("saved experiment differs from deterministic replay")
     if canonical_hash(saved_study) != canonical_hash(study):
         raise ReplayMismatch("saved study differs from deterministic replay")
-    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=_repo_root())
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=_repo_root(), bindings=bindings)
+    if bindings is not None:
+        expected_run_paths = {
+            "ev-hohmann-dataset": bindings.ref(dataset_path),
+            "ev-hohmann-baseline-code": bindings.ref(source_path("src/auditable_scientist/tools/numerical.py")),
+            "ev-project05-source-snapshot": bindings.ref(run_dir / "project05-snapshot.json"),
+        }
+        recorded_paths = {item.evidence_id: item.path_or_uri for item in run.evidence}
+        if not {"ev-hohmann-dataset", "ev-hohmann-baseline-code"}.issubset(recorded_paths) or any(expected_run_paths.get(key) != value for key, value in recorded_paths.items()):
+            raise ReplayMismatch("saved Run evidence inventory differs from portable sources")
+        if run.policy is None or run.policy.allowed_paths != [bindings.ref(dataset_path)]:
+            raise ReplayMismatch("saved Run policy path scope differs from portable input")
+        if len(run.memories) != 1 or run.memories[0].source_ref != bindings.ref(resource_path("docs/EVIDENCE_POLICY.md")):
+            raise ReplayMismatch("saved Run memory source differs from portable evidence policy")
+        if any(item.source_ref != bindings.ref(dataset_path) for item in run.observations):
+            raise ReplayMismatch("saved Run observation path differs from portable dataset")
     if run.input_hash != manifest.input_hash or run.seed != manifest.seed or run.code_revision != manifest.code_revision:
         raise ReplayMismatch("saved Run identity differs from replay manifest")
     if run.status.value != ("completed" if experiment.gate.passed else "unverified"):

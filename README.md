@@ -32,8 +32,11 @@ python -m auditable_scientist.cli inspect artifacts/local-runs/run-<input-hash-p
 python -m auditable_scientist.cli replay artifacts/local-runs/run-<input-hash-prefix>
 python -m auditable_scientist.cli run-track T2 examples/causal/fixture.json --output-dir artifacts/local-track-runs
 python -m auditable_scientist.cli replay artifacts/local-track-runs/run-t2-<input-hash-prefix>
-python scripts/verify_acceptance.py
 ```
+
+仓库中已提交的验收收据另用 `python scripts/verify_acceptance.py` 核查；该命令
+要求与收据记录的 Python 和依赖版本一致。普通新环境可运行测试及生成自己的运行包，
+版本不一致时旧收据会按设计拒绝回放。
 
 独立 wheel 安装后无需源码仓库：先运行 `auditable-scientist init hohmann.json`，
 它会在配置旁复制所需数据；再运行 `auditable-scientist run hohmann.json --offline`
@@ -44,12 +47,14 @@ schema、策略文档和示例 fixture。
 
 `run` 的输出目录必须是空目录或新的目录；回放命令会验证输入、代码版本、运行环境、
 seed、源码/证据快照、候选顺序和完整计算输出。正式收据和可复核样例位于
-`artifacts/acceptance-runs-v14/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
+`artifacts/acceptance-runs-v15/`。`run-track` 还接受 `T3`、`T4`、`T5` 和相应
 的本地 JSON fixture；运行记录会保留工具调用、负例、源码/证据指纹和边界标签。
-仓库内已提交的运行包目前按注册时的绝对路径回放；跨机器迁移验收仍待完成。
+新版运行包保存输入快照，并使用 `run://`、`root://` 受限路径；五轨已在复制的
+源码目录和移动后的 wheel 运行目录中回放。回放仍要求记录的依赖环境与源码字节一致；
+跨操作系统和不同依赖版本尚未验收。
 T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler 负例比较
 见 [docs/T3_METHOD.md](docs/T3_METHOD.md)；当前 T2–T5 CLI 收据在
-`artifacts/track-runs-v5/`。
+`artifacts/track-runs-v6/`。
 
 ## 当前入口
 
@@ -64,7 +69,8 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。
 - [artifacts/portfolio-status.md](artifacts/portfolio-status.md)：五轨状态、开放 gate 和发布边界。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装与五轨 CLI 回放收据。
-- [artifacts/acceptance-runs-v14/run-7a65020acaf83cfc/report.md](artifacts/acceptance-runs-v14/run-7a65020acaf83cfc/report.md)：当前 T1 回放报告。
+- [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的五轨回放与篡改失败收据。
+- [artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/report.md](artifacts/acceptance-runs-v15/run-02a00f229aabd3d2/report.md)：当前 T1 回放报告。
 
 ## 非目标
 

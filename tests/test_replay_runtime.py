@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import shutil
 
 import pytest
 
-from auditable_scientist.runtime import EventLog, EventLogError, ReplayManifest, ReplayMismatch, canonical_hash
+from auditable_scientist.runtime import BoundPaths, EventLog, EventLogError, ReplayManifest, ReplayMismatch, canonical_hash
 
 
 def test_canonical_hash_ignores_mapping_order() -> None:
@@ -94,3 +95,38 @@ def test_replay_manifest_verifies_and_detects_source_input_and_output_changes(tm
         loaded.verify(environment={"python": "other"})
     with pytest.raises(ReplayMismatch, match="random seed changed"):
         loaded.verify(seed=18)
+
+
+def test_bound_manifest_replays_after_relocation_and_rejects_escaping_references(tmp_path) -> None:
+    original = tmp_path / "original"
+    relocated = tmp_path / "relocated"
+    (original / "runs").mkdir(parents=True)
+    (original / "src").mkdir()
+    source = original / "src/evaluator.py"
+    evidence = original / "runs/fixture.json"
+    source.write_bytes(b"return 1\n")
+    evidence.write_bytes(b'{"case":1}\n')
+    bindings = BoundPaths(root=original, run_dir=original / "runs")
+    manifest = ReplayManifest.create(
+        input_payload={"case": 1}, code_revision="local", environment={"python": "test"},
+        seed=17, source_paths=[source], evidence_paths=[evidence],
+        computational_output={"passed": True}, bindings=bindings,
+    )
+    assert manifest.schema_version == "replay-manifest-v2"
+    assert [item.path for item in manifest.source_files] == ["root://src/evaluator.py"]
+    assert [item.path for item in manifest.evidence_files] == ["run://fixture.json"]
+    manifest.write(original / "runs/replay-manifest.json")
+    shutil.copytree(original, relocated)
+    moved = BoundPaths(root=relocated, run_dir=relocated / "runs")
+    loaded = ReplayManifest.load(relocated / "runs/replay-manifest.json")
+    assert loaded.verify(
+        source_paths=[moved.resolve(item.path) for item in loaded.source_files],
+        evidence_paths=[moved.resolve(item.path) for item in loaded.evidence_files],
+        bindings=moved,
+    ).verified
+    for bad in ("run://../src/evaluator.py", "root://C:/Windows/file", "run://..\\fixture.json", "file:///outside", "run:///fixture.json"):
+        with pytest.raises(ReplayMismatch):
+            moved.resolve(bad)
+    (relocated / "runs/fixture.json").write_bytes(b'{"case":2}\n')
+    with pytest.raises(ReplayMismatch, match="evidence file snapshot changed"):
+        loaded.verify(evidence_paths=[relocated / "runs/fixture.json"], bindings=moved)

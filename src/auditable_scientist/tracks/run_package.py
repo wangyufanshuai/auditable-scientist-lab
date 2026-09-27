@@ -26,7 +26,7 @@ from ..domain import (
 from ..runtime.canonical import canonical_hash
 from ..runtime.environment import capture_environment
 from ..runtime.paths import installation_revision, resource_path
-from ..runtime.replay import fingerprint_file
+from ..runtime.replay import BoundPaths, fingerprint_file
 from .common import TrackReceipt
 from .runner import track_policy, track_tool
 
@@ -40,17 +40,19 @@ def make_track_run(
     negative_case: Any,
     seed: int = 17,
     calls_used: int = 0,
+    bindings: BoundPaths | None = None,
 ) -> Run:
     if calls_used not in (0, 1):
         raise ValueError("bounded track Run requires zero or one registered tool call")
     fixture = fingerprint_file(fixture_path)
+    ref = (bindings.ref if bindings is not None else lambda path: str(path))
     evaluator_source = Path(__file__).with_name({"T2": "causal.py", "T3": "dynamics.py", "T4": "proof.py", "T5": "protocol.py"}[track_id])
     evaluator_fingerprint = fingerprint_file(evaluator_source)
     evidence_id = f"ev-{track_id.lower()}-fixture"
     evidence = Evidence(
         evidence_id=evidence_id,
         kind=EvidenceKind.DATA,
-        path_or_uri=str(fixture_path),
+        path_or_uri=ref(fixture_path),
         sha256=fixture.sha256,
         source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
@@ -61,7 +63,7 @@ def make_track_run(
     evaluator_evidence = Evidence(
         evidence_id=evaluator_evidence_id,
         kind=EvidenceKind.CODE,
-        path_or_uri=str(evaluator_source),
+        path_or_uri=ref(evaluator_source),
         sha256=evaluator_fingerprint.sha256,
         source_revision=installation_revision(),
         provenance_status=ProvenanceStatus.UNVERIFIED,
@@ -74,7 +76,7 @@ def make_track_run(
         code_evidence.append(Evidence(
             evidence_id="ev-t3-rk4-reference-code",
             kind=EvidenceKind.CODE,
-            path_or_uri=str(reference_source),
+            path_or_uri=ref(reference_source),
             sha256=fingerprint_file(reference_source).sha256,
             source_revision=installation_revision(),
             provenance_status=ProvenanceStatus.UNVERIFIED,
@@ -95,7 +97,7 @@ def make_track_run(
     memory_source = resource_path("docs/EVIDENCE_POLICY.md")
     memory = Memory(
         memory_id="evidence-policy-memory-v1",
-        source_ref=str(memory_source),
+        source_ref=ref(memory_source),
         scope="claim-level evidence boundaries",
         version="local-snapshot",
         content_hash=fingerprint_file(memory_source).sha256,
@@ -122,7 +124,7 @@ def make_track_run(
         split="external",
         summary={"track_id": track_id, "evaluator_id": receipt.evaluator_id, "evidence_level": receipt.evidence_level},
         units={},
-        source_ref=str(fixture_path),
+        source_ref=ref(fixture_path),
     )
     environment = {
         **capture_environment(["auditable-scientist-lab", "pydantic", "sympy", "jsonschema"]),
@@ -177,7 +179,7 @@ def make_track_run(
         memories=[memory],
         evaluators=[evaluator],
         providers=[provider],
-        policy=policy,
+        policy=policy.model_copy(update={"allowed_paths": [ref(fixture_path)]}) if bindings is not None else policy,
         events=events,
         traces=[trace],
         claims=[claim],

@@ -36,9 +36,12 @@
   plus the analytic oscillator and Euler negative control. The method citation,
   source-rights boundary, and fixture scope are recorded in `docs/T3_METHOD.md`;
   an external production solver and multi-body validation remain open.
-- The checked-in Run manifests still contain host-specific absolute paths; exact-file
-  replay works in the registered environment, but relocation to another checkout or
-  operating system has not passed an acceptance gate.
+- Current v2 Run manifests use bounded `run://` and `root://` references and snapshot
+  fixture inputs. T1–T5 replayed from a copied checkout in the same dependency
+  environment, and five wheel-generated run directories replayed after relocation.
+  `artifacts/relocation-audit.json` records the copied-checkout commands and hashes.
+  Cross-OS and dependency-version drift remain unverified or fail closed; the
+  project-05 upstream snapshot still records its original host path for provenance.
 - Next engineering work is deeper independent backends and data/proof provenance.
   Scientific, rights, compute, and human-review gates remain open; public release
   remains a separate decision.
@@ -311,8 +314,10 @@ is scientifically correct.
 
 ## Next smallest implementation slice
 
-1. Make checked-in replay packages relocatable without weakening path safety or
-   source/evidence byte checks; prove it by replaying a copied checkout elsewhere.
+1. Pin and document a reproducible replay environment, then prove the checked-in
+   acceptance packages replay in a newly created matching environment. Current
+   broad package dependency ranges allow newer versions, which fail the recorded
+   environment check by design.
 2. Expand T3 into a bounded parameter and step-size sweep, with an independent
    external solver only after its implementation, license, and reference provenance
    are recorded. Keep the local RK4 comparison at the oscillator-fixture level.

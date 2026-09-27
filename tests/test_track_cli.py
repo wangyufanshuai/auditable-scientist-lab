@@ -60,7 +60,7 @@ def test_track_replay_rejects_tampering(tamper: str, tmp_path: Path, capsys) -> 
     shutil.copy2(ROOT / FIXTURES["T2"], fixture)
     assert main(["run-track", "T2", str(fixture), "--output-dir", str(tmp_path / "runs")]) == 0
     run_dir = Path(capsys.readouterr().out.strip())
-    target = {"result": run_dir / "result.json", "event": run_dir / "events.jsonl", "fixture": fixture, "environment": run_dir / "run.json"}[tamper]
+    target = {"result": run_dir / "result.json", "event": run_dir / "events.jsonl", "fixture": run_dir / "fixture.json", "environment": run_dir / "run.json"}[tamper]
     original = target.read_text(encoding="utf-8")
     changed = {
         "result": original.replace('"coefficient":2.0', '"coefficient":9.0', 1),
@@ -72,3 +72,13 @@ def test_track_replay_rejects_tampering(tamper: str, tmp_path: Path, capsys) -> 
     target.write_text(changed, encoding="utf-8")
     assert main(["replay", str(run_dir)]) == 2
     assert "error:" in capsys.readouterr().err
+
+
+def test_track_replay_uses_snapshotted_fixture_after_origin_changes(tmp_path: Path, capsys) -> None:
+    fixture = tmp_path / "origin.json"
+    shutil.copy2(ROOT / FIXTURES["T2"], fixture)
+    assert main(["run-track", "T2", str(fixture), "--output-dir", str(tmp_path / "runs")]) == 0
+    run_dir = Path(capsys.readouterr().out.strip())
+    fixture.write_text("origin changed after run", encoding="utf-8")
+    assert main(["replay", str(run_dir)]) == 0
+    assert '"verified": true' in capsys.readouterr().out

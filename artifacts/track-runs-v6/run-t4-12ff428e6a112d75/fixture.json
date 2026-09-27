@@ -1,0 +1,34 @@
+{
+  "claim_status": "blocked",
+  "obligations": [
+    {
+      "checker_id": "mass-conservation",
+      "obligation_id": "o1",
+      "statement": "total mass is constant"
+    },
+    {
+      "checker_id": "nonnegative-state",
+      "obligation_id": "o2",
+      "statement": "masses are nonnegative"
+    },
+    {
+      "checker_id": "trajectory-hash",
+      "obligation_id": "o3",
+      "statement": "trajectory hash matches"
+    }
+  ],
+  "package_id": "proof-1",
+  "trajectory": [
+    {
+      "mass_a": 2.0,
+      "mass_b": 3.0,
+      "step": 0
+    },
+    {
+      "mass_a": 1.0,
+      "mass_b": 4.0,
+      "step": 1
+    }
+  ],
+  "trajectory_hash": "90eaa34a71f92ad585cabc06c13429de20a94f3434dc9cf7e28a8fb046cb97a3"
+}

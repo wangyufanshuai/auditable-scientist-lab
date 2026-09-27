@@ -83,7 +83,7 @@ def test_cli_relative_output_replays_with_copied_dataset(tmp_path: Path, monkeyp
     assert '"verified": true' in capsys.readouterr().out
 
 
-@pytest.mark.parametrize("target", ["input.json", "experiment.json", "run.json", "events.jsonl", "project05-snapshot.json"])
+@pytest.mark.parametrize("target", ["input.json", "experiment.json", "run.json", "events.jsonl", "project05-snapshot.json", "dataset.json", "replay-manifest.json"])
 def test_cli_replay_rejects_tampered_artifact(tmp_path: Path, capsys, target: str) -> None:
     output_root = tmp_path / "runs"
     assert main(["run", "examples/hohmann/run.json", "--offline", "--seed", "17", "--output-dir", str(output_root)]) == 0
@@ -99,6 +99,10 @@ def test_cli_replay_rejects_tampered_artifact(tmp_path: Path, capsys, target: st
         text = text.replace('"selected_candidate_id":"tof-hohmann-v1"', '"selected_candidate_id":"tampered"', 1)
     elif target == "run.json":
         text = text.replace('"status":"completed"', '"status":"failed"', 1)
+    elif target == "dataset.json":
+        text = text.replace("train-01", "tampered-train", 1)
+    elif target == "replay-manifest.json":
+        text = text.replace("root://src/auditable_scientist/benchmark/hohmann.py", "root://src/auditable_scientist/benchmark/study.py", 1)
     else:
         text = text.replace("project-05-hohmann-v1", "tampered-source-snapshot", 1)
     target_path.write_text(text, encoding="utf-8")

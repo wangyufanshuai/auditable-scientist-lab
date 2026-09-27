@@ -9,16 +9,16 @@ from typing import Any
 
 from .domain import ClaimStatus, Run
 from .runtime.canonical import canonical_hash, canonical_json
-from .runtime.replay import ReplayManifest, ReplayMismatch
+from .runtime.replay import BoundPaths, ReplayManifest, ReplayMismatch
 from .runtime.paths import resource_path
 from .runtime.run_integrity import verify_run_record
 from .tracks.run_package import make_track_run
-from .tracks.runner import ROOT, run_registered_track, track_source_paths
+from .tracks.runner import ROOT, load_track_input, run_registered_track, track_source_paths
 
 
 TASK_IDS = {
     "T2": "t2-causal-intervention-v1",
-    "T3": "t3-harmonic-dynamics-v1",
+    "T3": "t3-harmonic-dynamics-v2",
     "T4": "t4-proof-carrying-v1",
     "T5": "t5-bio-chem-protocol-v1",
 }
@@ -64,25 +64,34 @@ def build_track_run(track_id: str, fixture_path: Path, *, seed: int, output_dir:
     if seed < 0:
         raise ValueError("seed must be nonnegative")
     fixture_path = fixture_path.resolve()
-    execution = run_registered_track(track_id, fixture_path)
+    input_hash = canonical_hash(load_track_input(track_id, fixture_path))
+    run_dir = (output_dir / f"run-{track_id.lower()}-{input_hash[:16]}").resolve()
+    if run_dir.exists() and any(run_dir.iterdir()):
+        raise FileExistsError(f"run directory already exists; choose another output directory: {run_dir}")
+    run_dir.mkdir(parents=True, exist_ok=True)
+    fixture_snapshot = run_dir / "fixture.json"
+    shutil.copyfile(fixture_path, fixture_snapshot)
+    if canonical_hash(load_track_input(track_id, fixture_snapshot)) != input_hash:
+        raise ReplayMismatch("fixture changed while creating the run snapshot")
+    bindings = BoundPaths(root=ROOT, run_dir=run_dir)
+    execution = run_registered_track(track_id, fixture_snapshot, bindings=bindings)
     run = make_track_run(
         track_id=track_id,
         task_id=TASK_IDS[track_id],
         receipt=execution.receipt,
-        fixture_path=fixture_path,
+        fixture_path=fixture_snapshot,
         negative_case=execution.negative_case,
         seed=seed,
         calls_used=execution.calls_used,
+        bindings=bindings,
     )
     if run.policy is None or run.policy.network != "disabled" or run.claims[0].status != ClaimStatus.UNVERIFIED:
         raise ValueError("track Run violated its bounded offline evidence policy")
-    run_dir = output_dir / run.run_id
-    if run_dir.exists() and any(run_dir.iterdir()):
-        raise FileExistsError(f"run directory already exists; choose another output directory: {run_dir}")
-    run_dir.mkdir(parents=True, exist_ok=True)
+    if run.run_id != run_dir.name:
+        raise ReplayMismatch("track Run identity differs from snapshotted input")
     result = {
         "track_id": track_id,
-        "fixture_path": str(fixture_path),
+        "fixture_path": bindings.ref(fixture_snapshot),
         "receipt": execution.receipt.model_dump(mode="json"),
         "negative_case": execution.negative_case,
     }
@@ -92,8 +101,9 @@ def build_track_run(track_id: str, fixture_path: Path, *, seed: int, output_dir:
         environment=run.environment,
         seed=seed,
         source_paths=track_source_paths(track_id),
-        evidence_paths=[fixture_path],
+        evidence_paths=[fixture_snapshot],
         computational_output={"result": execution.receipt.result, "negative_case": execution.negative_case},
+        bindings=bindings,
     )
     _write_json(run_dir / "input.json", execution.input_payload)
     _write_json(run_dir / "result.json", result)
@@ -109,12 +119,20 @@ def build_track_run(track_id: str, fixture_path: Path, *, seed: int, output_dir:
 
 
 def replay_track_run(run_dir: Path) -> dict[str, Any]:
+    run_dir = run_dir.resolve()
     result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
     track_id = result["track_id"]
     if track_id not in TASK_IDS:
         raise ReplayMismatch("saved track identifier is unsupported")
-    fixture_path = Path(result["fixture_path"]).resolve()
-    execution = run_registered_track(track_id, fixture_path)
+    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
+    bindings = BoundPaths(root=ROOT, run_dir=run_dir) if manifest.schema_version == "replay-manifest-v2" else None
+    if bindings is not None:
+        if result["fixture_path"] != "run://fixture.json":
+            raise ReplayMismatch("portable track fixture reference differs")
+        fixture_path = bindings.resolve(result["fixture_path"])
+    else:
+        fixture_path = Path(result["fixture_path"]).resolve()
+    execution = run_registered_track(track_id, fixture_path, bindings=bindings)
     saved_input = json.loads((run_dir / "input.json").read_text(encoding="utf-8"))
     if canonical_hash(saved_input) != canonical_hash(execution.input_payload):
         raise ReplayMismatch("saved track input differs from current fixture")
@@ -122,7 +140,7 @@ def replay_track_run(run_dir: Path) -> dict[str, Any]:
         raise ReplayMismatch("saved track receipt differs from deterministic evaluator")
     if canonical_hash(result["negative_case"]) != canonical_hash(execution.negative_case):
         raise ReplayMismatch("saved negative case differs from deterministic evaluator")
-    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT)
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT, bindings=bindings)
     expected_run = make_track_run(
         track_id=track_id,
         task_id=TASK_IDS[track_id],
@@ -131,10 +149,10 @@ def replay_track_run(run_dir: Path) -> dict[str, Any]:
         negative_case=execution.negative_case,
         seed=run.seed,
         calls_used=execution.calls_used,
+        bindings=bindings,
     )
     if canonical_hash(run) != canonical_hash(expected_run):
         raise ReplayMismatch("saved shared-kernel Run differs from deterministic replay")
-    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
     receipt = manifest.verify(
         input_payload=execution.input_payload,
         code_revision=expected_run.code_revision,
@@ -144,6 +162,7 @@ def replay_track_run(run_dir: Path) -> dict[str, Any]:
         evidence_paths=[fixture_path],
         candidate_order=[],
         computational_output={"result": execution.receipt.result, "negative_case": execution.negative_case},
+        bindings=bindings,
     )
     if manifest.input_hash != run.input_hash:
         raise ReplayMismatch("track manifest input differs from saved Run")
@@ -154,7 +173,9 @@ def replay_track_run(run_dir: Path) -> dict[str, Any]:
 
 
 def inspect_track_run(run_dir: Path) -> dict[str, Any]:
-    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT)
+    manifest = ReplayManifest.load(run_dir / "replay-manifest.json")
+    bindings = BoundPaths(root=ROOT, run_dir=run_dir) if manifest.schema_version == "replay-manifest-v2" else None
+    run = verify_run_record(run_dir / "run.json", run_dir / "events.jsonl", root=ROOT, bindings=bindings)
     result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
     return {
         "track_id": result["track_id"],

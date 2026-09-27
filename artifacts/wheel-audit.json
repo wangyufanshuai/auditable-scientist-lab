@@ -1,14 +1,16 @@
 {
   "schema_version": "wheel-audit-v1",
-  "recorded_at": "2026-09-27T03:24:31Z",
+  "recorded_at": "2026-09-27T03:43:37Z",
   "status": "verified-within-offline-fixtures",
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "6fbe81e63792f4e62b8d46be7d5e205d2b5f97e74d4ff137951ffdb50a70d920",
+  "wheel_sha256": "623b594283c30bbaf5e9ba7c84c3e00118ae20d3966f2db7748d6f307a14a2d7",
   "wheel_artifact_committed": false,
   "installation": "final wheel force-reinstalled in an existing isolated temporary virtual environment with dependencies already present; CLI executed outside the source checkout",
   "checkout_root_in_installed_process": null,
   "bundled_resource_count": 15,
+  "manifest_schema": "replay-manifest-v2",
+  "run_bundle_relocation": "all five run directories copied to another path and replayed in the same installed wheel environment",
   "commands_verified": [
     "auditable-scientist --help",
     "auditable-scientist init hohmann.json",
@@ -21,11 +23,11 @@
     "auditable-scientist replay track-runs/<run-id>"
   ],
   "replay_manifest_hashes": {
-    "T1": "7fd6391bad76cb7bf2c2bffc37c5e160f0d770d0702ef6e4232a98e7814b3a27",
-    "T2": "c1b03e5bc430a2a241e523785dd83c35b61e206a8165f533ada8ae4cfc3ec372",
-    "T3": "d43c4f02842809aca9736ad21da2e5f86cf11c42694a9740ab3ef95d380648f0",
-    "T4": "3a94141b42b6666f4301eff939ebc369208925f2e39573429bc6e562f1e0f86f",
-    "T5": "94f766a493233d1957b0c0d4b36717ebfd2b2264664902e62c115a38815bf190"
+    "T1": "e2422757b409153791a08fffe0c311d1343d70d188c9fe1e36f4d4ed9b292cdc",
+    "T2": "9e766beadeff8c2895d252518602b920d49940d6cd577d7f9e9cc5678cf9fa3c",
+    "T3": "bda290cda8ac06c5de89bfe3e96e7e33534d10c03c62edd8bb015abde57bbc4e",
+    "T4": "0c1a45f577b1e286de622bf140e7b885bdc09059d7ff4a72036b1c1a23a21af0",
+    "T5": "cf26dd26178b0f5eaf3b272407606590063cd61aa3f7c211e10696101b6ed5c4"
   },
   "boundaries": {
     "scientific_validity": false,

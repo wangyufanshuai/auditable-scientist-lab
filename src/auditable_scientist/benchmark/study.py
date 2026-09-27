@@ -12,7 +12,7 @@ def make_hohmann_study(
     config: HohmannConfig,
     experiment: HohmannExperiment,
     *,
-    dataset_path: Path,
+    dataset_path: Path | str,
     seed: int,
 ) -> dict[str, dict]:
     selected = next(item for item in experiment.candidates if item.candidate_id == experiment.selected_candidate_id)

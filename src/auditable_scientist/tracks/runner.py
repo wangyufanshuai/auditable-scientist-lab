@@ -11,7 +11,7 @@ from ..domain import Policy, Tool
 from ..policy import ToolRegistry
 from ..runtime.canonical import canonical_hash
 from ..runtime.paths import checkout_root, project_root, resource_path, source_path
-from ..runtime.replay import ReplayMismatch, fingerprint_file
+from ..runtime.replay import BoundPaths, ReplayMismatch, fingerprint_file
 from .causal import CausalCase, evaluate_causal_fixture
 from .common import TrackReceipt
 from .dynamics import DynamicsCase, evaluate_dynamics_fixture
@@ -39,7 +39,7 @@ def track_policy(track_id: str, fixture_path: Path) -> Policy:
         network="disabled",
         max_seconds=60,
         max_tool_calls=1,
-        allowed_paths=[str(fixture_path.resolve().parent)],
+        allowed_paths=[str(fixture_path.resolve())],
         allowed_providers=[f"internal-{track_id.lower()}-evaluator"],
     )
 
@@ -81,12 +81,15 @@ def track_source_paths(track_id: str) -> list[Path]:
     return [*paths, *[resource_path(item) for item in resources]]
 
 
-def _file_record(path: Path, *, allowed_use: list[str]) -> dict[str, Any]:
+def _file_record(path: Path, *, allowed_use: list[str], bindings: BoundPaths | None = None) -> dict[str, Any]:
     fingerprint = fingerprint_file(path)
-    try:
-        recorded_path = path.relative_to(ROOT).as_posix()
-    except ValueError:
-        recorded_path = str(path)
+    if bindings is not None:
+        recorded_path = bindings.ref(path)
+    else:
+        try:
+            recorded_path = path.relative_to(ROOT).as_posix()
+        except ValueError:
+            recorded_path = str(path)
     return {
         "path": recorded_path,
         "sha256": fingerprint.sha256,
@@ -159,7 +162,7 @@ def _evaluate(track_id: str, input_payload: Any) -> tuple[TrackReceipt, dict[str
     return receipt, negative
 
 
-def run_registered_track(track_id: str, fixture_path: Path) -> TrackExecution:
+def run_registered_track(track_id: str, fixture_path: Path, *, bindings: BoundPaths | None = None) -> TrackExecution:
     fixture_path = fixture_path.resolve()
     payload = load_track_input(track_id, fixture_path)
     expected_hash = canonical_hash(payload)
@@ -190,9 +193,9 @@ def run_registered_track(track_id: str, fixture_path: Path) -> TrackExecution:
         raise ValueError(f"{track_id} bounded positive or negative gate failed")
     receipt = TrackReceipt.model_validate({
         **receipt.model_dump(mode="json"),
-        "evidence_files": [_file_record(fixture_path, allowed_use=["offline-fixture", "bounded-evaluator"])],
+        "evidence_files": [_file_record(fixture_path, allowed_use=["offline-fixture", "bounded-evaluator"], bindings=bindings)],
         "source_files": [
-            _file_record(path, allowed_use=["offline-evaluator", "source-provenance"])
+            _file_record(path, allowed_use=["offline-evaluator", "source-provenance"], bindings=bindings)
             for path in track_source_paths(track_id)
         ],
     })

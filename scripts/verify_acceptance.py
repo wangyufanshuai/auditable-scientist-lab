@@ -13,7 +13,7 @@ from auditable_scientist.domain import Run
 from auditable_scientist.adapters import Project05Adapter, Project05Snapshot
 from auditable_scientist.runtime.event_log import EventLog
 from auditable_scientist.runtime.canonical import canonical_hash
-from auditable_scientist.runtime.replay import ReplayReceipt, fingerprint_file
+from auditable_scientist.runtime.replay import BoundPaths, ReplayReceipt, fingerprint_file
 from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
 from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
@@ -102,8 +102,8 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
     if run.tools[0].parameter_schema_ref != "schemas/track-tool-call-v1.json":
         raise ValueError(f"track {track_id} tool schema reference is inconsistent")
     for evidence in run.evidence:
-        path = Path(evidence.path_or_uri)
-        if not path.resolve().is_relative_to(root.resolve()) or fingerprint_file(path).sha256 != evidence.sha256:
+        path = BoundPaths(root=root, run_dir=bundle_dir).resolve(evidence.path_or_uri)
+        if fingerprint_file(path).sha256 != evidence.sha256:
             raise ValueError(f"track {track_id} Run evidence changed: {evidence.evidence_id}")
     evaluator_sources = {record.sha256 for record in receipt.source_files if record.path.endswith(("causal.py", "dynamics.py", "reference_rk4.py", "proof.py", "protocol.py"))}
     if {evidence.sha256 for evidence in run.evidence if evidence.kind.value == "code"} != evaluator_sources:
@@ -138,7 +138,7 @@ def main() -> None:
         raise SystemExit("T1 acceptance status is not bounded acceptance")
     verify_check_rows(acceptance["checks"], root=ROOT)
 
-    run_dir = ROOT / "artifacts/acceptance-runs-v14/run-7a65020acaf83cfc"
+    run_dir = ROOT / "artifacts/acceptance-runs-v15/run-02a00f229aabd3d2"
     run_payload = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     Draft202012Validator(load("schemas/run.schema.json")).validate(run_payload)
     run = Run.model_validate(run_payload)
@@ -252,11 +252,29 @@ def main() -> None:
     cli_replays: dict[str, dict] = {}
     for track_id in ("T2", "T3", "T4", "T5"):
         item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == track_id)
-        run_dir = ROOT / "artifacts/track-runs-v5" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
+        run_dir = ROOT / "artifacts/track-runs-v6" / f"run-{track_id.lower()}-{item['input_hash'][:16]}"
         saved_result = json.loads((run_dir / "result.json").read_text(encoding="utf-8"))
-        if canonical_hash(saved_result["receipt"]) != canonical_hash(item):
+        def without_paths(receipt: dict) -> dict:
+            return {
+                **receipt,
+                "evidence_files": [{**record, "path": "<bound>"} for record in receipt["evidence_files"]],
+                "source_files": [{**record, "path": "<bound>"} for record in receipt["source_files"]],
+            }
+        if canonical_hash(without_paths(saved_result["receipt"])) != canonical_hash(without_paths(item)):
             raise SystemExit(f"track {track_id} CLI Run receipt differs from portfolio")
         cli_replays[track_id] = replay_track_run(run_dir)
+
+    relocation = load("artifacts/relocation-audit.json")
+    if (
+        relocation.get("status") != "verified-in-recorded-environment"
+        or relocation.get("copied_checkout") is not True
+        or relocation.get("original_examples_copied") is not False
+        or relocation.get("copied_module_imported") is not True
+        or relocation.get("tampered_t3_fixture_rejected") is not True
+        or relocation.get("script_sha256") != fingerprint_file(ROOT / "scripts/verify_committed_relocation.py").sha256
+        or canonical_hash(relocation.get("runs_replayed")) != canonical_hash({"T1": replay_receipt.model_dump(mode="json"), **cli_replays})
+    ):
+        raise SystemExit("relocation audit is missing or differs from the current five run packages")
 
     result = {
         "schema_version": "acceptance-verification-v1",
