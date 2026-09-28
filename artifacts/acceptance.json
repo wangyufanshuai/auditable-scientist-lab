@@ -293,6 +293,14 @@
       "name": "optional-t1-maven-sff-exploratory-inventory",
       "output_path": "artifacts/t1-maven-sff-exploratory-audit.json",
       "recorded_at": "2026-09-28T01:50:45.052342+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_srp_sensitivity.py --verify",
+      "exit_code": 0,
+      "input_version": "16362c8b2170209b267e89ef9cadf1fd30ace8e8c3f44f4ec36d06ed4247df0f",
+      "name": "optional-t1-maven-srp-sensitivity",
+      "output_path": "artifacts/t1-maven-srp-sensitivity-audit.json",
+      "recorded_at": "2026-09-28T02:28:35.583347+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

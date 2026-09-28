@@ -146,6 +146,8 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 明确事件列表并不穷尽，且公共归档省略部分工程遥测；任务 Claim 不变。
 另有 [NAIF 小力文件来源盘点](docs/T1_MAVEN_SFF_EXPLORATORY_RESULT.md) 检查固定短弧附近
 九份文件的哈希、原文时间与重复记录；这是事后探索，缺格式 SIS，未将数值列用于传播。
+预先固定的 [太阳辐射压敏感性网格](docs/T1_MAVEN_SRP_SENSITIVITY_RESULT.md) 用八个泛化场景
+量化简化径向光压对两段终点的条件响应；没有拟合 NAV，也不代表 MAVEN 已校准的平板模型。
 
 ## 当前入口
 

@@ -879,6 +879,172 @@ def verify_optional_t1_maven_desat_sensitivity(audit: dict | None = None,
             "mission_validation": False}
 
 
+def verify_optional_t1_maven_srp_sensitivity(audit: dict | None = None,
+                                              snapshot: dict | None = None,
+                                              *, verify_dynamic: bool = True) -> dict:
+    """Check saved SRP scenario arithmetic and keep mission claims unverified."""
+
+    audit = audit if audit is not None else load("artifacts/t1-maven-srp-sensitivity-audit.json")
+    snapshot = snapshot if snapshot is not None else load("artifacts/t1-maven-srp-sensitivity-snapshot.json")
+    protocol = load("docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.json")
+    prior = load("artifacts/t1-maven-planetary-force-snapshot.json")
+    protocol_sha = "68352f9158755dca98baeffe51bd08c65112c2542548ff503ec7a62bdae5e470"
+    expected_sources = {
+        "scripts/verify_t1_maven_srp_sensitivity.py",
+        "docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.json",
+        "docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.md",
+        "scripts/verify_t1_maven_planetary_force.py",
+        "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+        "requirements-t1-mars-center-win-py312.txt",
+    }
+    expected_checks = {
+        "source_and_baseline_bound", "zero_coefficient_reproduces_prior",
+        "all_cases_reported", "monotonic_radial_response_scale", "step_refinement",
+        "finite_states_and_responses", "compute_budget",
+    }
+    expected_boundaries = {
+        "conditional_response_scale": True, "mission_srp_model_validated": False,
+        "statistical_uncertainty_interval": False, "independent_observables": False,
+        "scientific_holdout": False, "mission_validation": False,
+        "claim_status": "unverified",
+    }
+    source = protocol["source_contract"]
+    expected_source_hashes = {
+        **prior["source_sha256"],
+        "nasa_solar_irradiance": source["nasa_solar_irradiance_html_sha256"],
+        "iau_2012_au": source["iau_2012_au_pdf_sha256"],
+        "maven_navigation_pdf": source["maven_navigation_pdf_sha256"],
+    }
+    payload = (json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
+                          allow_nan=False)+"\n").encode("utf-8")
+    timestamp = audit.get("recorded_at")
+    if (audit.get("schema_version") != "t1-maven-srp-sensitivity-audit-v1"
+            or audit.get("status") != "passed-conditional-srp-sensitivity-only"
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "199ecc4"
+            or audit.get("snapshot_sha256") != hashlib.sha256(payload).hexdigest()
+            or audit.get("checks") != snapshot.get("checks")
+            or set(audit.get("checks", {})) != expected_checks
+            or not all(value is True for value in audit["checks"].values())
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("source_sha256") != expected_source_hashes
+            or audit.get("observed_budget") != snapshot.get("observed_budget")
+            or snapshot.get("schema_version") != "t1-maven-srp-sensitivity-snapshot-v1"
+            or snapshot.get("protocol_sha256") != protocol_sha
+            or snapshot.get("preregistration_commit") != "199ecc4"
+            or snapshot.get("source_sha256") != expected_source_hashes
+            or snapshot.get("prior_snapshot_sha256") != protocol["baseline"]["prior_snapshot_sha256"]
+            or snapshot.get("model") != protocol["model"]
+            or snapshot.get("engineering_gates") != protocol["engineering_gates"]
+            or snapshot.get("scientific_boundaries") != protocol["scientific_boundaries"]
+            or snapshot["scientific_boundaries"].get("claim_status") != "unverified"
+            or fingerprint_file(ROOT / "docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.json").sha256 != protocol_sha
+            or fingerprint_file(ROOT / "artifacts/t1-maven-planetary-force-snapshot.json").sha256 !=
+            protocol["baseline"]["prior_snapshot_sha256"]
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {item.get("path") for item in audit["source_files"]} != expected_sources
+            or not isinstance(timestamp, str)
+            or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("MAVEN SRP source, protocol, or boundary differs")
+    for item in audit["source_files"]:
+        actual = fingerprint_file(ROOT / item["path"])
+        if item.get("sha256") != actual.sha256 or item.get("bytes") != actual.bytes:
+            raise ValueError("MAVEN SRP implementation source differs")
+
+    def finite(value: object) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("MAVEN SRP numeric value is not finite")
+        return float(value)
+
+    model = protocol["model"]
+    gates = protocol["engineering_gates"]
+    coefficients = model["effective_area_over_mass_m2_per_kg"]
+    if (coefficients != [0.0, 0.001, 0.01, 0.1]
+            or model["step_seconds"] != [600.0, 300.0]
+            or len(snapshot.get("arcs", [])) != 2):
+        raise ValueError("MAVEN SRP scenario grid differs")
+    for row, previous, et in zip(snapshot["arcs"], prior["arcs"],
+                                  protocol["baseline"]["initial_et_tdb_seconds"], strict=True):
+        if (row.get("initial_et_tdb_seconds") != et
+                or len(row.get("cases", [])) != len(coefficients)
+                or row["cases"][0].get("effective_area_over_mass_m2_per_kg") != 0.0):
+            raise ValueError("MAVEN SRP arc identity or case inventory differs")
+        baseline = row["cases"][0]["endpoint_state_km_kms"]
+        refined_baseline = row["cases"][0]["refined_endpoint_state_km_kms"]
+        if (not isinstance(baseline, list) or len(baseline) != 6
+                or not isinstance(refined_baseline, list) or len(refined_baseline) != 6):
+            raise ValueError("MAVEN SRP baseline shape differs")
+        for state in (baseline, refined_baseline):
+            [finite(x) for x in state]
+        zero_position = math.dist(baseline[:3], previous["planetary_force_endpoint_state_km_kms"][:3])
+        zero_velocity = math.dist(baseline[3:], previous["planetary_force_endpoint_state_km_kms"][3:])
+        if (not math.isclose(zero_position, finite(row.get(
+                "zero_coefficient_position_difference_from_prior_km")), rel_tol=0, abs_tol=1e-12)
+                or not math.isclose(zero_velocity, finite(row.get(
+                    "zero_coefficient_velocity_difference_from_prior_km_s")), rel_tol=0, abs_tol=1e-15)
+                or zero_position > gates["zero_coefficient_position_difference_km_max"]
+                or zero_velocity > gates["zero_coefficient_velocity_difference_km_s_max"]):
+            raise ValueError("MAVEN SRP zero-coefficient control differs")
+        previous_response = -1.0
+        for case, coefficient in zip(row["cases"], coefficients, strict=True):
+            state = case.get("endpoint_state_km_kms")
+            refined = case.get("refined_endpoint_state_km_kms")
+            position = case.get("response_position_km")
+            velocity = case.get("response_velocity_km_s")
+            if (case.get("effective_area_over_mass_m2_per_kg") != coefficient
+                    or any(not isinstance(x, list) or len(x) != length
+                           for x, length in ((state, 6), (refined, 6),
+                                             (position, 3), (velocity, 3)))):
+                raise ValueError("MAVEN SRP case shape or parameter differs")
+            for vector in (state, refined, position, velocity):
+                [finite(x) for x in vector]
+            expected_position = [state[i]-baseline[i] for i in range(3)]
+            expected_velocity = [state[3+i]-baseline[3+i] for i in range(3)]
+            refined_response = [refined[i]-refined_baseline[i] for i in range(3)]
+            response_norm = math.sqrt(sum(x*x for x in expected_position))
+            refinement = math.dist(expected_position, refined_response)
+            if (any(not math.isclose(a, b, rel_tol=0, abs_tol=1e-12)
+                    for a, b in zip(position, expected_position, strict=True))
+                    or any(not math.isclose(a, b, rel_tol=0, abs_tol=1e-15)
+                           for a, b in zip(velocity, expected_velocity, strict=True))
+                    or not math.isclose(response_norm, finite(case.get("response_position_norm_km")),
+                                        rel_tol=0, abs_tol=1e-12)
+                    or not math.isclose(refinement, finite(case.get(
+                        "response_refinement_difference_km")), rel_tol=0, abs_tol=1e-12)
+                    or refinement > gates["refinement_response_difference_km_max"]
+                    or response_norm + gates["monotonic_response_tolerance_km"] < previous_response):
+                raise ValueError("MAVEN SRP response arithmetic or gate differs")
+            previous_response = response_norm
+    observed = snapshot.get("observed_budget", {})
+    budget = protocol["compute_budget"]
+    if (finite(observed.get("rk4_steps_total")) != 3456
+            or finite(observed.get("spice_position_queries")) >
+            budget["maximum_spice_position_queries"]
+            or observed["rk4_steps_total"] > budget["maximum_rk4_steps_total"]):
+        raise ValueError("MAVEN SRP compute budget differs")
+    local_sources = [ROOT / path for path in (
+        "data/references/jesick_2016_maven_navigation_overview.pdf",
+        "data/references/maven_srp/nasa_solar_irradiance_science.html",
+        "data/references/maven_srp/iau_2012_b2.pdf",
+        "data/naif/de440s.bsp", "data/naif/mar099s.bsp",
+        "data/naif/maven_cru_rec_131118_140923_v1.bsp", "data/naif/gm_de440.tpc")]
+    present = [path.is_file() for path in local_sources]
+    if any(present) and not all(present):
+        raise ValueError("MAVEN SRP local source set is incomplete")
+    dynamic = False
+    if all(present) and verify_dynamic and importlib.util.find_spec("spiceypy") is not None:
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_srp_sensitivity.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=120)
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN SRP dynamic check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "scenario_count": 8,
+            "snapshot_sha256": audit["snapshot_sha256"],
+            "dynamic_verified_here": dynamic, "mission_validation": False,
+            "scientific_holdout": False}
+
+
 def verify_optional_t1_maven_ops_events(audit: dict | None = None,
                                         *, verify_dynamic: bool = True) -> dict:
     """Bind the predeclared PDS event-list search and its negative scope."""
@@ -2166,6 +2332,16 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN desat sensitivity has no command receipt")
+    maven_srp = verify_optional_t1_maven_srp_sensitivity()
+    if not any(
+        item.get("name") == "optional-t1-maven-srp-sensitivity"
+        and item.get("output_path") == "artifacts/t1-maven-srp-sensitivity-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t1_maven_srp_sensitivity.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN SRP sensitivity has no command receipt")
     maven_ops_events = verify_optional_t1_maven_ops_events()
     if not any(
         item.get("name") == "optional-t1-maven-ops-event-search"
@@ -2717,6 +2893,7 @@ def main() -> None:
         "t1_maven_sun_only_preflight": maven_preflight,
         "t1_maven_planetary_force_diagnostic": maven_planetary_force,
         "t1_maven_desat_sensitivity": maven_desat,
+        "t1_maven_srp_sensitivity": maven_srp,
         "t1_maven_ops_event_search": maven_ops_events,
         "t1_maven_sff_exploratory_inventory": maven_sff,
         "t1_maven_portable_preflight_run": maven_run,

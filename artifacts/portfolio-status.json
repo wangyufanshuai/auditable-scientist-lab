@@ -8,7 +8,7 @@
     {
       "acceptance": "artifacts/acceptance.json",
       "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",
-      "next_step": "obtain an independently documented cruise force and maneuver history or radiometric product with coverage of the fixed arcs; add source-backed solar-radiation-pressure and uncertainty models without promoting reconstructed NAV endpoints to scientific holdout",
+      "next_step": "obtain an independently documented cruise force and maneuver history or radiometric product with coverage of the fixed arcs; replace the generic solar-radiation-pressure sensitivity grid with reviewed mission plate/attitude/mass/optical data and an uncertainty model without promoting reconstructed NAV endpoints to scientific holdout",
       "open_gates": [
         "external symbolic engine",
         "mission-domain force and maneuver comparison",
@@ -18,6 +18,7 @@
       "optional_desat_sensitivity_audit": "artifacts/t1-maven-desat-sensitivity-audit.json",
       "optional_ops_event_search_audit": "artifacts/t1-maven-ops-event-search-audit.json",
       "optional_sff_exploratory_audit": "artifacts/t1-maven-sff-exploratory-audit.json",
+      "optional_srp_sensitivity_audit": "artifacts/t1-maven-srp-sensitivity-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T1"

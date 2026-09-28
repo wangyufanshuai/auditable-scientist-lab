@@ -248,6 +248,33 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": desat_sources[0]["sha256"],
         "output_path": "artifacts/t1-maven-desat-sensitivity-audit.json",
     })
+    srp = _load("artifacts/t1-maven-srp-sensitivity-audit.json")
+    srp_sources = [item for item in srp.get("source_files", [])
+                   if item.get("path") == "scripts/verify_t1_maven_srp_sensitivity.py"]
+    srp_timestamp = srp.get("recorded_at")
+    srp_checks = {
+        "source_and_baseline_bound", "zero_coefficient_reproduces_prior",
+        "all_cases_reported", "monotonic_radial_response_scale", "step_refinement",
+        "finite_states_and_responses", "compute_budget",
+    }
+    if (srp.get("schema_version") != "t1-maven-srp-sensitivity-audit-v1"
+            or srp.get("status") != "passed-conditional-srp-sensitivity-only"
+            or srp.get("protocol_sha256") !=
+            "68352f9158755dca98baeffe51bd08c65112c2542548ff503ec7a62bdae5e470"
+            or set(srp.get("checks", {})) != srp_checks
+            or not all(value is True for value in srp["checks"].values())
+            or srp.get("boundaries", {}).get("claim_status") != "unverified"
+            or srp["boundaries"].get("mission_validation") is not False
+            or len(srp_sources) != 1 or not isinstance(srp_timestamp, str)
+            or datetime.fromisoformat(srp_timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T1 MAVEN SRP audit cannot enter acceptance")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t1-maven-srp-sensitivity",
+        "command": "python scripts/verify_t1_maven_srp_sensitivity.py --verify",
+        "exit_code": 0, "recorded_at": srp_timestamp,
+        "input_version": srp_sources[0]["sha256"],
+        "output_path": "artifacts/t1-maven-srp-sensitivity-audit.json",
+    })
     ops = _load("artifacts/t1-maven-ops-event-search-audit.json")
     ops_sources = [item for item in ops.get("source_files", [])
                    if item.get("path") == "scripts/verify_t1_maven_ops_events.py"]
@@ -324,6 +351,8 @@ def desired_outputs() -> dict[Path, str]:
         or [item.get("track_id") for item in status.get("tracks", [])] != ["T1", "T2", "T3", "T4", "T5"]
         or status["tracks"][0].get("optional_desat_sensitivity_audit") !=
         "artifacts/t1-maven-desat-sensitivity-audit.json"
+        or status["tracks"][0].get("optional_srp_sensitivity_audit") !=
+        "artifacts/t1-maven-srp-sensitivity-audit.json"
         or status["tracks"][0].get("optional_ops_event_search_audit") !=
         "artifacts/t1-maven-ops-event-search-audit.json"
         or status["tracks"][0].get("optional_sff_exploratory_audit") !=

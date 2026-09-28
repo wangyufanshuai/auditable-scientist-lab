@@ -180,6 +180,14 @@
     "same_record_pairs": 4,
     "status": "verified-local-source-inventory-only"
   },
+  "t1_maven_srp_sensitivity": {
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "scenario_count": 8,
+    "scientific_holdout": false,
+    "snapshot_sha256": "d48b3402746a71023be5056085120568971bbae64a39b969cd476607b4596a82",
+    "status": "passed-conditional-srp-sensitivity-only"
+  },
   "t1_maven_sun_only_preflight": {
     "arc_count": 2,
     "dynamic_verified_here": true,
