@@ -28,21 +28,21 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-28T11:45:14.261526+00:00",
+  "recorded_at": "2026-09-28T13:27:14.606493+00:00",
   "replay_manifest_hashes": {
-    "T1": "1f628321cdccde111d5347b4f012e48106fcac69ca93b4a338a6a9289b38699b",
-    "T1V2": "c7278d6fd9e7cce21ff9b57fd45677f7344e111e4bde40b9bf0f01370288a8db",
-    "T2": "4073f58c862edacdeddc2ac833b6530158f407a8d143f7babfe44d99ca2c8112",
-    "T2P": "ecf5da6b43ba14c6db1aff67c4547054d4c9af5792b3db3722be6ede9ad36e9c",
-    "T3": "d126457c6a150725aefdc6607a868ed8d46399569fa21684184347e7ea04a07a",
-    "T3N": "def71a1a9f532f3786b807494c90c20b80e930fdf879a61bf8c600c142c65274",
-    "T4": "7525b5732b7ad50aa0e945a2a451b3c9e66cc2d3ddb2c98624b5230fec32b320",
-    "T4O": "e799c9224399436aa320d0fde34b81ea1a8a5e4487cc0e6d3d30f2b0381b6a31",
-    "T5": "727d92ea5296780bf35adee242f4bd2092e26395bf8970b0cba303facd2f390b"
+    "T1": "f5a0b7ede7984a63777451f8646a9ba971b4ff693d6b9dbac2cbd678138b1827",
+    "T1V2": "c4927bdff6b700f51ac4c19e7d89e8997ccf199b7e655c74c9da76cb780edf49",
+    "T2": "d659528f9c7512c062c639101bba8ef64fbb8b449f622a47fabaff0dcb26ca26",
+    "T2P": "ebd00673aecd86a99fe6fcb20ca42caf0f16fc02cb9f8bb6aceadeda77a9de49",
+    "T3": "5d4bdb7778ba5e960771b6bfeaa2bc0010e24bbe2e006268d3a7abae62a0c332",
+    "T3N": "ca7b5d7c44b96941e5da7aacbcfcaa270ef4ffcf984e40eafa81969ffc0b3ff6",
+    "T4": "eb345684729bf403ff03fd0b5a4315937d44008b53a0aa6fbd75a7a144f1b139",
+    "T4O": "083df764a358bf4f1b07287145d56c6753798c438adec4a7a7b6af84ac728c85",
+    "T5": "4c9893e96ec8f11ba2db8cbfac282bdc90ab67f0f3ec03198a3c70b8696248dd"
   },
   "schema_version": "wheel-audit-v7",
   "script_sha256": "8c715d448ba288e444a2587fbb3928bda0ddc29335aab65c6a73cd84d76f56b6",
-  "source_snapshot_sha256": "99b5dddc6c92fe6804f685ffb112a6bf18848e17c908befdb83d9ca05b36a1cf",
+  "source_snapshot_sha256": "297a8175648c5a731f0602330207f154de676f7bd1966f586ed55162e34d4299",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t2_context_sensitivity_wheel_replay": {
@@ -57,5 +57,5 @@
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "fb63882d72b5e1c3c53e0e929dde40957fbbfe9764afe74ff84cb726ba05e51e"
+  "wheel_sha256": "74b8271ff5fa4be67227e72b365a54cdf17b56e0a10025faa80c6f7c834ed679"
 }
