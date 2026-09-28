@@ -29,8 +29,17 @@ SOURCE_PATHS = [
 ]
 
 
+def _canonical_bytes(path: Path) -> bytes:
+    """Hash text source by LF-normalized bytes so Windows replay is portable."""
+
+    payload = path.read_bytes()
+    if path.suffix.lower() in {".json", ".md", ".py"}:
+        payload = payload.replace(b"\r\n", b"\n")
+    return payload
+
+
 def _sha(path: Path) -> str:
-    return sha256(path.read_bytes()).hexdigest()
+    return sha256(_canonical_bytes(path)).hexdigest()
 
 
 def build_audit() -> dict:
@@ -62,7 +71,7 @@ def build_audit() -> dict:
             {
                 "path": path.relative_to(ROOT).as_posix(),
                 "sha256": _sha(path),
-                "bytes": path.stat().st_size,
+                "bytes": len(_canonical_bytes(path)),
             }
             for path in SOURCE_PATHS
         ],

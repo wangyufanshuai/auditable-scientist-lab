@@ -62,18 +62,18 @@
     "source_files": [],
     "track_id": "T2"
   },
-  "recorded_at": "2026-09-28T11:20:11.154007+00:00",
+  "recorded_at": "2026-09-28T11:40:53.207769+00:00",
   "schema_version": "t2-causal-sensitivity-audit-v1",
   "source_files": [
     {
-      "bytes": 3693,
+      "bytes": 3989,
       "path": "scripts/verify_t2_causal_sensitivity.py",
-      "sha256": "c550612426d70ea6169388d858104f734484538ebe5d9131b085662435f18956"
+      "sha256": "206f2a63a8a636a13230858605accf40fb280ffd40356c00bccb8b01945b9c5f"
     },
     {
-      "bytes": 5043,
+      "bytes": 5042,
       "path": "src/auditable_scientist/tracks/causal_sensitivity.py",
-      "sha256": "ebbb9f727c747a70e1737a5543b7e59d08134ed0858f45ff10cd776d07ca393e"
+      "sha256": "d755754a69398ee2b4d237bea8ffafaf6400ecb26ea25efe7f3d144eb5210f8a"
     },
     {
       "bytes": 3268,
@@ -101,9 +101,9 @@
       "sha256": "e3541bc14cc16836f1f1fff989a37743904387596712b82f323f12dc5778ab15"
     },
     {
-      "bytes": 854,
+      "bytes": 853,
       "path": "docs/T2_CAUSAL_SENSITIVITY.md",
-      "sha256": "1f6031e93a90da78430eaabf9e1bb551cc4c347d1bfdc584496dcc68674d24c8"
+      "sha256": "7d8c648718a4783d50c083466fb236708f2d221b563bd7624697de51b4bfebd9"
     }
   ],
   "status": "verified-synthetic-context-sensitivity-only"

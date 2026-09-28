@@ -22,7 +22,7 @@
       "input_version": "t2-causal-sensitivity-audit-v1",
       "name": "context-sensitivity-negative-control",
       "output_path": "artifacts/t2-causal-sensitivity-audit.json",
-      "recorded_at": "2026-09-28T11:20:11.154007+00:00"
+      "recorded_at": "2026-09-28T11:40:53.207769+00:00"
     }
   ],
   "evaluator": {
