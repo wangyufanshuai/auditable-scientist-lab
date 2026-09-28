@@ -30,7 +30,9 @@ The [MAVEN Science Data Center ancillary page](https://lasp.colorado.edu/maven/s
 identifies SFF files and links two SIS documents for their format and fields.
 Both linked PDFs returned HTTP 404 during this inspection. Consequently, the
 time scale, vector frame, units, and meaning of the SFF numeric columns remain
-unverified. This audit does not extract an inertial impulse or admit any SFF
+unverified. The official [ancillary archive SIS](T1_MAVEN_ANC_SIS_SOURCE_NOTE.md)
+documents DRF and event products but does not provide the SFF `R` record
+layout. This audit does not extract an inertial impulse or admit any SFF
 value into orbital propagation. The independent tracking, uncertainty,
 scientific-holdout, and mission-validation gates remain open; the Claim stays
 `unverified`.

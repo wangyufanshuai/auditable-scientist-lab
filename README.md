@@ -142,7 +142,8 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 它仍缺机动及其他力项、独立观测与科学 holdout，任务 Claim 保持 `unverified`。
 固定窗口的 [MAVEN 运行事件目录核对](docs/T1_MAVEN_OPS_EVENT_SEARCH_RESULT.md) 从 PDS
 产品检查 185,321 条记录：两段巡航短弧内均无卸载/机动关键词记录，附近有反作用轮卸载事件。
-目录不含冲量向量，也不能证明记录完整；任务 Claim 不变。
+目录不含冲量向量，也不能证明记录完整；[PDS 官方 ancillary SIS 的范围说明](docs/T1_MAVEN_ANC_SIS_SOURCE_NOTE.md)
+明确事件列表并不穷尽，且公共归档省略部分工程遥测；任务 Claim 不变。
 另有 [NAIF 小力文件来源盘点](docs/T1_MAVEN_SFF_EXPLORATORY_RESULT.md) 检查固定短弧附近
 九份文件的哈希、原文时间与重复记录；这是事后探索，缺格式 SIS，未将数值列用于传播。
 

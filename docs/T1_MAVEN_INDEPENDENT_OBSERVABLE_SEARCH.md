@@ -40,7 +40,10 @@ has an operational-events product spanning both fixed arcs. A preregistered
 records: no desaturation/maneuver keyword record falls inside either 24-hour
 arc, although explicit reaction-wheel desaturation records fall nearby. This
 is catalog evidence about event timestamps, not proof of a complete maneuver
-history, an impulse vector, or an independent tracking observable. The related
+history, an impulse vector, or an independent tracking observable. The official
+[ancillary archive SIS](T1_MAVEN_ANC_SIS_SOURCE_NOTE.md) explicitly says the
+event list is not exhaustive; its archive also omits some engineering
+housekeeping data. The related
 [GNC DRF collection](https://pds.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Amaven.anc%3Adata.drf.gnc)
 begins 2014-11-15 and does not cover the fixed cruise arcs.
 

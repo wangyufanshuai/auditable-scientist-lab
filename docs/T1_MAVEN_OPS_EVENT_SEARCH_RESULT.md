@@ -29,7 +29,10 @@ therefore must **not** be read as an observed impulse in either fixed arc.
 
 An absence of a matching row is evidence about this version of this events
 catalog only. It does not prove that no small thrust or unlisted activity
-occurred. The product has no event-level inertial delta-v vectors, force
+occurred. The official [ancillary archive SIS](T1_MAVEN_ANC_SIS_SOURCE_NOTE.md)
+explicitly says the event list is not intended to be exhaustive and that the
+public ancillary archive omits some housekeeping data. The product has no
+event-level inertial delta-v vectors, force
 calibration, or independent radiometric measurements for either arc. The
 [GNC DRF collection](https://pds.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Amaven.anc%3Adata.drf.gnc)
 starts on 2014-11-15, after both cruise arcs, and the
