@@ -1,0 +1,81 @@
+{
+  "schema_version": "t2-projectile-model-protocol-v1",
+  "status": "draft-blocked-before-model-fit",
+  "scope": "prospective-trial-level-trajectory-comparison-not-causal-identification",
+  "source_contract": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+  "source_contract_sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e",
+  "source_audit": "artifacts/t2-projectile-source-audit.json",
+  "source_audit_sha256": "ba22aac8adc4f00970fce4c27b796d941140a8a29f106b1150432eca54292720",
+  "question": "On held-out launcher trials, does a declared no-drag projectile model reproduce the measured two-dimensional trajectory as well as or better than the declared spherical-drag model?",
+  "hypotheses": {
+    "null": "The held-out trial-level 2D position error distributions are not distinguishable under the predeclared comparison and uncertainty procedure.",
+    "alternative": "The held-out trial-level 2D position error distributions differ under the predeclared comparison and uncertainty procedure.",
+    "causal_scope": "Neither hypothesis identifies a causal intervention effect; launcher pressure and angle remain observational inputs in this dataset."
+  },
+  "observations": {
+    "columns": ["index", "t (s)", "x (m)", "y (m)", "theta (°)", "v0 (m/s)"],
+    "unit_system": "SI",
+    "measurement_uncertainty_position_m": 0.015,
+    "declared_gravity_m_s2": 9.81,
+    "required_trial_count": 30,
+    "required_article_experiment_count": 82,
+    "velocity_role_required_before_fit": "resolved-between-light-gate-reading-and-fit-parameter"
+  },
+  "split": {
+    "unit": "whole-trial",
+    "rule": "trial_id is holdout when SHA256('t2-projectile-trial:' + decimal_trial_id) first-byte modulo 5 equals zero",
+    "holdout_trial_ids": [4, 6, 7, 9, 13, 21, 22, 29, 30],
+    "training_trial_ids": [2, 3, 5, 8, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 28, 31],
+    "tuning_on_holdout": false,
+    "split_registered": false,
+    "registration_note": "This is a local protocol draft created after source intake; it is not an external preregistration."
+  },
+  "models": {
+    "no_drag": {
+      "equations": ["x(t)=x0+v0*cos(theta)*t", "y(t)=y0+v0*sin(theta)*t-g*t^2/2"],
+      "fit_parameters": ["x0", "y0", "v0"],
+      "v0_input_mode": "blocked-until-column-role-resolved"
+    },
+    "spherical_drag": {
+      "integrator": "fixed-step RK4 with predeclared step-refinement check",
+      "force_law": "quadratic drag with C(Re)=24/Re+4/sqrt(Re)+0.4",
+      "constants": {
+        "diameter_m": 0.01746,
+        "mass_kg": 0.0218,
+        "air_density_kg_m3": 1.2257,
+        "dynamic_viscosity_pa_s": 1.7965e-5
+      },
+      "fit_parameters": ["x0", "y0", "v0"],
+      "constant_provenance_review_required": true,
+      "v0_input_mode": "blocked-until-column-role-resolved"
+    }
+  },
+  "metrics": {
+    "primary": "trial-level-RMSE-of-two-dimensional-position-m",
+    "secondary": ["trial-level-max-position-error-m", "signed-x-and-y-residual-means-m", "paired-drag-minus-no-drag-RMSE"],
+    "uncertainty": "bootstrap-resample-whole-trials-with-fixed-seed-and-predeclared-replicates",
+    "measurement_scale_reported": true,
+    "model_selection_on_holdout": false
+  },
+  "negative_controls": {
+    "shuffled_theta_or_v0_labels_rejected": true,
+    "wrong_sign_gravity_rejected": true,
+    "duplicate_or_nonmonotonic_time_rejected": true,
+    "train_holdout_overlap_rejected": true,
+    "unresolved_v0_role_blocks_fit": true
+  },
+  "gates": {
+    "supplement_rights_reviewed": false,
+    "complete_reported_experiment_set": false,
+    "velocity_column_semantics_reviewed": false,
+    "drag_constant_provenance_reviewed": false,
+    "external_preregistration": false,
+    "physical_model_validated": false,
+    "scientific_holdout": false,
+    "causal_effect_identified": false,
+    "research_candidate": false,
+    "publication_ready": false,
+    "claim_status": "unverified"
+  },
+  "result_artifact": null
+}

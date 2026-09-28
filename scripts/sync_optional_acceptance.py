@@ -23,6 +23,7 @@ STATUS_CONTRACT = ROOT / "docs/PORTFOLIO_STATUS_CONTRACT.json"
 STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
 T2_PROJECTILE_CONTRACT_SHA256 = "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e"
 T2_PROJECTILE_AUDIT_SHA256 = "ba22aac8adc4f00970fce4c27b796d941140a8a29f106b1150432eca54292720"
+T2_PROJECTILE_PROTOCOL_SHA256 = "bc7d0fb679fc92b13b5bb9050c2f2684e00e2b9fc89ecb18684bd2d04271aa38"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -125,7 +126,9 @@ PROJECTILE_REPORT_NOTE = (
     "article reports 82 experiments. Fifteen trial IDs have a declared `v0` above "
     "the article's stated launcher range; the column's meaning is unresolved. "
     "Supplement reuse rights, coverage, physical-model comparison, trial-level "
-    "holdout, and causal identification remain open. The Claim is `unverified`.\n"
+    "holdout, and causal identification remain open. The [blocked model protocol] "
+    "(../docs/T2_PROJECTILE_MODEL_PROTOCOL.md) freezes a whole-trial split but "
+    "permits no fit until those source gates close. The Claim is `unverified`.\n"
 )
 
 
@@ -438,6 +441,25 @@ def _t2_projectile_receipt(audit: dict | None = None,
             "dynamic_verified_here": dynamic}
 
 
+def _t2_projectile_protocol() -> dict:
+    """Check the frozen design without treating it as a model result."""
+
+    path = ROOT / "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+    if hashlib.sha256(path.read_bytes()).hexdigest() != T2_PROJECTILE_PROTOCOL_SHA256:
+        raise ValueError("T2 projectile model protocol bytes differ")
+    process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_projectile_model_protocol.py")],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+    )
+    if process.returncode != 0:
+        raise ValueError(f"T2 projectile model protocol check failed: {process.stderr.strip()}")
+    result = json.loads(process.stdout)
+    if (result.get("status") != "verified-blocked-protocol-only"
+            or result.get("fit_permitted") is not False):
+        raise ValueError("T2 projectile model protocol exceeds its blocked scope")
+    return result
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -568,6 +590,7 @@ def desired_outputs() -> dict[Path, str]:
         "name": "optional-t3-pythagorean-close-encounter",
     })
     projectile = _t2_projectile_receipt()
+    _t2_projectile_protocol()
     _insert_or_replace(root["checks"], {
         "name": "optional-t2-projectile-real-source-inventory",
         "command": "python scripts/verify_t2_projectile_source.py --verify",
@@ -629,6 +652,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-sff-exploratory-audit.json"
         or status["tracks"][1].get("optional_projectile_source_audit") !=
         "artifacts/t2-projectile-source-audit.json"
+        or status["tracks"][1].get("optional_projectile_model_protocol") !=
+        "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
         or status["tracks"][4].get("optional_pbs_source_audit") !=
         "artifacts/t5-pbs-source-audit.json"
         or status["tracks"][4].get("optional_pbs_cross_reader_audit") !=

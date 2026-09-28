@@ -35,6 +35,7 @@
         "preregistered trial-level model comparison and holdout"
       ],
       "optional_projectile_source_audit": "artifacts/t2-projectile-source-audit.json",
+      "optional_projectile_model_protocol": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
       "physical_subtrack": "artifacts/t2-physical/acceptance.json",
       "public_release": false,
       "state": "reproduced-within-scope",
