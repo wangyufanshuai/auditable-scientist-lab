@@ -1,9 +1,9 @@
 # Auditable Scientist Lab
 
-状态：`implementing`（T1 acceptance 已形成，T2–T5 bounded slices 已形成；仍有科学与发布 gates）
+状态：`bounded engineering preview`（T1 acceptance 与 T2–T5 bounded slices 已形成；科学、权利、人工复核与发布 gates 仍分开）
 
 正式远程仓库：[wangyufanshuai/auditable-scientist-lab](https://github.com/wangyufanshuai/auditable-scientist-lab)
-（MIT，默认分支 `main`）。本地实现及验收记录尚未推送。
+（MIT，默认分支 `main`）。当前 `publish/integration` 分支用于合并初始远程历史、CI 和干净 checkout 验证。
 
 这是一个离线优先、可回放的科学发现工作台。第一条垂直切片使用
 `E:/xuexi/projects/05_hohmann_mars_transfer`，目标是把 Hohmann 火星转移
@@ -168,6 +168,8 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 
 ## 当前入口
 
+- [docs/RELEASE_V0.1.0_BOUNDED.md](docs/RELEASE_V0.1.0_BOUNDED.md)：`v0.1.0-bounded` 集成、验收、标签门槛和 T2–T5 后续 PR 顺序。
+- [CHANGELOG.md](CHANGELOG.md)：公开变更记录。
 - [implementation-plan.md](implementation-plan.md)：阶段、依赖、验收和最小实现顺序。
 - [source_inventory.json](source_inventory.json)：初始本地来源盘点的历史快照。
 - [artifacts/symbolic-engine-audit.json](artifacts/symbolic-engine-audit.json)：新发现的本地符号引擎源码指纹、实现与许可证阻断原因。
@@ -222,4 +224,3 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 ## 非目标
 
 首版不做自主联网爬虫、自动发表、多租户、大模型训练、自动声称新物理或 Web UI。
-
