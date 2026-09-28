@@ -113,6 +113,8 @@ T5 是带逐字段文本位置与文档哈希的合成教学审查；
 它只给 `demo/text-reviewed`，始终要求人工复核且禁止实验执行，见
 [docs/T5_METHOD.md](docs/T5_METHOD.md)。当前八份 CLI 收据在
 `artifacts/track-runs-v16/` 和 `artifacts/acceptance-runs-v18/`。
+另有 [T5 真实来源 PDF 审计](docs/T5_PBS_SOURCE_RESULT.md)：固定 DOI、许可声明、三页文本哈希与
+六步引用位置，只作来源盘点和专家复核提示；不生成可执行协议。
 T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利和独立任务轨道验证仍未通过，
 见 [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)。
 可选的固定 SciPy DOP853 环境还从初始状态积分到远日点，对九个合成样例和一个圆整参数样例

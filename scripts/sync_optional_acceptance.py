@@ -336,6 +336,27 @@ def desired_outputs() -> dict[Path, str]:
         **next(row for row in rows if row["name"] == "optional-pythagorean-close-encounter"),
         "name": "optional-t3-pythagorean-close-encounter",
     })
+    pbs = _load("artifacts/t5-pbs-source-audit.json")
+    pbs_timestamp = pbs.get("recorded_at")
+    pbs_sources = [item for item in pbs.get("source_files", [])
+                   if item.get("path") == "scripts/verify_t5_pbs_source.py"]
+    if (pbs.get("schema_version") != "t5-pbs-source-audit-v1"
+            or pbs.get("status") != "verified-source-document-and-review-flags-only"
+            or pbs.get("source_pdf_sha256") !=
+            "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271"
+            or pbs.get("boundaries", {}).get("execution_allowed") is not False
+            or pbs["boundaries"].get("claim_status") != "unverified"
+            or len(pbs.get("step_inventory", [])) != 6
+            or len(pbs_sources) != 1 or not isinstance(pbs_timestamp, str)
+            or datetime.fromisoformat(pbs_timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T5 PBS source audit cannot enter acceptance")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t5-pbs-real-source-inventory",
+        "command": "python scripts/verify_t5_pbs_source.py --verify",
+        "exit_code": 0, "recorded_at": pbs_timestamp,
+        "input_version": pbs_sources[0]["sha256"],
+        "output_path": "artifacts/t5-pbs-source-audit.json",
+    })
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
         "T1": {"external symbolic engine", "mission-domain force and maneuver comparison", "preregistered mission holdout and uncertainty review"},
@@ -357,6 +378,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-ops-event-search-audit.json"
         or status["tracks"][0].get("optional_sff_exploratory_audit") !=
         "artifacts/t1-maven-sff-exploratory-audit.json"
+        or status["tracks"][4].get("optional_pbs_source_audit") !=
+        "artifacts/t5-pbs-source-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"

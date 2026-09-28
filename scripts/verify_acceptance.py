@@ -1045,6 +1045,111 @@ def verify_optional_t1_maven_srp_sensitivity(audit: dict | None = None,
             "scientific_holdout": False}
 
 
+def verify_optional_t5_pbs_source(audit: dict | None = None,
+                                  *, verify_dynamic: bool = True) -> dict:
+    """Bind a real-source citation inventory without granting execution authority."""
+
+    audit = audit if audit is not None else load("artifacts/t5-pbs-source-audit.json")
+    contract = load("docs/T5_PBS_SOURCE_CONTRACT.json")
+    contract_sha = "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61"
+    pdf_sha = "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271"
+    page_hashes = [
+        "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+        "c66b73af18b56377ea17a4e4a46c34a6538f8639cc96f98cc5dd13b03d18efda",
+        "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+    ]
+    expected_steps = [
+        "74471b6a8b13242a60e1c77c0e9fbcaa6af2c391b2db0271b6d69f7ce02b6d69",
+        "0bbb4bf402e68f64dfaace854d3e635c8fcdc3c9ca55b648403c7324652bec89",
+        "db4064d0a6f47c7b53e0ae9a7737ded7ba9b8a85e7c93ef134255d40e4adb13a",
+        "7f2566d23d2131408adb2d70e9bb173b22834a938c35498386a7a455840f360a",
+        "8091be97b26e2bf70664e10d8f32d58dd298679312d0b15b88d3627b8b24758e",
+        "8e6c3dbb48749ac000dba4dc7d9dce53663254a7e1427749bbea75a350a0d9bd",
+    ]
+    expected_anchor_locations = [
+        (68, 97, 4), (644, 680, 1), (761, 813, 1), (24, 61, 1),
+        (963, 983, 1), (31, 37, 1), (170, 173, 1), (439, 457, 1),
+        (469, 481, 1), (616, 644, 1), (663, 673, 1),
+    ]
+    expected_step_locations = [
+        (0, 278), (279, 388), (389, 506),
+        (507, 574), (575, 660), (661, 673),
+    ]
+    expected_source_files = {"scripts/verify_t5_pbs_source.py",
+                             "docs/T5_PBS_SOURCE_CONTRACT.json",
+                             "requirements-t5-pbs-pdf.txt"}
+    boundaries = contract["boundaries"]
+    source = contract["source"]
+    if (fingerprint_file(ROOT / "docs/T5_PBS_SOURCE_CONTRACT.json").sha256 != contract_sha
+            or contract.get("schema_version") != "t5-pbs-source-contract-v1"
+            or audit.get("schema_version") != "t5-pbs-source-audit-v1"
+            or audit.get("status") != "verified-source-document-and-review-flags-only"
+            or audit.get("contract_sha256") != contract_sha
+            or audit.get("source_pdf_sha256") != pdf_sha
+            or source.get("pdf_sha256") != pdf_sha
+            or source.get("pdf_bytes") != 458059
+            or source.get("pdf_pages") != 3
+            or source.get("doi") != "10.17504/protocols.io.p4rdqv6"
+            or source.get("attribution_required") is not True
+            or source.get("local_pdf_redistributed") is not False
+            or audit.get("source") != {key: source[key] for key in (
+                "title", "author", "publisher", "doi", "pdf_url", "published_date",
+                "last_modified_date_in_pdf", "protocol_integer_id", "pdf_bytes",
+                "pdf_pages", "license_declaration", "license_location",
+                "attribution_required", "local_pdf_redistributed")}
+            or audit.get("reader") != contract["reader"]
+            or audit.get("page_text_sha256") != page_hashes
+            or audit.get("review_flags") != contract["review_flags"]
+            or audit.get("boundaries") != boundaries
+            or boundaries != {
+                "real_source_document": True, "rights_declaration_present": True,
+                "independent_procedure_validation": False, "complete_safety_review": False,
+                "machine_executable_protocol": False, "human_acceptance": False,
+                "execution_allowed": False, "claim_status": "unverified"}
+            or len(audit.get("source_files", [])) != 3
+            or {row.get("path") for row in audit["source_files"]} != expected_source_files):
+        raise ValueError("T5 PBS source, rights, or safety boundary differs")
+    timestamp = audit.get("recorded_at")
+    if (not isinstance(timestamp, str)
+            or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T5 PBS source timestamp differs")
+    for row in audit["source_files"]:
+        actual = fingerprint_file(ROOT / row["path"])
+        if row.get("sha256") != actual.sha256 or row.get("bytes") != actual.bytes:
+            raise ValueError("T5 PBS source verifier bytes differ")
+    anchors = audit.get("anchors", [])
+    if (len(anchors) != len(contract["anchors"])
+            or [row.get("key") for row in anchors] != [item["key"] for item in contract["anchors"]]):
+        raise ValueError("T5 PBS anchor inventory differs")
+    for row, item, location in zip(anchors, contract["anchors"],
+                                   expected_anchor_locations, strict=True):
+        if (row.get("page") != item["page"] or row.get("excerpt") != item["quote"]
+                or row.get("page_text_sha256") != page_hashes[item["page"]-1]
+                or (row.get("start"), row.get("end"),
+                    row.get("occurrences_on_page")) != location):
+            raise ValueError("T5 PBS anchor citation differs")
+    steps = audit.get("step_inventory", [])
+    if (len(steps) != 6
+            or [row.get("step_number") for row in steps] != list(range(1, 7))
+            or [row.get("text_sha256") for row in steps] != expected_steps
+            or [(row.get("start"), row.get("end")) for row in steps] !=
+            expected_step_locations
+            or any(row.get("page") != 3 for row in steps)):
+        raise ValueError("T5 PBS step source inventory differs")
+    pdf = ROOT / "data/references/t5_pbs/protocols_io_p4rdqv6.pdf"
+    dynamic = False
+    if pdf.is_file() and verify_dynamic and importlib.util.find_spec("pypdf") is not None:
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t5_pbs_source.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=30)
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"T5 PBS dynamic source check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "source_pdf_sha256": pdf_sha,
+            "page_count": 3, "step_count": 6, "dynamic_verified_here": dynamic,
+            "execution_allowed": False, "human_acceptance": False}
+
+
 def verify_optional_t1_maven_ops_events(audit: dict | None = None,
                                         *, verify_dynamic: bool = True) -> dict:
     """Bind the predeclared PDS event-list search and its negative scope."""
@@ -2762,6 +2867,16 @@ def main() -> None:
         raise SystemExit("T5 protocol evaluator replay mismatch")
     if load("artifacts/t5-protocol/acceptance.json")["negative_case"] != verify_protocol(t5_bad).model_dump(mode="json"):
         raise SystemExit("T5 negative case replay mismatch")
+    t5_pbs = verify_optional_t5_pbs_source()
+    if not any(
+        item.get("name") == "optional-t5-pbs-real-source-inventory"
+        and item.get("output_path") == "artifacts/t5-pbs-source-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t5_pbs_source.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T5 PBS source inventory has no command receipt")
     t1 = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T1")
     t1_experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
     if (
@@ -2911,6 +3026,7 @@ def main() -> None:
             "policy_denials": t2_endpoint_run["policy_denials"],
         },
         "t4_exact_linear_invariant_proof": t4_linear_expected,
+        "t5_pbs_real_source_inventory": t5_pbs,
         "t4_exact_linear_invariant_run": {
             "run_id": t4_linear_run["run_id"],
             "replay": t4_linear_run["replay"],

@@ -369,6 +369,15 @@
     },
     "run_id": "run-t4-linear-6931db19a01bc59b"
   },
+  "t5_pbs_real_source_inventory": {
+    "dynamic_verified_here": true,
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "page_count": 3,
+    "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+    "status": "verified-source-document-and-review-flags-only",
+    "step_count": 6
+  },
   "track_cli_replays": {
     "T2": {
       "checks": [

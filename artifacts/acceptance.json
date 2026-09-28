@@ -301,6 +301,14 @@
       "name": "optional-t1-maven-srp-sensitivity",
       "output_path": "artifacts/t1-maven-srp-sensitivity-audit.json",
       "recorded_at": "2026-09-28T02:28:35.583347+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_pbs_source.py --verify",
+      "exit_code": 0,
+      "input_version": "4cdf836a8b5141563392ef8122a224f3947ff9fee4c44c01e9b8019483cfb16f",
+      "name": "optional-t5-pbs-real-source-inventory",
+      "output_path": "artifacts/t5-pbs-source-audit.json",
+      "recorded_at": "2026-09-28T03:02:25.579614+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
