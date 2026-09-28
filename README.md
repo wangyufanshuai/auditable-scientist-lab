@@ -101,9 +101,10 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 [docs/T2_INDEPENDENT_ENDPOINT.md](docs/T2_INDEPENDENT_ENDPOINT.md)。
 估计器另有可选的离线 Tool/Policy/Provider Run，保存两份输入快照并通过搬移回放及篡改负例，
 见 [artifacts/t2-independent-run-audit.json](artifacts/t2-independent-run-audit.json)；真实世界 Claim 仍为 `unverified`。
-另有 [T2 真实抛射测量来源盘点](docs/T2_PROJECTILE_SOURCE.md)：官方补充工作簿含 179 个采样点、
+另有 [T2 真实抛射测量来源盘点](docs/T2_PROJECTILE_SOURCE.md)：论文明确区分光电门测量的初速度和最小二乘拟合的 `v0`，
+并说补充文件展示测得初速度；但工作簿列名没有说明保存的是哪个阶段。官方补充工作簿含 179 个采样点、
 30 个试验，而论文报告 82 次实验；第二份工作簿是带公式的数值示例，不作为观测数据。
-目前 15 个试验的 `v0` 超出论文所述发射速度范围，列语义、试验覆盖、补充文件再利用权利、
+目前 15 个试验的 `v0` 超出论文所述发射速度范围，列级映射、试验覆盖、补充文件再利用权利、
 物理模型比较及试验级留出均未通过。它不是干预数据，不能证明真实因果识别；
 [来源审计](artifacts/t2-projectile-source-audit.json) 只验证本地原件的结构与指纹，Claim 仍为 `unverified`。
 T4O 把证明收据接到 T3

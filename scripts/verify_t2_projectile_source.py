@@ -144,7 +144,9 @@ def evaluate() -> dict:
     if (len(pdf_pages) != files["article_pdf"]["pages"]
             or "creativecommonsattribution4.0licence" not in compact
             or "weperformed82experiments" not in compact
-            or "lightgateaccuratetowithin0.1" not in compact):
+            or "theinitialvelocityoftheprojectileismeasuredusinganin-builtlightgateaccuratetowithin0.1" not in compact
+            or "wealsotreatthisasafittingparameter" not in compact
+            or "usingthemeasuredinitialvelocity" not in compact):
         raise ValueError("T2 article license, experiment count, or measurement method differs")
     measurements = local_paths["measured_trajectories"]
     with ZipFile(measurements) as archive:

@@ -14,7 +14,9 @@
     "supplement_listing_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data",
     "supplement_redistribution_rights_confirmed": false,
     "title": "Projectile motion: experimental datasets and classroom exercises",
-    "volume": 60
+    "velocity_workflow_note": "The article says the initial velocity is measured with an in-built light gate accurate to within 0.1 m/s, but is also treated as a least-squares fitting parameter; it says the supplementary file presents results using the measured initial velocity.",
+    "volume": 60,
+    "workbook_v0_role_mapping": "The workbook header is v0 (m/s), but the file does not identify whether each value is the light-gate reading, the fitted value, or a processed copy; mapping remains unresolved."
   },
   "article_page_text_sha256": [
     "627ce3ccbb4cfdc51e52a8599c0b680752ff971db042efdf5384021888724003",
@@ -49,7 +51,7 @@
     "supplement_rights_reviewed": false,
     "velocity_column_semantics_reviewed": false
   },
-  "contract_sha256": "2b68cf1cb508e8fa2be2e82cb9993c10eeb265f2f08d5a7d87fda372172dc5d3",
+  "contract_sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e",
   "local_file_fingerprints": [
     {
       "bytes": 1526397,
@@ -386,18 +388,18 @@
     "xlsx_package": "openpyxl",
     "xlsx_version": "3.1.5"
   },
-  "recorded_at": "2026-09-28T03:58:56.870414+00:00",
+  "recorded_at": "2026-09-28T04:34:21.000009+00:00",
   "schema_version": "t2-projectile-source-audit-v1",
   "source_files": [
     {
-      "bytes": 11669,
+      "bytes": 11858,
       "path": "scripts/verify_t2_projectile_source.py",
-      "sha256": "9b16e533e94e02e0fc1b8c5240cb4e926ddc3dffbde3ce41cb98f6506356a87d"
+      "sha256": "36f4644346010df5aa5f72b6a33b52ce4e563aee7ad16d0777dce60d9ca1f30e"
     },
     {
-      "bytes": 2761,
+      "bytes": 3255,
       "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
-      "sha256": "2b68cf1cb508e8fa2be2e82cb9993c10eeb265f2f08d5a7d87fda372172dc5d3"
+      "sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e"
     }
   ],
   "status": "verified-30-trial-real-source-inventory-only"

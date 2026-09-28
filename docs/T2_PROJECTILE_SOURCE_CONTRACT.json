@@ -16,7 +16,9 @@
     "paper_stated_launch_speed_upper_bound_m_s": 6.0,
     "article_license_declaration": "Creative Commons Attribution 4.0 licence; attribution to authors, title, journal citation and DOI required",
     "supplement_listing_rights_note": "Supplementary files are published under license by IOP Publishing Ltd; unless otherwise specified, rights belong to authors. The page also displays the article CC BY 4.0 declaration.",
-    "supplement_redistribution_rights_confirmed": false
+    "supplement_redistribution_rights_confirmed": false,
+    "velocity_workflow_note": "The article says the initial velocity is measured with an in-built light gate accurate to within 0.1 m/s, but is also treated as a least-squares fitting parameter; it says the supplementary file presents results using the measured initial velocity.",
+    "workbook_v0_role_mapping": "The workbook header is v0 (m/s), but the file does not identify whether each value is the light-gate reading, the fitted value, or a processed copy; mapping remains unresolved."
   },
   "files": {
     "article_pdf": {

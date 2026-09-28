@@ -12,11 +12,14 @@ second workbook contains 3,507 formulas and is classified as a numerical
 example, not an observation source. This audit cannot account for the other
 52 experiments mentioned by the article.
 
-The article says the launcher operated below 6 m/s and separately describes
-an inbuilt light gate and fitting of initial velocity. In the first workbook,
-15 of the 30 trial IDs have a `v0` value above 6 m/s. Whether this column is
-the gate reading, a fitted value, or a different processing stage remains
-unresolved. No model fit or causal effect is inferred from that discrepancy.
+The article says the launcher operated below 6 m/s, measures initial velocity
+with an in-built light gate accurate to 0.1 m/s, and also treats `v0` as a
+least-squares fitting parameter. It says the supplementary file presents the
+results using the measured initial velocity. The first workbook's `v0 (m/s)`
+header does not identify whether each row stores the light-gate reading, the
+fitted value, or a processed copy. Fifteen of the 30 trial IDs have a `v0`
+value above 6 m/s, so the column-level mapping and this range discrepancy need
+source review. No model fit or causal effect is inferred from that discrepancy.
 
 The [source audit](../artifacts/t2-projectile-source-audit.json) binds the
 article PDF and both supplement workbooks by size and SHA-256, records each
