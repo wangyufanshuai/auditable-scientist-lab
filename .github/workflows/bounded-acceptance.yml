@@ -35,7 +35,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Install test dependencies
-        run: python -m pip install --upgrade pip && python -m pip install -e '.[test]'
+        run: python -m pip install --upgrade pip && python -m pip install -e '.[test]' && python -m pip install openpyxl==3.1.5 pypdf==6.15.0
       - name: Run unit and contract tests
         run: python -m pytest -q
       - name: Check tracked text for whitespace errors
