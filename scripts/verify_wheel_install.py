@@ -121,9 +121,12 @@ def main() -> None:
                 or t2_sensitivity.get("context_leakage_rejected") is not True
                 or t2_sensitivity.get("context_leak_holdout_rmse", 0.0) <= 1.0):
             raise RuntimeError("wheel T2 context sensitivity evaluator differs")
+        t3_receipt_copy = temporary_root / "t3-sweep.json"
+        shutil.copy2(ROOT / "artifacts/t3-sweep.json", t3_receipt_copy)
         t3_convergence = json.loads(invoke(
             [str(python), "-c",
-             "import json; from auditable_scientist.tracks.convergence import build_receipt; print(json.dumps(build_receipt(), sort_keys=True))"],
+             "import json,sys; from auditable_scientist.tracks.convergence import verify_saved_receipt; print(json.dumps(verify_saved_receipt(sys.argv[1]), sort_keys=True))",
+             str(t3_receipt_copy)],
             cwd=temporary_root, environment=base_environment,
         ))
         if (t3_convergence.get("schema_version") != "t3-sweep-v1"
