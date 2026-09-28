@@ -41,6 +41,8 @@ def test_projectile_source_inventory_has_real_data_but_no_validated_claim() -> N
     assert saved["boundaries"]["complete_reported_experiment_set"] is False
     assert saved["boundaries"]["causal_effect_identified"] is False
     assert saved["boundaries"]["physical_model_validated"] is False
+    assert saved["boundaries"]["supplement_rights_reviewed"] is True
+    assert saved["rights_review"]["review_status"] == "rights-language-reviewed-raw-supplement-redistribution-not-confirmed"
     assert saved["boundaries"]["claim_status"] == "unverified"
     if not (LOCAL / "pedadd2c5supp1.xlsx").is_file():
         pytest.skip("optional source files are unavailable")
@@ -78,7 +80,7 @@ def test_projectile_acceptance_projection_rejects_mutated_receipt(mutation: str)
     elif mutation == "claimed_model_validation":
         audit["boundaries"]["physical_model_validated"] = True
     elif mutation == "claimed_supplement_rights":
-        audit["boundaries"]["supplement_rights_reviewed"] = True
+        audit["boundaries"]["supplement_rights_reviewed"] = False
     elif mutation == "changed_workbook_hash":
         audit["local_file_fingerprints"][1]["sha256"] = "0" * 64
     elif mutation == "missing_negative_control":

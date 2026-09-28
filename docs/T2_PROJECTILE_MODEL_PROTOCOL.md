@@ -6,8 +6,9 @@ preregistration and it has no fitted result. The source intake found real
 position/time measurements, but the supplementary workbook does not say whether
 its `v0` column is the light-gate reading, a fitted value, or a processed copy.
 The article also reports 82 experiments while the pinned measured workbook has
-30 trial IDs. Supplement reuse rights and the provenance of the drag constants
-must be reviewed before fitting.
+30 trial IDs. The official supplement rights language has been reviewed, but
+direct redistribution of the raw XLSX files is still unconfirmed. The
+provenance of the drag constants must also be reviewed before fitting.
 
 The unit of holdout is a complete trial. The split is deterministic and frozen
 by a SHA-256 rule: trial ID `i` is held out when the first byte of

@@ -21,9 +21,9 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 STATUS_CONTRACT = ROOT / "docs/PORTFOLIO_STATUS_CONTRACT.json"
 STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
-T2_PROJECTILE_CONTRACT_SHA256 = "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e"
-T2_PROJECTILE_AUDIT_SHA256 = "ba22aac8adc4f00970fce4c27b796d941140a8a29f106b1150432eca54292720"
-T2_PROJECTILE_PROTOCOL_SHA256 = "bc7d0fb679fc92b13b5bb9050c2f2684e00e2b9fc89ecb18684bd2d04271aa38"
+T2_PROJECTILE_CONTRACT_SHA256 = "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+T2_PROJECTILE_AUDIT_SHA256 = "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
+T2_PROJECTILE_PROTOCOL_SHA256 = "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -126,7 +126,8 @@ PROJECTILE_REPORT_NOTE = (
     "article reports 82 experiments. Fifteen trial IDs have a declared `v0` above "
     "the article's stated launcher range; the column's meaning is unresolved. "
     "Supplement reuse rights, coverage, physical-model comparison, trial-level "
-    "holdout, and causal identification remain open. The [blocked model protocol] "
+    "holdout, and causal identification remain open. Official supplement rights "
+    "language is reviewed, but raw-XLSX redistribution remains unconfirmed. The [blocked model protocol] "
     "(../docs/T2_PROJECTILE_MODEL_PROTOCOL.md) freezes a whole-trial split but "
     "permits no fit until those source gates close. The Claim is `unverified`.\n"
 )
@@ -354,7 +355,7 @@ def _t2_projectile_receipt(audit: dict | None = None,
     expected_boundaries = {
         "source_tracked_real_measurements": True,
         "complete_reported_experiment_set": False,
-        "supplement_rights_reviewed": False,
+        "supplement_rights_reviewed": True,
         "velocity_column_semantics_reviewed": False,
         "physical_model_validated": False,
         "causal_effect_identified": False,
@@ -376,6 +377,7 @@ def _t2_projectile_receipt(audit: dict | None = None,
             or audit.get("contract_sha256") != T2_PROJECTILE_CONTRACT_SHA256
             or audit.get("article") != contract.get("article")
             or audit.get("reader") != contract.get("reader")
+            or audit.get("rights_review") != contract.get("rights_review")
             or contract.get("article", {}).get("doi") != "10.1088/1361-6552/add2c5"
             or contract["article"].get("paper_reported_experiments") != 82
             or audit.get("boundaries") != expected_boundaries

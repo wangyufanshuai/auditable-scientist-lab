@@ -30,11 +30,12 @@ inputs within a trial. Run `python scripts/verify_t2_projectile_source.py
 to recompute it. The original PDF and XLSX files remain locally ignored and
 are not redistributed in Git.
 
-The PDF declares CC BY 4.0 for the article. The supplement listing says its
-files are published under license by IOP Publishing and that rights belong to
-the authors unless otherwise specified; it also displays the article's CC BY
-declaration. The scope of reuse for the raw XLSX files needs review before
-redistribution. These are source-tracked real measurements, but their
+The PDF declares CC BY 4.0 for the article. The official supplement page says
+the files are published under license by IOP Publishing and that rights belong
+to the authors unless otherwise specified; it also says original content may
+be used under CC BY 4.0 with attribution. This rights language has been
+reviewed, but the page does not unambiguously confirm direct redistribution of
+the raw XLSX files, so redistribution remains blocked. These are source-tracked real measurements, but their
 experimental coverage, `v0` semantics, uncertainty mapping, dataset rights,
 physical-model validity, and causal identification remain open. The Claim
 stays `unverified` and no scientific holdout is claimed.

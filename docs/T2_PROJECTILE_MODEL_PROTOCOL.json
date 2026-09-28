@@ -3,9 +3,9 @@
   "status": "draft-blocked-before-model-fit",
   "scope": "prospective-trial-level-trajectory-comparison-not-causal-identification",
   "source_contract": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
-  "source_contract_sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e",
+  "source_contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
   "source_audit": "artifacts/t2-projectile-source-audit.json",
-  "source_audit_sha256": "ba22aac8adc4f00970fce4c27b796d941140a8a29f106b1150432eca54292720",
+  "source_audit_sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf",
   "question": "On held-out launcher trials, does a declared no-drag projectile model reproduce the measured two-dimensional trajectory as well as or better than the declared spherical-drag model?",
   "hypotheses": {
     "null": "The held-out trial-level 2D position error distributions are not distinguishable under the predeclared comparison and uncertainty procedure.",
@@ -65,7 +65,8 @@
     "unresolved_v0_role_blocks_fit": true
   },
   "gates": {
-    "supplement_rights_reviewed": false,
+    "supplement_rights_reviewed": true,
+    "supplement_redistribution_rights_confirmed": false,
     "complete_reported_experiment_set": false,
     "velocity_column_semantics_reviewed": false,
     "drag_constant_provenance_reviewed": false,

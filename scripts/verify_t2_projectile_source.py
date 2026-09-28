@@ -113,6 +113,17 @@ def evaluate() -> dict:
     article = contract["article"]
     files = contract["files"]
     boundaries = contract["boundaries"]
+    rights_review = contract.get("rights_review")
+    expected_rights_review = {
+        "source_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data",
+        "retrieved_at_utc": "2026-09-28",
+        "http_status": 200,
+        "response_bytes_utf8": 75879,
+        "response_sha256": "0751afb6fda85da2f612213946b30fb94b35684666bc36a8f9d0e0e804385474",
+        "excerpt": "Supplementary data files are published under license by IOP Publishing Ltd. Unless otherwise specified, any and all rights in supplementary data belong to the author(s). Original content from this work may be used under the terms of the Creative Commons Attribution 4.0 license. Any further distribution of this work must maintain attribution to the author(s) and the title of the work, journal citation and DOI.",
+        "article_license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "review_status": "rights-language-reviewed-raw-supplement-redistribution-not-confirmed",
+    }
     if (contract.get("schema_version") != "t2-projectile-source-contract-v1"
             or article.get("doi") != "10.1088/1361-6552/add2c5"
             or article.get("paper_reported_experiments") != 82
@@ -121,7 +132,7 @@ def evaluate() -> dict:
             or boundaries != {
                 "source_tracked_real_measurements": True,
                 "complete_reported_experiment_set": False,
-                "supplement_rights_reviewed": False,
+                "supplement_rights_reviewed": True,
                 "velocity_column_semantics_reviewed": False,
                 "physical_model_validated": False,
                 "causal_effect_identified": False,
@@ -130,6 +141,7 @@ def evaluate() -> dict:
                 "publication_ready": False,
                 "claim_status": "unverified",
             }
+            or rights_review != expected_rights_review
             or version("openpyxl") != contract["reader"]["xlsx_version"]
             or version("pypdf") != contract["reader"]["pdf_version"]):
         raise ValueError("T2 projectile source identity, reader, or boundary differs")
@@ -203,6 +215,7 @@ def evaluate() -> dict:
         ],
         "article_page_text_sha256": [_hash_bytes(page.encode("utf-8")) for page in pdf_pages],
         "reader": contract["reader"],
+        "rights_review": rights_review,
         "measured_inventory": inventory,
         "numerical_spreadsheet": {
             "formula_cells": formulas, "admitted_as_observations": False,

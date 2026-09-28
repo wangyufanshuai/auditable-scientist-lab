@@ -48,10 +48,10 @@
     "research_candidate": false,
     "scientific_holdout": false,
     "source_tracked_real_measurements": true,
-    "supplement_rights_reviewed": false,
+    "supplement_rights_reviewed": true,
     "velocity_column_semantics_reviewed": false
   },
-  "contract_sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e",
+  "contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
   "local_file_fingerprints": [
     {
       "bytes": 1526397,
@@ -388,18 +388,28 @@
     "xlsx_package": "openpyxl",
     "xlsx_version": "3.1.5"
   },
-  "recorded_at": "2026-09-28T04:34:21.000009+00:00",
+  "recorded_at": "2026-09-28T04:57:18.470082+00:00",
+  "rights_review": {
+    "article_license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "excerpt": "Supplementary data files are published under license by IOP Publishing Ltd. Unless otherwise specified, any and all rights in supplementary data belong to the author(s). Original content from this work may be used under the terms of the Creative Commons Attribution 4.0 license. Any further distribution of this work must maintain attribution to the author(s) and the title of the work, journal citation and DOI.",
+    "http_status": 200,
+    "response_bytes_utf8": 75879,
+    "response_sha256": "0751afb6fda85da2f612213946b30fb94b35684666bc36a8f9d0e0e804385474",
+    "retrieved_at_utc": "2026-09-28",
+    "review_status": "rights-language-reviewed-raw-supplement-redistribution-not-confirmed",
+    "source_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data"
+  },
   "schema_version": "t2-projectile-source-audit-v1",
   "source_files": [
     {
-      "bytes": 11858,
+      "bytes": 12948,
       "path": "scripts/verify_t2_projectile_source.py",
-      "sha256": "36f4644346010df5aa5f72b6a33b52ce4e563aee7ad16d0777dce60d9ca1f30e"
+      "sha256": "e0881d0099f1bfbf145655e74d3199b6f2dc2e233643d6a54fb63b2bdcac57cc"
     },
     {
-      "bytes": 3255,
+      "bytes": 4156,
       "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
-      "sha256": "8df8c9e10cc5a30c6f554ceac569d6e9263b449bb414da5d0b8ec9f45c4c479e"
+      "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
     }
   ],
   "status": "verified-30-trial-real-source-inventory-only"

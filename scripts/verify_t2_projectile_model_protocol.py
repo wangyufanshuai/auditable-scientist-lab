@@ -21,7 +21,8 @@ def evaluate() -> dict:
     all_trials = list(range(2, 32))
     expected_training = [trial for trial in all_trials if trial not in expected_holdout]
     expected_gates = {
-        "supplement_rights_reviewed": False,
+        "supplement_rights_reviewed": True,
+        "supplement_redistribution_rights_confirmed": False,
         "complete_reported_experiment_set": False,
         "velocity_column_semantics_reviewed": False,
         "drag_constant_provenance_reviewed": False,

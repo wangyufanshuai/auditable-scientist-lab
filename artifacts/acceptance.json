@@ -329,10 +329,10 @@
     {
       "command": "python scripts/verify_t2_projectile_source.py --verify",
       "exit_code": 0,
-      "input_version": "36f4644346010df5aa5f72b6a33b52ce4e563aee7ad16d0777dce60d9ca1f30e",
+      "input_version": "e0881d0099f1bfbf145655e74d3199b6f2dc2e233643d6a54fb63b2bdcac57cc",
       "name": "optional-t2-projectile-real-source-inventory",
       "output_path": "artifacts/t2-projectile-source-audit.json",
-      "recorded_at": "2026-09-28T04:34:21.000009+00:00"
+      "recorded_at": "2026-09-28T04:57:18.470082+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
