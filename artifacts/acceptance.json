@@ -309,6 +309,14 @@
       "name": "optional-t5-pbs-real-source-inventory",
       "output_path": "artifacts/t5-pbs-source-audit.json",
       "recorded_at": "2026-09-28T03:02:25.579614+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_pbs_source_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t5-pbs-source-8d1d312154f6c18a",
+      "name": "optional-t5-pbs-source-run",
+      "output_path": "artifacts/t5-pbs-source-run-audit.json",
+      "recorded_at": "2026-09-28T03:20:15.634378+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

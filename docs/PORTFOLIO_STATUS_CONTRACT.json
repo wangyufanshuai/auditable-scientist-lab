@@ -71,13 +71,14 @@
     },
     {
       "acceptance": "artifacts/t5-protocol/acceptance.json",
-      "next_step": "bind the rights-declared PBS source inventory to a non-executable T5 Run, add independent full-document citation and omission checks, and require expert biosafety and human acceptance before any operational use",
+      "next_step": "add independent full-document citation and omission checks, then require expert biosafety and human acceptance before any operational use",
       "open_gates": [
         "independent protocol source and rights",
         "biosafety review",
         "human acceptance"
       ],
       "optional_pbs_source_audit": "artifacts/t5-pbs-source-audit.json",
+      "optional_pbs_source_run": "artifacts/t5-pbs-source-run-audit.json",
       "public_release": false,
       "state": "text-demo-within-scope",
       "track_id": "T5"

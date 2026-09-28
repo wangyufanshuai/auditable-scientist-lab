@@ -33,3 +33,13 @@ source and citation inventory and dynamically reruns the PDF check when that
 file and the optional reader are available. Mutated PDF bytes, citation
 locations, step hashes, license metadata, or execution/Claim flags are
 rejected.
+
+The optional [read-only T5 Run](../artifacts/t5-pbs-source-run-audit.json)
+binds this inventory to the shared Agent, Tool, Provider, Policy, Event,
+Trace, Evidence, and replay contracts. Run
+`python scripts/verify_t5_pbs_source_run.py --verify` to check the recorded
+single offline tool call, moved-directory replay, source and audit-snapshot
+hashes, and result and snapshot tamper controls. The Run retains an
+`unverified` Claim and cannot authorize wet-lab execution. It replays the
+committed citation inventory even without the local PDF; when that PDF is
+present, the separate source verifier checks its bytes and extracted text.

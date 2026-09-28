@@ -1,6 +1,6 @@
 {
   "bounded_optional_acceptance_projection": {
-    "output_count": 9,
+    "output_count": 10,
     "status": "verified-bounded-optional-acceptance-projection"
   },
   "run_status": "completed",
@@ -368,6 +368,31 @@
       "verified": true
     },
     "run_id": "run-t4-linear-6931db19a01bc59b"
+  },
+  "t5_pbs_read_only_source_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "f5266888d76f271f266c0aff5270da2e3d7fbf1c616bef8a24e1d88b94bbd2c2",
+      "verified": true
+    },
+    "run_id": "run-t5-pbs-source-8d1d312154f6c18a"
   },
   "t5_pbs_real_source_inventory": {
     "dynamic_verified_here": true,

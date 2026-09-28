@@ -2246,7 +2246,9 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
         } if track_id == "T4" else ({
             "independent-endpoint-estimator": "t2-independent-endpoint-audit-v1",
             "independent-endpoint-run": load("artifacts/t2-independent-run-audit.json")["run_id"],
-        } if track_id == "T2P" else {})))
+        } if track_id == "T2P" else ({
+            "optional-t5-pbs-source-run": load("artifacts/t5-pbs-source-run-audit.json")["run_id"],
+        } if track_id == "T5" else {}))))
         expected_input = special_inputs.get(check.get("name"), receipt.input_hash)
         if check["input_version"] != expected_input:
             raise ValueError(f"track {track_id} acceptance command input version differs")
@@ -2877,6 +2879,44 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T5 PBS source inventory has no command receipt")
+    t5_pbs_run = load("artifacts/t5-pbs-source-run-audit.json")
+    t5_pbs_run_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t5_pbs_source_run.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=120,
+    )
+    if t5_pbs_run_replay.returncode != 0:
+        raise SystemExit(f"T5 PBS read-only Run failed: {t5_pbs_run_replay.stderr.strip()}")
+    t5_pbs_run_output = json.loads(t5_pbs_run_replay.stdout)
+    t5_pbs_run_boundaries = {
+        "source_inventory_only": True, "real_source_document": True,
+        "independent_procedure_validation": False,
+        "biosafety_review_complete": False, "human_acceptance": False,
+        "execution_allowed": False, "claim_status": "unverified",
+    }
+    t5_pbs_run_checks = (
+        ("artifacts/acceptance.json", "optional-t5-pbs-source-run"),
+        ("artifacts/t5-protocol/acceptance.json", "optional-t5-pbs-source-run"),
+    )
+    if (
+        t5_pbs_run.get("schema_version") != "t5-pbs-source-run-audit-v1"
+        or t5_pbs_run_output.get("status") != "verified-read-only-source-inventory-only"
+        or t5_pbs_run_output.get("run_id") != t5_pbs_run.get("run_id")
+        or t5_pbs_run_output.get("replay") != t5_pbs_run.get("replay")
+        or t5_pbs_run_output.get("mutation_controls") != [True, True]
+        or t5_pbs_run.get("relocated_replay_equal") is not True
+        or t5_pbs_run.get("policy_denials") != {
+            "wrong_provider_rejected": True, "out_of_scope_path_rejected": True,
+        }
+        or t5_pbs_run.get("boundaries") != t5_pbs_run_boundaries
+        or any(not any(
+            item.get("name") == name
+            and item.get("output_path") == "artifacts/t5-pbs-source-run-audit.json"
+            and item.get("input_version") == t5_pbs_run["run_id"]
+            and item.get("exit_code") == 0
+            for item in load(path)["checks"]
+        ) for path, name in t5_pbs_run_checks)
+    ):
+        raise SystemExit("T5 PBS read-only Run binding or boundary differs")
     t1 = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T1")
     t1_experiment = json.loads((run_dir / "experiment.json").read_text(encoding="utf-8"))
     if (
@@ -3027,6 +3067,12 @@ def main() -> None:
         },
         "t4_exact_linear_invariant_proof": t4_linear_expected,
         "t5_pbs_real_source_inventory": t5_pbs,
+        "t5_pbs_read_only_source_run": {
+            "run_id": t5_pbs_run["run_id"],
+            "replay": t5_pbs_run["replay"],
+            "mutation_controls": t5_pbs_run_output["mutation_controls"],
+            "policy_denials": t5_pbs_run["policy_denials"],
+        },
         "t4_exact_linear_invariant_run": {
             "run_id": t4_linear_run["run_id"],
             "replay": t4_linear_run["replay"],

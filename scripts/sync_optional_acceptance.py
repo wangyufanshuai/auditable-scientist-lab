@@ -51,6 +51,12 @@ OPTIONAL = (
      "python scripts/verify_t4_linear_run.py --verify", "run_id",
      ("general_formal_backend", "physical_model_validated", "real_data", "publication_ready"),
      ("relocated_replay_equal", "result_tamper_rejected", "snapshot_tamper_rejected")),
+    ("t5-protocol", "optional-t5-pbs-source-run", "t5-pbs-source-run-audit.json",
+     "t5-pbs-source-run-audit-v1", "verified-read-only-source-inventory-only",
+     "python scripts/verify_t5_pbs_source_run.py --verify", "run_id",
+     ("independent_procedure_validation", "biosafety_review_complete", "human_acceptance",
+      "execution_allowed"),
+     ("relocated_replay_equal", "result_tamper_rejected", "snapshot_tamper_rejected")),
 )
 
 REPORT_NOTES = {
@@ -212,7 +218,7 @@ def desired_outputs() -> dict[Path, str]:
 
     bundles = {
         directory: _load(f"artifacts/{directory}/acceptance.json")
-        for directory in ("t2-physical", "t3-dynamics", "t4-proof")
+        for directory in ("t2-physical", "t3-dynamics", "t4-proof", "t5-protocol")
     }
     rows = [_receipt_row(spec) for spec in OPTIONAL]
     for spec, row in zip(OPTIONAL, rows):
@@ -357,6 +363,8 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": pbs_sources[0]["sha256"],
         "output_path": "artifacts/t5-pbs-source-audit.json",
     })
+    _insert_or_replace(root["checks"], next(
+        row for row in rows if row["name"] == "optional-t5-pbs-source-run"))
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
         "T1": {"external symbolic engine", "mission-domain force and maneuver comparison", "preregistered mission holdout and uncertainty review"},
@@ -380,6 +388,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-sff-exploratory-audit.json"
         or status["tracks"][4].get("optional_pbs_source_audit") !=
         "artifacts/t5-pbs-source-audit.json"
+        or status["tracks"][4].get("optional_pbs_source_run") !=
+        "artifacts/t5-pbs-source-run-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"

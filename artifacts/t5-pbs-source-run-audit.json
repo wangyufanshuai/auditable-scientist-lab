@@ -1,0 +1,37 @@
+{
+  "boundaries": {
+    "biosafety_review_complete": false,
+    "claim_status": "unverified",
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "independent_procedure_validation": false,
+    "real_source_document": true,
+    "source_inventory_only": true
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "recorded_at": "2026-09-28T03:20:15.634378+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "f5266888d76f271f266c0aff5270da2e3d7fbf1c616bef8a24e1d88b94bbd2c2",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t5-pbs-source-8d1d312154f6c18a",
+  "run_path": "artifacts/t5-pbs-source-runs/run-t5-pbs-source-8d1d312154f6c18a",
+  "schema_version": "t5-pbs-source-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-read-only-source-inventory-only"
+}
