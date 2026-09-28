@@ -9,7 +9,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 27,
+  "bundled_resource_count": 28,
   "checkout_root_in_installed_process": null,
   "committed_manifest_hashes": {
     "T1": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
@@ -28,10 +28,10 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-28T11:45:14.261526+00:00",
+  "recorded_at": "2026-09-28T12:36:44.477745+00:00",
   "replay_manifest_hashes": {
     "T1": "1f628321cdccde111d5347b4f012e48106fcac69ca93b4a338a6a9289b38699b",
-    "T1V2": "c7278d6fd9e7cce21ff9b57fd45677f7344e111e4bde40b9bf0f01370288a8db",
+    "T1V2": "f90e9f66a55b8b9e1829d96521c2c7f22276b98c7358a668a519de365024f6c3",
     "T2": "4073f58c862edacdeddc2ac833b6530158f407a8d143f7babfe44d99ca2c8112",
     "T2P": "ecf5da6b43ba14c6db1aff67c4547054d4c9af5792b3db3722be6ede9ad36e9c",
     "T3": "d126457c6a150725aefdc6607a868ed8d46399569fa21684184347e7ea04a07a",
@@ -41,8 +41,8 @@
     "T5": "727d92ea5296780bf35adee242f4bd2092e26395bf8970b0cba303facd2f390b"
   },
   "schema_version": "wheel-audit-v7",
-  "script_sha256": "8c715d448ba288e444a2587fbb3928bda0ddc29335aab65c6a73cd84d76f56b6",
-  "source_snapshot_sha256": "99b5dddc6c92fe6804f685ffb112a6bf18848e17c908befdb83d9ca05b36a1cf",
+  "script_sha256": "f14a501a657eb363a25ee647ce8a0ebb184826958b1171e8bd25c252d1128d18",
+  "source_snapshot_sha256": "5096987d948f30c0027f4fc539b9813ace79375f13ac1d2a112766464d6adf10",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t2_context_sensitivity_wheel_replay": {
@@ -52,10 +52,28 @@
     "context_leakage_rejected": true,
     "status": "verified-synthetic-context-sensitivity-only"
   },
+  "t3_convergence_wheel_replay": {
+    "boundaries": {
+      "external_solver_validation": false,
+      "fixture_reproduction": true,
+      "multi_body_validation": false,
+      "real_mission_validation": false
+    },
+    "case_count": 27,
+    "checks": {
+      "euler_negative_control": true,
+      "fine_backend_agreement": true,
+      "fine_energy_drift": true,
+      "fine_position_error": true,
+      "rk4_fourth_order": true,
+      "verlet_second_order": true
+    },
+    "schema_version": "t3-sweep-v1"
+  },
   "t4_bounded_result_and_unverified_run_claim": true,
   "t4o_bounded_result_and_unverified_run_claim": true,
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "fb63882d72b5e1c3c53e0e929dde40957fbbfe9764afe74ff84cb726ba05e51e"
+  "wheel_sha256": "e6cf75d004bd321dc871a8827c590ab3985e72e93191f0242c48021eb3994cab"
 }

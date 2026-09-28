@@ -2,6 +2,7 @@
 
 from .causal import CausalCase, CausalEvaluation, evaluate_causal_fixture
 from .causal_sensitivity import CausalSensitivityEvaluation, evaluate_context_sensitivity
+from .convergence import build_receipt as build_convergence_receipt, verify_saved_receipt as verify_convergence_receipt
 from .common import TrackEvidence, TrackReceipt, make_track_receipt
 from .dynamics import DynamicsCase, DynamicsEvaluation, evaluate_dynamics_fixture
 from .proof import ProofPackage, ProofVerification, verify_proof_package
@@ -25,6 +26,8 @@ __all__ = [
     "TrackReceipt",
     "evaluate_causal_fixture",
     "evaluate_context_sensitivity",
+    "build_convergence_receipt",
+    "verify_convergence_receipt",
     "evaluate_dynamics_fixture",
     "extract_teaching_protocol",
     "make_track_receipt",

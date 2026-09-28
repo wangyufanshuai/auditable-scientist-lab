@@ -19,6 +19,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
         ROOT / "docs/DECISIONS.md",
         ROOT / "docs/T1_SYMBOLIC_GRAMMAR.md",
         ROOT / "docs/T3_METHOD.md",
+        ROOT / "docs/T3_CONVERGENCE_WHEEL.md",
         ROOT / "docs/T2_PHYSICAL_METHOD.md",
         ROOT / "docs/T3_NBODY_METHOD.md",
         ROOT / "docs/T4_METHOD.md",
