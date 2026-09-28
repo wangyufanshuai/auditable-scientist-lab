@@ -21,6 +21,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 STATUS_CONTRACT = ROOT / "docs/PORTFOLIO_STATUS_CONTRACT.json"
 STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
+T2_PROJECTILE_CONTRACT_SHA256 = "2b68cf1cb508e8fa2be2e82cb9993c10eeb265f2f08d5a7d87fda372172dc5d3"
+T2_PROJECTILE_AUDIT_SHA256 = "8c76b8b9dceaef93baf6b8b8f709286fd2fc67f02af59dd89081b16817507290"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -115,6 +117,15 @@ PYTHAGOREAN_REPORT_NOTE = (
     "estimate, untouched scientific holdout, or mission validation is claimed. "
     "Pinned SciPy `python scripts/verify_t3_pythagorean.py --verify` recomputes "
     "the receipt; core acceptance checks saved arithmetic and scope.\n"
+)
+PROJECTILE_REPORT_NOTE = (
+    "The optional [real projectile source inventory](../t2-projectile-source-audit.json) "
+    "pins a 2025 article PDF and two supplementary workbooks without redistributing "
+    "them. The measured workbook contains 179 samples from 30 trials, while the "
+    "article reports 82 experiments. Fifteen trial IDs have a declared `v0` above "
+    "the article's stated launcher range; the column's meaning is unresolved. "
+    "Supplement reuse rights, coverage, physical-model comparison, trial-level "
+    "holdout, and causal identification remain open. The Claim is `unverified`.\n"
 )
 
 
@@ -325,6 +336,108 @@ def _t5_cross_reader_receipt(audit: dict | None = None,
             "dynamic_verified_here": dynamic}
 
 
+def _t2_projectile_receipt(audit: dict | None = None,
+                           *, verify_dynamic: bool = True) -> dict:
+    """Pin the source inventory and recompute it when all local readers exist."""
+
+    audit_path = ROOT / "artifacts/t2-projectile-source-audit.json"
+    contract_path = ROOT / "docs/T2_PROJECTILE_SOURCE_CONTRACT.json"
+    if (hashlib.sha256(audit_path.read_bytes()).hexdigest() != T2_PROJECTILE_AUDIT_SHA256
+            or hashlib.sha256(contract_path.read_bytes()).hexdigest() !=
+            T2_PROJECTILE_CONTRACT_SHA256):
+        raise ValueError("T2 projectile receipt or contract bytes differ")
+    audit = audit if audit is not None else _load("artifacts/t2-projectile-source-audit.json")
+    contract = _load("docs/T2_PROJECTILE_SOURCE_CONTRACT.json")
+    expected_boundaries = {
+        "source_tracked_real_measurements": True,
+        "complete_reported_experiment_set": False,
+        "supplement_rights_reviewed": False,
+        "velocity_column_semantics_reviewed": False,
+        "physical_model_validated": False,
+        "causal_effect_identified": False,
+        "scientific_holdout": False,
+        "research_candidate": False,
+        "publication_ready": False,
+        "claim_status": "unverified",
+    }
+    inventory = audit.get("measured_inventory", {})
+    source_files = audit.get("source_files", [])
+    expected_sources = {
+        "scripts/verify_t2_projectile_source.py",
+        "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+    }
+    fingerprints = audit.get("local_file_fingerprints", [])
+    if (contract.get("schema_version") != "t2-projectile-source-contract-v1"
+            or audit.get("schema_version") != "t2-projectile-source-audit-v1"
+            or audit.get("status") != "verified-30-trial-real-source-inventory-only"
+            or audit.get("contract_sha256") != T2_PROJECTILE_CONTRACT_SHA256
+            or audit.get("article") != contract.get("article")
+            or audit.get("reader") != contract.get("reader")
+            or contract.get("article", {}).get("doi") != "10.1088/1361-6552/add2c5"
+            or contract["article"].get("paper_reported_experiments") != 82
+            or audit.get("boundaries") != expected_boundaries
+            or contract.get("boundaries") != expected_boundaries
+            or inventory.get("sample_count") != 179
+            or inventory.get("trial_count") != 30
+            or [row.get("trial_id") for row in inventory.get("trials", [])] != list(range(2, 32))
+            or len(inventory.get("observed_declared_speed_above_paper_bound_trials", [])) != 15
+            or audit.get("numerical_spreadsheet") != {
+                "formula_cells": 3507, "admitted_as_observations": False,
+            }
+            or audit.get("negative_controls") != {
+                "missing_sample_rejected": True,
+                "nonfinite_measurement_rejected": True,
+                "duplicate_time_rejected": True,
+                "changed_within_trial_input_rejected": True,
+            }
+            or len(audit.get("article_page_text_sha256", [])) != 19
+            or any(not re.fullmatch(r"[a-f0-9]{64}", value)
+                   for value in audit["article_page_text_sha256"])
+            or {row.get("path") for row in source_files} != expected_sources
+            or len(source_files) != len(expected_sources)
+            or {row.get("role") for row in fingerprints} != set(contract.get("files", {}))
+            or len(fingerprints) != 3):
+        raise ValueError("T2 projectile source inventory or scientific boundary differs")
+    for row in fingerprints:
+        expected = contract["files"][row["role"]]
+        if (row.get("filename") != expected["local_name"]
+                or row.get("sha256") != expected["sha256"]
+                or row.get("bytes") != expected["bytes"]
+                or row.get("redistributed") is not False):
+            raise ValueError("T2 projectile source fingerprint or redistribution differs")
+    for row in source_files:
+        path = ROOT / row["path"]
+        if (hashlib.sha256(path.read_bytes()).hexdigest() != row.get("sha256")
+                or path.stat().st_size != row.get("bytes")):
+            raise ValueError(f"T2 projectile verifier source differs: {row['path']}")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str):
+        raise ValueError("T2 projectile timestamp is missing")
+    stamp = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    if stamp.tzinfo is None or stamp.utcoffset() is None:
+        raise ValueError("T2 projectile timestamp is naive")
+    local = ROOT / "data/references/t2_projectile_wadsworth_2025"
+    dynamic = False
+    if (verify_dynamic
+            and all((local / item["local_name"]).is_file()
+                    for item in contract["files"].values())
+            and importlib.util.find_spec("openpyxl") is not None
+            and importlib.util.find_spec("pypdf") is not None):
+        process = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t2_projectile_source.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=60,
+        )
+        if (process.returncode != 0
+                or json.loads(process.stdout).get("status") != audit["status"]):
+            raise ValueError(f"T2 projectile dynamic check failed: {process.stderr.strip()}")
+        dynamic = True
+    verifier = next(row for row in source_files
+                    if row["path"] == "scripts/verify_t2_projectile_source.py")
+    return {"status": audit["status"], "recorded_at": timestamp,
+            "verifier_sha256": verifier["sha256"],
+            "dynamic_verified_here": dynamic}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -454,6 +567,14 @@ def desired_outputs() -> dict[Path, str]:
         **next(row for row in rows if row["name"] == "optional-pythagorean-close-encounter"),
         "name": "optional-t3-pythagorean-close-encounter",
     })
+    projectile = _t2_projectile_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-projectile-real-source-inventory",
+        "command": "python scripts/verify_t2_projectile_source.py --verify",
+        "exit_code": 0, "recorded_at": projectile["recorded_at"],
+        "input_version": projectile["verifier_sha256"],
+        "output_path": "artifacts/t2-projectile-source-audit.json",
+    })
     pbs = _load("artifacts/t5-pbs-source-audit.json")
     pbs_timestamp = pbs.get("recorded_at")
     pbs_sources = [item for item in pbs.get("source_files", [])
@@ -506,6 +627,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-ops-event-search-audit.json"
         or status["tracks"][0].get("optional_sff_exploratory_audit") !=
         "artifacts/t1-maven-sff-exploratory-audit.json"
+        or status["tracks"][1].get("optional_projectile_source_audit") !=
+        "artifacts/t2-projectile-source-audit.json"
         or status["tracks"][4].get("optional_pbs_source_audit") !=
         "artifacts/t5-pbs-source-audit.json"
         or status["tracks"][4].get("optional_pbs_cross_reader_audit") !=
@@ -536,6 +659,9 @@ def desired_outputs() -> dict[Path, str]:
     t3_report = ROOT / "artifacts/t3-dynamics/test-report.md"
     if "The optional [Pythagorean close-encounter audit]" not in outputs[t3_report]:
         outputs[t3_report] = outputs[t3_report].rstrip("\n") + "\n\n" + PYTHAGOREAN_REPORT_NOTE
+    t2_report = ROOT / "artifacts/t2-physical/test-report.md"
+    if "The optional [real projectile source inventory]" not in outputs[t2_report]:
+        outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_REPORT_NOTE
     return outputs
 
 

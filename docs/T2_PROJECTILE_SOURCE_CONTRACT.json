@@ -1,0 +1,68 @@
+{
+  "schema_version": "t2-projectile-source-contract-v1",
+  "scope": "read-only-real-measurement-intake-not-causal-or-model-validation",
+  "article": {
+    "title": "Projectile motion: experimental datasets and classroom exercises",
+    "first_author": "Fabian B Wadsworth",
+    "journal": "Physics Education",
+    "volume": 60,
+    "article_number": "045024",
+    "published_date": "2025-06-10",
+    "doi": "10.1088/1361-6552/add2c5",
+    "article_url": "https://iopscience.iop.org/article/10.1088/1361-6552/add2c5",
+    "supplement_listing_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data",
+    "repository_pdf_url": "https://epub.ub.uni-muenchen.de/132838/1/Wadsworth_2025_Phys._Educ._60_045024.pdf",
+    "paper_reported_experiments": 82,
+    "paper_stated_launch_speed_upper_bound_m_s": 6.0,
+    "article_license_declaration": "Creative Commons Attribution 4.0 licence; attribution to authors, title, journal citation and DOI required",
+    "supplement_listing_rights_note": "Supplementary files are published under license by IOP Publishing Ltd; unless otherwise specified, rights belong to authors. The page also displays the article CC BY 4.0 declaration.",
+    "supplement_redistribution_rights_confirmed": false
+  },
+  "files": {
+    "article_pdf": {
+      "local_name": "Wadsworth_2025_Phys_Educ_60_045024.pdf",
+      "bytes": 1526397,
+      "sha256": "a07fc6d2ccaa045bbfaf7e8ed19d2abeea0c7110d7620f7a3e128ade0e410389",
+      "pages": 19
+    },
+    "measured_trajectories": {
+      "local_name": "pedadd2c5supp1.xlsx",
+      "bytes": 17064,
+      "sha256": "309d3b3ced687e9bc0da50ece7d68f4f758b7749444fc5f95c7ac073a875d70b",
+      "sheet": "Sheet1",
+      "rows": 179,
+      "trial_ids_first": 2,
+      "trial_ids_last": 31,
+      "distinct_trials": 30,
+      "columns": ["index", "t (s)", "x (m)", "y (m)", "theta (\u00b0)", "v0 (m/s)"]
+    },
+    "numerical_spreadsheet": {
+      "local_name": "pedadd2c5supp2.xlsx",
+      "bytes": 103241,
+      "sha256": "cf7c12132d382aec300f34e2ec7ec05b49795dea95fdccedd1bfeb582e760889",
+      "sheet": "Sheet1",
+      "rows": 503,
+      "columns": 11,
+      "formula_cells": 3507,
+      "admitted_as_observations": false
+    }
+  },
+  "reader": {
+    "xlsx_package": "openpyxl",
+    "xlsx_version": "3.1.5",
+    "pdf_package": "pypdf",
+    "pdf_version": "6.15.0"
+  },
+  "boundaries": {
+    "source_tracked_real_measurements": true,
+    "complete_reported_experiment_set": false,
+    "supplement_rights_reviewed": false,
+    "velocity_column_semantics_reviewed": false,
+    "physical_model_validated": false,
+    "causal_effect_identified": false,
+    "scientific_holdout": false,
+    "research_candidate": false,
+    "publication_ready": false,
+    "claim_status": "unverified"
+  }
+}

@@ -16,3 +16,5 @@ The optional `python scripts/verify_t2_independent_run.py --verify` checks a
 shared Tool/Policy/Provider Run with both fixture snapshots, source and environment
 fingerprints, one tool call, moved replay, mutation controls, and policy denials.
 Its real-world Claim remains `unverified`.
+
+The optional [real projectile source inventory](../t2-projectile-source-audit.json) pins a 2025 article PDF and two supplementary workbooks without redistributing them. The measured workbook contains 179 samples from 30 trials, while the article reports 82 experiments. Fifteen trial IDs have a declared `v0` above the article's stated launcher range; the column's meaning is unresolved. Supplement reuse rights, coverage, physical-model comparison, trial-level holdout, and causal identification remain open. The Claim is `unverified`.

@@ -101,6 +101,11 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 [docs/T2_INDEPENDENT_ENDPOINT.md](docs/T2_INDEPENDENT_ENDPOINT.md)。
 估计器另有可选的离线 Tool/Policy/Provider Run，保存两份输入快照并通过搬移回放及篡改负例，
 见 [artifacts/t2-independent-run-audit.json](artifacts/t2-independent-run-audit.json)；真实世界 Claim 仍为 `unverified`。
+另有 [T2 真实抛射测量来源盘点](docs/T2_PROJECTILE_SOURCE.md)：官方补充工作簿含 179 个采样点、
+30 个试验，而论文报告 82 次实验；第二份工作簿是带公式的数值示例，不作为观测数据。
+目前 15 个试验的 `v0` 超出论文所述发射速度范围，列语义、试验覆盖、补充文件再利用权利、
+物理模型比较及试验级留出均未通过。它不是干预数据，不能证明真实因果识别；
+[来源审计](artifacts/t2-projectile-source-audit.json) 只验证本地原件的结构与指纹，Claim 仍为 `unverified`。
 T4O 把证明收据接到 T3
 谐振子数值模块，核对单位、源码、解析解、RK4 和能量漂移；其形式证明仍未配置，
 见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。
@@ -171,6 +176,8 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 - [docs/T2_PHYSICAL_METHOD.md](docs/T2_PHYSICAL_METHOD.md)：T2 二维碰撞干预、反事实与科学边界。
 - [docs/T2_INDEPENDENT_ENDPOINT.md](docs/T2_INDEPENDENT_ENDPOINT.md)：T2 独立终点估计器、124 场景核验与合成证据边界。
 - [artifacts/t2-independent-run-audit.json](artifacts/t2-independent-run-audit.json)：T2 独立估计器的可选 Tool/Policy/Provider Run 回放与篡改收据。
+- [docs/T2_PROJECTILE_SOURCE.md](docs/T2_PROJECTILE_SOURCE.md)：T2 真实抛射测量的来源、覆盖缺口与科学边界。
+- [artifacts/t2-projectile-source-audit.json](artifacts/t2-projectile-source-audit.json)：只读来源结构、哈希和负例审计；不含原始 PDF/XLSX。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)：可选受扰动三体数值交叉核验与边界。
 - [docs/T3_HORIZON_GRID.md](docs/T3_HORIZON_GRID.md)：0.75 周期平滑网格、1.0 周期近距离排除案例与计算预算。

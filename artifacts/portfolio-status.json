@@ -25,13 +25,16 @@
     },
     {
       "acceptance": "artifacts/t2-causal/acceptance.json",
-      "next_step": "add a rights-cleared physical intervention dataset and independently validated real-data estimator",
+      "next_step": "resolve the measured workbook's v0 semantics and 30/82 experiment coverage; review supplement rights, then preregister a trial-level physical-model comparison and seek real intervention data for causal identification",
       "open_gates": [
         "real interventions",
         "causal identification",
         "data rights",
-        "external algorithm source rights"
+        "external algorithm source rights",
+        "measurement-column semantics and 30/82 coverage",
+        "preregistered trial-level model comparison and holdout"
       ],
+      "optional_projectile_source_audit": "artifacts/t2-projectile-source-audit.json",
       "physical_subtrack": "artifacts/t2-physical/acceptance.json",
       "public_release": false,
       "state": "reproduced-within-scope",

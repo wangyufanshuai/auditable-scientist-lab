@@ -325,6 +325,14 @@
       "name": "optional-t5-pbs-cross-reader-text-coverage",
       "output_path": "artifacts/t5-pbs-cross-reader-audit.json",
       "recorded_at": "2026-09-28T03:37:03.054756+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_projectile_source.py --verify",
+      "exit_code": 0,
+      "input_version": "9b16e533e94e02e0fc1b8c5240cb4e926ddc3dffbde3ce41cb98f6506356a87d",
+      "name": "optional-t2-projectile-real-source-inventory",
+      "output_path": "artifacts/t2-projectile-source-audit.json",
+      "recorded_at": "2026-09-28T03:58:56.870414+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

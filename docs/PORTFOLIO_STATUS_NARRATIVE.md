@@ -27,6 +27,8 @@ An optional independent impact-to-impact endpoint estimator cross-checks the 100
 
 An offline Tool/Policy/Provider Run now binds the estimator to both input snapshots, one guarded call, event chain, moved replay, and mutation controls. Its real-world Claim stays `unverified`; [the Run audit](t2-independent-run-audit.json) remains synthetic engineering evidence.
 
+The optional [real projectile source inventory](t2-projectile-source-audit.json) pins a 2025 article PDF and two official supplement workbooks without redistributing them. One workbook has 179 measured position/time samples from 30 trials; the article reports 82 experiments, and the other workbook is a formula-based numerical example rather than observations. Fifteen trial IDs have a declared `v0` above the article's stated launcher range, so its column meaning and experiment coverage need source review. Supplement reuse rights, physical-model validity, preregistered trial-level holdout, real interventions, and causal identification remain open. The Claim stays `unverified`.
+
 T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a fixed finite grid. A checker verifies units, hashes, boundaries, solver replay, analytic and RK4 references, and energy drift. The formal-prover obligation is not applicable; reviewed physics and external validation remain open.
 
 T4 also has an optional exact rational linear-invariant proof slice: two coefficient-identity certificates are rechecked independently with `Fraction`, and a leaky system is rejected. This establishes the declared linear identities only. It does not validate a physical transition model or close the general formal-backend gate.
