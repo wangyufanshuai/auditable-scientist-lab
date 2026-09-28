@@ -82,8 +82,26 @@ class Project05Adapter:
             notes=("all selected source files are present; source remains read-only" if not missing else f"missing files: {missing}"),
         )
 
-    def verify_snapshot(self, snapshot: Project05Snapshot) -> bool:
+    def verify_snapshot(self, snapshot: Project05Snapshot, *, allow_missing_source: bool = False) -> bool:
+        """Verify a snapshot against the source, or its committed shape offline.
+
+        A clean checkout does not contain the user's external project-05 source
+        directory.  In that environment the committed snapshot can still be
+        checked as a static provenance record, while a checkout that does have
+        the source continues to require byte-for-byte verification.
+        """
         if snapshot.status == "blocked":
             return False
+        if not self.root.is_dir():
+            return allow_missing_source and self._is_complete_static_snapshot(snapshot)
         current = self.snapshot()
         return current.status == snapshot.status and current.files == snapshot.files
+
+    def _is_complete_static_snapshot(self, snapshot: Project05Snapshot) -> bool:
+        relative_paths = [item.relative_path for item in snapshot.files]
+        return (
+            snapshot.status == "unverified"
+            and snapshot.license_status == "no root LICENSE confirmed"
+            and len(relative_paths) == len(set(relative_paths))
+            and set(relative_paths) == set(self.required_files)
+        )

@@ -1,0 +1,145 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "06a7e9fae2d1864211e7bdc64762499b7aba1e43d8ce3fb2226ad093403bd7b0",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10"
+    },
+    "mode": "offline",
+    "track_id": "T5",
+    "runtime": "optional-read-only-real-source-inventory",
+    "network": "disabled",
+    "provider_id": "internal-t5-pbs-source-audit-v1"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t5_pbs_source_run.py",
+      "sha256": "a9a401a630c3573a5354c72816fa9752550b46e9eb998a151cddb85d98a6d78f",
+      "bytes": 20780
+    },
+    {
+      "path": "root://scripts/verify_t5_pbs_source.py",
+      "sha256": "4cdf836a8b5141563392ef8122a224f3947ff9fee4c44c01e9b8019483cfb16f",
+      "bytes": 6878
+    },
+    {
+      "path": "root://scripts/verify_acceptance.py",
+      "sha256": "15ac4dd99bfe8714c7e83e1664c61618c4775658979608c72c856d0499c94eaa",
+      "bytes": 194053
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://artifacts/t5-pbs-source-audit.json",
+      "sha256": "3fac4711333cbe3e433c7a5d097ffc07b28bffe23cb1c2b7892738f79216c11f",
+      "bytes": 7054
+    },
+    {
+      "path": "root://docs/T5_PBS_SOURCE_CONTRACT.json",
+      "sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61",
+      "bytes": 2537
+    },
+    {
+      "path": "root://docs/T5_PBS_SOURCE_RESULT.md",
+      "sha256": "9c5283639943b2773617ee930a693e96b4a81c1a51fdf9799e7b872f1f58eb5b",
+      "bytes": 2852
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://docs/contracts/t5-pbs-source-tool-call-v1.json",
+      "sha256": "7a89a6fe73994e4327417ccd532c244acb2d3a081f2a2cb268578f033b5bd20d",
+      "bytes": 539
+    },
+    {
+      "path": "root://requirements-t5-pbs-pdf.txt",
+      "sha256": "02567d446a92ee220a930e523d4146f9d2fe9cca53fefcdf0fe29614f23dea75",
+      "bytes": 14
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://source-audit-snapshot.json",
+      "sha256": "3fac4711333cbe3e433c7a5d097ffc07b28bffe23cb1c2b7892738f79216c11f",
+      "bytes": 7054
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "status": "source-inventory-only",
+    "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+    "doi": "10.17504/protocols.io.p4rdqv6",
+    "license_declaration": "Creative Commons Attribution License; version not specified in the PDF",
+    "page_count": 3,
+    "anchor_count": 11,
+    "step_count": 6,
+    "review_flags": [
+      "self-reported-working-is-not-independent-validation",
+      "concentration-and-ph-branches-require-selection",
+      "sds-review-required-by-source",
+      "optional-depc-requires-expert-safety-review",
+      "acid-and-autoclave-require-expert-safety-review",
+      "not-mappable-to-teaching-fixture-fields-without-inference"
+    ],
+    "boundaries": {
+      "claim_status": "unverified",
+      "complete_safety_review": false,
+      "execution_allowed": false,
+      "human_acceptance": false,
+      "independent_procedure_validation": false,
+      "machine_executable_protocol": false,
+      "real_source_document": true,
+      "rights_declaration_present": true
+    },
+    "standalone_audit_sha256": "3fac4711333cbe3e433c7a5d097ffc07b28bffe23cb1c2b7892738f79216c11f"
+  }
+}

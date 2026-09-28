@@ -22,7 +22,7 @@ Tool/Policy 入口执行的有限 evaluator；
 
 ## 离线 Quickstart
 
-在一个干净的 Python 3.10+ 环境中执行：
+在一个干净的 Python 3.11+ 环境中执行：
 
 ```powershell
 python -m pip install -e ".[test]"

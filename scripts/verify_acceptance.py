@@ -2529,7 +2529,9 @@ def main() -> None:
     if run.policy.network != "disabled" or run.providers[0].provider_id not in run.policy.allowed_providers:
         raise SystemExit("T1 policy/provider binding is inconsistent")
     project05_snapshot = Project05Snapshot.model_validate(json.loads((run_dir / "project05-snapshot.json").read_text(encoding="utf-8")))
-    if project05_snapshot.status != "blocked" and not Project05Adapter(project05_snapshot.source_path).verify_snapshot(project05_snapshot):
+    if project05_snapshot.status != "blocked" and not Project05Adapter(project05_snapshot.source_path).verify_snapshot(
+        project05_snapshot, allow_missing_source=True
+    ):
         raise SystemExit("project-05 source snapshot changed")
     t1_events = EventLog(run_dir / "events.jsonl").verify()
     if canonical_hash(t1_events) != canonical_hash(run.events):

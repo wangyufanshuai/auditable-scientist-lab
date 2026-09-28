@@ -16,7 +16,7 @@ needed before creating the tag.
   fixture fingerprints, and replayable evidence packages.
 - The wheel contains the offline schemas, policies, fixtures, and documentation required
   by the CLI smoke path.
-- CI exercises Python 3.10 and 3.12 tests on Ubuntu, a Windows test job, and the recorded
+- CI exercises Python 3.11 and 3.12 tests on Ubuntu, a Windows test job, and the recorded
   Windows AMD64 CPython 3.12.3 environment for committed receipts and wheel replay.
 
 ## What the evidence does not support
