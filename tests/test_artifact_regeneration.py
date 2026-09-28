@@ -18,7 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OPTIONAL_ROWS = {
     "t2-physical": {"independent-endpoint-estimator", "independent-endpoint-run"},
     "t3-dynamics": {"optional-expanded-horizon-grid", "optional-published-figure-eight"},
-    "t4-proof": {"exact-linear-invariant-subtrack", "exact-linear-invariant-run"},
+    "t4-proof": {"exact-linear-invariant-subtrack", "exact-linear-invariant-run",
+                 "exact-verlet-discrete-invariant"},
 }
 
 

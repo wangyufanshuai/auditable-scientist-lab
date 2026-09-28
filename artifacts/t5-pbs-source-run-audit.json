@@ -12,7 +12,7 @@
     "out_of_scope_path_rejected": true,
     "wrong_provider_rejected": true
   },
-  "recorded_at": "2026-09-28T03:20:15.634378+00:00",
+  "recorded_at": "2026-09-28T06:48:14.324484+00:00",
   "relocated_replay_equal": true,
   "replay": {
     "checks": [
@@ -25,12 +25,12 @@
       "candidate_order",
       "computational_output"
     ],
-    "manifest_hash": "f5266888d76f271f266c0aff5270da2e3d7fbf1c616bef8a24e1d88b94bbd2c2",
+    "manifest_hash": "fb2f9f64ebd75e728640173fd55786abd9a03fd3b2020b842c129371d9d06265",
     "verified": true
   },
   "result_tamper_rejected": true,
-  "run_id": "run-t5-pbs-source-8d1d312154f6c18a",
-  "run_path": "artifacts/t5-pbs-source-runs/run-t5-pbs-source-8d1d312154f6c18a",
+  "run_id": "run-t5-pbs-source-fea098c762069fb0",
+  "run_path": "artifacts/t5-pbs-source-runs/run-t5-pbs-source-fea098c762069fb0",
   "schema_version": "t5-pbs-source-run-audit-v1",
   "snapshot_tamper_rejected": true,
   "status": "verified-read-only-source-inventory-only"

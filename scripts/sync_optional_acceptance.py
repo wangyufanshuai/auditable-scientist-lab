@@ -61,6 +61,11 @@ OPTIONAL = (
      "python scripts/verify_t4_linear_run.py --verify", "run_id",
      ("general_formal_backend", "physical_model_validated", "real_data", "publication_ready"),
      ("relocated_replay_equal", "result_tamper_rejected", "snapshot_tamper_rejected")),
+    ("t4-proof", "exact-verlet-discrete-invariant", "t4-verlet-invariant-audit.json",
+     "t4-verlet-invariant-audit-v1", "verified-exact-verlet-discrete-invariant-only",
+     "python scripts/verify_t4_verlet_invariant.py --verify", "protocol_sha256",
+     ("floating_implementation_proved", "physical_model_validated", "general_formal_backend",
+      "nonlinear_dynamics_proved", "real_data", "publication_ready"), ()),
     ("t5-protocol", "optional-t5-pbs-source-run", "t5-pbs-source-run-audit.json",
      "t5-pbs-source-run-audit-v1", "verified-read-only-source-inventory-only",
      "python scripts/verify_t5_pbs_source_run.py --verify", "run_id",
@@ -109,6 +114,12 @@ REPORT_MARKERS = {
     "t3-dynamics": "The optional expanded [finite-horizon audit]",
     "t4-proof": "The optional exact linear-invariant audit",
 }
+VERLET_REPORT_NOTE = (
+    "The optional [exact Verlet invariant audit](../t4-verlet-invariant-audit.json) "
+    "rechecks one rational velocity-Verlet matrix with an exact quadratic invariant "
+    "and rejects explicit Euler. It proves only this declared discrete map; floating "
+    "execution, physical validation, nonlinear dynamics, and real-data gates remain open.\n"
+)
 PYTHAGOREAN_REPORT_NOTE = (
     "The optional [Pythagorean close-encounter audit](../t3-pythagorean-audit.json) "
     "compares a published 3–4–5 three-body state and one authored perturbation "
@@ -160,6 +171,34 @@ def _receipt_row(spec: tuple) -> dict:
         or not all(value is True for value in audit["checks"].values())
     ):
         raise ValueError("T3 horizon grid cannot enter acceptance")
+    if filename == "t4-verlet-invariant-audit.json":
+        protocol_path = ROOT / "docs/T4_VERLET_INVARIANT_PROTOCOL.json"
+        solver_path = ROOT / "src/auditable_scientist/tracks/dynamics.py"
+        expected_boundaries = {
+            "exact_discrete_invariant_class": True,
+            "floating_implementation_proved": False,
+            "physical_model_validated": False,
+            "general_formal_backend": False,
+            "nonlinear_dynamics_proved": False,
+            "real_data": False,
+            "publication_ready": False,
+            "claim_status": "unverified",
+        }
+        source_files = audit.get("source_files", [])
+        if (
+            audit.get("protocol_sha256") != hashlib.sha256(protocol_path.read_bytes()).hexdigest()
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("positive_certificate", {}).get("residual_matrix") != [["0", "0"], ["0", "0"]]
+            or audit.get("negative_control", {}).get("rejected") is not True
+            or {item.get("path") for item in source_files} != {
+                "docs/T4_VERLET_INVARIANT_PROTOCOL.json",
+                "src/auditable_scientist/tracks/dynamics.py",
+            }
+            or next((item.get("sha256") for item in source_files
+                     if item.get("path") == "src/auditable_scientist/tracks/dynamics.py"), None)
+            != hashlib.sha256(solver_path.read_bytes()).hexdigest()
+        ):
+            raise ValueError("T4 Verlet invariant audit cannot enter acceptance")
     if filename == "t3-figure-eight-audit.json" and (
         audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
         or audit.get("scientific_boundaries", {}).get("untouched_scientific_holdout") is not False
@@ -665,6 +704,7 @@ def desired_outputs() -> dict[Path, str]:
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"
+        or status["tracks"][3].get("optional_verlet_invariant_audit") != "artifacts/t4-verlet-invariant-audit.json"
         or any(item.get("public_release") is not False for item in status["tracks"])
         or any(item.get("state") != ("text-demo-within-scope" if item["track_id"] == "T5" else "reproduced-within-scope") for item in status["tracks"])
         or any(not required_gates[item["track_id"]] <= set(item.get("open_gates", [])) for item in status["tracks"])
@@ -686,6 +726,9 @@ def desired_outputs() -> dict[Path, str]:
     t3_report = ROOT / "artifacts/t3-dynamics/test-report.md"
     if "The optional [Pythagorean close-encounter audit]" not in outputs[t3_report]:
         outputs[t3_report] = outputs[t3_report].rstrip("\n") + "\n\n" + PYTHAGOREAN_REPORT_NOTE
+    t4_report = ROOT / "artifacts/t4-proof/test-report.md"
+    if "The optional [exact Verlet invariant audit]" not in outputs[t4_report]:
+        outputs[t4_report] = outputs[t4_report].rstrip("\n") + "\n\n" + VERLET_REPORT_NOTE
     t2_report = ROOT / "artifacts/t2-physical/test-report.md"
     if "The optional [real projectile source inventory]" not in outputs[t2_report]:
         outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_REPORT_NOTE

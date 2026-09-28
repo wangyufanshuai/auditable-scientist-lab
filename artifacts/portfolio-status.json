@@ -68,6 +68,7 @@
         "reviewed physical transition model",
         "real-world validation"
       ],
+      "optional_verlet_invariant_audit": "artifacts/t4-verlet-invariant-audit.json",
       "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json",
       "public_release": false,
       "state": "reproduced-within-scope",

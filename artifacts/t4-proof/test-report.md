@@ -17,3 +17,5 @@ The separate `python scripts/verify_t4_linear_run.py --verify` binds the exact
 certificate to one policy-guarded Tool/Provider Run. Replay checks its input,
 source, environment, seed, event chain, and output; relocation and tamper controls
 pass. The Run's physical Claim remains `unverified`.
+
+The optional [exact Verlet invariant audit](../t4-verlet-invariant-audit.json) rechecks one rational velocity-Verlet matrix with an exact quadratic invariant and rejects explicit Euler. It proves only this declared discrete map; floating execution, physical validation, nonlinear dynamics, and real-data gates remain open.

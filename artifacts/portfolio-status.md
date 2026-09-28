@@ -43,6 +43,8 @@ T4O adds an oscillator proof receipt tied to the T3 velocity-Verlet source and a
 
 T4 also has an optional exact rational linear-invariant proof slice: two coefficient-identity certificates are rechecked independently with `Fraction`, and a leaky system is rejected. This establishes the declared linear identities only. It does not validate a physical transition model or close the general formal-backend gate.
 
+An optional [exact Verlet invariant audit](t4-verlet-invariant-audit.json) rechecks one rational velocity-Verlet matrix with an exact quadratic invariant and rejects explicit Euler. It proves only this declared discrete map; floating execution, physical validation, nonlinear dynamics, and real-data gates remain open.
+
 A separate offline Tool/Policy/Provider Run now binds that exact slice to a source and input snapshot, one guarded call, event chain, moved replay, and mutation controls. Its physical Claim stays `unverified`; [the audit](t4-linear-run-audit.json) is engineering evidence for the declared matrices only.
 
 T5 is a synthetic text-review demonstration. Each field is located in an embedded LF document with a SHA-256 hash and exact character span. An altered document is rejected. Source rights, real materials, safety, and human acceptance are unverified; execution remains forbidden.

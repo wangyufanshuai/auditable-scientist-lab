@@ -2243,6 +2243,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
             "exact-linear-invariant-subtrack": load("artifacts/t4-linear-formal-audit.json")["input_sha256"],
             "exact-linear-invariant-run": load("artifacts/t4-linear-run-audit.json")["run_id"],
+            "exact-verlet-discrete-invariant": load("artifacts/t4-verlet-invariant-audit.json")["protocol_sha256"],
         } if track_id == "T4" else ({
             "independent-endpoint-estimator": "t2-independent-endpoint-audit-v1",
             "independent-endpoint-run": load("artifacts/t2-independent-run-audit.json")["run_id"],
@@ -2824,6 +2825,21 @@ def main() -> None:
         )
     ):
         raise SystemExit("T4 exact linear-invariant Run binding or boundary differs")
+    t4_verlet_audit = load("artifacts/t4-verlet-invariant-audit.json")
+    t4_verlet_replay = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t4_verlet_invariant.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if (t4_verlet_replay.returncode != 0
+            or json.loads(t4_verlet_replay.stdout).get("status") !=
+            "verified-exact-verlet-discrete-invariant-only"
+            or not any(
+                item.get("name") == "exact-verlet-discrete-invariant"
+                and item.get("output_path") == "artifacts/t4-verlet-invariant-audit.json"
+                and item.get("input_version") == t4_verlet_audit["protocol_sha256"]
+                for item in load("artifacts/t4-proof/acceptance.json")["checks"]
+            )):
+        raise SystemExit(f"T4 exact Verlet invariant failed: {t4_verlet_replay.stderr.strip()}")
     t4o_acceptance = load("artifacts/t4-oscillator/acceptance.json")
     t4o_item = t4o_acceptance["evaluator"]
     verify_track_bundle("T4O", t4o_item, ROOT / "artifacts/t4-oscillator")

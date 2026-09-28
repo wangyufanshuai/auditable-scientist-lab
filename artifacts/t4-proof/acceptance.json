@@ -31,6 +31,14 @@
       "name": "exact-linear-invariant-run",
       "output_path": "artifacts/t4-linear-run-audit.json",
       "recorded_at": "2026-09-27T08:42:58.943409+00:00"
+    },
+    {
+      "command": "python scripts/verify_t4_verlet_invariant.py --verify",
+      "exit_code": 0,
+      "input_version": "e400941973c30173d0bd351be73e82df0536212374c7700260b7ed3964cde1dc",
+      "name": "exact-verlet-discrete-invariant",
+      "output_path": "artifacts/t4-verlet-invariant-audit.json",
+      "recorded_at": "2026-09-28T06:37:16.661147+00:00"
     }
   ],
   "evaluator": {

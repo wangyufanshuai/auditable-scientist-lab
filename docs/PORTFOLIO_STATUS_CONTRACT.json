@@ -69,6 +69,7 @@
         "real-world validation"
       ],
       "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json",
+      "optional_verlet_invariant_audit": "artifacts/t4-verlet-invariant-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T4"
