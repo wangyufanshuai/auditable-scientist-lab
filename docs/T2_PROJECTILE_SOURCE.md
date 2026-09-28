@@ -18,8 +18,11 @@ least-squares fitting parameter. It says the supplementary file presents the
 results using the measured initial velocity. The first workbook's `v0 (m/s)`
 header does not identify whether each row stores the light-gate reading, the
 fitted value, or a processed copy. Fifteen of the 30 trial IDs have a `v0`
-value above 6 m/s, so the column-level mapping and this range discrepancy need
-source review. No model fit or causal effect is inferred from that discrepancy.
+value above 6 m/s, including 11 trials whose value is exactly 6.4 m/s and four
+more between 6.2 and 6.35 m/s. This pattern makes the column-level mapping and
+the range discrepancy a source-review issue rather than evidence for either a
+light-gate reading or a fitted parameter. No model fit or causal effect is
+inferred from that discrepancy.
 
 The [source audit](../artifacts/t2-projectile-source-audit.json) binds the
 article PDF and both supplement workbooks by size and SHA-256, records each
