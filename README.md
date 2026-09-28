@@ -117,6 +117,8 @@ T5 是带逐字段文本位置与文档哈希的合成教学审查；
 六步引用位置，只作来源盘点和专家复核提示；不生成可执行协议。
 其[只读 T5 Run](artifacts/t5-pbs-source-run-audit.json)纳入共享工具与策略链，
 检查搬移回放、篡改拒绝和单次离线调用，Claim 仍为 `unverified`。
+独立 [Poppler 交叉抽取审计](docs/T5_PBS_CROSS_READER.md)覆盖三页逐行哈希、引用位置和遗漏负例；
+来源许可范围、视觉遗漏、生物安全与人工验收仍未通过。
 T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利和独立任务轨道验证仍未通过，
 见 [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)。
 可选的固定 SciPy DOP853 环境还从初始状态积分到远日点，对九个合成样例和一个圆整参数样例
@@ -181,6 +183,7 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 - [artifacts/t4-linear-run-audit.json](artifacts/t4-linear-run-audit.json)：T4 精确证明的可选 Tool/Policy/Provider Run 回放与篡改收据。
 - [docs/T5_METHOD.md](docs/T5_METHOD.md)：T5 文本字段引用、确定性检查与执行边界。
 - [artifacts/t5-pbs-source-run-audit.json](artifacts/t5-pbs-source-run-audit.json)：真实 PBS 来源的只读 Run 回放与策略边界。
+- [artifacts/t5-pbs-cross-reader-audit.json](artifacts/t5-pbs-cross-reader-audit.json)：独立 PDF 抽取器的全文覆盖与遗漏负例收据。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。

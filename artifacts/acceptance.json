@@ -317,6 +317,14 @@
       "name": "optional-t5-pbs-source-run",
       "output_path": "artifacts/t5-pbs-source-run-audit.json",
       "recorded_at": "2026-09-28T03:20:15.634378+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_pbs_cross_reader.py --verify",
+      "exit_code": 0,
+      "input_version": "138df4bbeeaff24ada266b8b6592eeacaa7ff315d8f2388c6ea226a235fe358a",
+      "name": "optional-t5-pbs-cross-reader-text-coverage",
+      "output_path": "artifacts/t5-pbs-cross-reader-audit.json",
+      "recorded_at": "2026-09-28T03:37:03.054756+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

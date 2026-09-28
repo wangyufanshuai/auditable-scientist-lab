@@ -9,13 +9,20 @@ from __future__ import annotations
 import argparse
 from datetime import datetime
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STATUS_CONTRACT = ROOT / "docs/PORTFOLIO_STATUS_CONTRACT.json"
 STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
+T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
+T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
 OPTIONAL = (
     ("t2-physical", "independent-endpoint-estimator", "t2-independent-endpoint-audit.json",
@@ -213,6 +220,111 @@ def _status_markdown(contract: dict) -> str:
     return "\n".join(rows) + "\n\n" + narrative
 
 
+def _t5_cross_reader_receipt(audit: dict | None = None,
+                             *, verify_dynamic: bool = True) -> dict:
+    """Check the saved cross-reader inventory, then rerun when both readers exist."""
+
+    audit_path = ROOT / "artifacts/t5-pbs-cross-reader-audit.json"
+    contract_path = ROOT / "docs/T5_PBS_CROSS_READER_CONTRACT.json"
+    if (hashlib.sha256(audit_path.read_bytes()).hexdigest() != T5_CROSS_READER_AUDIT_SHA256
+            or hashlib.sha256(contract_path.read_bytes()).hexdigest() !=
+            T5_CROSS_READER_CONTRACT_SHA256):
+        raise ValueError("T5 cross-reader receipt or contract bytes differ")
+    audit = audit if audit is not None else _load("artifacts/t5-pbs-cross-reader-audit.json")
+    contract = _load("docs/T5_PBS_CROSS_READER_CONTRACT.json")
+    source = _load("docs/T5_PBS_SOURCE_CONTRACT.json")
+    expected_boundaries = {
+        "cross_reader_text_coverage": True, "source_pdf_redistributed": False,
+        "complete_semantic_omission_review": False,
+        "independent_procedure_validation": False,
+        "biosafety_review_complete": False, "human_acceptance": False,
+        "execution_allowed": False, "claim_status": "unverified",
+    }
+    expected_controls = {
+        "safety_heading_omission_rejected": True,
+        "numbered_step_omission_rejected": True,
+        "non_anchor_text_omission_rejected": True,
+    }
+    expected_sources = {
+        "scripts/verify_t5_pbs_cross_reader.py",
+        "docs/T5_PBS_CROSS_READER_CONTRACT.json",
+        "docs/T5_PBS_SOURCE_CONTRACT.json",
+        "scripts/verify_t5_pbs_source.py",
+    }
+    if (contract.get("schema_version") != "t5-pbs-cross-reader-contract-v1"
+            or audit.get("schema_version") != "t5-pbs-cross-reader-audit-v1"
+            or audit.get("status") != "verified-three-page-cross-reader-text-coverage-only"
+            or audit.get("source_pdf_sha256") != contract.get("source_pdf_sha256")
+            or contract.get("source_pdf_sha256") !=
+            "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271"
+            or contract.get("source_contract_sha256") !=
+            hashlib.sha256((ROOT / "docs/T5_PBS_SOURCE_CONTRACT.json").read_bytes()).hexdigest()
+            or audit.get("source_contract_sha256") != contract["source_contract_sha256"]
+            or audit.get("cross_reader_contract_sha256") != T5_CROSS_READER_CONTRACT_SHA256
+            or audit.get("boundaries") != expected_boundaries
+            or contract.get("boundaries") != expected_boundaries
+            or audit.get("negative_controls") != expected_controls
+            or audit.get("numbered_steps") != [1, 2, 3, 4, 5, 6]
+            or audit.get("extractors") != {
+                "pypdf_version": "6.15.0", "pdftotext_version": "26.02.0",
+                "pdftotext_executable_sha256":
+                "c7392e92727abbb54c07662268eef7348e4edd1cd741c264e20f76e757c0b467",
+                "pdftotext_binary_redistributed": False,
+                "pdftotext_binary_distribution_license_reviewed": False,
+            }
+            or len(audit.get("pages", [])) != 3
+            or len(audit.get("anchors", [])) != 11
+            or len(audit.get("sections", [])) != 4
+            or {row.get("path") for row in audit.get("source_files", [])} != expected_sources
+            or len(audit.get("source_files", [])) != len(expected_sources)):
+        raise ValueError("T5 cross-reader source, coverage, or boundary differs")
+    for index, row in enumerate(audit["pages"]):
+        hashes = row.get("line_sha256", [])
+        if (row.get("page") != index + 1
+                or row.get("poppler_text_sha256") != contract["poppler_page_text_sha256"][index]
+                or row.get("pypdf_text_sha256") != contract["pypdf_page_text_sha256"][index]
+                or len(hashes) != row.get("line_count")
+                or any(not re.fullmatch(r"[a-f0-9]{64}", value) for value in hashes)
+                or row.get("shared_fraction", 0) < 0.94):
+            raise ValueError("T5 cross-reader page or ordered-line inventory differs")
+    if ([(row.get("key"), row.get("page")) for row in audit["anchors"]] !=
+            [(row["key"], row["page"]) for row in source["anchors"]]
+            or [(row.get("key"), row.get("page")) for row in audit["sections"]] !=
+            [(row["key"], row["page"]) for row in contract["section_markers"]]):
+        raise ValueError("T5 independent citation or section inventory differs")
+    for row in audit["source_files"]:
+        path = ROOT / row["path"]
+        if (hashlib.sha256(path.read_bytes()).hexdigest() != row.get("sha256")
+                or path.stat().st_size != row.get("bytes")):
+            raise ValueError(f"T5 cross-reader verifier source differs: {row['path']}")
+    timestamp = audit.get("recorded_at")
+    if (not isinstance(timestamp, str)
+            or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T5 cross-reader timestamp differs")
+    dynamic = False
+    local_executable = shutil.which("pdftotext")
+    matching_extractor = (
+        local_executable is not None and
+        hashlib.sha256(Path(local_executable).read_bytes()).hexdigest() ==
+        contract["poppler"]["local_executable_sha256"]
+    )
+    if (verify_dynamic and (ROOT / "data/references/t5_pbs/protocols_io_p4rdqv6.pdf").is_file()
+            and matching_extractor and importlib.util.find_spec("pypdf") is not None):
+        process = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t5_pbs_cross_reader.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=40,
+        )
+        if (process.returncode != 0
+                or json.loads(process.stdout).get("status") != audit["status"]):
+            raise ValueError(f"T5 cross-reader dynamic check failed: {process.stderr.strip()}")
+        dynamic = True
+    verifier_source = next(row for row in audit["source_files"]
+                           if row["path"] == "scripts/verify_t5_pbs_cross_reader.py")
+    return {"status": audit["status"], "recorded_at": timestamp,
+            "verifier_sha256": verifier_source["sha256"],
+            "dynamic_verified_here": dynamic}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -365,6 +477,14 @@ def desired_outputs() -> dict[Path, str]:
     })
     _insert_or_replace(root["checks"], next(
         row for row in rows if row["name"] == "optional-t5-pbs-source-run"))
+    cross_reader = _t5_cross_reader_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t5-pbs-cross-reader-text-coverage",
+        "command": "python scripts/verify_t5_pbs_cross_reader.py --verify",
+        "exit_code": 0, "recorded_at": cross_reader["recorded_at"],
+        "input_version": cross_reader["verifier_sha256"],
+        "output_path": "artifacts/t5-pbs-cross-reader-audit.json",
+    })
     status = json.loads(STATUS_CONTRACT.read_text(encoding="utf-8"))
     required_gates = {
         "T1": {"external symbolic engine", "mission-domain force and maneuver comparison", "preregistered mission holdout and uncertainty review"},
@@ -388,6 +508,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-sff-exploratory-audit.json"
         or status["tracks"][4].get("optional_pbs_source_audit") !=
         "artifacts/t5-pbs-source-audit.json"
+        or status["tracks"][4].get("optional_pbs_cross_reader_audit") !=
+        "artifacts/t5-pbs-cross-reader-audit.json"
         or status["tracks"][4].get("optional_pbs_source_run") !=
         "artifacts/t5-pbs-source-run-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
