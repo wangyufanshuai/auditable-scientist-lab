@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "auditable-scientist-lab"
 version = "0.1.0"
 description = "Offline-first, replayable and evidence-aware scientific discovery workbench"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.7,<3",
   "sympy>=1.12,<2",

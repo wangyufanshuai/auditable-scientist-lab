@@ -18,6 +18,8 @@ needed before creating the tag.
   by the CLI smoke path.
 - CI exercises Python 3.11 and 3.12 tests on Ubuntu, a Windows test job, and the recorded
   Windows AMD64 CPython 3.12.3 environment for committed receipts and wheel replay.
+- Package metadata requires Python 3.11 or newer because the runtime imports
+  `enum.StrEnum`. Python 3.10 installation is rejected by the resolver.
 
 ## What the evidence does not support
 
@@ -44,6 +46,9 @@ Create `v0.1.0-bounded` only after all of the following are green on a fresh che
 
 The tag is a packaging milestone. It does not change any track's scientific status or
 close the open data-rights, independent-source, human-review, compute, or biosafety gates.
+The metadata correction refreshes the current T1 combined-CLI and wheel audits;
+their historical Run manifest hashes are retained and replayed through the pinned
+runtime bundle.
 
 ## Next PR sequence
 
