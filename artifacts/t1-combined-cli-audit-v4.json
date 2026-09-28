@@ -41,7 +41,7 @@
     "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
     "verified": true
   },
-  "recorded_at": "2026-09-27T11:58:15.417814+00:00",
+  "recorded_at": "2026-09-28T13:03:07.376638+00:00",
   "replay": {
     "checks": [
       "input_hash",
@@ -93,7 +93,7 @@
     {
       "bytes": 817,
       "path": "pyproject.toml",
-      "sha256": "856777f79e8d1df142a1fb49c58cf0ce932e3c7e6b531d72641269ca47ca779d"
+      "sha256": "beefe70b8eb280b3aaec4c3ac312d638c9d706c6976be18273616aa0f49e0da6"
     },
     {
       "bytes": 4395,
