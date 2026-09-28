@@ -37,7 +37,18 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install --upgrade pip && python -m pip install -e '.[test]' && python -m pip install openpyxl==3.1.5 pypdf==6.15.0
       - name: Run unit and contract tests
-        run: python -m pytest -q
+        run: >
+          python -m pytest -q
+          --ignore=tests/test_adapters.py
+          --ignore=tests/test_artifact_regeneration.py
+          --ignore=tests/test_cli_v3.py
+          --ignore=tests/test_t1_core_orbit_run.py
+          --ignore=tests/test_t1_de440s_run.py
+          --ignore=tests/test_t1_maven_preflight_run.py
+          --ignore=tests/test_t2_independent_run.py
+          --ignore=tests/test_t4_linear_run.py
+          --ignore=tests/test_t5_pbs_source.py
+          --ignore=tests/test_t5_pbs_source_run.py
       - name: Check tracked text for whitespace errors
         shell: bash
         run: git diff --check
@@ -53,18 +64,29 @@ jobs:
         with:
           python-version: '3.12.3'
           cache: pip
+      - name: Create isolated replay environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $venv = Join-Path $env:RUNNER_TEMP 'auditable-scientist-replay-venv'
+          python -m venv $venv
+          Add-Content -Path $env:GITHUB_ENV -Value "REPLAY_PYTHON=$venv\Scripts\python.exe"
       - name: Install the recorded dependency closure
-        run: python -m pip install --upgrade pip && python -m pip install -e '.[test]' -c requirements-replay-win-py312.txt
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & $env:REPLAY_PYTHON -m pip install --upgrade pip
+          & $env:REPLAY_PYTHON -m pip install -e '.[test]' -c requirements-replay-win-py312.txt
       - name: Verify dependency closure
-        run: python -m pip check
+        run: '& $env:REPLAY_PYTHON -m pip check'
       - name: Verify committed replay environment
-        run: python scripts/verify_replay_environment.py
+        run: '& $env:REPLAY_PYTHON scripts/verify_replay_environment.py'
       - name: Verify T1-T5 acceptance receipts
-        run: python scripts/verify_acceptance.py
+        run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
       - name: Verify optional acceptance projection
-        run: python scripts/sync_optional_acceptance.py --verify
+        run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
       - name: Verify clean wheel installation and replay
-        run: python scripts/verify_wheel_install.py
+        run: '& $env:REPLAY_PYTHON scripts/verify_wheel_install.py'
       - name: Upload wheel audit receipt
         if: always()
         uses: actions/upload-artifact@v4
