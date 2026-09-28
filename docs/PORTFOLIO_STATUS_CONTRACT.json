@@ -17,6 +17,7 @@
       "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",
       "optional_desat_sensitivity_audit": "artifacts/t1-maven-desat-sensitivity-audit.json",
       "optional_ops_event_search_audit": "artifacts/t1-maven-ops-event-search-audit.json",
+      "optional_sff_exploratory_audit": "artifacts/t1-maven-sff-exploratory-audit.json",
       "public_release": false,
       "state": "reproduced-within-scope",
       "track_id": "T1"

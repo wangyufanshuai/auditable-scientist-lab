@@ -44,6 +44,13 @@ history, an impulse vector, or an independent tracking observable. The related
 [GNC DRF collection](https://pds.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Amaven.anc%3Adata.drf.gnc)
 begins 2014-11-15 and does not cover the fixed cruise arcs.
 
+An [exploratory NAIF small-forces-file inventory](T1_MAVEN_SFF_EXPLORATORY_RESULT.md)
+pins nine nearby reconstructed files. Their raw record timestamps lie around
+the recorded desaturations outside the fixed arcs; several filenames repeat
+the same records with different production times. The linked format SIS PDFs
+currently return HTTP 404, so vector meaning, units, frame, and time scale
+are not admitted. This inventory cannot replace a reviewed force history.
+
 The next independent-observable admission gate is to locate an official
 radiometric product label or archive inventory whose time coverage includes
 the frozen 2014 arcs, then inspect its

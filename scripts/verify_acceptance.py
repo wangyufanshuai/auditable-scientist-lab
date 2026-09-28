@@ -951,6 +951,63 @@ def verify_optional_t1_maven_ops_events(audit: dict | None = None,
             "independent_observables": False, "mission_validation": False}
 
 
+def verify_optional_t1_maven_sff_inventory(audit: dict | None = None,
+                                            *, verify_dynamic: bool = True) -> dict:
+    """Check source-pinned post-hoc SFF inventory without admitting force values."""
+
+    audit = audit if audit is not None else load("artifacts/t1-maven-sff-exploratory-audit.json")
+    inventory = load("docs/T1_MAVEN_SFF_EXPLORATORY_INVENTORY.json")
+    inventory_sha = "abbff6aa64720986a920b0bc9cdb8d9283d6b3b8877bce8b9afcd7b15feae6d0"
+    rows = audit.get("files", [])
+    if (fingerprint_file(ROOT / "docs/T1_MAVEN_SFF_EXPLORATORY_INVENTORY.json").sha256 != inventory_sha
+            or audit.get("schema_version") != "t1-maven-sff-exploratory-audit-v1"
+            or audit.get("status") != "verified-local-source-inventory-only"
+            or audit.get("inventory_sha256") != inventory_sha
+            or audit.get("index_sha256") != inventory["source_index_sha256"]
+            or audit.get("source_directory_url") != inventory["source_directory_url"]
+            or audit.get("boundaries") != inventory["known_limits"]
+            or audit["boundaries"].get("claim_status") != "unverified"
+            or not isinstance(audit.get("recorded_at"), str)
+            or datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00")).tzinfo is None
+            or len(rows) != 9
+            or [(row.get("filename"), row.get("bytes"), row.get("sha256")) for row in rows] !=
+            [tuple(item) for item in inventory["files"]]
+            or [row.get("record_count") for row in rows] !=
+            [280, 280, 280, 280, 272, 272, 1001, 1001, 80]
+            or [row.get("first_raw_start") for row in rows] != [
+                "2014-04-26 03:52:44.540", "2014-04-26 03:52:44.540",
+                "2014-05-03 03:55:23.989", "2014-05-03 03:55:23.989",
+                "2014-06-28 03:55:12.369", "2014-06-28 03:55:12.369",
+                "2014-07-02 17:15:03.738", "2014-07-02 17:15:03.738",
+                "2014-07-05 03:59:19.936"]
+            or [row.get("last_raw_end") for row in rows] != [
+                "2014-04-26 04:04:59.943", "2014-04-26 04:04:59.943",
+                "2014-05-03 04:05:00.415", "2014-05-03 04:05:00.415",
+                "2014-06-28 04:04:48.522", "2014-06-28 04:04:48.522",
+                "2014-07-02 18:49:12.469", "2014-07-02 18:49:12.469",
+                "2014-07-05 04:02:14.697"]
+            or audit.get("same_records_except_production_time") != [
+                [rows[left]["filename"], rows[right]["filename"]]
+                for left, right in ((0, 1), (2, 3), (4, 5), (6, 7))]):
+        raise ValueError("MAVEN SFF exploratory source or boundary differs")
+    directory = ROOT / "data/references/maven_sff"
+    sources = [directory / "index.html"]+[directory / row["filename"] for row in rows]
+    present = [path.is_file() for path in sources]
+    if any(present) and not all(present):
+        raise ValueError("MAVEN SFF local source set is incomplete")
+    dynamic = False
+    if all(present) and verify_dynamic:
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_sff_inventory.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=30)
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN SFF dynamic check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "file_count": len(rows),
+            "same_record_pairs": 4, "dynamic_verified_here": dynamic,
+            "force_values_admitted": False, "mission_validation": False}
+
+
 def verify_optional_t1_maven_run() -> dict:
     """Replay saved NAV short arcs through the shared offline Run contract."""
 
@@ -2119,6 +2176,16 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN operations-event search has no command receipt")
+    maven_sff = verify_optional_t1_maven_sff_inventory()
+    if not any(
+        item.get("name") == "optional-t1-maven-sff-exploratory-inventory"
+        and item.get("output_path") == "artifacts/t1-maven-sff-exploratory-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t1_maven_sff_inventory.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN SFF source inventory has no command receipt")
     maven_run = verify_optional_t1_maven_run()
     if not any(
         item.get("name") == "optional-t1-maven-portable-preflight-run"
@@ -2651,6 +2718,7 @@ def main() -> None:
         "t1_maven_planetary_force_diagnostic": maven_planetary_force,
         "t1_maven_desat_sensitivity": maven_desat,
         "t1_maven_ops_event_search": maven_ops_events,
+        "t1_maven_sff_exploratory_inventory": maven_sff,
         "t1_maven_portable_preflight_run": maven_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {

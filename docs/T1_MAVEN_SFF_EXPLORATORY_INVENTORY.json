@@ -1,0 +1,29 @@
+{
+  "schema_version": "t1-maven-sff-exploratory-inventory-v1",
+  "status": "posthoc-source-discovery-not-preregistered",
+  "source_directory_url": "https://naif.jpl.nasa.gov/pub/naif/MAVEN/misc/sff/",
+  "source_index_sha256": "136584eaf2d50ce57e6650ad700fe782d80c287e1d1ede967acc785ec519594f",
+  "files": [
+    ["mvn_rec_140425_140426_v03.sff", 93816, "ac1de3084e5280a8027dc0f1f5882514687ebf14c0d4ea8ea01cbc0d03d8111c"],
+    ["mvn_rec_140426_140427_v03.sff", 93816, "b3a40e6b8220e5b1640de12cfcd1b772a10a3a98dd7ad337f5bf2a33b53efd85"],
+    ["mvn_rec_140502_140503_v03.sff", 93850, "90ac4875852a9f3e45e41a7459008263a7188a43d35e604871cff56b3f84a084"],
+    ["mvn_rec_140503_140504_v03.sff", 93850, "29565b9dc402878d709e022e9d5647159cd69a9c67d7603fabcdb05fc70f703c"],
+    ["mvn_rec_140627_140628_v03.sff", 90653, "e557a26716c682d6fc8f9b0746cf27ab4312b11c0e3eaa8afd84983ead5b38b5"],
+    ["mvn_rec_140628_140630_v03.sff", 90653, "826caca8ac0fab58d2729c7b17e43e745deb8f75e421a21b0d135847a8fe75b0"],
+    ["mvn_rec_140630_140702_v03.sff", 333647, "375ff5cef0ae721d228c21ddd63127e605cab716a2cc570592768a5537fe7114"],
+    ["mvn_rec_140702_140704_v03.sff", 333647, "c9308ac01c4eb017bc3bceed637a75bfca1605182f09b955c48477dfe07098af"],
+    ["mvn_rec_140704_140705_v03.sff", 26820, "da1e50ae40d9e5f5aeea3c94dbb7e967d8d1bf9b23628597a7af1526e5048b5b"]
+  ],
+  "record_parse": "ASCII comma-separated lines; inspect records marked R; retain raw timestamp strings only",
+  "known_limits": {
+    "field_units_and_frame_verified": false,
+    "time_scale_verified": false,
+    "SFF_SIS_available": false,
+    "complete_cruise_force_history_verified": false,
+    "values_admitted_to_dynamics_model": false,
+    "independent_observables": false,
+    "scientific_holdout": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
+import hashlib
 import json
 from pathlib import Path
 
@@ -274,6 +275,27 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": ops_sources[0]["sha256"],
         "output_path": "artifacts/t1-maven-ops-event-search-audit.json",
     })
+    sff = _load("artifacts/t1-maven-sff-exploratory-audit.json")
+    sff_timestamp = sff.get("recorded_at")
+    if (sff.get("schema_version") != "t1-maven-sff-exploratory-audit-v1"
+            or sff.get("status") != "verified-local-source-inventory-only"
+            or sff.get("inventory_sha256") !=
+            "abbff6aa64720986a920b0bc9cdb8d9283d6b3b8877bce8b9afcd7b15feae6d0"
+            or len(sff.get("files", [])) != 9
+            or len(sff.get("same_records_except_production_time", [])) != 4
+            or sff.get("boundaries", {}).get("claim_status") != "unverified"
+            or sff["boundaries"].get("values_admitted_to_dynamics_model") is not False
+            or sff["boundaries"].get("mission_validation") is not False
+            or not isinstance(sff_timestamp, str)
+            or datetime.fromisoformat(sff_timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T1 MAVEN SFF inventory cannot enter acceptance")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t1-maven-sff-exploratory-inventory",
+        "command": "python scripts/verify_t1_maven_sff_inventory.py --verify",
+        "exit_code": 0, "recorded_at": sff_timestamp,
+        "input_version": hashlib.sha256((ROOT / "scripts/verify_t1_maven_sff_inventory.py").read_bytes()).hexdigest(),
+        "output_path": "artifacts/t1-maven-sff-exploratory-audit.json",
+    })
     _insert_or_replace(root["checks"], {
         **next(row for row in rows if row["name"] == "optional-expanded-horizon-grid"),
         "name": "optional-t3-expanded-horizon-grid",
@@ -304,6 +326,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t1-maven-desat-sensitivity-audit.json"
         or status["tracks"][0].get("optional_ops_event_search_audit") !=
         "artifacts/t1-maven-ops-event-search-audit.json"
+        or status["tracks"][0].get("optional_sff_exploratory_audit") !=
+        "artifacts/t1-maven-sff-exploratory-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"

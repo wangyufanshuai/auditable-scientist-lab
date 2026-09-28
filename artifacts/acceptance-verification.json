@@ -172,6 +172,14 @@
     "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
     "status": "verified-source-tracked-reconstructed-mission-geometry-only"
   },
+  "t1_maven_sff_exploratory_inventory": {
+    "dynamic_verified_here": true,
+    "file_count": 9,
+    "force_values_admitted": false,
+    "mission_validation": false,
+    "same_record_pairs": 4,
+    "status": "verified-local-source-inventory-only"
+  },
   "t1_maven_sun_only_preflight": {
     "arc_count": 2,
     "dynamic_verified_here": true,

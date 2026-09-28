@@ -143,6 +143,8 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 固定窗口的 [MAVEN 运行事件目录核对](docs/T1_MAVEN_OPS_EVENT_SEARCH_RESULT.md) 从 PDS
 产品检查 185,321 条记录：两段巡航短弧内均无卸载/机动关键词记录，附近有反作用轮卸载事件。
 目录不含冲量向量，也不能证明记录完整；任务 Claim 不变。
+另有 [NAIF 小力文件来源盘点](docs/T1_MAVEN_SFF_EXPLORATORY_RESULT.md) 检查固定短弧附近
+九份文件的哈希、原文时间与重复记录；这是事后探索，缺格式 SIS，未将数值列用于传播。
 
 ## 当前入口
 
@@ -184,6 +186,7 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 - [artifacts/t1-mars-center-ephemeris-audit.json](artifacts/t1-mars-center-ephemeris-audit.json)：MAR099s 来源校验、火星中心状态与任务边界收据。
 - [artifacts/t1-maven-source-audit.json](artifacts/t1-maven-source-audit.json)：MAVEN 重建巡航 SPK 来源、坐标链和探索性采样边界收据。
 - [artifacts/t1-maven-ops-event-search-audit.json](artifacts/t1-maven-ops-event-search-audit.json)：PDS 运行事件目录的固定窗口筛选、来源哈希和证据边界。
+- [artifacts/t1-maven-sff-exploratory-audit.json](artifacts/t1-maven-sff-exploratory-audit.json)：NAIF 小力文件的事后来源盘点和未入模边界。
 - [artifacts/t1-maven-preflight-run-audit.json](artifacts/t1-maven-preflight-run-audit.json)：短弧 RK4 快照 Run 的搬移回放、篡改失败和策略拒绝收据。
 - [artifacts/wheel-audit.json](artifacts/wheel-audit.json)：独立 wheel 安装、九个当前 Run 家族与九个历史控制台回放。
 - [artifacts/relocation-audit.json](artifacts/relocation-audit.json)：复制源码目录后的八份回放与篡改失败收据。
