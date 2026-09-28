@@ -1,0 +1,110 @@
+{
+  "schema_version": "t3-pythagorean-protocol-v1",
+  "status": "predeclared-bounded-close-encounter-audit-not-chaos-validation",
+  "source": {
+    "initial_state": {
+      "title": "Relativistic Pythagorean three-body problem",
+      "authors": ["Tjarda C. N. Boekholt", "Arend Moerman", "Simon F. Portegies Zwart"],
+      "doi": "10.1103/PhysRevD.104.083020",
+      "url": "https://harvest.aps.org/v2/journals/articles/10.1103/PhysRevD.104.083020/fulltext",
+      "local_pdf_sha256": "08eff2e74e45d8b50e9ecc4ad9407dbf6ad2e75d1409d0ee349ebe6e5169050a",
+      "location": "Introduction, paragraph beginning 'A textbook example'",
+      "source_rights": "American Physical Society copyright; local research copy only; no redistribution"
+    },
+    "historical_comparison": {
+      "title": "Complete Solution of a General Problem of Three Bodies",
+      "authors": ["Victor Szebehely", "C. Frederick Peters"],
+      "url": "https://articles.adsabs.harvard.edu/pdf/1967AJ.....72..876S",
+      "local_pdf_sha256": "8cbe34a2a990e6301aefaa161d45dc68a6ce4f711bec9788b9ebdc64bc63de41",
+      "location": "Initial configuration and Table I; close approach near t=15.830 is approximate",
+      "source_rights": "Local research copy only; no redistribution"
+    },
+    "numerical_context": {
+      "title": "On the reliability of N-body simulations",
+      "authors": ["Tjarda C. N. Boekholt", "Simon F. Portegies Zwart"],
+      "doi": "10.1186/s40668-014-0005-3",
+      "url": "https://link.springer.com/article/10.1186/s40668-014-0005-3",
+      "use": "Motivates independent convergence checks; published long-time result is not an endpoint oracle"
+    },
+    "retrieved_utc_date": "2026-09-27",
+    "redistributed": false
+  },
+  "system": {
+    "dimensionless": true,
+    "gravitational_constant": 1.0,
+    "masses": [3.0, 4.0, 5.0],
+    "initial_positions": [[1.0, 3.0], [-2.0, -1.0], [1.0, -1.0]],
+    "initial_velocities": [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+    "initial_energy": -12.816666666666666,
+    "initial_center_of_mass": [0.0, 0.0],
+    "position_normalizer": 5.0,
+    "velocity_normalizer": 1.0
+  },
+  "scenarios": [
+    {"id": "published-state", "body_zero_x_offset": 0.0},
+    {"id": "position-perturbation", "body_zero_x_offset": 1e-8}
+  ],
+  "sampling": {
+    "comparison_times": [1.0, 5.0, 10.0],
+    "maximum_time": 20.0,
+    "require_comparison_times_before_event": true,
+    "trajectory_sampling_max_time_step": 0.02
+  },
+  "collision_monitor": {
+    "minimum_pair_separation": 0.001,
+    "event_direction": "inward",
+    "event_terminal": true,
+    "monitor_all_three_pairs": true,
+    "no_softening": true,
+    "exact_collision_continuation": false,
+    "event_time_agreement_max": 0.02,
+    "published_state_event_time_window": [14.0, 17.0]
+  },
+  "solvers": {
+    "external_reference": "scipy.integrate.solve_ivp:DOP853",
+    "external_reference_rtol": 1e-12,
+    "external_reference_atol": 1e-14,
+    "external_reference_max_step": 0.02,
+    "independent_backend": "separately implemented adaptive Cartesian RK4 with step-doubling error control",
+    "independent_backend_rtol": 1e-10,
+    "independent_backend_atol": 1e-12,
+    "independent_backend_initial_step": 0.001,
+    "independent_backend_max_step": 0.02,
+    "independent_backend_min_step": 1e-10,
+    "negative_control": "repulsive gravity to t=1 on published state"
+  },
+  "engineering_gates": {
+    "comparison_position_error_max": 0.0001,
+    "comparison_velocity_error_max": 0.001,
+    "external_relative_energy_drift_max": 1e-6,
+    "independent_relative_energy_drift_max": 0.0001,
+    "absolute_angular_momentum_drift_max": 1e-7,
+    "center_of_mass_drift_max": 1e-7,
+    "event_time_agreement_max": 0.02,
+    "negative_repulsive_position_error_min": 0.05
+  },
+  "compute_budget": {
+    "external_rhs_calls_total_max": 300000,
+    "independent_rhs_calls_total_max": 1200000,
+    "independent_step_attempts_total_max": 120000
+  },
+  "interpretation": {
+    "predeclared_perturbation_is_authored_not_published": true,
+    "trajectory_divergence_alone_proves_chaos": false,
+    "conservation_alone_proves_trajectory_accuracy": false,
+    "post_event_trajectory_claimed": false,
+    "published_event_time_is_approximate": true,
+    "no_gate_retuning_after_endpoint_computation": true
+  },
+  "scientific_boundaries": {
+    "published_initial_state": true,
+    "bounded_close_encounter_numerics": false,
+    "chaotic_regime_validated": false,
+    "high_precision_long_time_convergence": false,
+    "untouched_scientific_holdout": false,
+    "independent_physical_observation": false,
+    "general_nbody_validated": false,
+    "real_mission_validated": false,
+    "claim_status": "unverified"
+  }
+}

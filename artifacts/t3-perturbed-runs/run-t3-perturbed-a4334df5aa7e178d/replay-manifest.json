@@ -1,0 +1,299 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "a4334df5aa7e178d27682eb789573a4957a36d3d86b0b60ad266af6d2c4a7450",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "numpy": "2.2.6",
+      "pydantic": "2.11.10",
+      "scipy": "1.18.1",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T3",
+    "subtrack": "perturbed-three-body",
+    "runtime": "optional-external-solver",
+    "network": "disabled",
+    "provider_id": "scipy-dop853-perturbed-v1",
+    "pinned_wheel_sha256": {
+      "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+    },
+    "installed_license_sha256": {
+      "scipy": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    }
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://scripts/verify_t3_perturbed_run.py",
+      "sha256": "7dbaa62ac368c42af8e143b65de3869fc76ab22d8d7e94bbbd73dce59743a704",
+      "bytes": 20795
+    },
+    {
+      "path": "root://scripts/verify_t3_perturbed.py",
+      "sha256": "aa95eaedd1bc7557c7d0e036d72cc295e50795c7fb2b399814fd07d12623e24a",
+      "bytes": 13534
+    },
+    {
+      "path": "root://scripts/verify_t3_external_run.py",
+      "sha256": "52b64d50ff17a1f3e6d826dc0e466a044551d82f49c4ecb63367d0bb015c36cd",
+      "bytes": 20335
+    },
+    {
+      "path": "root://scripts/verify_t3_external_scipy.py",
+      "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+      "bytes": 9741
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/nbody.py",
+      "sha256": "07dba583fe425e0c8ddd1fd6ad4198f2d4429ec620c61f68554243e98a3a1393",
+      "bytes": 10609
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/reference_nbody_rk4.py",
+      "sha256": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5",
+      "bytes": 2177
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://examples/dynamics/nbody-fixture.json",
+      "sha256": "0b1b997ffb038fb8c17a43e6b3041856ec6d1be84b4341947a8e674f5eea3df3",
+      "bytes": 386
+    },
+    {
+      "path": "root://requirements-t3-scipy-win-py312.txt",
+      "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "bytes": 385
+    },
+    {
+      "path": "root://docs/T3_PERTURBED_METHOD.md",
+      "sha256": "d53667ae13188c021ac8a1b2a7eb6c5ff5183f9b1c09cc7a99be79e2607fbfcb",
+      "bytes": 2616
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://schemas/t3-perturbed-tool-call-v1.json",
+      "sha256": "f605df4f07208b0e3756baac7d37eaa23a2351fed4a1f4a4ef624a4f754977f7",
+      "bytes": 435
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://scipy-license.txt",
+      "sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "bytes": 45881
+    },
+    {
+      "path": "run://numpy-license.txt",
+      "sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d",
+      "bytes": 47709
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "schema_version": "t3-perturbed-audit-v1",
+    "status": "passed-optional-finite-horizon-cross-check",
+    "scope": "two synthetic, momentum-balanced velocity perturbations of bounded planar Newtonian three-body initial states",
+    "environment": {
+      "platform_and_packages": {
+        "python": "3.12.3",
+        "implementation": "CPython",
+        "system": "Windows",
+        "machine": "AMD64",
+        "numpy": "2.2.6",
+        "scipy": "1.18.1"
+      },
+      "lock_sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+      "wheel_sha256": {
+        "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+        "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+      },
+      "scipy_source_tag": "v1.18.1",
+      "scipy_source_commit": "c2df8ace0d9859f090e79058b2bd2ffc584f19e6",
+      "scipy_installed_license_sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+      "numpy_source_tag": "v2.2.6",
+      "numpy_source_commit": "bbb76e7d76c3748fb2747fc3d8e06b944005362a",
+      "numpy_installed_license_sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d"
+    },
+    "solver": {
+      "reference": "scipy.integrate.solve_ivp:DOP853",
+      "rtol": 1e-12,
+      "atol": 1e-14,
+      "local": "velocity-Verlet",
+      "secondary": "independent Cartesian RK4"
+    },
+    "grid": [
+      {
+        "case_id": "equal-train",
+        "perturbation_fraction": 0.02,
+        "horizon_fraction": 0.35
+      },
+      {
+        "case_id": "unequal-holdout",
+        "perturbation_fraction": 0.03,
+        "horizon_fraction": 0.35
+      }
+    ],
+    "gates": {
+      "fine_verlet_position_error_max": 0.0001,
+      "fine_verlet_velocity_error_max": 0.0001,
+      "rk4_position_error_max": 1e-7,
+      "verlet_convergence_ratio_min": 3.0,
+      "relative_energy_drift_max": 0.0001,
+      "relative_angular_momentum_drift_max": 1e-10,
+      "center_of_mass_drift_max": 1e-10,
+      "minimum_pair_separation_ratio_min": 0.5,
+      "perturbation_effect_min": 0.0001,
+      "repulsive_force_error_min": 0.1
+    },
+    "rows": [
+      {
+        "case_id": "equal-train",
+        "split": "train",
+        "perturbation_fraction": 0.02,
+        "horizon_fraction_of_unperturbed_orbit": 0.35,
+        "coarse_steps": 1200,
+        "fine_steps": 2400,
+        "coarse_verlet_position_error": 1.1083621926188282e-6,
+        "fine_verlet_position_error": 2.770905153776204e-7,
+        "fine_verlet_velocity_error": 3.8265059272221574e-7,
+        "rk4_position_error": 3.845674738463569e-13,
+        "verlet_convergence_ratio": 4.000000473160716,
+        "relative_energy_drift": 3.0128729465949556e-8,
+        "relative_angular_momentum_drift": 3.1395309165445946e-15,
+        "center_of_mass_drift": 2.8047173580644556e-15,
+        "minimum_pair_separation_ratio": 0.8858669619748041,
+        "perturbation_effect": 0.08511756109563882,
+        "dop853_function_calls": 287
+      },
+      {
+        "case_id": "unequal-holdout",
+        "split": "holdout",
+        "perturbation_fraction": 0.03,
+        "horizon_fraction_of_unperturbed_orbit": 0.35,
+        "coarse_steps": 1800,
+        "fine_steps": 3600,
+        "coarse_verlet_position_error": 5.570451340678994e-7,
+        "fine_verlet_position_error": 1.39261045123046e-7,
+        "fine_verlet_velocity_error": 2.0274305589283352e-7,
+        "rk4_position_error": 4.3045909681745167e-13,
+        "verlet_convergence_ratio": 4.000006847397379,
+        "relative_energy_drift": 2.133116352231116e-8,
+        "relative_angular_momentum_drift": 3.390568267485789e-15,
+        "center_of_mass_drift": 1.8239316149565615e-15,
+        "minimum_pair_separation_ratio": 0.8508031909365065,
+        "perturbation_effect": 0.13438351601783202,
+        "dop853_function_calls": 314
+      }
+    ],
+    "negative_repulsive_force_error": 2.285891578477378,
+    "checks": {
+      "train_and_holdout_present": true,
+      "fine_verlet_position": true,
+      "fine_verlet_velocity": true,
+      "rk4_position": true,
+      "verlet_convergence": true,
+      "energy_drift": true,
+      "angular_momentum_drift": true,
+      "center_of_mass_drift": true,
+      "collision_avoided": true,
+      "perturbation_effect": true,
+      "repulsive_force_rejected": true
+    },
+    "source_files": [
+      {
+        "path": "scripts/verify_t3_perturbed.py",
+        "sha256": "aa95eaedd1bc7557c7d0e036d72cc295e50795c7fb2b399814fd07d12623e24a",
+        "bytes": 13534
+      },
+      {
+        "path": "examples/dynamics/nbody-fixture.json",
+        "sha256": "0b1b997ffb038fb8c17a43e6b3041856ec6d1be84b4341947a8e674f5eea3df3",
+        "bytes": 386
+      },
+      {
+        "path": "src/auditable_scientist/tracks/nbody.py",
+        "sha256": "07dba583fe425e0c8ddd1fd6ad4198f2d4429ec620c61f68554243e98a3a1393",
+        "bytes": 10609
+      },
+      {
+        "path": "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "sha256": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5",
+        "bytes": 2177
+      },
+      {
+        "path": "scripts/verify_t3_external_scipy.py",
+        "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "bytes": 9741
+      },
+      {
+        "path": "requirements-t3-scipy-win-py312.txt",
+        "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+        "bytes": 385
+      },
+      {
+        "path": "docs/T3_PERTURBED_METHOD.md",
+        "sha256": "d53667ae13188c021ac8a1b2a7eb6c5ff5183f9b1c09cc7a99be79e2607fbfcb",
+        "bytes": 2616
+      }
+    ],
+    "boundaries": {
+      "core_run_evidence": false,
+      "real_ephemerides": false,
+      "mission_validation": false,
+      "chaos_or_long_horizon_validation": false,
+      "general_nbody_validity": false
+    }
+  }
+}

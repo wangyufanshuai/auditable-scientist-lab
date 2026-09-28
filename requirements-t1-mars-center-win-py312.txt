@@ -1,0 +1,2 @@
+# Optional, offline-at-runtime Mars-center geometry adapter on Windows/Python 3.12.
+spiceypy==8.1.0

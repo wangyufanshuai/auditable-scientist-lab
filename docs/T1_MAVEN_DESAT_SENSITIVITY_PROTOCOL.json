@@ -1,0 +1,77 @@
+{
+  "schema_version": "t1-maven-desat-sensitivity-protocol-v1",
+  "status": "predeclared-conditional-impulse-sensitivity-not-mission-validation",
+  "source": {
+    "title": "MAVEN Navigation Overview",
+    "authors": ["Mark Jesick", "Stuart Demcak", "Brian Young", "Drew Jones", "Sarah Elizabeth McCandless", "Maximilian Schadegg", "Eric Graat", "Mark Ryne", "Hui Ying Wen", "Paul Stumpf", "Min-Kun Chung", "Andrew Vaughan", "Eric Gustafson", "Try Lam", "David Folta"],
+    "identifier": "AAS 16-237, 26th AAS/AIAA Space Flight Mechanics Meeting (2016)",
+    "author_pdf_url": "https://drewryanjones.com/assets/conf_paper_2016_no1.pdf",
+    "local_pdf_sha256": "969affe7e6d0c8d0a6cbc4dbcdcc46332d429e5e604f004e5e5f1a946231267c",
+    "facts": {
+      "cruise_desat_frequency": "approximately once per week (PDF page 2)",
+      "estimated_average_cruise_desat_magnitude_mm_s": 0.47,
+      "last_executed_cruise_tcm": "TCM-2 on 2014-02-26; later TCMs 3, 4, 5A, and 5B were not needed (PDF page 10)",
+      "navigation_force_model": "solar radiation pressure modeled as flat plates with an estimated overall scale factor"
+    },
+    "rights": "Author-hosted research copy; distribution rights not established; PDF remains local and is not redistributed",
+    "retrieved_utc_date": "2026-09-27"
+  },
+  "baseline": {
+    "prior_protocol_sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394",
+    "prior_snapshot_sha256": "cbe072ec2f6f34d32e834852ffee6b652c6946c08499ec30fd75151e4502ef76",
+    "initial_et_tdb_seconds": [452088000.0, 457272000.0],
+    "horizon_seconds": 86400.0,
+    "model": "Sun plus Earth-Moon and Mars-barycenter tides with indirect terms from frozen T1 planetary-force protocol",
+    "source_state": "already inspected NAV initial states; no new holdout or observation"
+  },
+  "scenario": {
+    "impulse_magnitude_mm_s": 0.47,
+    "impulse_magnitude_km_s": 4.7e-7,
+    "injection_time_fractions": [0.0, 0.5],
+    "direction_basis": "instantaneous Sun-relative radial, transverse, orbit-normal vectors of the no-impulse baseline",
+    "axes": ["radial", "transverse", "normal"],
+    "signs": [-1, 1],
+    "actual_desat_time_known": false,
+    "actual_desat_direction_known": false,
+    "actual_desat_in_either_arc_known": false,
+    "paper_average_is_upper_bound": false
+  },
+  "numerics": {
+    "integrator": "existing fixed-step planetary-force Cartesian RK4",
+    "step_seconds": [600.0, 300.0],
+    "split_no_impulse_control": true,
+    "report_vectors_in_km_and_km_s": true,
+    "report_difference_from_prior_NAV_residual_only_as_scale_comparison": true
+  },
+  "engineering_gates": {
+    "split_no_impulse_position_difference_km_max": 1e-6,
+    "split_no_impulse_velocity_difference_km_s_max": 1e-9,
+    "basis_norm_and_dot_tolerance": 1e-12,
+    "opposite_sign_position_oddness_km_max": 0.0001,
+    "impulse_response_refinement_difference_km_max": 0.001,
+    "all_scenario_states_finite": true,
+    "report_all_24_scenarios": true
+  },
+  "compute_budget": {
+    "maximum_rk4_steps_total": 15000,
+    "maximum_spice_position_queries": 30000
+  },
+  "interpretation": {
+    "conditional_sensitivity_only": true,
+    "not_a_statistical_uncertainty_interval": true,
+    "no_parameter_fit_to_NAV_endpoint": true,
+    "no_claim_of_actual_desat_in_fixed_arc": true,
+    "no_unchanged_physics_claim_from_small_NAV_residual": true,
+    "no_gate_retuning_after_endpoint_computation": true
+  },
+  "scientific_boundaries": {
+    "published_average_impulse_scale": true,
+    "actual_maneuver_timeline": false,
+    "actual_maneuver_vectors": false,
+    "solar_radiation_pressure_model": false,
+    "independent_observables": false,
+    "scientific_holdout": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}

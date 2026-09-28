@@ -1,0 +1,520 @@
+{
+  "evaluator": {
+    "coefficient": 2.0,
+    "evaluator_id": "causal-intervention-v1",
+    "holdout_rmse": 0.0,
+    "intercept": 1.0,
+    "max_context_invariance_error": 0.0,
+    "negative_candidate_rejected": true,
+    "notes": [
+      "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+      "Negative candidate is required to fail the holdout gate."
+    ],
+    "passed": true,
+    "train_rmse": 0.0
+  },
+  "evidence_files": [
+    {
+      "allowed_use": [
+        "offline-fixture",
+        "bounded-evaluator"
+      ],
+      "bytes": 535,
+      "path": "examples/causal/fixture.json",
+      "provenance_status": "unverified",
+      "sha256": "e3541bc14cc16836f1f1fff989a37743904387596712b82f323f12dc5778ab15"
+    }
+  ],
+  "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+  "negative_case": {
+    "rejected": true,
+    "wrong_coefficient": 1.0
+  },
+  "run": {
+    "agent": {
+      "agent_id": "offline-t2-agent-v1",
+      "capabilities": [
+        "invoke-registered-evaluator",
+        "record-negative-case"
+      ],
+      "name": "Offline T2 evaluator agent",
+      "version": "1"
+    },
+    "claims": [
+      {
+        "evidence_refs": [
+          "ev-t2-fixture",
+          "ev-t2-evaluator-code"
+        ],
+        "falsification_checks": [
+          "positive-evaluator-replay",
+          "negative-case-rejection",
+          "fixture-hash"
+        ],
+        "holdout_verified": false,
+        "level": "validated-reproduction",
+        "status": "unverified",
+        "text": "The T2 evaluator passed its bounded fixture gate; this is not a real-world scientific claim."
+      }
+    ],
+    "code_revision": "local-working-tree",
+    "created_at": "2026-09-21T00:00:00Z",
+    "environment": {
+      "implementation": "CPython",
+      "machine": "AMD64",
+      "mode": "offline",
+      "network": "disabled",
+      "packages": {
+        "auditable-scientist-lab": "0.1.0",
+        "jsonschema": "4.24.0",
+        "pydantic": "2.11.10",
+        "sympy": "1.13.3"
+      },
+      "python": "3.12.3",
+      "runtime": "bounded-evaluator",
+      "system": "Windows",
+      "track_id": "T2"
+    },
+    "evaluators": [
+      {
+        "evaluator_id": "causal-intervention-v1",
+        "name": "T2 independent evaluator",
+        "read_only": true,
+        "version": "1"
+      }
+    ],
+    "events": [
+      {
+        "event_id": "t2-event-0",
+        "event_type": "run.initialized",
+        "occurred_at": "2026-09-21T00:00:00Z",
+        "payload": {
+          "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+          "run_id": "run-t2-e8c0533775f1ab69"
+        },
+        "payload_hash": "4bdd73e00a1195ee7c0f561f991641de0b247063b850b755903034c46c5a5057",
+        "prev_event_hash": "genesis",
+        "seq": 0
+      },
+      {
+        "event_id": "t2-event-1",
+        "event_type": "policy.applied",
+        "occurred_at": "2026-09-21T00:00:01Z",
+        "payload": {
+          "network": "disabled",
+          "policy_id": "offline-t2-v1",
+          "provider_id": "internal-t2-evaluator"
+        },
+        "payload_hash": "d4e8c6c5a1d58c0573b070b63108b3fffe04dcbcf54a7bd5858060bfc29ebad6",
+        "prev_event_hash": "4bdd73e00a1195ee7c0f561f991641de0b247063b850b755903034c46c5a5057",
+        "seq": 1
+      },
+      {
+        "event_id": "t2-event-2",
+        "event_type": "tool.invoked",
+        "occurred_at": "2026-09-21T00:00:02Z",
+        "payload": {
+          "calls_used": 1,
+          "tool_id": "t2-evaluator"
+        },
+        "payload_hash": "04a3882ece068c331625197330921b4acd3218d630fc6019539c56cdc6005864",
+        "prev_event_hash": "d4e8c6c5a1d58c0573b070b63108b3fffe04dcbcf54a7bd5858060bfc29ebad6",
+        "seq": 2
+      },
+      {
+        "event_id": "t2-event-3",
+        "event_type": "evaluator.completed",
+        "occurred_at": "2026-09-21T00:00:03Z",
+        "payload": {
+          "evaluator_id": "causal-intervention-v1",
+          "result": {
+            "coefficient": 2.0,
+            "evaluator_id": "causal-intervention-v1",
+            "holdout_rmse": 0.0,
+            "intercept": 1.0,
+            "max_context_invariance_error": 0.0,
+            "negative_candidate_rejected": true,
+            "notes": [
+              "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+              "Negative candidate is required to fail the holdout gate."
+            ],
+            "passed": true,
+            "train_rmse": 0.0
+          }
+        },
+        "payload_hash": "64b829986cd6e4c2c5775aaed59cb03c3a47f811945273a053de94e651fe0523",
+        "prev_event_hash": "04a3882ece068c331625197330921b4acd3218d630fc6019539c56cdc6005864",
+        "seq": 3
+      },
+      {
+        "event_id": "t2-event-4",
+        "event_type": "negative_case.checked",
+        "occurred_at": "2026-09-21T00:00:04Z",
+        "payload": {
+          "negative_case": {
+            "rejected": true,
+            "wrong_coefficient": 1.0
+          },
+          "negative_case_passed": true
+        },
+        "payload_hash": "95ce69bc49d016e58884d599e9bf1d4c9e55323d509564ecea5f70b3fbf03076",
+        "prev_event_hash": "64b829986cd6e4c2c5775aaed59cb03c3a47f811945273a053de94e651fe0523",
+        "seq": 4
+      },
+      {
+        "event_id": "t2-event-5",
+        "event_type": "run.completed",
+        "occurred_at": "2026-09-21T00:00:05Z",
+        "payload": {
+          "status": "completed"
+        },
+        "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+        "prev_event_hash": "95ce69bc49d016e58884d599e9bf1d4c9e55323d509564ecea5f70b3fbf03076",
+        "seq": 5
+      }
+    ],
+    "evidence": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "evidence_id": "ev-t2-fixture",
+        "kind": "data",
+        "notes": "Fixture evidence is not real-data or publication evidence.",
+        "path_or_uri": "root://examples/causal/fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "e3541bc14cc16836f1f1fff989a37743904387596712b82f323f12dc5778ab15",
+        "source_revision": "local-working-tree"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "evidence_id": "ev-t2-evaluator-code",
+        "kind": "code",
+        "notes": "Local evaluator source fingerprint; this does not establish external scientific validity.",
+        "path_or_uri": "root://src/auditable_scientist/tracks/causal.py",
+        "provenance_status": "unverified",
+        "sha256": "f35d397499777edfab301198824daa9066c8b1f6a18eb10faceba82520c6acb4",
+        "source_revision": "local-working-tree"
+      }
+    ],
+    "evidence_refs": [
+      "ev-t2-fixture",
+      "ev-t2-evaluator-code"
+    ],
+    "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+    "memories": [
+      {
+        "content_hash": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+        "memory_id": "evidence-policy-memory-v1",
+        "scope": "claim-level evidence boundaries",
+        "source_ref": "root://docs/EVIDENCE_POLICY.md",
+        "version": "local-snapshot"
+      }
+    ],
+    "observations": [
+      {
+        "dataset_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+        "observation_id": "obs-t2-fixture",
+        "source_ref": "root://examples/causal/fixture.json",
+        "split": "external",
+        "summary": {
+          "evaluator_id": "causal-intervention-v1",
+          "evidence_level": "validated-reproduction",
+          "track_id": "T2"
+        },
+        "units": {}
+      }
+    ],
+    "policy": {
+      "allowed_paths": [
+        "root://examples/causal/fixture.json"
+      ],
+      "allowed_providers": [
+        "internal-t2-evaluator"
+      ],
+      "max_seconds": 60.0,
+      "max_tool_calls": 1,
+      "network": "disabled",
+      "policy_id": "offline-t2-v1"
+    },
+    "providers": [
+      {
+        "kind": "deterministic-domain-evaluator",
+        "name": "Internal T2 evaluator",
+        "provider_id": "internal-t2-evaluator",
+        "source_ref": "src/auditable_scientist/tracks",
+        "version": "1"
+      }
+    ],
+    "run_id": "run-t2-e8c0533775f1ab69",
+    "seed": 17,
+    "status": "completed",
+    "task_id": "t2-causal-intervention-v1",
+    "tools": [
+      {
+        "deterministic": true,
+        "name": "T2 domain evaluator",
+        "network_required": false,
+        "parameter_schema_ref": "schemas/track-tool-call-v1.json",
+        "tool_id": "t2-evaluator",
+        "version": "1"
+      }
+    ],
+    "traces": [
+      {
+        "entries": [
+          {
+            "event_type": "run.initialized",
+            "payload_hash": "4bdd73e00a1195ee7c0f561f991641de0b247063b850b755903034c46c5a5057",
+            "seq": 0
+          },
+          {
+            "event_type": "policy.applied",
+            "payload_hash": "d4e8c6c5a1d58c0573b070b63108b3fffe04dcbcf54a7bd5858060bfc29ebad6",
+            "seq": 1
+          },
+          {
+            "event_type": "tool.invoked",
+            "payload_hash": "04a3882ece068c331625197330921b4acd3218d630fc6019539c56cdc6005864",
+            "seq": 2
+          },
+          {
+            "event_type": "evaluator.completed",
+            "payload_hash": "64b829986cd6e4c2c5775aaed59cb03c3a47f811945273a053de94e651fe0523",
+            "seq": 3
+          },
+          {
+            "event_type": "negative_case.checked",
+            "payload_hash": "95ce69bc49d016e58884d599e9bf1d4c9e55323d509564ecea5f70b3fbf03076",
+            "seq": 4
+          },
+          {
+            "event_type": "run.completed",
+            "payload_hash": "d0765f73cd5d1df39be353d538ea7c47a017d66a8bd001dc4707240dbb71e58c",
+            "seq": 5
+          }
+        ],
+        "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+        "run_id": "run-t2-e8c0533775f1ab69",
+        "trace_id": "trace-run-t2-e8c0533775f1ab69"
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 3268,
+      "path": "src/auditable_scientist/tracks/causal.py",
+      "provenance_status": "unverified",
+      "sha256": "f35d397499777edfab301198824daa9066c8b1f6a18eb10faceba82520c6acb4"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1933,
+      "path": "src/auditable_scientist/tracks/common.py",
+      "provenance_status": "unverified",
+      "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 9346,
+      "path": "src/auditable_scientist/tracks/run_package.py",
+      "provenance_status": "unverified",
+      "sha256": "1b1327d0915a6ad18add0b38dda7e59fdad0ec176ed002124f5da9352dae186c"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 12783,
+      "path": "src/auditable_scientist/tracks/runner.py",
+      "provenance_status": "unverified",
+      "sha256": "d57371c5be3ae203fc2c1841552000eeb646f57d54123daefef04aca671a2396"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 11495,
+      "path": "src/auditable_scientist/domain/models.py",
+      "provenance_status": "unverified",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 5093,
+      "path": "src/auditable_scientist/policy/runtime.py",
+      "provenance_status": "unverified",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1432,
+      "path": "src/auditable_scientist/runtime/canonical.py",
+      "provenance_status": "unverified",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 829,
+      "path": "src/auditable_scientist/runtime/environment.py",
+      "provenance_status": "unverified",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 2790,
+      "path": "src/auditable_scientist/runtime/event_log.py",
+      "provenance_status": "unverified",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 7943,
+      "path": "src/auditable_scientist/runtime/replay.py",
+      "provenance_status": "unverified",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 2116,
+      "path": "src/auditable_scientist/runtime/run_integrity.py",
+      "provenance_status": "unverified",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1651,
+      "path": "src/auditable_scientist/runtime/paths.py",
+      "provenance_status": "unverified",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 25103,
+      "path": "src/auditable_scientist/cli.py",
+      "provenance_status": "unverified",
+      "sha256": "910547c4b746ddfff20adca42e1a242bafca78b3c981524708d8bf5deddf4365"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 8913,
+      "path": "src/auditable_scientist/track_cli.py",
+      "provenance_status": "unverified",
+      "sha256": "0f2d782da641301f9221dc74b26c9d921602284ec623212ba1c582770312aa65"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 25634,
+      "path": "scripts/generate_track_artifacts.py",
+      "provenance_status": "unverified",
+      "sha256": "c1b57235e6aee4358da7e439df6b4cb6d94e1b5ffebaf25fabb946e5df17f8c0"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 792,
+      "path": "pyproject.toml",
+      "provenance_status": "unverified",
+      "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1318,
+      "path": "docs/EVIDENCE_POLICY.md",
+      "provenance_status": "unverified",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 515,
+      "path": "schemas/track-tool-call-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "2e95da18738e29d0981efdc37e2d8f2ef85ddabc99f46f332b89d7668fcfc0ae"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 1747,
+      "path": "schemas/track-receipt-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "caa83fd95a68914ee85f7aecbdf317cfa51ed16875fe650bad726aeb13d1f945"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 3274,
+      "path": "schemas/track-acceptance-v1.json",
+      "provenance_status": "unverified",
+      "sha256": "389f0981fcf4da138f0d393d23adda54d1338278541779cbb5bf3588a1768bcb"
+    },
+    {
+      "allowed_use": [
+        "offline-evaluator",
+        "source-provenance"
+      ],
+      "bytes": 8072,
+      "path": "schemas/run.schema.json",
+      "provenance_status": "unverified",
+      "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+    }
+  ],
+  "track": "T2"
+}

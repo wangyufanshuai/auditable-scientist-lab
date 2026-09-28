@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/track-tool-call-v1.json",
+  "title": "Offline domain evaluator call",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["track_id", "input_hash", "fixture_path"],
+  "properties": {
+    "track_id": {"enum": ["T2", "T2P", "T3", "T3N", "T4", "T4O", "T5"]},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "fixture_path": {"type": "string", "minLength": 1}
+  }
+}

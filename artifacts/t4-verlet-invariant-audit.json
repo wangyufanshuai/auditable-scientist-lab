@@ -1,0 +1,76 @@
+{
+  "boundaries": {
+    "claim_status": "unverified",
+    "exact_discrete_invariant_class": true,
+    "floating_implementation_proved": false,
+    "general_formal_backend": false,
+    "nonlinear_dynamics_proved": false,
+    "physical_model_validated": false,
+    "publication_ready": false,
+    "real_data": false
+  },
+  "negative_control": {
+    "rejected": true,
+    "residual_matrix": [
+      [
+        "81/1600",
+        "-81/64000"
+      ],
+      [
+        "-81/64000",
+        "14319/640000"
+      ]
+    ],
+    "solver": "explicit-euler"
+  },
+  "positive_certificate": {
+    "invariant_matrix": [
+      [
+        "14319/6400",
+        "0"
+      ],
+      [
+        "0",
+        "1"
+      ]
+    ],
+    "positive_definite": true,
+    "q": "9/400",
+    "residual_matrix": [
+      [
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0"
+      ]
+    ],
+    "step_matrix": [
+      [
+        "791/800",
+        "1/10"
+      ],
+      [
+        "-14319/64000",
+        "791/800"
+      ]
+    ]
+  },
+  "protocol_sha256": "e400941973c30173d0bd351be73e82df0536212374c7700260b7ed3964cde1dc",
+  "recorded_at": "2026-09-28T06:37:16.661147+00:00",
+  "schema_version": "t4-verlet-invariant-audit-v1",
+  "source_files": [
+    {
+      "bytes": 1152,
+      "path": "docs/T4_VERLET_INVARIANT_PROTOCOL.json",
+      "sha256": "e400941973c30173d0bd351be73e82df0536212374c7700260b7ed3964cde1dc"
+    },
+    {
+      "bytes": 5756,
+      "path": "src/auditable_scientist/tracks/dynamics.py",
+      "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b"
+    }
+  ],
+  "status": "verified-exact-verlet-discrete-invariant-only"
+}

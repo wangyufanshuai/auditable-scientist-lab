@@ -1,0 +1,56 @@
+{
+  "arc_count": 2,
+  "boundaries": {
+    "full_force_model": false,
+    "independent_sun_only_propagation": true,
+    "mission_validation": false,
+    "publication_ready": false,
+    "real_mission_source": true,
+    "scientific_holdout": false
+  },
+  "engineering_preflight_passed": true,
+  "mission_only_states_equal": true,
+  "preregistration_commit": "27cc842553d3ff888df092883ff9f50225e92aae",
+  "protocol_sha256": "a37b11b983a9ea0765682d4457c8eed9b378566262fa3adc478d7d60ef9e5a47",
+  "recorded_at": "2026-09-27T13:15:30.659474+00:00",
+  "schema_version": "t1-maven-sun-only-preflight-audit-v1",
+  "snapshot_sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+  "source_files": [
+    {
+      "bytes": 14151,
+      "path": "scripts/verify_t1_maven_preflight.py",
+      "sha256": "bfc1c6832d54cc6c0478ee5fd46dbd0ab18d9ad02d2e9bdaf469082af4342d17"
+    },
+    {
+      "bytes": 3144,
+      "path": "scripts/fetch_maven_cruise.py",
+      "sha256": "f20acf8066bfee4609a98f9145473a8821351f3a464d765cca99a02aae946755"
+    },
+    {
+      "bytes": 2064,
+      "path": "docs/T1_MAVEN_PROPAGATION_PREFLIGHT.json",
+      "sha256": "a37b11b983a9ea0765682d4457c8eed9b378566262fa3adc478d7d60ef9e5a47"
+    },
+    {
+      "bytes": 2932,
+      "path": "docs/T1_MAVEN_PROPAGATION_PREFLIGHT.md",
+      "sha256": "5857b889c2ea4f862b17e2d7ebd5d3a6b57557198d691d5102e76399f5ea8ec1"
+    },
+    {
+      "bytes": 5593,
+      "path": "src/auditable_scientist/adapters/naif_de440s.py",
+      "sha256": "4a4e00875c47e0fd281c22c28464054c0895010d758041c714ae648bcb8107df"
+    },
+    {
+      "bytes": 8209,
+      "path": "src/auditable_scientist/adapters/naif_mars_center.py",
+      "sha256": "4d9d13b96d85d3eac337a8f70a14724746b586b1925278ea6b87ace80fc54c35"
+    },
+    {
+      "bytes": 100,
+      "path": "requirements-t1-mars-center-win-py312.txt",
+      "sha256": "cccfa91e8f71241c7c39ff3449f7241c2983a0b4be1a6f5b5105df25b441b3d4"
+    }
+  ],
+  "status": "passed-engineering-preflight-only"
+}

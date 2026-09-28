@@ -1,0 +1,1 @@
+[{"case_id":"equal-train","gravitational_constant":1.0,"masses":[1.0,1.0,1.0],"orbit_fraction":0.5,"side_length":1.0,"split":"train","steps":1200},{"case_id":"unequal-holdout","gravitational_constant":1.0,"masses":[1.0,1.5,0.75],"orbit_fraction":0.75,"side_length":1.5,"split":"holdout","steps":1800}]

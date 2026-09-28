@@ -1,0 +1,7 @@
+# Versioned T1 offline numerical Run
+
+`python scripts/verify_t1_core_orbit_run.py --verify` recomputes the pure-Python two-body audit through one registered Tool and Provider under a network-disabled Policy. It checks the nine-case input snapshot, the full source fingerprint inventory, the standalone numerical receipt, the shared Run/Event/Trace chain, and the portable replay manifest. A moved copy must replay identically. Altering either the saved numerical result or the Run's dataset snapshot must fail. Calls through an unregistered provider and a path outside the policy scope must be denied.
+
+The Run is a versioned companion to the historical analytic T1 CLI Run. It is not a replacement for that Run, and the main `auditable-scientist run` command has not yet invoked this Provider. The old CLI source bytes remain bound by historical replay manifests. A main-CLI migration needs a separate version, an explicit legacy replay route, and acceptance of both old and new Run families before its open gate can close.
+
+The registered calculation only checks propagation within the synthetic circular two-body model. It starts from an analytic vis-viva speed, so it does not derive the orbit independently. The Run's dated-mission Claim remains `unverified` at `demo` evidence level. No real ephemeris, encounter geometry, perturbing bodies, NASA page-specific rights review, or human scientific review is claimed.

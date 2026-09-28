@@ -1,0 +1,6 @@
+# Optional T3 external-solver audit only: CPython 3.12 / Windows AMD64 wheels.
+# Install after the core replay environment. Hashes were measured from PyPI wheels.
+--only-binary=:all:
+--require-hashes
+numpy==2.2.6 --hash=sha256:c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2
+scipy==1.18.1 --hash=sha256:5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2

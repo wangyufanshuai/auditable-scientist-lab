@@ -1,0 +1,69 @@
+{
+  "schema_version": "t3-figure-eight-protocol-v1",
+  "status": "predeclared-finite-numerical-comparison-not-scientific-validation",
+  "source": {
+    "title": "A remarkable periodic solution of the three-body problem in the case of equal masses",
+    "authors": ["Alain Chenciner", "Richard Montgomery"],
+    "doi": "10.2307/2661357",
+    "figure": "Figure 1; decimal initial conditions computed by Carles Simo",
+    "url": "https://perso.imcce.fr/alain-chenciner/huit.pdf",
+    "download_sha256": "f470bde538ded751695434f3d67c79fb8257beca58529ae8bf01e0fb2191b16f",
+    "redistributed": false,
+    "decimal_precision_note": "The eight-decimal figure values approximate a periodic orbit; ten-period closure is diagnostic, not an exact-orbit gate."
+  },
+  "system": {
+    "dimensionless": true,
+    "gravitational_constant": 1.0,
+    "masses": [1.0, 1.0, 1.0],
+    "initial_positions": [[0.97000436, -0.24308753], [-0.97000436, 0.24308753], [0.0, 0.0]],
+    "initial_velocities": [[0.466203685, 0.43236573], [0.466203685, 0.43236573], [-0.93240737, -0.86473146]],
+    "published_approximate_period": 6.32591398,
+    "position_normalizer": 1.0,
+    "velocity_normalizer": 1.0
+  },
+  "scenarios": [
+    {"id": "published-one-period", "periods": 1, "opposite_y_velocity_perturbation": 0.0},
+    {"id": "published-ten-period", "periods": 10, "opposite_y_velocity_perturbation": 0.0},
+    {"id": "perturbed-ten-period", "periods": 10, "opposite_y_velocity_perturbation": 0.001}
+  ],
+  "solvers": {
+    "reference": "scipy.integrate.solve_ivp:DOP853",
+    "scipy_version": "1.18.1",
+    "numpy_version": "2.2.6",
+    "rtol": 1e-12,
+    "atol": 1e-14,
+    "max_step_as_period_fraction": 0.0125,
+    "local": "independent fixed-step Cartesian RK4",
+    "coarse_steps_per_period": 2400,
+    "fine_steps_per_period": 4800,
+    "event_min_pair_separation": 0.25,
+    "event_direction": "inward",
+    "negative_control": "repulsive gravity at one-quarter published period"
+  },
+  "engineering_gates": {
+    "fine_rk4_endpoint_position_error_max": 0.0001,
+    "fine_rk4_endpoint_velocity_error_max": 0.0001,
+    "coarse_to_fine_endpoint_position_error_ratio_min": 3.0,
+    "fine_rk4_relative_energy_drift_max": 1e-5,
+    "fine_rk4_absolute_angular_momentum_drift_max": 1e-8,
+    "fine_rk4_center_of_mass_drift_max": 1e-8,
+    "minimum_pair_separation_min": 0.25,
+    "one_period_published_state_closure_error_max": 0.001,
+    "negative_repulsive_position_error_min": 0.1
+  },
+  "compute_budget": {
+    "dop853_rhs_calls_total_max": 100000,
+    "fixed_rk4_steps_total_max": 160000
+  },
+  "selection_statement": "The published decimal initial state, one- and ten-period horizons, 0.001 momentum-balanced perturbation, solvers, gates, and budgets are frozen before this implementation computes any endpoint. Failure is reported without retuning. The published period is a descriptive approximate reference, not an independently measured trajectory.",
+  "scientific_boundaries": {
+    "source_published_numerical_initial_state": true,
+    "nonintegrable_equations_evaluated": true,
+    "untouched_scientific_holdout": false,
+    "independent_physical_observation": false,
+    "chaotic_regime_validated": false,
+    "general_nbody_validated": false,
+    "real_mission_validated": false,
+    "claim_status": "unverified"
+  }
+}

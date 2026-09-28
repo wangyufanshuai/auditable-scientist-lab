@@ -1,0 +1,60 @@
+{
+  "schema_version": "t1-maven-srp-sensitivity-protocol-v1",
+  "status": "predeclared-conditional-srp-sensitivity-not-mission-validation",
+  "source_contract": {
+    "nasa_solar_irradiance_url": "https://earth.gsfc.nasa.gov/climate/projects/solar-irradiance/science",
+    "nasa_solar_irradiance_html_sha256": "855882f054131cc51b9a91788c4c00fe9c1df4d6ecf02f14df490f8a28e6b4ba",
+    "iau_2012_au_url": "https://syrte.obspm.fr/IAU_resolutions/Res_IAU2012_B2.pdf",
+    "iau_2012_au_pdf_sha256": "3489ebb1e51f7c278d56c9e0f9cb49c142e036ac34e21defc87414507afec984",
+    "maven_navigation_pdf_url": "https://drewryanjones.com/assets/conf_paper_2016_no1.pdf",
+    "maven_navigation_pdf_sha256": "969affe7e6d0c8d0a6cbc4dbcdcc46332d429e5e604f004e5e5f1a946231267c",
+    "source_rights": "External pages and papers are read-only local inputs; distribution rights not established"
+  },
+  "baseline": {
+    "prior_protocol_sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394",
+    "prior_snapshot_sha256": "cbe072ec2f6f34d32e834852ffee6b652c6946c08499ec30fd75151e4502ef76",
+    "initial_et_tdb_seconds": [452088000.0, 457272000.0],
+    "horizon_seconds": 86400.0,
+    "initial_states": "previously inspected NAV SPK initial states; no untouched scientific holdout"
+  },
+  "model": {
+    "description": "Sun plus Earth-Moon and Mars-barycenter tides, then additive ideal radial solar photon pressure",
+    "solar_irradiance_at_1au_w_m2": 1361.0,
+    "astronomical_unit_km": 149597870.7,
+    "speed_of_light_m_s": 299792458.0,
+    "effective_area_over_mass_m2_per_kg": [0.0, 0.001, 0.01, 0.1],
+    "effective_area_over_mass_definition": "free parameter that absorbs illuminated projected area and pressure coefficient; not a MAVEN spacecraft estimate",
+    "acceleration_direction": "radially away from Sun in J2000",
+    "step_seconds": [600.0, 300.0],
+    "no_eclipse_or_attitude_model": true
+  },
+  "engineering_gates": {
+    "zero_coefficient_position_difference_km_max": 1e-6,
+    "zero_coefficient_velocity_difference_km_s_max": 1e-9,
+    "refinement_response_difference_km_max": 0.001,
+    "monotonic_response_tolerance_km": 1e-6,
+    "all_states_finite": true,
+    "all_cases_reported": true
+  },
+  "compute_budget": {
+    "maximum_rk4_steps_total": 4000,
+    "maximum_spice_position_queries": 5000
+  },
+  "interpretation": {
+    "scenario_grid_not_calibrated_to_maven": true,
+    "no_parameter_fit_to_nav_endpoint": true,
+    "do_not_rank_parameters_by_nav_residual": true,
+    "not_statistical_uncertainty_interval": true,
+    "not_actual_srp_reconstruction": true,
+    "no_gate_retuning_after_endpoint_computation": true
+  },
+  "scientific_boundaries": {
+    "spacecraft_area_mass_and_attitude_verified": false,
+    "mission_srp_model_validated": false,
+    "actual_maneuver_history": false,
+    "independent_observables": false,
+    "scientific_holdout": false,
+    "mission_validation": false,
+    "claim_status": "unverified"
+  }
+}

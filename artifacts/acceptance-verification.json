@@ -1,0 +1,523 @@
+{
+  "bounded_optional_acceptance_projection": {
+    "output_count": 10,
+    "status": "verified-bounded-optional-acceptance-projection"
+  },
+  "run_status": "completed",
+  "schema_version": "acceptance-verification-v1",
+  "scientific_boundaries": [
+    "No real-data claim",
+    "No autonomous wet-lab execution",
+    "No publication or novelty claim"
+  ],
+  "status": "verified",
+  "t1_combined_package_cli": {
+    "checks": {
+      "claim_tamper_rejected": true,
+      "cli_inspect_bound": true,
+      "cli_replay_equal": true,
+      "dataset_tamper_rejected": true,
+      "event_tamper_rejected": true,
+      "fixed_holdout_passed": true,
+      "legacy_t1_replay_preserved": true,
+      "missing_numerical_tamper_rejected": true,
+      "mission_claim_unverified": true,
+      "network_disabled": true,
+      "numerical_grid_passed": true,
+      "numerical_tamper_rejected": true,
+      "one_combined_run": true,
+      "relocated_replay_equal": true,
+      "report_export_equal": true
+    },
+    "console_script_versioned_router": true,
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "f4335f841b453eaa99bed866ddba0b57f4fe04fc6a2050f7eccdb0cf55b66615",
+      "verified": true
+    },
+    "run_id": "run-t1-v2-bd8e4e217fae77f1"
+  },
+  "t1_core_orbit_recomputation": {
+    "checks": {
+      "all_errors_bounded": true,
+      "bounded_compute": true,
+      "nine_apoapses_detected": true,
+      "repulsive_force_rejected": true,
+      "time_error_shrinks_on_refinement": true
+    },
+    "scope": "dynamic-pure-python-synthetic-two-body-recomputation",
+    "source_files_match": true
+  },
+  "t1_core_orbit_tool_run": {
+    "main_cli_integrated": false,
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "e0285cf8c6f1c0bb21c551d859cde238926680d011317179d89472bd767841cd",
+      "verified": true
+    },
+    "run_id": "run-t1-core-orbit-96bd3ccfd5e0ae1d"
+  },
+  "t1_de440s_geometry": {
+    "dynamic_verified_here": true,
+    "mission_trajectory_validated": false,
+    "snapshot_sha256": "55dd2231455d91ed14130c4e20922f273cdf63696bae104b12630b3fe26b7e8c",
+    "status": "verified-source-tracked-geometry-only"
+  },
+  "t1_de440s_snapshot_run": {
+    "mission_claim_verified": false,
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "8c2cd0ec47cc3d4b85f659ff4f7096b6769443313838709ff32d9f292c751f55",
+      "verified": true
+    },
+    "run_id": "run-t1-de440s-075f3221475bc496",
+    "snapshot_geometry_only": true
+  },
+  "t1_mars_center_geometry": {
+    "dynamic_verified_here": true,
+    "mars_center_state_available": true,
+    "mission_trajectory_validated": false,
+    "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
+    "status": "verified-source-tracked-center-geometry-only"
+  },
+  "t1_maven_desat_sensitivity": {
+    "actual_desat_in_arcs": false,
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "scenario_count": 24,
+    "scientific_holdout": false,
+    "snapshot_sha256": "ab878939896e2c60040345f56aff02f85551cc7f24b70e1aeaa0bd140c343bf1",
+    "status": "passed-conditional-impulse-sensitivity-only"
+  },
+  "t1_maven_ops_event_search": {
+    "arc_event_counts": [
+      2,
+      0
+    ],
+    "desat_keyword_hits_in_arcs": [
+      0,
+      0
+    ],
+    "dynamic_verified_here": true,
+    "impulse_vectors_admitted": false,
+    "independent_observables": false,
+    "mission_validation": false,
+    "records_checked": 185321,
+    "status": "catalog-inspected-not-mission-validation"
+  },
+  "t1_maven_planetary_force_diagnostic": {
+    "arc_count": 2,
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "planetary_tide_model": true,
+    "scientific_holdout": false,
+    "snapshot_sha256": "cbe072ec2f6f34d32e834852ffee6b652c6946c08499ec30fd75151e4502ef76",
+    "status": "passed-engineering-diagnostic-only"
+  },
+  "t1_maven_portable_preflight_run": {
+    "mission_claim_verified": false,
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "90c23d1bf4d5f3533d653cd21813489ef0d96a6c7bf294e6f8ac307e8f69b293",
+      "verified": true
+    },
+    "run_id": "run-t1-maven-8bd3e76cea54eb4e",
+    "saved_nav_short_arc_only": true
+  },
+  "t1_maven_reconstructed_source": {
+    "archived_spacecraft_states_available": true,
+    "dynamic_verified_here": true,
+    "independent_spacecraft_propagation": false,
+    "mission_validation": false,
+    "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
+    "status": "verified-source-tracked-reconstructed-mission-geometry-only"
+  },
+  "t1_maven_sff_exploratory_inventory": {
+    "dynamic_verified_here": true,
+    "file_count": 9,
+    "force_values_admitted": false,
+    "mission_validation": false,
+    "same_record_pairs": 4,
+    "status": "verified-local-source-inventory-only"
+  },
+  "t1_maven_srp_sensitivity": {
+    "dynamic_verified_here": true,
+    "mission_validation": false,
+    "scenario_count": 8,
+    "scientific_holdout": false,
+    "snapshot_sha256": "d48b3402746a71023be5056085120568971bbae64a39b969cd476607b4596a82",
+    "status": "passed-conditional-srp-sensitivity-only"
+  },
+  "t1_maven_sun_only_preflight": {
+    "arc_count": 2,
+    "dynamic_verified_here": true,
+    "independent_sun_only_propagation": true,
+    "mission_validation": false,
+    "scientific_holdout": false,
+    "snapshot_sha256": "6bf93d828b8fe4128bd119f8205689a8f8283e93bd371b39478b67dbbf0b8e34",
+    "status": "passed-engineering-preflight-only"
+  },
+  "t1_nasa_parameter_audit": {
+    "real_data_claim": false,
+    "scientific_validation_claim": false,
+    "snapshot_sha256": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
+    "source_rights_status": "unreviewed-page-specific",
+    "status": "verified-offline-snapshot-only"
+  },
+  "t1_optional_external_run_static_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "bee1def5213db7099fe2cd00cce8bf87539c7cdfe2ab9cb8c9331483d0f5f947",
+    "verified": true
+  },
+  "t1_optional_orbit_static_provenance": {
+    "dynamic_recalculation_required": "python scripts/verify_t1_external_orbit.py --verify",
+    "scope": "static-source-and-boundary-check-only",
+    "source_files_match": true
+  },
+  "t1_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
+    "verified": true
+  },
+  "t2_independent_endpoint_estimator": {
+    "case_count": 124,
+    "gates": {
+      "counterfactual_endpoint_max_1e-8_m": true,
+      "effect_max_1e-8_m": true,
+      "factual_endpoint_max_1e-8_m": true,
+      "holdout_effect_rmse_1e-8_m": true,
+      "ignored_intervention_rejected": true
+    },
+    "holdout_count": 84,
+    "metrics": {
+      "holdout_effect_rmse_m": 8.665194098528724e-16,
+      "ignored_intervention_holdout_rmse_m": 0.2656262607642334,
+      "max_counterfactual_endpoint_error_m": 1.7763568394002505e-15,
+      "max_effect_error_m": 2.6645352591003757e-15,
+      "max_factual_endpoint_error_m": 2.6645352591003757e-15,
+      "train_effect_rmse_m": 7.586975298354787e-16
+    }
+  },
+  "t2_independent_endpoint_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "4a1726c9cf88165c51a0afefe481ac1d98df30af7897575bf7e6274b42291d61",
+      "verified": true
+    },
+    "run_id": "run-t2-endpoint-6333b4e44b5cb4e0"
+  },
+  "t3_optional_external_run_static_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "7d5f79dc99a8ae871afd4cd883f52abad0e9bcca706c4036300d28fb7544168d",
+    "verified": true
+  },
+  "t3_optional_figure_eight_static_provenance": {
+    "mission_validation": false,
+    "periods_max": 10,
+    "pinned_scipy_recomputation_required": true,
+    "scenario_count": 3,
+    "scientific_holdout": false,
+    "scope": "static-saved-numeric-and-boundary-check-only",
+    "source_files_match": true
+  },
+  "t3_optional_horizon_static_provenance": {
+    "admitted_case_count": 2,
+    "excluded_stress_case_count": 2,
+    "pinned_scipy_recomputation_required": true,
+    "scope": "static-source-boundary-and-numeric-gate-check-only",
+    "source_files_match": true
+  },
+  "t3_optional_perturbed_run_static_replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "830b97e01145717034957e4ee2d3439ff7de8d1fd2cde4999e1f79c3aaa67c0d",
+    "verified": true
+  },
+  "t3_optional_pythagorean_static_provenance": {
+    "chaotic_regime_validated": false,
+    "pinned_scipy_recomputation_required": true,
+    "scenario_count": 2,
+    "scientific_holdout": false,
+    "scope": "static-pre-event-number-and-boundary-check-only",
+    "source_files_match": true
+  },
+  "t3_perturbed_static_provenance": {
+    "pinned_scipy_recomputation_required": true,
+    "scope": "static-source-and-boundary-check-only",
+    "source_files_match": true
+  },
+  "t4_exact_linear_invariant_proof": {
+    "negative_controls": 1,
+    "positive_proofs": 2,
+    "systems": 3,
+    "verified": true
+  },
+  "t4_exact_linear_invariant_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "78b53522a50c03e4ba7e4b63027f31c437b6cf0cc10c70bf48f338ce21e4f602",
+      "verified": true
+    },
+    "run_id": "run-t4-linear-6931db19a01bc59b"
+  },
+  "t5_pbs_read_only_source_run": {
+    "mutation_controls": [
+      true,
+      true
+    ],
+    "policy_denials": {
+      "out_of_scope_path_rejected": true,
+      "wrong_provider_rejected": true
+    },
+    "replay": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "ce247821c444c7387b45f4cf7b950efdfb22576ed324e3204db34a73b9f41930",
+      "verified": true
+    },
+    "run_id": "run-t5-pbs-source-06a7e9fae2d18642"
+  },
+  "t5_pbs_real_source_inventory": {
+    "dynamic_verified_here": true,
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "page_count": 3,
+    "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+    "status": "verified-source-document-and-review-flags-only",
+    "step_count": 6
+  },
+  "track_cli_replays": {
+    "T2": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "0dd0970d6f0ea09d7a9a9f5ddb6df2404db513f0755b7a427bca8d860bed3ab3",
+      "verified": true
+    },
+    "T2P": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "289ee2d2761ff1d09068be988a611d061eceaf4d26e76ea198deaed56f7b9cec",
+      "verified": true
+    },
+    "T3": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "c5a6a403aa9393fd267d387df7931b0e357cc260e4ac9c5abfaa0a48e36d9b07",
+      "verified": true
+    },
+    "T3N": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "72960321aa3305b0b60baa9f07f0a4015c57167d98cbd98f1ff449e1c213ca8f",
+      "verified": true
+    },
+    "T4": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "1eda4b5e14157278a6cd22f1900e3108bec6ac71e5e4b9401924979a37373a88",
+      "verified": true
+    },
+    "T4O": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "de1aabb448c771ba76d2f215ecc8ec18204d5ba554fa23444c07499e6275158d",
+      "verified": true
+    },
+    "T5": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "45979e3681e2f1ab8cd573ef8cf3110c4852668df7ec0ca1ab2a8813c004e307",
+      "verified": true
+    }
+  },
+  "track_evaluators_replayed": [
+    "T2",
+    "T2P",
+    "T3",
+    "T3N",
+    "T4",
+    "T4O",
+    "T5"
+  ],
+  "tracks": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "wheel_audit_verified": true
+}

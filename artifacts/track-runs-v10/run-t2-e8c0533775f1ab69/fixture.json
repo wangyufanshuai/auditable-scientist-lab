@@ -1,0 +1,26 @@
+{
+  "cases": [
+    {
+      "case_id": "train-1",
+      "context_value": 4.0,
+      "expected_outcome": 1.0,
+      "intervention_value": 0.0,
+      "split": "train"
+    },
+    {
+      "case_id": "train-2",
+      "context_value": -3.0,
+      "expected_outcome": 5.0,
+      "intervention_value": 2.0,
+      "split": "train"
+    },
+    {
+      "case_id": "holdout-1",
+      "context_value": 99.0,
+      "expected_outcome": 7.0,
+      "intervention_value": 3.0,
+      "split": "holdout"
+    }
+  ],
+  "schema_version": "causal-fixture-v1"
+}

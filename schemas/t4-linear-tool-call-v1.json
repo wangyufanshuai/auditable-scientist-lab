@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/t4-linear-tool-call-v1.json",
+  "title": "T4 exact linear-invariant evaluator call",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider_id", "input_hash", "fixture_path"],
+  "properties": {
+    "provider_id": {"const": "internal-sympy-t4-linear-v1"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "fixture_path": {"type": "string", "minLength": 1}
+  }
+}

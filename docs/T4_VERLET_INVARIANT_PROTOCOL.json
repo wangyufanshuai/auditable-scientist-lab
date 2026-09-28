@@ -1,0 +1,40 @@
+{
+  "schema_version": "t4-verlet-invariant-protocol-v1",
+  "scope": "exact-discrete-velocity-verlet-invariant-not-floating-or-physical-proof",
+  "solver_source": "src/auditable_scientist/tracks/dynamics.py",
+  "solver_source_sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b",
+  "case": {
+    "omega": "3/2",
+    "dt": "1/10",
+    "q": "9/400",
+    "state_names": ["x", "v"],
+    "step_matrix": [
+      ["791/800", "1/10"],
+      ["-14319/64000", "791/800"]
+    ],
+    "invariant_matrix": [
+      ["14319/6400", "0"],
+      ["0", "1"]
+    ],
+    "invariant": "(1-q/4)*omega^2*x^2 + v^2",
+    "positive_definite_condition": "0 < q < 4"
+  },
+  "negative_control": {
+    "solver": "explicit-euler",
+    "step_matrix": [
+      ["1", "1/10"],
+      ["-9/40", "1"]
+    ],
+    "must_fail_exact_invariant": true
+  },
+  "boundaries": {
+    "exact_discrete_invariant_class": true,
+    "floating_implementation_proved": false,
+    "physical_model_validated": false,
+    "general_formal_backend": false,
+    "nonlinear_dynamics_proved": false,
+    "real_data": false,
+    "publication_ready": false,
+    "claim_status": "unverified"
+  }
+}

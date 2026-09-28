@@ -1,0 +1,93 @@
+{
+  "public_release_allowed": false,
+  "pushed": false,
+  "remote": "https://github.com/wangyufanshuai/auditable-scientist-lab",
+  "schema_version": "portfolio-status-v1",
+  "status": "implementing",
+  "tracks": [
+    {
+      "acceptance": "artifacts/acceptance.json",
+      "next_step": "obtain an independently documented cruise force and maneuver history or radiometric product with coverage of the fixed arcs; replace the generic solar-radiation-pressure sensitivity grid with reviewed mission plate/attitude/mass/optical data and an uncertainty model without promoting reconstructed NAV endpoints to scientific holdout",
+      "open_gates": [
+        "external symbolic engine",
+        "mission-domain force and maneuver comparison",
+        "preregistered mission holdout and uncertainty review"
+      ],
+      "combined_package_cli_run": "artifacts/t1-combined-cli-audit-v4.json",
+      "optional_core_orbit_run": "artifacts/t1-core-orbit-run-audit.json",
+      "optional_desat_sensitivity_audit": "artifacts/t1-maven-desat-sensitivity-audit.json",
+      "optional_srp_sensitivity_audit": "artifacts/t1-maven-srp-sensitivity-audit.json",
+      "optional_ops_event_search_audit": "artifacts/t1-maven-ops-event-search-audit.json",
+      "optional_sff_exploratory_audit": "artifacts/t1-maven-sff-exploratory-audit.json",
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T1"
+    },
+    {
+      "acceptance": "artifacts/t2-causal/acceptance.json",
+      "next_step": "resolve the measured workbook's v0 semantics and 30/82 experiment coverage; review supplement rights, then preregister a trial-level physical-model comparison and seek real intervention data for causal identification",
+      "open_gates": [
+        "real interventions",
+        "causal identification",
+        "data rights",
+        "external algorithm source rights",
+        "measurement-column semantics and 30/82 coverage",
+        "preregistered trial-level model comparison and holdout"
+      ],
+      "optional_projectile_source_audit": "artifacts/t2-projectile-source-audit.json",
+      "optional_projectile_model_protocol": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
+      "physical_subtrack": "artifacts/t2-physical/acceptance.json",
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T2"
+    },
+    {
+      "acceptance": "artifacts/t3-dynamics/acceptance.json",
+      "next_step": "seek high-precision long-time convergence beyond the close-approach guard and a rights-cleared mission comparison; do not infer chaos validation from finite trajectory agreement",
+      "open_gates": [
+        "long-horizon/nonintegrable multi-body validation",
+        "real-mission provenance",
+        "long-horizon compute budget"
+      ],
+      "optional_external_run": "artifacts/t3-external-run-audit.json",
+      "optional_horizon_grid_audit": "artifacts/t3-horizon-grid-audit.json",
+      "optional_figure_eight_audit": "artifacts/t3-figure-eight-audit.json",
+      "optional_pythagorean_audit": "artifacts/t3-pythagorean-audit.json",
+      "optional_perturbed_audit": "artifacts/t3-perturbed-audit.json",
+      "optional_perturbed_run": "artifacts/t3-perturbed-run-audit.json",
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "symmetric_nbody_subtrack": "artifacts/t3-nbody/acceptance.json",
+      "track_id": "T3"
+    },
+    {
+      "acceptance": "artifacts/t4-proof/acceptance.json",
+      "next_step": "review a physical model and add independent source-backed validation",
+      "open_gates": [
+        "general formal proof backend",
+        "reviewed physical transition model",
+        "real-world validation"
+      ],
+      "oscillator_subtrack": "artifacts/t4-oscillator/acceptance.json",
+      "optional_verlet_invariant_audit": "artifacts/t4-verlet-invariant-audit.json",
+      "public_release": false,
+      "state": "reproduced-within-scope",
+      "track_id": "T4"
+    },
+    {
+      "acceptance": "artifacts/t5-protocol/acceptance.json",
+      "next_step": "review residual extractor and visual omissions, resolve source-rights scope, and require expert biosafety and human acceptance before operational use",
+      "open_gates": [
+        "independent protocol source and rights",
+        "biosafety review",
+        "human acceptance"
+      ],
+      "optional_pbs_source_audit": "artifacts/t5-pbs-source-audit.json",
+      "optional_pbs_cross_reader_audit": "artifacts/t5-pbs-cross-reader-audit.json",
+      "optional_pbs_source_run": "artifacts/t5-pbs-source-run-audit.json",
+      "public_release": false,
+      "state": "text-demo-within-scope",
+      "track_id": "T5"
+    }
+  ]
+}

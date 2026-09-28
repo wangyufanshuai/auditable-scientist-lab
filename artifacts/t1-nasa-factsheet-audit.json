@@ -1,0 +1,41 @@
+{
+  "benchmark_source_sha256": "c8bd3bf6258b4c5eb3c3555c58dabd4e0d1e9d9cc373a8486a50424a152b4150",
+  "fact_sheet_parameter_hohmann_days": 258.8832388317415,
+  "full_page_bytes_committed": false,
+  "kepler_relative_mu_difference": {
+    "earth": 7.512038862427157e-06,
+    "mars": 0.000196921387402296
+  },
+  "limits": [
+    "Rows and calculations replay offline; the full original pages were not archived or reauthenticated offline.",
+    "Fact-sheet rounded mean elements do not define a mission trajectory or validate transfer accuracy.",
+    "Page-specific source rights, independent ephemeris comparison, and human scientific review remain open."
+  ],
+  "offline_origin_authentication": false,
+  "parameter_sensitivity_days": 0.017479913932106683,
+  "real_data_claim": false,
+  "rounded_axes_million_km": {
+    "earth": "149.598",
+    "mars": "227.956"
+  },
+  "schema_version": "t1-nasa-factsheet-audit-v1",
+  "scientific_validation_claim": false,
+  "script_sha256": "6637a1173432fbb0a325444bfe54f61493053ddc70aca33c0b9beefcea205e5f",
+  "sidereal_period_days": {
+    "earth": "365.256",
+    "mars": "686.980"
+  },
+  "snapshot_sha256": "81799b12136fd0731d9736654fdb03154a32133e48405b37cb23bf06a2433bd6",
+  "solar_mu_km3_s2_from_synthetic_fixture": 132712440018.0,
+  "source_page_sha256": {
+    "earth": "1b06e3ec31249d063d40d1b38837fac89ddcd2f4b25268b38e8a6d5f413e70ef",
+    "mars": "366b0ce9b69cbee370be904956748af954468a41b93dc71a796a986519aa8d74"
+  },
+  "source_rights_status": "unreviewed-page-specific",
+  "source_urls": {
+    "earth": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html",
+    "mars": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+  },
+  "status": "verified-offline-snapshot-only",
+  "synthetic_fixture_hohmann_days": 258.8657589178094
+}

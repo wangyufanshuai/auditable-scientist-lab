@@ -1,0 +1,37 @@
+{
+  "boundaries": {
+    "dynamic_kernel_recomputed_in_replay": false,
+    "mars_center_encounter_validated": false,
+    "mission_claim_verified": false,
+    "publication_ready": false,
+    "real_ephemeris_source_tracked": true,
+    "scientific_holdout": false,
+    "spacecraft_trajectory_validated": false
+  },
+  "policy_denials": {
+    "out_of_scope_path_rejected": true,
+    "wrong_provider_rejected": true
+  },
+  "recorded_at": "2026-09-27T12:18:34.427503+00:00",
+  "relocated_replay_equal": true,
+  "replay": {
+    "checks": [
+      "input_hash",
+      "code_revision",
+      "environment",
+      "seed",
+      "source_files",
+      "evidence_files",
+      "candidate_order",
+      "computational_output"
+    ],
+    "manifest_hash": "8c2cd0ec47cc3d4b85f659ff4f7096b6769443313838709ff32d9f292c751f55",
+    "verified": true
+  },
+  "result_tamper_rejected": true,
+  "run_id": "run-t1-de440s-075f3221475bc496",
+  "run_path": "artifacts/t1-de440s-runs/run-t1-de440s-075f3221475bc496",
+  "schema_version": "t1-de440s-run-audit-v1",
+  "snapshot_tamper_rejected": true,
+  "status": "verified-offline-snapshot-geometry-run-only"
+}

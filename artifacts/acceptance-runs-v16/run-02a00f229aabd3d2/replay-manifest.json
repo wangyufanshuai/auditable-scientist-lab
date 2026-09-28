@@ -1,0 +1,558 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "02a00f229aabd3d2305878bb079fdd23528d8d550e683fee81b6ee7eb3e05d5b",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    }
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://src/auditable_scientist/benchmark/hohmann.py",
+      "sha256": "30c4e965949ceb0d729c7eeba9ffb9caf2121d56e7a28f013e0abcd326f487cb",
+      "bytes": 8605
+    },
+    {
+      "path": "root://src/auditable_scientist/benchmark/study.py",
+      "sha256": "cb25f6c6ea60fd5daa1007045fc6103a3e5d67cd23841487f9aaa9c8162ef9cb",
+      "bytes": 2734
+    },
+    {
+      "path": "root://src/auditable_scientist/tools/dimensions.py",
+      "sha256": "7dcf8439116efe7f9eda28908c29f1d8d61dceea16014c46dfac950e819df580",
+      "bytes": 6298
+    },
+    {
+      "path": "root://src/auditable_scientist/tools/errors.py",
+      "sha256": "6f8661f84ba4f92ec898a6e4f3e560955eaaaede69a0da05ff62249182fcf34e",
+      "bytes": 2013
+    },
+    {
+      "path": "root://src/auditable_scientist/tools/numerical.py",
+      "sha256": "c8bd3bf6258b4c5eb3c3555c58dabd4e0d1e9d9cc373a8486a50424a152b4150",
+      "bytes": 1504
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://src/auditable_scientist/reporting/hohmann_report.py",
+      "sha256": "0366e2953f64977bf9b89a49106ef163aef6af2122c81bc897a2410cd90dc1f8",
+      "bytes": 2853
+    },
+    {
+      "path": "root://src/auditable_scientist/cli.py",
+      "sha256": "ff8d27eac53890065da70571c093d7f23c4df8b374bb38ffbe9d5ec6fd49bfa4",
+      "bytes": 25067
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/adapters/project05.py",
+      "sha256": "5af1666d6180f8fefc5bd211c89b0b8dbadf7bf9e872050625fb15af1bd55c50",
+      "bytes": 3231
+    },
+    {
+      "path": "root://pyproject.toml",
+      "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1",
+      "bytes": 792
+    },
+    {
+      "path": "root://schemas/run.schema.json",
+      "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc",
+      "bytes": 8072
+    },
+    {
+      "path": "root://schemas/hohmann-tool-call-v1.json",
+      "sha256": "33f42677e547499a057ca9a3e55ec8b32f7fc13f76b6f4857f5526abded6c532",
+      "bytes": 345
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "run://dataset.json",
+      "sha256": "58484830a36617896cd1f8a2df645092b2e94048427c05a7c041ed39ccba0213",
+      "bytes": 1691
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://dataset.json",
+      "sha256": "58484830a36617896cd1f8a2df645092b2e94048427c05a7c041ed39ccba0213",
+      "bytes": 1691
+    },
+    {
+      "path": "root://src/auditable_scientist/tools/numerical.py",
+      "sha256": "c8bd3bf6258b4c5eb3c3555c58dabd4e0d1e9d9cc373a8486a50424a152b4150",
+      "bytes": 1504
+    },
+    {
+      "path": "run://project05-snapshot.json",
+      "sha256": "b6a623ba3259f27a73cabc48aaea3073fa13d062c86b494d7c6fd79e3bbf297a",
+      "bytes": 752
+    }
+  ],
+  "candidate_order": [
+    "tof-hohmann-v1",
+    "tof-missing-pi-v1",
+    "tof-radius-sum-v1",
+    "tof-inner-orbit-v1",
+    "tof-outer-orbit-v1"
+  ],
+  "computational_output": {
+    "experiment": {
+      "benchmark_id": "hohmann-mars-transfer-v1",
+      "target": "time_of_flight_days",
+      "dataset_hash": "31df2f8c355f1e68dda1af6fc53848609f3f256bbe63adcde0d2abbf22c2af63",
+      "candidate_set_hash": "a99ed081f76b29cbf8a14255b2cae3181cdac59d225e28765842464bdfac4b85",
+      "candidate_order": [
+        "tof-hohmann-v1",
+        "tof-missing-pi-v1",
+        "tof-radius-sum-v1",
+        "tof-inner-orbit-v1",
+        "tof-outer-orbit-v1"
+      ],
+      "candidates": [
+        {
+          "candidate_id": "tof-hohmann-v1",
+          "expression": "pi*sqrt(((r1+r2)/2)^3/mu)/86400",
+          "source": "internal-bounded-generator",
+          "complexity": 5,
+          "dimensional_status": "valid",
+          "train_predictions": [
+            258.8657589178094,
+            240.07133101889372,
+            196.49539635676476,
+            286.46336159764894,
+            225.22427198301023,
+            335.5098847544377
+          ],
+          "holdout_predictions": [
+            251.21088356985115,
+            294.45740370209495,
+            210.69656676991443
+          ],
+          "train_rmse": 2.8159971914385265e-13,
+          "holdout_rmse": 2.6152091439906184e-13,
+          "train_residuals": [
+            3.979039320256561e-13,
+            -2.8421709430404007e-13,
+            -2.5579538487363607e-13,
+            -5.684341886080802e-14,
+            2.2737367544323206e-13,
+            -3.410605131648481e-13
+          ],
+          "holdout_residuals": [
+            1.4210854715202004e-13,
+            -5.684341886080802e-14,
+            4.263256414560601e-13
+          ],
+          "failed_candidate_count": 0
+        },
+        {
+          "candidate_id": "tof-missing-pi-v1",
+          "expression": "sqrt(((r1+r2)/2)^3/mu)/86400",
+          "source": "internal-bounded-generator",
+          "complexity": 4,
+          "dimensional_status": "valid",
+          "train_predictions": [
+            82.39953025800851,
+            76.4170780526152,
+            62.54642724996063,
+            91.18412002597371,
+            71.6911123807391,
+            106.79611322972178
+          ],
+          "holdout_predictions": [
+            79.96290775724881,
+            93.72870265838834,
+            67.06680018784691
+          ],
+          "train_rmse": 177.8959308450986,
+          "holdout_rmse": 173.4429690042488,
+          "train_residuals": [
+            -176.4662286598005,
+            -163.65425296627882,
+            -133.94896910680438,
+            -195.2792415716753,
+            -153.5331596022709,
+            -228.71377152471624
+          ],
+          "holdout_residuals": [
+            -171.2479758126022,
+            -200.72870104370668,
+            -143.62976658206708
+          ],
+          "failed_candidate_count": 0
+        },
+        {
+          "candidate_id": "tof-radius-sum-v1",
+          "expression": "pi*sqrt((r1+r2)^3/mu)/86400",
+          "source": "internal-bounded-generator",
+          "complexity": 4,
+          "dimensional_status": "valid",
+          "train_predictions": [
+            732.18293419114,
+            679.0242645277604,
+            555.7729089432271,
+            810.2407421887664,
+            637.0304400279595,
+            948.96525865992
+          ],
+          "holdout_predictions": [
+            710.5316771204241,
+            832.8513077133447,
+            595.9398845429226
+          ],
+          "train_rmse": 477.15191807350556,
+          "holdout_rmse": 465.2081975320864,
+          "train_residuals": [
+            473.31717527333103,
+            438.95293350886635,
+            359.2775125864621,
+            523.7773805911174,
+            411.80616804494946,
+            613.455373905482
+          ],
+          "holdout_residuals": [
+            459.32079355057306,
+            538.3939040112497,
+            385.24331777300864
+          ],
+          "failed_candidate_count": 0
+        },
+        {
+          "candidate_id": "tof-inner-orbit-v1",
+          "expression": "pi*sqrt(r1^3/mu)/86400",
+          "source": "internal-bounded-generator",
+          "complexity": 3,
+          "dimensional_status": "valid",
+          "train_predictions": [
+            182.62844917963582,
+            182.62844917963582,
+            155.93090353702883,
+            210.69656676991443,
+            130.6782806371301,
+            240.0713310188938
+          ],
+          "holdout_predictions": [
+            169.10398388820408,
+            196.49539635676476,
+            143.11884404213913
+          ],
+          "train_rmse": 75.87858653248968,
+          "holdout_rmse": 83.47623707285523,
+          "train_residuals": [
+            -76.23730973817317,
+            -57.44288183925818,
+            -40.56449281973619,
+            -75.76679482773457,
+            -94.54599134587991,
+            -95.43855373554422
+          ],
+          "holdout_residuals": [
+            -82.10689968164692,
+            -97.96200734533025,
+            -67.57772272777487
+          ],
+          "failed_candidate_count": 0
+        },
+        {
+          "candidate_id": "tof-outer-orbit-v1",
+          "expression": "pi*sqrt(r2^3/mu)/86400",
+          "source": "internal-bounded-generator",
+          "complexity": 3,
+          "dimensional_status": "valid",
+          "train_predictions": [
+            343.4856944314083,
+            302.5244532829342,
+            240.0713310188938,
+            369.6139935692536,
+            335.5098847544377,
+            441.03919715031395
+          ],
+          "holdout_predictions": [
+            343.4856944314083,
+            404.801220551106,
+            286.46336159764894
+          ],
+          "train_rmse": 84.82645794495555,
+          "holdout_rmse": 93.86338624975544,
+          "train_residuals": [
+            84.61993551359933,
+            62.45312226404019,
+            43.57593466212879,
+            83.15063197160458,
+            110.28561277142768,
+            105.52931239587593
+          ],
+          "holdout_residuals": [
+            92.27481086155731,
+            110.34381684901098,
+            75.76679482773494
+          ],
+          "failed_candidate_count": 0
+        }
+      ],
+      "selected_candidate_id": "tof-hohmann-v1",
+      "gate": {
+        "passed": true,
+        "threshold": 1e-8,
+        "train": {
+          "count": 6,
+          "mae": 2.6053233644537005e-13,
+          "rmse": 2.8159971914385265e-13,
+          "max_abs_error": 3.979039320256561e-13,
+          "residuals": [
+            3.979039320256561e-13,
+            -2.8421709430404007e-13,
+            -2.5579538487363607e-13,
+            -5.684341886080802e-14,
+            2.2737367544323206e-13,
+            -3.410605131648481e-13
+          ]
+        },
+        "holdout": {
+          "count": 3,
+          "mae": 2.0842586915629605e-13,
+          "rmse": 2.6152091439906184e-13,
+          "max_abs_error": 4.263256414560601e-13,
+          "residuals": [
+            1.4210854715202004e-13,
+            -5.684341886080802e-14,
+            4.263256414560601e-13
+          ]
+        },
+        "reason": "holdout RMSE is within threshold"
+      },
+      "baseline": [
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 149597870.7,
+          "r2_km": 227939134.0303053,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 188768502.36515266,
+          "earth_departure_dv_km_s": 2.94468925612437,
+          "mars_arrival_dv_km_s": 2.648895228985996,
+          "total_heliocentric_dv_km_s": 5.593584485110366,
+          "time_of_flight_s": 22366001.57049873,
+          "time_of_flight_days": 258.8657589178094
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 149597870.7,
+          "r2_km": 209437018.98,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 179517444.83999997,
+          "earth_departure_dv_km_s": 2.3864522588388084,
+          "mars_arrival_dv_km_s": 2.1932703912393876,
+          "total_heliocentric_dv_km_s": 4.579722650078196,
+          "time_of_flight_s": 20742163.000032417,
+          "time_of_flight_days": 240.07133101889372
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 134638083.63,
+          "r2_km": 179517444.84,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 157077764.235,
+          "earth_departure_dv_km_s": 2.167723504990196,
+          "mars_arrival_dv_km_s": 2.0169202802640918,
+          "total_heliocentric_dv_km_s": 4.184643785254288,
+          "time_of_flight_s": 16977202.245224476,
+          "time_of_flight_days": 196.49539635676476
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 164557657.77,
+          "r2_km": 239356593.12,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 201957125.445,
+          "earth_departure_dv_km_s": 2.517878797138053,
+          "mars_arrival_dv_km_s": 2.2917945173706578,
+          "total_heliocentric_dv_km_s": 4.809673314508711,
+          "time_of_flight_s": 24750434.44203687,
+          "time_of_flight_days": 286.46336159764894
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 119678296.56,
+          "r2_km": 224396806.05,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 172037551.305,
+          "earth_departure_dv_km_s": 4.731322345274599,
+          "mars_arrival_dv_km_s": 4.0355682938714885,
+          "total_heliocentric_dv_km_s": 8.766890639146087,
+          "time_of_flight_s": 19459377.099332083,
+          "time_of_flight_days": 225.22427198301023
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 179517444.84,
+          "r2_km": 269276167.26,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 224396806.05,
+          "earth_departure_dv_km_s": 2.5951125240964643,
+          "mars_arrival_dv_km_s": 2.3437373203877208,
+          "total_heliocentric_dv_km_s": 4.938849844484185,
+          "time_of_flight_s": 28988054.042783417,
+          "time_of_flight_days": 335.5098847544377
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 142117977.165,
+          "r2_km": 227939134.0303053,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 185028555.59765264,
+          "earth_departure_dv_km_s": 3.3588590252430137,
+          "mars_arrival_dv_km_s": 2.982258373804747,
+          "total_heliocentric_dv_km_s": 6.341117399047761,
+          "time_of_flight_s": 21704620.34043514,
+          "time_of_flight_days": 251.21088356985115
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 157077764.235,
+          "r2_km": 254316380.19,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 205697072.2125,
+          "earth_departure_dv_km_s": 3.2531335142544684,
+          "mars_arrival_dv_km_s": 2.8814527397933425,
+          "total_heliocentric_dv_km_s": 6.134586254047811,
+          "time_of_flight_s": 25441119.679861005,
+          "time_of_flight_days": 294.45740370209495
+        },
+        {
+          "solver_id": "hohmann-analytic-v1",
+          "r1_km": 127158190.095,
+          "r2_km": 201957125.445,
+          "mu_km3_s2": 132712440018.0,
+          "transfer_semimajor_axis_km": 164557657.76999998,
+          "earth_departure_dv_km_s": 3.4833470530905046,
+          "mars_arrival_dv_km_s": 3.1005263605836397,
+          "total_heliocentric_dv_km_s": 6.583873413674144,
+          "time_of_flight_s": 18204183.368920606,
+          "time_of_flight_days": 210.69656676991443
+        }
+      ]
+    },
+    "study": {
+      "research_question": {
+        "question_id": "rq-hohmann-time-of-flight-v1",
+        "text": "Can a bounded symbolic candidate search recover the heliocentric Hohmann transfer time-of-flight expression within a fixed holdout and dimensional gate?",
+        "domain": "orbital-mechanics",
+        "observables": [
+          "time_of_flight_days"
+        ],
+        "assumptions": [
+          "circular coplanar heliocentric orbits",
+          "two-body dynamics",
+          "analytic fixture is the declared reference"
+        ],
+        "dataset_ref": "run://dataset.json",
+        "allowed_tools": [
+          "dimensional-check-v1",
+          "hohmann-analytic-v1",
+          "error-statistics-v1",
+          "internal-bounded-generator"
+        ],
+        "intended_evidence_level": "validated-reproduction"
+      },
+      "hypothesis": {
+        "hypothesis_id": "tof-hohmann-v1",
+        "expression": "pi*sqrt(((r1+r2)/2)^3/mu)/86400",
+        "variables": [
+          "r1",
+          "r2",
+          "mu"
+        ],
+        "units": {
+          "r1": "km",
+          "r2": "km",
+          "mu": "km^3/s^2",
+          "target": "day"
+        },
+        "source": "internal-bounded-generator",
+        "status": "reproduced",
+        "candidate_set_id": "a99ed081f76b29cbf8a14255b2cae3181cdac59d225e28765842464bdfac4b85",
+        "train_split": "train",
+        "holdout_split": "holdout",
+        "complexity": 5,
+        "failed_candidate_count": 0
+      },
+      "experiment_plan": {
+        "plan_id": "plan-hohmann-time-of-flight-v1",
+        "question_id": "rq-hohmann-time-of-flight-v1",
+        "train_split": "train",
+        "holdout_split": "holdout",
+        "seed": 17,
+        "tool_versions": {
+          "dimensional-check": "v1",
+          "hohmann-analytic": "v1",
+          "error-statistics": "v1",
+          "internal-bounded-generator": "v1"
+        },
+        "tolerances": {
+          "max_holdout_rmse_days": 1e-8
+        },
+        "budget": {
+          "max_candidates": 5,
+          "max_tool_calls": 1
+        },
+        "falsification_checks": [
+          "dimensional-consistency",
+          "fixed-holdout-rmse",
+          "candidate-set-replay",
+          "source-snapshot"
+        ],
+        "candidate_set_commitment": "a99ed081f76b29cbf8a14255b2cae3181cdac59d225e28765842464bdfac4b85"
+      }
+    }
+  }
+}

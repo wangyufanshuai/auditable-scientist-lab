@@ -1,0 +1,107 @@
+{
+  "boundaries": {
+    "exact_linear_invariant_class": true,
+    "floating_implementation_proved": false,
+    "general_formal_backend": false,
+    "nonlinear_dynamics_proved": false,
+    "nonnegative_state_for_all_controls": false,
+    "physical_model_validated": false,
+    "publication_ready": false,
+    "real_data": false
+  },
+  "certificates": [
+    {
+      "control_dimension": 1,
+      "residual_control_coefficients": [
+        "0"
+      ],
+      "residual_state_coefficients": [
+        "0",
+        "0"
+      ],
+      "sample_invariant_delta": "0",
+      "sample_next_state": [
+        "1",
+        "4"
+      ],
+      "state_dimension": 2,
+      "system_id": "two-compartment-transfer",
+      "universal_conservation_proved": true
+    },
+    {
+      "control_dimension": 2,
+      "residual_control_coefficients": [
+        "0",
+        "0"
+      ],
+      "residual_state_coefficients": [
+        "0",
+        "0",
+        "0"
+      ],
+      "sample_invariant_delta": "0",
+      "sample_next_state": [
+        "2",
+        "1",
+        "6"
+      ],
+      "state_dimension": 3,
+      "system_id": "three-compartment-exchange",
+      "universal_conservation_proved": true
+    },
+    {
+      "control_dimension": 2,
+      "residual_control_coefficients": [
+        "0",
+        "-1"
+      ],
+      "residual_state_coefficients": [
+        "0",
+        "0",
+        "0"
+      ],
+      "sample_invariant_delta": "-2",
+      "sample_next_state": [
+        "2",
+        "1",
+        "4"
+      ],
+      "state_dimension": 3,
+      "system_id": "leaky-exchange-negative",
+      "universal_conservation_proved": false
+    }
+  ],
+  "input_sha256": "91c95ca1b557eff6a016e956b5de54d0aaf9ca51110de26cb86a28796277dfe1",
+  "method": "SymPy exact rational matrix identity, independently checked with stdlib Fraction",
+  "recorded_at": "2026-09-27T08:32:46.876348+00:00",
+  "schema_version": "t4-linear-formal-audit-v1",
+  "source_files": [
+    {
+      "bytes": 1245,
+      "path": "artifacts/t4-linear-systems-input.json",
+      "sha256": "91c95ca1b557eff6a016e956b5de54d0aaf9ca51110de26cb86a28796277dfe1"
+    },
+    {
+      "bytes": 4591,
+      "path": "scripts/verify_t4_linear_formal.py",
+      "sha256": "26aea112f16d59d65a960695f62389c509978f332ae3b1be53e45a668ae97130"
+    },
+    {
+      "bytes": 7066,
+      "path": "scripts/check_t4_linear_certificate.py",
+      "sha256": "37aa7721518fe634ac9ee75ad68954f77c2122a0190173dc13acc0984fa29d62"
+    },
+    {
+      "bytes": 5407,
+      "path": "src/auditable_scientist/tracks/proof.py",
+      "sha256": "261c1e9184d11864a0fedb845446f88e3f1f7cb37bff8293ff4298cdb8b32863"
+    },
+    {
+      "bytes": 2185,
+      "path": "docs/T4_LINEAR_INVARIANTS.md",
+      "sha256": "889c6b1c120e379af2d882e1f9558895b8c4126188ad69a6afe02f7b608552b5"
+    }
+  ],
+  "status": "verified-exact-linear-class-only",
+  "sympy_version": "1.13.3"
+}

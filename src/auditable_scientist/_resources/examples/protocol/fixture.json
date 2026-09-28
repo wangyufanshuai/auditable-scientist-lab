@@ -1,0 +1,117 @@
+{
+  "documents": [
+    {
+      "document_id": "synthetic-buffer-plan-v1",
+      "provenance_status": "unverified",
+      "source_type": "synthetic-teaching-fixture",
+      "text": "step-1 action=mix reagent=buffer volume=10 uL temperature=22 C duration=5 min\nstep-2 action=mix reagent=water volume=5 uL temperature=24 C duration=10 min\n",
+      "text_sha256": "3eede6a99deaafe03e012779264c81f27f423a4624f1623ac73637fc1db0d9e9"
+    }
+  ],
+  "max_temperature_c": 30.0,
+  "max_total_volume_ul": 20.0,
+  "min_temperature_c": 20.0,
+  "protocol_id": "p-1",
+  "steps": [
+    {
+      "action": "mix",
+      "citations": [
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 17,
+          "excerpt": "mix",
+          "extraction_method": "exact",
+          "field": "action",
+          "start": 14
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 32,
+          "excerpt": "buffer",
+          "extraction_method": "exact",
+          "field": "reagent",
+          "start": 26
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 45,
+          "excerpt": "10 uL",
+          "extraction_method": "exact",
+          "field": "volume_ul",
+          "start": 40
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 62,
+          "excerpt": "22 C",
+          "extraction_method": "exact",
+          "field": "temperature_c",
+          "start": 58
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 77,
+          "excerpt": "5 min",
+          "extraction_method": "exact",
+          "field": "duration_min",
+          "start": 72
+        }
+      ],
+      "duration_min": 5.0,
+      "reagent": "buffer",
+      "step_id": "step-1",
+      "temperature_c": 22.0,
+      "volume_ul": 10.0
+    },
+    {
+      "action": "mix",
+      "citations": [
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 95,
+          "excerpt": "mix",
+          "extraction_method": "exact",
+          "field": "action",
+          "start": 92
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 109,
+          "excerpt": "water",
+          "extraction_method": "exact",
+          "field": "reagent",
+          "start": 104
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 121,
+          "excerpt": "5 uL",
+          "extraction_method": "exact",
+          "field": "volume_ul",
+          "start": 117
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 138,
+          "excerpt": "24 C",
+          "extraction_method": "exact",
+          "field": "temperature_c",
+          "start": 134
+        },
+        {
+          "document_id": "synthetic-buffer-plan-v1",
+          "end": 154,
+          "excerpt": "10 min",
+          "extraction_method": "exact",
+          "field": "duration_min",
+          "start": 148
+        }
+      ],
+      "duration_min": 10.0,
+      "reagent": "water",
+      "step_id": "step-2",
+      "temperature_c": 24.0,
+      "volume_ul": 5.0
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "arc_count": 2,
+  "boundaries": {
+    "independent_observables": false,
+    "maneuver_model": false,
+    "mission_validation": false,
+    "planetary_tide_model": true,
+    "real_mission_reconstructed_states": true,
+    "scientific_holdout": false
+  },
+  "engineering_gates_passed": true,
+  "preregistration_commit": "4b98a57",
+  "protocol_sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394",
+  "recorded_at": "2026-09-27T13:47:25.167855+00:00",
+  "schema_version": "t1-maven-planetary-force-audit-v1",
+  "snapshot_sha256": "cbe072ec2f6f34d32e834852ffee6b652c6946c08499ec30fd75151e4502ef76",
+  "source_files": [
+    {
+      "bytes": 15770,
+      "path": "scripts/verify_t1_maven_planetary_force.py",
+      "sha256": "2f0bbbdb6106c7ad99b7fc77caf910cdbb23626f7457eef48c12c5d1b1361ff0"
+    },
+    {
+      "bytes": 2953,
+      "path": "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+      "sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394"
+    },
+    {
+      "bytes": 1574,
+      "path": "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.md",
+      "sha256": "a869cc750ce80d43029c53f7fb761974466def230d9352d6abbb770b1e89aee8"
+    },
+    {
+      "bytes": 3144,
+      "path": "scripts/fetch_maven_cruise.py",
+      "sha256": "f20acf8066bfee4609a98f9145473a8821351f3a464d765cca99a02aae946755"
+    },
+    {
+      "bytes": 5593,
+      "path": "src/auditable_scientist/adapters/naif_de440s.py",
+      "sha256": "4a4e00875c47e0fd281c22c28464054c0895010d758041c714ae648bcb8107df"
+    },
+    {
+      "bytes": 8209,
+      "path": "src/auditable_scientist/adapters/naif_mars_center.py",
+      "sha256": "4d9d13b96d85d3eac337a8f70a14724746b586b1925278ea6b87ace80fc54c35"
+    }
+  ],
+  "status": "passed-engineering-diagnostic-only"
+}

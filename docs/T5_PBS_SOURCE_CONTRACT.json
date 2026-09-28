@@ -1,0 +1,58 @@
+{
+  "schema_version": "t5-pbs-source-contract-v1",
+  "status": "posthoc-source-intake-not-scientific-validation",
+  "source": {
+    "title": "Phosphate-buffered Saline (PBS)",
+    "author": "Katy M Monteith",
+    "publisher": "protocols.io",
+    "doi": "10.17504/protocols.io.p4rdqv6",
+    "pdf_url": "https://www.protocols.io/view/phosphate-buffered-saline-pbs-p4rdqv6.pdf",
+    "published_date": "2018-05-14",
+    "last_modified_date_in_pdf": "2018-05-14",
+    "protocol_integer_id": 12145,
+    "pdf_bytes": 458059,
+    "pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+    "pdf_pages": 3,
+    "license_declaration": "Creative Commons Attribution License; version not specified in the PDF",
+    "license_location": "PDF page 1",
+    "attribution_required": true,
+    "local_pdf_redistributed": false
+  },
+  "reader": {
+    "package": "pypdf",
+    "version": "6.15.0",
+    "license_expression": "BSD-3-Clause",
+    "text_method": "PdfReader.pages[i].extract_text()"
+  },
+  "anchors": [
+    {"key": "doi", "page": 1, "quote": "10.17504/protocols.io.p4rdqv6"},
+    {"key": "license", "page": 1, "quote": "Creative Commons Attribution License"},
+    {"key": "license_attribution", "page": 1, "quote": "provided the original author and source are credited"},
+    {"key": "self_reported_working", "page": 2, "quote": "We use this protocol and it's working"},
+    {"key": "sds_warning", "page": 2, "quote": "Read appropriate SDS"},
+    {"key": "concentration_branch", "page": 3, "quote": "1x PBS"},
+    {"key": "concentration_alternative", "page": 3, "quote": "10x"},
+    {"key": "ph_alternative", "page": 3, "quote": "or 7.2 if required"},
+    {"key": "acid", "page": 3, "quote": "concentrated"},
+    {"key": "optional_depc", "page": 3, "quote": "DEPC (diethyl pyrocarbonate)"},
+    {"key": "autoclave", "page": 3, "quote": "Autoclave."}
+  ],
+  "review_flags": [
+    "self-reported-working-is-not-independent-validation",
+    "concentration-and-ph-branches-require-selection",
+    "sds-review-required-by-source",
+    "optional-depc-requires-expert-safety-review",
+    "acid-and-autoclave-require-expert-safety-review",
+    "not-mappable-to-teaching-fixture-fields-without-inference"
+  ],
+  "boundaries": {
+    "real_source_document": true,
+    "rights_declaration_present": true,
+    "independent_procedure_validation": false,
+    "complete_safety_review": false,
+    "machine_executable_protocol": false,
+    "human_acceptance": false,
+    "execution_allowed": false,
+    "claim_status": "unverified"
+  }
+}

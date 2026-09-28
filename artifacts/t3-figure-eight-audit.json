@@ -1,0 +1,361 @@
+{
+  "checks": {
+    "angular_momentum": true,
+    "center_of_mass": true,
+    "compute_budget": true,
+    "endpoint_position": true,
+    "endpoint_velocity": true,
+    "energy": true,
+    "finite_three_case_inventory": true,
+    "negative_repulsive_force": true,
+    "one_period_closure": true,
+    "refinement": true,
+    "separation": true
+  },
+  "compute_budget": {
+    "dop853_rhs_calls_total_max": 100000,
+    "fixed_rk4_steps_total_max": 160000
+  },
+  "engineering_gates": {
+    "coarse_to_fine_endpoint_position_error_ratio_min": 3.0,
+    "fine_rk4_absolute_angular_momentum_drift_max": 1e-08,
+    "fine_rk4_center_of_mass_drift_max": 1e-08,
+    "fine_rk4_endpoint_position_error_max": 0.0001,
+    "fine_rk4_endpoint_velocity_error_max": 0.0001,
+    "fine_rk4_relative_energy_drift_max": 1e-05,
+    "minimum_pair_separation_min": 0.25,
+    "negative_repulsive_position_error_min": 0.1,
+    "one_period_published_state_closure_error_max": 0.001
+  },
+  "environment": {
+    "lock_sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+    "numpy_installed_license_sha256": "14256cc3a2c9d32ac284da96b937feb44f72dd90bee2317ac3020166846ad99d",
+    "numpy_source_commit": "bbb76e7d76c3748fb2747fc3d8e06b944005362a",
+    "numpy_source_tag": "v2.2.6",
+    "platform_and_packages": {
+      "implementation": "CPython",
+      "machine": "AMD64",
+      "numpy": "2.2.6",
+      "python": "3.12.3",
+      "scipy": "1.18.1",
+      "system": "Windows"
+    },
+    "scipy_installed_license_sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+    "scipy_source_commit": "c2df8ace0d9859f090e79058b2bd2ffc584f19e6",
+    "scipy_source_tag": "v1.18.1",
+    "wheel_sha256": {
+      "numpy": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "scipy": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2"
+    }
+  },
+  "negative_control_rhs_calls": {
+    "attractive": 632,
+    "repulsive": 518
+  },
+  "negative_repulsive_position_error": 2.55840237105507,
+  "observed_budget": {
+    "dop853_rhs_calls_total": 52489,
+    "fixed_rk4_steps_total": 151200
+  },
+  "preregistration_commit": "4a75872",
+  "protocol_sha256": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d",
+  "recorded_at": "2026-09-27T14:21:52.251141+00:00",
+  "rows": [
+    {
+      "coarse_rk4_endpoint_position_error": 1.8337307594373758e-10,
+      "coarse_rk4_steps": 2400,
+      "coarse_to_fine_error_ratio": 89.38899573236519,
+      "duration": 6.32591398,
+      "fine_rk4_endpoint_position_error": 2.0514054827594787e-12,
+      "fine_rk4_endpoint_positions": [
+        [
+          0.9700043444331292,
+          -0.24308754345087524
+        ],
+        [
+          -0.97000437447935,
+          0.24308751553867725
+        ],
+        [
+          3.004622790066941e-08,
+          2.7912209494239393e-08
+        ]
+      ],
+      "fine_rk4_endpoint_velocities": [
+        [
+          0.46620372395171333,
+          0.4323657205157784
+        ],
+        [
+          0.46620364681094384,
+          0.432365739915077
+        ],
+        [
+          -0.93240737076265,
+          -0.8647314604308532
+        ]
+      ],
+      "fine_rk4_endpoint_velocity_error": 5.9246033778359035e-12,
+      "fine_rk4_sampled_diagnostics": {
+        "absolute_angular_momentum_drift": 1.3455903058456897e-13,
+        "center_of_mass_drift": 4.515950483379505e-15,
+        "linear_momentum_drift": 7.465166365915033e-15,
+        "relative_energy_drift": 4.3851990637401295e-13,
+        "sampled_minimum_pair_separation": 0.6905266274536248
+      },
+      "fine_rk4_steps": 4800,
+      "id": "published-one-period",
+      "opposite_y_velocity_perturbation": 0.0,
+      "periods": 1,
+      "published_state_closure_error": 4.101181031848005e-08,
+      "reference_endpoint_positions": [
+        [
+          0.9700043444334955,
+          -0.24308754345039388
+        ],
+        [
+          -0.9700043744813124,
+          0.24308751553807964
+        ],
+        [
+          3.004781484391983e-08,
+          2.7912316433870155e-08
+        ]
+      ],
+      "reference_endpoint_velocities": [
+        [
+          0.4662037239535858,
+          0.4323657205160804
+        ],
+        [
+          0.4662036468050526,
+          0.4323657399157049
+        ],
+        [
+          -0.9324073707586384,
+          -0.8647314604317846
+        ]
+      ],
+      "reference_inward_threshold_crossings": 0,
+      "reference_rhs_calls": 2486,
+      "reference_sampled_minimum_pair_separation": 0.6905266364252848
+    },
+    {
+      "coarse_rk4_endpoint_position_error": 3.874370397735918e-09,
+      "coarse_rk4_steps": 24000,
+      "coarse_to_fine_error_ratio": 6.653186361357106,
+      "duration": 63.2591398,
+      "fine_rk4_endpoint_position_error": 5.823330637841369e-10,
+      "fine_rk4_endpoint_positions": [
+        [
+          0.9700042138391903,
+          -0.24308766523892275
+        ],
+        [
+          -0.9700045059304908,
+          0.24308739639894691
+        ],
+        [
+          2.920920829587066e-07,
+          2.688405378132794e-07
+        ]
+      ],
+      "fine_rk4_endpoint_velocities": [
+        [
+          0.46620406520054114,
+          0.43236563597355504
+        ],
+        [
+          0.4662033051382962,
+          0.4323658234915279
+        ],
+        [
+          -0.9324073703388299,
+          -0.8647314594650681
+        ]
+      ],
+      "fine_rk4_endpoint_velocity_error": 6.006545080489977e-10,
+      "fine_rk4_sampled_diagnostics": {
+        "absolute_angular_momentum_drift": 1.4460654895742664e-13,
+        "center_of_mass_drift": 3.211248767180353e-13,
+        "linear_momentum_drift": 2.578982908167996e-14,
+        "relative_energy_drift": 1.0566225124078795e-12,
+        "sampled_minimum_pair_separation": 0.690526625705771
+      },
+      "fine_rk4_steps": 48000,
+      "id": "published-ten-period",
+      "opposite_y_velocity_perturbation": 0.0,
+      "periods": 10,
+      "published_state_closure_error": 3.963975413105833e-07,
+      "reference_endpoint_positions": [
+        [
+          0.9700042140542214,
+          -0.24308766498496653
+        ],
+        [
+          -0.9700045057187503,
+          0.24308739653977274
+        ],
+        [
+          2.9166441435288237e-07,
+          2.6844530198397165e-07
+        ]
+      ],
+      "reference_endpoint_velocities": [
+        [
+          0.46620406462343233,
+          0.4323656361400821
+        ],
+        [
+          0.4662033056742143,
+          0.43236582338126206
+        ],
+        [
+          -0.9324073702976516,
+          -0.8647314595213426
+        ]
+      ],
+      "reference_inward_threshold_crossings": 0,
+      "reference_rhs_calls": 24599,
+      "reference_sampled_minimum_pair_separation": 0.6905266356043164
+    },
+    {
+      "coarse_rk4_endpoint_position_error": 3.636361209574477e-09,
+      "coarse_rk4_steps": 24000,
+      "coarse_to_fine_error_ratio": 4.909838747579077,
+      "duration": 63.2591398,
+      "fine_rk4_endpoint_position_error": 7.406274210873992e-10,
+      "fine_rk4_endpoint_positions": [
+        [
+          0.8444825212871848,
+          -0.5365450498943355
+        ],
+        [
+          -0.8451583007158249,
+          0.5354212568131019
+        ],
+        [
+          0.000675779428104664,
+          0.0011237930814363434
+        ]
+      ],
+      "fine_rk4_endpoint_velocities": [
+        [
+          0.578134029998911,
+          0.264725837272321
+        ],
+        [
+          0.5774407982255335,
+          0.2645399893604613
+        ],
+        [
+          -1.155574828224454,
+          -0.5292658266327757
+        ]
+      ],
+      "fine_rk4_endpoint_velocity_error": 8.513824477887318e-10,
+      "fine_rk4_sampled_diagnostics": {
+        "absolute_angular_momentum_drift": 1.6009416015094757e-13,
+        "center_of_mass_drift": 1.9083596269286797e-13,
+        "linear_momentum_drift": 1.8640013087954136e-14,
+        "relative_energy_drift": 1.0595560021579467e-12,
+        "sampled_minimum_pair_separation": 0.6794863417792238
+      },
+      "fine_rk4_steps": 48000,
+      "id": "perturbed-ten-period",
+      "opposite_y_velocity_perturbation": 0.001,
+      "periods": 10,
+      "published_state_closure_error": 0.3191755749449659,
+      "reference_endpoint_positions": [
+        [
+          0.8444825217388526,
+          -0.5365450495168662
+        ],
+        [
+          -0.8451583004966877,
+          0.5354212567502652
+        ],
+        [
+          0.0006757787578172969,
+          0.001123792766406468
+        ]
+      ],
+      "reference_endpoint_velocities": [
+        [
+          0.5781340293361318,
+          0.264725837806714
+        ],
+        [
+          0.5774407987766942,
+          0.2645399891107932
+        ],
+        [
+          -1.1555748281128255,
+          -0.5292658269175112
+        ]
+      ],
+      "reference_inward_threshold_crossings": 0,
+      "reference_rhs_calls": 24254,
+      "reference_sampled_minimum_pair_separation": 0.6796508730071005
+    }
+  ],
+  "schema_version": "t3-figure-eight-audit-v1",
+  "scientific_boundaries": {
+    "chaotic_regime_validated": false,
+    "claim_status": "unverified",
+    "general_nbody_validated": false,
+    "independent_physical_observation": false,
+    "nonintegrable_equations_evaluated": true,
+    "real_mission_validated": false,
+    "source_published_numerical_initial_state": true,
+    "untouched_scientific_holdout": false
+  },
+  "solvers": {
+    "atol": 1e-14,
+    "coarse_steps_per_period": 2400,
+    "event_direction": "inward",
+    "event_min_pair_separation": 0.25,
+    "fine_steps_per_period": 4800,
+    "local": "independent fixed-step Cartesian RK4",
+    "max_step_as_period_fraction": 0.0125,
+    "negative_control": "repulsive gravity at one-quarter published period",
+    "numpy_version": "2.2.6",
+    "reference": "scipy.integrate.solve_ivp:DOP853",
+    "rtol": 1e-12,
+    "scipy_version": "1.18.1"
+  },
+  "source_files": [
+    {
+      "bytes": 18234,
+      "path": "scripts/verify_t3_figure_eight.py",
+      "sha256": "d11a2483fa2d77980ff93ad4c1f06e3a3ce7dce2869776dae471e6029e257ee2"
+    },
+    {
+      "bytes": 3308,
+      "path": "docs/T3_FIGURE_EIGHT_PROTOCOL.json",
+      "sha256": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d"
+    },
+    {
+      "bytes": 1489,
+      "path": "docs/T3_FIGURE_EIGHT_PROTOCOL.md",
+      "sha256": "62d0aaece0a64cfcb3ce8dff57bb7a8197027dcbe4a1b717c5213265e069bbca"
+    },
+    {
+      "bytes": 2177,
+      "path": "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+      "sha256": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5"
+    },
+    {
+      "bytes": 9741,
+      "path": "scripts/verify_t3_external_scipy.py",
+      "sha256": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13"
+    },
+    {
+      "bytes": 385,
+      "path": "requirements-t3-scipy-win-py312.txt",
+      "sha256": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b"
+    }
+  ],
+  "source_paper_sha256": "f470bde538ded751695434f3d67c79fb8257beca58529ae8bf01e0fb2191b16f",
+  "status": "passed-finite-published-figure-eight-numerics-only"
+}

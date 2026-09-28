@@ -1,0 +1,35 @@
+{
+  "schema_version": "t4-linear-systems-input-v1",
+  "systems": [
+    {
+      "system_id": "two-compartment-transfer",
+      "state_names": ["a", "b"],
+      "control_names": ["transfer"],
+      "transition_matrix": [["1", "0"], ["0", "1"]],
+      "control_matrix": [["-1"], ["1"]],
+      "invariant_coefficients": ["1", "1"],
+      "sample_state": ["2", "3"],
+      "sample_control": ["1"]
+    },
+    {
+      "system_id": "three-compartment-exchange",
+      "state_names": ["a", "b", "c"],
+      "control_names": ["transfer_ab", "transfer_bc"],
+      "transition_matrix": [["0", "1", "0"], ["1", "0", "0"], ["0", "0", "1"]],
+      "control_matrix": [["-1", "0"], ["1", "-1"], ["0", "1"]],
+      "invariant_coefficients": ["1", "1", "1"],
+      "sample_state": ["2", "3", "4"],
+      "sample_control": ["1", "2"]
+    },
+    {
+      "system_id": "leaky-exchange-negative",
+      "state_names": ["a", "b", "c"],
+      "control_names": ["transfer_ab", "transfer_bc"],
+      "transition_matrix": [["0", "1", "0"], ["1", "0", "0"], ["0", "0", "1"]],
+      "control_matrix": [["-1", "0"], ["1", "-1"], ["0", "0"]],
+      "invariant_coefficients": ["1", "1", "1"],
+      "sample_state": ["2", "3", "4"],
+      "sample_control": ["1", "2"]
+    }
+  ]
+}

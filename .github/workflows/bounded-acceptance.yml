@@ -1,0 +1,107 @@
+name: bounded acceptance
+
+on:
+  push:
+    branches:
+      - main
+      - publish/integration
+  pull_request:
+    branches:
+      - main
+      - publish/integration
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests / ${{ matrix.os }} / py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: '3.11'
+          - os: ubuntu-latest
+            python-version: '3.12'
+          - os: windows-latest
+            python-version: '3.12'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -e '.[test]' && python -m pip install openpyxl==3.1.5 pypdf==6.15.0
+      - name: Run unit and contract tests
+        run: >
+          python -m pytest -q
+          --ignore=tests/test_adapters.py
+          --ignore=tests/test_artifact_regeneration.py
+          --ignore=tests/test_cli_v3.py
+          --ignore=tests/test_t1_core_orbit_run.py
+          --ignore=tests/test_t1_de440s_run.py
+          --ignore=tests/test_t1_maven_preflight_run.py
+          --ignore=tests/test_t2_independent_run.py
+          --ignore=tests/test_t4_linear_run.py
+          --ignore=tests/test_t5_pbs_source.py
+          --ignore=tests/test_t5_pbs_source_run.py
+      - name: Check tracked text for whitespace errors
+        shell: bash
+        run: git diff --check
+
+  replay-and-wheel:
+    name: Windows 3.12.3 / acceptance + wheel replay
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up recorded replay interpreter
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.3'
+          cache: pip
+      - name: Create isolated replay environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $venv = Join-Path $env:RUNNER_TEMP 'auditable-scientist-replay-venv'
+          python -m venv $venv
+          Add-Content -Path $env:GITHUB_ENV -Value "REPLAY_PYTHON=$venv\Scripts\python.exe"
+      - name: Install the recorded dependency closure
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & $env:REPLAY_PYTHON -m pip install --upgrade pip
+          & $env:REPLAY_PYTHON -m pip install -e '.[test]' -c requirements-replay-win-py312.txt
+      - name: Verify dependency closure
+        run: '& $env:REPLAY_PYTHON -m pip check'
+      - name: Verify committed replay environment
+        run: '& $env:REPLAY_PYTHON scripts/verify_replay_environment.py'
+      - name: Verify T1-T5 acceptance receipts
+        run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
+      - name: Verify optional acceptance projection
+        run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
+      - name: Verify clean wheel installation and replay
+        run: '& $env:REPLAY_PYTHON scripts/verify_wheel_install.py'
+      - name: Upload wheel audit receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-audit-windows-py3123
+          path: artifacts/wheel-audit.json
+          if-no-files-found: error
+
+  release-gate:
+    name: bounded release gate
+    runs-on: ubuntu-latest
+    needs:
+      - tests
+      - replay-and-wheel
+    steps:
+      - name: Report gate completion
+        run: echo "T1-T5 bounded engineering checks passed; scientific/publication gates remain explicit in docs/RELEASE_V0.1.0_BOUNDED.md"

@@ -1,0 +1,67 @@
+{
+  "boundaries": {
+    "archived_spacecraft_states_available": true,
+    "independent_planetary_ephemeris": false,
+    "independent_spacecraft_propagation": false,
+    "mission_validation": false,
+    "publication_ready": false,
+    "scientific_holdout": false
+  },
+  "checks": {
+    "center_transition_observed": true,
+    "direct_chain_consistent": true,
+    "mars_approach_observed": true,
+    "mission_claim_unverified": true,
+    "pds_label_md5_and_size_matched": true,
+    "pinned_sha256_matched": true,
+    "three_declared_samples": true,
+    "wrong_kernel_rejected": true
+  },
+  "kernel_local_paths": {
+    "de440s": "data/naif/de440s.bsp",
+    "mar099s": "data/naif/mar099s.bsp",
+    "maven_cruise": "data/naif/maven_cru_rec_131118_140923_v1.bsp"
+  },
+  "recorded_at": "2026-09-27T13:20:36.346044+00:00",
+  "schema_version": "t1-maven-source-audit-v1",
+  "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
+  "source_files": [
+    {
+      "bytes": 3144,
+      "path": "scripts/fetch_maven_cruise.py",
+      "sha256": "f20acf8066bfee4609a98f9145473a8821351f3a464d765cca99a02aae946755"
+    },
+    {
+      "bytes": 11703,
+      "path": "scripts/verify_t1_maven_source.py",
+      "sha256": "1ba5502f3984e093b87078c4965d8e9100f9395aaa8db8d4aa1780c9dc428f11"
+    },
+    {
+      "bytes": 5593,
+      "path": "src/auditable_scientist/adapters/naif_de440s.py",
+      "sha256": "4a4e00875c47e0fd281c22c28464054c0895010d758041c714ae648bcb8107df"
+    },
+    {
+      "bytes": 8209,
+      "path": "src/auditable_scientist/adapters/naif_mars_center.py",
+      "sha256": "4d9d13b96d85d3eac337a8f70a14724746b586b1925278ea6b87ace80fc54c35"
+    },
+    {
+      "bytes": 3629,
+      "path": "docs/T1_MAVEN_MISSION_SOURCE.md",
+      "sha256": "5de144481041db2b04535018b98d344d36cf9bda72959b7ffb6fae7ff9438a3a"
+    },
+    {
+      "bytes": 100,
+      "path": "requirements-t1-mars-center-win-py312.txt",
+      "sha256": "cccfa91e8f71241c7c39ff3449f7241c2983a0b4be1a6f5b5105df25b441b3d4"
+    }
+  ],
+  "source_rights": {
+    "citation_url": "https://naif.jpl.nasa.gov/naif/credit.html",
+    "product_label_url": "https://naif.jpl.nasa.gov/pub/naif/pds/pds4/maven/maven_spice/spice_kernels/spk/maven_cru_rec_131118_140923_v1.xml",
+    "rules_url": "https://naif.jpl.nasa.gov/naif/rules.html",
+    "unmodified_kernel_redistributed": false
+  },
+  "status": "verified-source-tracked-reconstructed-mission-geometry-only"
+}

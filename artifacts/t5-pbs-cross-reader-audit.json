@@ -1,0 +1,290 @@
+{
+  "anchors": [
+    {
+      "key": "doi",
+      "line": 5,
+      "occurrences": 4,
+      "page": 1
+    },
+    {
+      "key": "license",
+      "line": 22,
+      "occurrences": 1,
+      "page": 1
+    },
+    {
+      "key": "license_attribution",
+      "line": 23,
+      "occurrences": 1,
+      "page": 1
+    },
+    {
+      "key": "self_reported_working",
+      "line": 2,
+      "occurrences": 1,
+      "page": 2
+    },
+    {
+      "key": "sds_warning",
+      "line": 23,
+      "occurrences": 1,
+      "page": 2
+    },
+    {
+      "key": "concentration_branch",
+      "line": 3,
+      "occurrences": 1,
+      "page": 3
+    },
+    {
+      "key": "concentration_alternative",
+      "line": 4,
+      "occurrences": 1,
+      "page": 3
+    },
+    {
+      "key": "ph_alternative",
+      "line": 14,
+      "occurrences": 1,
+      "page": 3
+    },
+    {
+      "key": "acid",
+      "line": 14,
+      "occurrences": 1,
+      "page": 3
+    },
+    {
+      "key": "optional_depc",
+      "line": 23,
+      "occurrences": 1,
+      "page": 3
+    },
+    {
+      "key": "autoclave",
+      "line": 27,
+      "occurrences": 1,
+      "page": 3
+    }
+  ],
+  "boundaries": {
+    "biosafety_review_complete": false,
+    "claim_status": "unverified",
+    "complete_semantic_omission_review": false,
+    "cross_reader_text_coverage": true,
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "independent_procedure_validation": false,
+    "source_pdf_redistributed": false
+  },
+  "cross_reader_contract_sha256": "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a",
+  "extractors": {
+    "pdftotext_binary_distribution_license_reviewed": false,
+    "pdftotext_binary_redistributed": false,
+    "pdftotext_executable_sha256": "c7392e92727abbb54c07662268eef7348e4edd1cd741c264e20f76e757c0b467",
+    "pdftotext_version": "26.02.0",
+    "pypdf_version": "6.15.0"
+  },
+  "negative_controls": {
+    "non_anchor_text_omission_rejected": true,
+    "numbered_step_omission_rejected": true,
+    "safety_heading_omission_rejected": true
+  },
+  "numbered_steps": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "pages": [
+    {
+      "line_count": 30,
+      "line_sha256": [
+        "9afb5517a3ab8afbdb6e4c7da8bd265c5e02961544ad2f00df270dcc8b2c7bc4",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "4cd163e07a55f585e1b17bc4f864be7e6c87f0a01800387129347cd2421a9b77",
+        "6f6aede350c1fdff084cc82845e48c009ece86aa802bb22129577ebf91a9535b",
+        "5cf272a7fa127b9f082ec63b705d29914d5411e254d4591fab202d62b30ccdd8",
+        "7505d315140698c8fdbc83bd550b48e57f688fdf41025d4165fcb3e0db1563ea",
+        "1721dd3b643a4f61bb30b2ba3a23298c3586537cac8a7d15bb1f8570a078a23a",
+        "3e3a83c000f688ad805208f64966fd7c3ea7daa9354fdb29ae45c65631160a4c",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "b1eff8035a9afc89c23e6582e003f7ef893b0b9c1a8209825552c04f583ac88a",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "077c83c57f23bbcd873a37390f66f6dad1e257fe5c26a237fedfc41307e8f3f9",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "5a6932786a257ce846a29081841aa865f6cd3050054c102f4abbd69e73a0f8d8",
+        "85a5786e12bad675779425851530d752a11cfb112e5ff37f95ec6995df04fd22",
+        "0b6780bd21b0206e1e07244f3a9ab1dc6b8fe51e0d0261b8eb1dd33d8838afcd",
+        "db14ef13b26907e30f317f21ef246c48d0bf62907bed03ee9222ffe84d550685",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "4070fa49419e850b1578bedeb9e39ecfbd772719a79b3afb5e2526efbb32b597",
+        "841b65940c409359097e155cacbe0661b79e9b14c4ba0062c5a7c670f605811d",
+        "5cf272a7fa127b9f082ec63b705d29914d5411e254d4591fab202d62b30ccdd8",
+        "e67c3ca95b56dc2953d6b68ee1e7a8c6b3e27669969aac738d72a8af8ea7c558",
+        "7479550df5485b040b6f4130b7467766e92c28b839351b9fa2bbb6a99f39e911",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "e8f3f215d5afa49bb56557e4630c217721edd8fc5b2ed86d95271891b68e17db",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "9afb5517a3ab8afbdb6e4c7da8bd265c5e02961544ad2f00df270dcc8b2c7bc4",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "0d7f0e336166042f8cc9e4c20ae427ba367c279d6e3dfd1bd7247b0fbce61d50",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      "page": 1,
+      "poppler_ascii_tokens": 138,
+      "poppler_only_tokens": 7,
+      "poppler_text_sha256": "e1babafdd40ccd03374262a1ca0c0c14ff1649132c48da9443c794c90778ac77",
+      "pypdf_ascii_tokens": 137,
+      "pypdf_only_tokens": 6,
+      "pypdf_text_sha256": "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+      "shared_ascii_tokens": 131,
+      "shared_fraction": 0.949275
+    },
+    {
+      "line_count": 32,
+      "line_sha256": [
+        "f56e5ab4ceb43a852c25833be6b6f1a50b103e4cb7667f118bca3340cace57bf",
+        "321d47c7d6bab29368b39fda6b31cfb5c05b75191ad09d5b1f15b9918ac5a313",
+        "707926f1be19bf5cc57304a8cc5f58d8796c6e1a4bb778b8637b26d923d84c72",
+        "ba42ac058cd9df6af164353c3c0f5e478603cb8d46b6634786fde2234d0b7fbf",
+        "0f698d8f745ed879d4e013109ee7092bef3148fc16a673a7697f47d13eff97aa",
+        "9eccca24cc3a029603f2d0329fadb787474e30e037998d8e62ffd3e9661f2816",
+        "a7d5a2b5f2583a797d75fd19fefd45e5373a4e295ff1d6393c692a266581b247",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "d21b4a64a2d8656a0fdf7ab2e89a49164ac504686cfa2a3d442e87c209286330",
+        "399d157bb22cc2fe2ec26ce1b47622caa3ac81cb44e165c6e6750100a5390f27",
+        "fb40f2dbbe5e82b97b97339e54e1502a89a18108caa80b29d962f168c2136e28",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "fd10a146e9625bfd3f69639eeb5fbee0eae7e4633222f1ee3d3d36395844303e",
+        "64b5791a58e5eb9f2a28716f28b16488826a17e8547b50fda34ec261dee77c1a",
+        "659dca594e41b45ac6e507afde6ebff61e7de7f5936e52adc1609806e31d37ec",
+        "6ccd5a2fd56ceb31b4f770358f98da402dd1359137a8de858bda2008a8e16e37",
+        "1c2dd45ac78ac1369b99495ee18e00f75e12ad2cd1d6bb82fc2fa7b1ebd03f86",
+        "a2ad338d9013b0bdb0a6ea7806af054b99d04158e51685efb92f193590c63160",
+        "e7327215a84c41531ad9340aac2c4393256d59855b34fc3e9c0606ea5029b7e3",
+        "9df2e0b76ae741f6142a3e1aed5bf1ea5c45a1f6301832618837996b9f68959a",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "add305c7c8398ea2beaeacbdb42f09a9e8dd543f55a53e0a15aa928fb0db9160",
+        "41b479c058761a6a2b9c238e66bce9d96221f72aa0047dec1e2230c83ef77ee9",
+        "923529206472f631986f35fb7142b7915169378f7d4ed89ef456f0e5c20af10d",
+        "3a4dec917d3e0edf45af294deed22eee1677b687e258dcfdf7f3357c9d8282e9",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "e8f3f215d5afa49bb56557e4630c217721edd8fc5b2ed86d95271891b68e17db",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "9afb5517a3ab8afbdb6e4c7da8bd265c5e02961544ad2f00df270dcc8b2c7bc4",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "484aa6ccd17c9fe96eb955b9b56ed0c883b275301479deec1b817afe2abdaf72",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      "page": 2,
+      "poppler_ascii_tokens": 185,
+      "poppler_only_tokens": 10,
+      "poppler_text_sha256": "11e64a570fb7a8b30710c725edb78ae1ede071674e66a6429500c5b21ac2fb69",
+      "pypdf_ascii_tokens": 180,
+      "pypdf_only_tokens": 5,
+      "pypdf_text_sha256": "c66b73af18b56377ea17a4e4a46c34a6538f8639cc96f98cc5dd13b03d18efda",
+      "shared_ascii_tokens": 175,
+      "shared_fraction": 0.945946
+    },
+    {
+      "line_count": 34,
+      "line_sha256": [
+        "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "6e9be05da153403ca1f7b452cbbaecf31549c32c420c2430b556d1a02264792d",
+        "b6be764ac6fb922b969f226312d9b990f209e00aa9af023eb96bbb80e61b6f10",
+        "648bba64a117ca973ecc4ceac09fe7333ec2818b19eca19401a68ce31976803f",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "a5610dc6d579ebd9dd048327d503cb1676e81a6b709987dba521f703a9f06f5e",
+        "717c96243626fa04195dfdc4f3a39fe8681503f2c6cfc68ec0e725c9afa67038",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ca57b3f5c6d6c571a7ea90d72158343923ea896a689d3703a7a69dc607931363",
+        "e9a8d65272ae0394d9bf91c0f76bfea392b9a2f283befcf22067adcf76c34815",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "7ebf59da292888b2fb3208be48b65b068ec8f17d122a52409732d995a2e1648d",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "8690c4742148241c75ad396545ba0d2d17a0079267e163929e0c320db535e6c8",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "d0749589bf7061ef0baa8d198c768c7fdc46036cff51cef07746c5bab7123dab",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "e8f3f215d5afa49bb56557e4630c217721edd8fc5b2ed86d95271891b68e17db",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "9afb5517a3ab8afbdb6e4c7da8bd265c5e02961544ad2f00df270dcc8b2c7bc4",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "e86574df7434a3b185fb0ee23d093e6815e565798898627fd4842d3fd36d0b26",
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      "page": 3,
+      "poppler_ascii_tokens": 156,
+      "poppler_only_tokens": 1,
+      "poppler_text_sha256": "005d205718a94dea9c33415478ae4d515ae9ebf2b36e136640a1dc72ec5b1fd7",
+      "pypdf_ascii_tokens": 157,
+      "pypdf_only_tokens": 2,
+      "pypdf_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "shared_ascii_tokens": 155,
+      "shared_fraction": 0.987261
+    }
+  ],
+  "recorded_at": "2026-09-28T03:37:03.054756+00:00",
+  "schema_version": "t5-pbs-cross-reader-audit-v1",
+  "sections": [
+    {
+      "key": "citation",
+      "line": 20,
+      "page": 1
+    },
+    {
+      "key": "abstract",
+      "line": 9,
+      "page": 2
+    },
+    {
+      "key": "materials",
+      "line": 13,
+      "page": 2
+    },
+    {
+      "key": "safety",
+      "line": 22,
+      "page": 2
+    }
+  ],
+  "source_contract_sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61",
+  "source_files": [
+    {
+      "bytes": 10658,
+      "path": "scripts/verify_t5_pbs_cross_reader.py",
+      "sha256": "138df4bbeeaff24ada266b8b6592eeacaa7ff315d8f2388c6ea226a235fe358a"
+    },
+    {
+      "bytes": 2022,
+      "path": "docs/T5_PBS_CROSS_READER_CONTRACT.json",
+      "sha256": "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
+    },
+    {
+      "bytes": 2537,
+      "path": "docs/T5_PBS_SOURCE_CONTRACT.json",
+      "sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61"
+    },
+    {
+      "bytes": 6878,
+      "path": "scripts/verify_t5_pbs_source.py",
+      "sha256": "4cdf836a8b5141563392ef8122a224f3947ff9fee4c44c01e9b8019483cfb16f"
+    }
+  ],
+  "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+  "status": "verified-three-page-cross-reader-text-coverage-only"
+}

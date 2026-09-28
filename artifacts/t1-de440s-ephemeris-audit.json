@@ -1,0 +1,67 @@
+{
+  "boundaries": {
+    "external_ephemeris_model_used": true,
+    "mars_center_state_available": false,
+    "mission_trajectory_validated": false,
+    "publication_ready": false,
+    "real_ephemeris_source_tracked": true,
+    "scientific_holdout": false,
+    "spacecraft_trajectory_propagated": false
+  },
+  "checks": {
+    "finite_dated_geometry": true,
+    "fixed_departure_dates": true,
+    "mission_claim_unverified": true,
+    "official_md5_matched": true,
+    "pinned_sha256_matched": true,
+    "reader_and_frame_explicit": true,
+    "wrong_kernel_rejected": true
+  },
+  "kernel_local_path": "data/naif/de440s.bsp",
+  "kernel_source": {
+    "bytes": 32726016,
+    "kernel": "de440s.bsp",
+    "md5": "3917ee56769db332790c751e2168843d",
+    "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+    "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp"
+  },
+  "recorded_at": "2026-09-27T11:51:01.192856+00:00",
+  "schema_version": "t1-de440s-ephemeris-audit-v1",
+  "snapshot_sha256": "55dd2231455d91ed14130c4e20922f273cdf63696bae104b12630b3fe26b7e8c",
+  "source_files": [
+    {
+      "bytes": 6100,
+      "path": "scripts/verify_t1_de440s_ephemeris.py",
+      "sha256": "49d6ca87d1a499405a08933f61adf68f446e0cfc74335cc0b5715b12574722d0"
+    },
+    {
+      "bytes": 2769,
+      "path": "scripts/fetch_de440s.py",
+      "sha256": "d18c0cdaa53be1d63a3e62e2b689ae2b766c50a0a978c073bcf08781cd1d7b87"
+    },
+    {
+      "bytes": 5593,
+      "path": "src/auditable_scientist/adapters/naif_de440s.py",
+      "sha256": "4a4e00875c47e0fd281c22c28464054c0895010d758041c714ae648bcb8107df"
+    },
+    {
+      "bytes": 2727,
+      "path": "docs/T1_DE440S_EPHEMERIS.md",
+      "sha256": "fa4b619698c6ffc416d2e571bda3f158a204d1cf20a0acf531e81cd6fbba87e3"
+    },
+    {
+      "bytes": 95,
+      "path": "requirements-t1-de440s-win-py312.txt",
+      "sha256": "5c2c232980be246f2bda78295b25921067ba6f3fca427f7f06f2c43329e0d6ff"
+    }
+  ],
+  "source_rights": {
+    "applies_to_unrelated_sources": false,
+    "checksum_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/aa_checksums.txt",
+    "kernel_redistributed_in_repository": false,
+    "redistribution": "permitted only for unmodified NAIF-distributed kernels",
+    "rules_url": "https://naif.jpl.nasa.gov/naif/rules.html",
+    "use": "NAIF kernels may be downloaded and used by anyone, subject to NAIF rules"
+  },
+  "status": "verified-source-tracked-geometry-only"
+}

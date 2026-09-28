@@ -1,0 +1,416 @@
+{
+  "article": {
+    "article_license_declaration": "Creative Commons Attribution 4.0 licence; attribution to authors, title, journal citation and DOI required",
+    "article_number": "045024",
+    "article_url": "https://iopscience.iop.org/article/10.1088/1361-6552/add2c5",
+    "doi": "10.1088/1361-6552/add2c5",
+    "first_author": "Fabian B Wadsworth",
+    "journal": "Physics Education",
+    "paper_reported_experiments": 82,
+    "paper_stated_launch_speed_upper_bound_m_s": 6.0,
+    "published_date": "2025-06-10",
+    "repository_pdf_url": "https://epub.ub.uni-muenchen.de/132838/1/Wadsworth_2025_Phys._Educ._60_045024.pdf",
+    "supplement_listing_rights_note": "Supplementary files are published under license by IOP Publishing Ltd; unless otherwise specified, rights belong to authors. The page also displays the article CC BY 4.0 declaration.",
+    "supplement_listing_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data",
+    "supplement_redistribution_rights_confirmed": false,
+    "title": "Projectile motion: experimental datasets and classroom exercises",
+    "velocity_workflow_note": "The article says the initial velocity is measured with an in-built light gate accurate to within 0.1 m/s, but is also treated as a least-squares fitting parameter; it says the supplementary file presents results using the measured initial velocity.",
+    "volume": 60,
+    "workbook_v0_role_mapping": "The workbook header is v0 (m/s), but the file does not identify whether each value is the light-gate reading, the fitted value, or a processed copy; mapping remains unresolved."
+  },
+  "article_page_text_sha256": [
+    "627ce3ccbb4cfdc51e52a8599c0b680752ff971db042efdf5384021888724003",
+    "35d65373402a937e9f7db4c7f4d8f3399756b0d7d6f2492145e69a6a2f788119",
+    "3942e1137e2481cdb8b196b745bc4597d0834cd7ddd5b1f15e222bfd4e4aeac0",
+    "016364418cc9e11d47abe4c770ef15146a40a6cfd1fbaa29a56d1192f1f02b6e",
+    "e847839f9be272b78f895414f1df040b6401025029aec540939504b955861812",
+    "b860d5a57543abeb12aa160aecfb1d613c670d181e2e2390200e0f7365e1c2ac",
+    "f413551f91c2b65f6657ece9fe29fb581ae1bb4f4765ee34e4668976290897f7",
+    "1ec2e156a07d52d26e03127f04b6b4970edf2f2ef79617298f64015fc1a01f8a",
+    "3e8bf51e580af19c7a73eb375330b260cec0c270dec4580777c107cb84c302de",
+    "c06701fe2f2f99c26c9148e058c59b434f2b669ff6c34418349286474ed0a442",
+    "3959d36624a50061bfa4186cd2b54f9aeefc234659469834741561ac0dc7de46",
+    "cd771e7f0e0666689d5abe7782aaad7dd00ffe32b51fb6c4096050901b982a58",
+    "85ceb986509b071b7b163ed3c1fff950486e9f007723b128d30183e900654050",
+    "8517b450f8120f9201b5d44fa5d428e35fe06072c4abd03bf0229b034d19b392",
+    "6908442532420eed5c3d7d8080f4b62924fc881e358e178d903620cabdc09e52",
+    "6b61cbd81ce09e38e5a57bfa3393a43fc364b4b3e49bae5ca8ba56eea325638b",
+    "5938242d339727897fb4be50c4f788d386349cd763d70e1ade18d86a30f9de88",
+    "ca26f9459ff62d73ecb90a9335857e50849b15224279ba4ebead548cd15dc553",
+    "ea4337892f7b4923e832d1f820b6f07cc8402baa1fb5a668b1263ce91a654ba6"
+  ],
+  "boundaries": {
+    "causal_effect_identified": false,
+    "claim_status": "unverified",
+    "complete_reported_experiment_set": false,
+    "physical_model_validated": false,
+    "publication_ready": false,
+    "research_candidate": false,
+    "scientific_holdout": false,
+    "source_tracked_real_measurements": true,
+    "supplement_rights_reviewed": true,
+    "velocity_column_semantics_reviewed": false
+  },
+  "contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
+  "local_file_fingerprints": [
+    {
+      "bytes": 1526397,
+      "filename": "Wadsworth_2025_Phys_Educ_60_045024.pdf",
+      "redistributed": false,
+      "role": "article_pdf",
+      "sha256": "a07fc6d2ccaa045bbfaf7e8ed19d2abeea0c7110d7620f7a3e128ade0e410389"
+    },
+    {
+      "bytes": 17064,
+      "filename": "pedadd2c5supp1.xlsx",
+      "redistributed": false,
+      "role": "measured_trajectories",
+      "sha256": "309d3b3ced687e9bc0da50ece7d68f4f758b7749444fc5f95c7ac073a875d70b"
+    },
+    {
+      "bytes": 103241,
+      "filename": "pedadd2c5supp2.xlsx",
+      "redistributed": false,
+      "role": "numerical_spreadsheet",
+      "sha256": "cf7c12132d382aec300f34e2ec7ec05b49795dea95fdccedd1bfeb582e760889"
+    }
+  ],
+  "measured_inventory": {
+    "distinct_angles": 7,
+    "distinct_declared_speeds": 12,
+    "observed_declared_speed_above_paper_bound_trials": [
+      4,
+      5,
+      6,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      23,
+      24
+    ],
+    "sample_count": 179,
+    "samples_per_trial_max": 9,
+    "samples_per_trial_min": 3,
+    "trial_count": 30,
+    "trials": [
+      {
+        "angle_degrees": 25.0,
+        "declared_v0_m_s": 5.45,
+        "samples": 6,
+        "time_max_s": 0.4533549944300037,
+        "time_min_s": -0.02164500556999593,
+        "trajectory_sha256": "631db74d9c8f5ee76ff4ba9e2abe6a0b965f3edaaf8238ad5264725f80ca1f5b",
+        "trial_id": 2
+      },
+      {
+        "angle_degrees": 25.0,
+        "declared_v0_m_s": 5.4,
+        "samples": 6,
+        "time_max_s": 0.4278303558824914,
+        "time_min_s": -0.007169644117508644,
+        "trajectory_sha256": "7117b3d4338001542cd62733e2163a673aeeb4b8b817be02877ccfcf36598795",
+        "trial_id": 3
+      },
+      {
+        "angle_degrees": 25.0,
+        "declared_v0_m_s": 6.2,
+        "samples": 5,
+        "time_max_s": 0.4475954694559634,
+        "time_min_s": 0.04759546945596336,
+        "trajectory_sha256": "d13c628661bddc8748ee7d7e7dac6cab68886faf8a01e288b24d3577758ab666",
+        "trial_id": 4
+      },
+      {
+        "angle_degrees": 25.0,
+        "declared_v0_m_s": 6.3,
+        "samples": 5,
+        "time_max_s": 0.45135965445918,
+        "time_min_s": 0.05135965445917995,
+        "trajectory_sha256": "4c753de679a4b58bd8ca4ede1d80882321b3b0303e710ecd2592d32c1e8f9a4d",
+        "trial_id": 5
+      },
+      {
+        "angle_degrees": 25.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4248225691980128,
+        "time_min_s": 0.02482256919801278,
+        "trajectory_sha256": "515f0de94d2b5b13c984e84e8ada6d765b25b51c1f9fa07875a31887d7dba736",
+        "trial_id": 6
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 5.7,
+        "samples": 7,
+        "time_max_s": 0.5419962835147332,
+        "time_min_s": 0.008662950181399509,
+        "trajectory_sha256": "9be03b24c729a4995ad3f1a3062b184198f9e60401719701cd15b5863b2e38bf",
+        "trial_id": 7
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 5.4,
+        "samples": 7,
+        "time_max_s": 0.5258459208481128,
+        "time_min_s": 0.009179254181446161,
+        "trajectory_sha256": "626aa5b5cf422738b4f7245fc99dd7e32b244913e07668ee6973a2f04013783f",
+        "trial_id": 8
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 5.4,
+        "samples": 7,
+        "time_max_s": 0.5240342527285589,
+        "time_min_s": 0.007367586061891807,
+        "trajectory_sha256": "72ef6f2d3f0ecb3911bd9a1b4411c252009d98d142407c28f8a8370762bbb13b",
+        "trial_id": 9
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4611947466918402,
+        "time_min_s": 0.06119474669184015,
+        "trajectory_sha256": "5035b897005ed4dacaba426644871bbb8618d603e18172d6bdfcd11fe6be859e",
+        "trial_id": 10
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4588057951595344,
+        "time_min_s": 0.05880579515953438,
+        "trajectory_sha256": "c02bb261914fc4f4cc44880b8b478ba6a8ae979d8f1c54a269aac3963c21c569",
+        "trial_id": 11
+      },
+      {
+        "angle_degrees": 35.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4619188954298739,
+        "time_min_s": 0.06191889542987389,
+        "trajectory_sha256": "da42036304c6f543f51fff785d0f285610958a4d7cb2abb37718bb2ac28cdec0",
+        "trial_id": 12
+      },
+      {
+        "angle_degrees": 37.5,
+        "declared_v0_m_s": 6.35,
+        "samples": 5,
+        "time_max_s": 0.4599252897639995,
+        "time_min_s": 0.05992528976399945,
+        "trajectory_sha256": "c027218982bf03a2a52e18d5a4901e88b89c56445bedf2532addb0fe83c70e4a",
+        "trial_id": 13
+      },
+      {
+        "angle_degrees": 37.5,
+        "declared_v0_m_s": 6.35,
+        "samples": 5,
+        "time_max_s": 0.4599126455182975,
+        "time_min_s": 0.05991264551829746,
+        "trajectory_sha256": "6ccf461649e44cc7d60e96dbfca23bb6dea6e29e380b4d0f064536f354605bdd",
+        "trial_id": 14
+      },
+      {
+        "angle_degrees": 37.5,
+        "declared_v0_m_s": 6.4,
+        "samples": 6,
+        "time_max_s": 0.5356414709657933,
+        "time_min_s": 0.03564147096579325,
+        "trajectory_sha256": "cc96fa67a5c3fab8280946362251ba41816c310f1ba1856de592b2f31d4f1ee6",
+        "trial_id": 15
+      },
+      {
+        "angle_degrees": 40.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4654624738540079,
+        "time_min_s": 0.06546247385400787,
+        "trajectory_sha256": "0e792dbcdc389b38d9a0a75ba07df7cef3007dd4a67096c5ee27b8f8171c2a2e",
+        "trial_id": 16
+      },
+      {
+        "angle_degrees": 40.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 6,
+        "time_max_s": 0.5430661724963324,
+        "time_min_s": 0.04306617249633233,
+        "trajectory_sha256": "363b38a633fc16bc006ed4c6842a236543b0e4f1a90fd48516e91db427ac6026",
+        "trial_id": 17
+      },
+      {
+        "angle_degrees": 40.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 5,
+        "time_max_s": 0.4692707699264335,
+        "time_min_s": 0.0692707699264335,
+        "trajectory_sha256": "188035100bfe5808be5b3d5fab9ca566566daf1160a1f2716b590de9aa7eadd6",
+        "trial_id": 18
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 5.5,
+        "samples": 8,
+        "time_max_s": 0.649819979837742,
+        "time_min_s": -0.0501800201622582,
+        "trajectory_sha256": "75b0aaccb2dde324bc07947de346e5d8596de46ece2576aa49b84a0289b66f66",
+        "trial_id": 19
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 5.5,
+        "samples": 8,
+        "time_max_s": 0.6777614206192208,
+        "time_min_s": -0.02223857938077911,
+        "trajectory_sha256": "ddfd4ddd3daba287827f1788368ed8d715522077e1a06fce081df8375acb2003",
+        "trial_id": 20
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 5.5,
+        "samples": 7,
+        "time_max_s": 0.6030075523975509,
+        "time_min_s": 0.003007552397550795,
+        "trajectory_sha256": "9547e7899da0b9fa6beefe6817089de74fcd36b3ac0e85090268a72c81895888",
+        "trial_id": 21
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 6,
+        "time_max_s": 0.565632838316678,
+        "time_min_s": 0.06563283831667795,
+        "trajectory_sha256": "94efd78b424c485744b7275023188e45812d26d213614c6dc7e1ae2b6f4b89ff",
+        "trial_id": 22
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 6,
+        "time_max_s": 0.565632838316678,
+        "time_min_s": 0.06563283831667795,
+        "trajectory_sha256": "dd8681a999dc0c0903c2df52c6701900ad02f5cba7e6f8d56bb6fbb4b9793edf",
+        "trial_id": 23
+      },
+      {
+        "angle_degrees": 45.0,
+        "declared_v0_m_s": 6.4,
+        "samples": 6,
+        "time_max_s": 0.5671424065604794,
+        "time_min_s": 0.06714240656047943,
+        "trajectory_sha256": "220afb76f81fa998049be15c63d4850d923816075cc4fe4b5bc0e7ac6af9234a",
+        "trial_id": 24
+      },
+      {
+        "angle_degrees": 50.0,
+        "declared_v0_m_s": 5.5,
+        "samples": 8,
+        "time_max_s": 0.6785344283006947,
+        "time_min_s": -0.0214655716993053,
+        "trajectory_sha256": "d11b23de9a424dc4fdfd66d5acc951fea10db8dd7d0f754a622e1cef0b965f83",
+        "trial_id": 25
+      },
+      {
+        "angle_degrees": 50.0,
+        "declared_v0_m_s": 5.5,
+        "samples": 7,
+        "time_max_s": 0.583783783783784,
+        "time_min_s": -0.01621621621621561,
+        "trajectory_sha256": "cbab07c84b8320f6a8365de83e48afa68a224834817ca4bbc8e5761dd5db8962",
+        "trial_id": 26
+      },
+      {
+        "angle_degrees": 55.0,
+        "declared_v0_m_s": 5.1,
+        "samples": 9,
+        "time_max_s": 0.7645610383078598,
+        "time_min_s": 0.00456103830785981,
+        "trajectory_sha256": "9443e335905e4838e87796dd5135b78987fcfaf40deedc1696fa7c336fde0c71",
+        "trial_id": 27
+      },
+      {
+        "angle_degrees": 55.0,
+        "declared_v0_m_s": 5.0,
+        "samples": 9,
+        "time_max_s": 1.318500300180108,
+        "time_min_s": -0.009499699819892182,
+        "trajectory_sha256": "ef3598c0c84f579ef849e0108262f2a5b7307048931d9996ba839370fead8313",
+        "trial_id": 28
+      },
+      {
+        "angle_degrees": 55.0,
+        "declared_v0_m_s": 5.8,
+        "samples": 3,
+        "time_max_s": 0.2864607187923541,
+        "time_min_s": 0.08646071879235406,
+        "trajectory_sha256": "7f9f99dddba4991ecf465ecc96caed7b627e7e65e7aa91b7597b6e7e5d1d8bc3",
+        "trial_id": 29
+      },
+      {
+        "angle_degrees": 55.0,
+        "declared_v0_m_s": 5.8,
+        "samples": 3,
+        "time_max_s": 0.2879345123610264,
+        "time_min_s": 0.08793451236102641,
+        "trajectory_sha256": "f18474aaa9e38f9e200ffd853c8f64b621b945cc9090bcb5843143c8757131a3",
+        "trial_id": 30
+      },
+      {
+        "angle_degrees": 55.0,
+        "declared_v0_m_s": 5.9,
+        "samples": 4,
+        "time_max_s": 0.3837329838253254,
+        "time_min_s": 0.08373298382532543,
+        "trajectory_sha256": "f5aac2f4ee7a9546add95bcdca2df7a5a53feaec52f3ae01d4f232a103c8acb0",
+        "trial_id": 31
+      }
+    ]
+  },
+  "negative_controls": {
+    "changed_within_trial_input_rejected": true,
+    "duplicate_time_rejected": true,
+    "missing_sample_rejected": true,
+    "nonfinite_measurement_rejected": true
+  },
+  "numerical_spreadsheet": {
+    "admitted_as_observations": false,
+    "formula_cells": 3507
+  },
+  "reader": {
+    "pdf_package": "pypdf",
+    "pdf_version": "6.15.0",
+    "xlsx_package": "openpyxl",
+    "xlsx_version": "3.1.5"
+  },
+  "recorded_at": "2026-09-28T04:57:18.470082+00:00",
+  "rights_review": {
+    "article_license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "excerpt": "Supplementary data files are published under license by IOP Publishing Ltd. Unless otherwise specified, any and all rights in supplementary data belong to the author(s). Original content from this work may be used under the terms of the Creative Commons Attribution 4.0 license. Any further distribution of this work must maintain attribution to the author(s) and the title of the work, journal citation and DOI.",
+    "http_status": 200,
+    "response_bytes_utf8": 75879,
+    "response_sha256": "0751afb6fda85da2f612213946b30fb94b35684666bc36a8f9d0e0e804385474",
+    "retrieved_at_utc": "2026-09-28",
+    "review_status": "rights-language-reviewed-raw-supplement-redistribution-not-confirmed",
+    "source_url": "https://beta.iopscience.iop.org/article/10.1088/1361-6552/add2c5/data"
+  },
+  "schema_version": "t2-projectile-source-audit-v1",
+  "source_files": [
+    {
+      "bytes": 12948,
+      "path": "scripts/verify_t2_projectile_source.py",
+      "sha256": "e0881d0099f1bfbf145655e74d3199b6f2dc2e233643d6a54fb63b2bdcac57cc"
+    },
+    {
+      "bytes": 4156,
+      "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+      "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+    }
+  ],
+  "status": "verified-30-trial-real-source-inventory-only"
+}

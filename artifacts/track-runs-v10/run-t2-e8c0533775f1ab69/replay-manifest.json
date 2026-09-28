@@ -1,0 +1,157 @@
+{
+  "schema_version": "replay-manifest-v2",
+  "input_hash": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+  "code_revision": "local-working-tree",
+  "environment": {
+    "python": "3.12.3",
+    "implementation": "CPython",
+    "system": "Windows",
+    "machine": "AMD64",
+    "packages": {
+      "auditable-scientist-lab": "0.1.0",
+      "jsonschema": "4.24.0",
+      "pydantic": "2.11.10",
+      "sympy": "1.13.3"
+    },
+    "mode": "offline",
+    "track_id": "T2",
+    "runtime": "bounded-evaluator",
+    "network": "disabled"
+  },
+  "seed": 17,
+  "source_files": [
+    {
+      "path": "root://src/auditable_scientist/tracks/causal.py",
+      "sha256": "f35d397499777edfab301198824daa9066c8b1f6a18eb10faceba82520c6acb4",
+      "bytes": 3268
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/common.py",
+      "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75",
+      "bytes": 1933
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/run_package.py",
+      "sha256": "15e13e55e2b1f70ac9ca86584fbeb7b7573a847c797be5c91de4e6347d268392",
+      "bytes": 8374
+    },
+    {
+      "path": "root://src/auditable_scientist/tracks/runner.py",
+      "sha256": "1cf35e86daba022288295e6fa2cce14469b8619bea74a0b3fc1f1da444643075",
+      "bytes": 10375
+    },
+    {
+      "path": "root://src/auditable_scientist/domain/models.py",
+      "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e",
+      "bytes": 11495
+    },
+    {
+      "path": "root://src/auditable_scientist/policy/runtime.py",
+      "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648",
+      "bytes": 5093
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f",
+      "bytes": 1432
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/environment.py",
+      "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1",
+      "bytes": 829
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/event_log.py",
+      "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807",
+      "bytes": 2790
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/replay.py",
+      "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274",
+      "bytes": 7943
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/run_integrity.py",
+      "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b",
+      "bytes": 2116
+    },
+    {
+      "path": "root://src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76",
+      "bytes": 1651
+    },
+    {
+      "path": "root://src/auditable_scientist/cli.py",
+      "sha256": "ff8d27eac53890065da70571c093d7f23c4df8b374bb38ffbe9d5ec6fd49bfa4",
+      "bytes": 25067
+    },
+    {
+      "path": "root://src/auditable_scientist/track_cli.py",
+      "sha256": "5498619771f315f76057be5bd16c85605ab0bf503477a1d7f72c95e70e5c13ff",
+      "bytes": 8721
+    },
+    {
+      "path": "root://scripts/generate_track_artifacts.py",
+      "sha256": "dade57d1cb8056a91d16d2909128222195c25566518cf432dfb176be6fb7342c",
+      "bytes": 17645
+    },
+    {
+      "path": "root://pyproject.toml",
+      "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1",
+      "bytes": 792
+    },
+    {
+      "path": "root://docs/EVIDENCE_POLICY.md",
+      "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639",
+      "bytes": 1318
+    },
+    {
+      "path": "root://schemas/track-tool-call-v1.json",
+      "sha256": "b1a31194977f93a381b82d9bd15a53a7ed3ce38e89f1e817bdab75c0db173c94",
+      "bytes": 501
+    },
+    {
+      "path": "root://schemas/track-receipt-v1.json",
+      "sha256": "657ad31c766f14140cf9ad17718a457b11c859c2929abfebeadd56282c9475fb",
+      "bytes": 1733
+    },
+    {
+      "path": "root://schemas/track-acceptance-v1.json",
+      "sha256": "48ed1c1482aac12c56ba58d4d1a87787d6b5c7335600e630d053a2dd738166ef",
+      "bytes": 3246
+    },
+    {
+      "path": "root://schemas/run.schema.json",
+      "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc",
+      "bytes": 8072
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "run://fixture.json",
+      "sha256": "e3541bc14cc16836f1f1fff989a37743904387596712b82f323f12dc5778ab15",
+      "bytes": 535
+    }
+  ],
+  "candidate_order": [],
+  "computational_output": {
+    "result": {
+      "evaluator_id": "causal-intervention-v1",
+      "coefficient": 2.0,
+      "intercept": 1.0,
+      "train_rmse": 0.0,
+      "holdout_rmse": 0.0,
+      "max_context_invariance_error": 0.0,
+      "passed": true,
+      "negative_candidate_rejected": true,
+      "notes": [
+        "Intervention outcome uses do(x=value); context_value is intentionally ignored.",
+        "Negative candidate is required to fail the holdout gate."
+      ]
+    },
+    "negative_case": {
+      "wrong_coefficient": 1.0,
+      "rejected": true
+    }
+  }
+}

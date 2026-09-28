@@ -1,0 +1,129 @@
+{
+  "copied_checkout": true,
+  "copied_module_imported": true,
+  "limitations": [
+    "The copied checkout used the same Python and dependency environment as the recorded runs.",
+    "Cross-OS and dependency-version changes were not accepted by this check.",
+    "The project-05 upstream source path remains an origin record, not a relocated source audit."
+  ],
+  "original_examples_copied": false,
+  "recorded_at": "2026-09-27T11:37:30.602852+00:00",
+  "runs_replayed": {
+    "T1": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
+      "verified": true
+    },
+    "T2": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "0dd0970d6f0ea09d7a9a9f5ddb6df2404db513f0755b7a427bca8d860bed3ab3",
+      "verified": true
+    },
+    "T2P": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "289ee2d2761ff1d09068be988a611d061eceaf4d26e76ea198deaed56f7b9cec",
+      "verified": true
+    },
+    "T3": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "c5a6a403aa9393fd267d387df7931b0e357cc260e4ac9c5abfaa0a48e36d9b07",
+      "verified": true
+    },
+    "T3N": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "72960321aa3305b0b60baa9f07f0a4015c57167d98cbd98f1ff449e1c213ca8f",
+      "verified": true
+    },
+    "T4": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "1eda4b5e14157278a6cd22f1900e3108bec6ac71e5e4b9401924979a37373a88",
+      "verified": true
+    },
+    "T4O": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "de1aabb448c771ba76d2f215ecc8ec18204d5ba554fa23444c07499e6275158d",
+      "verified": true
+    },
+    "T5": {
+      "checks": [
+        "input_hash",
+        "code_revision",
+        "environment",
+        "seed",
+        "source_files",
+        "evidence_files",
+        "candidate_order",
+        "computational_output"
+      ],
+      "manifest_hash": "45979e3681e2f1ab8cd573ef8cf3110c4852668df7ec0ca1ab2a8813c004e307",
+      "verified": true
+    }
+  },
+  "schema_version": "relocation-audit-v1",
+  "script_sha256": "aaff02b59c55724427526d8b08e0b4ac200de55aab9afa7ee17e8c60d370513d",
+  "status": "verified-in-recorded-environment",
+  "tampered_t3_fixture_rejected": true
+}

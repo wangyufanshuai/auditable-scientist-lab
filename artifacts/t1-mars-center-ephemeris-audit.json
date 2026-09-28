@@ -1,0 +1,93 @@
+{
+  "boundaries": {
+    "independent_planetary_ephemeris": false,
+    "mars_center_state_available": true,
+    "mission_trajectory_validated": false,
+    "publication_ready": false,
+    "scientific_holdout": false,
+    "source_tracked_ephemeris_geometry": true,
+    "spacecraft_trajectory_propagated": false
+  },
+  "checks": {
+    "center_offset_bounded": true,
+    "de440s_source_preserved": true,
+    "fixed_departure_dates": true,
+    "mars_499_coverage": true,
+    "mission_claim_unverified": true,
+    "official_md5_matched": true,
+    "pinned_sha256_matched": true,
+    "planetary_states_preserved": true,
+    "spice_chain_consistent": true,
+    "wrong_kernel_rejected": true
+  },
+  "kernel_local_paths": {
+    "de440s": "data/naif/de440s.bsp",
+    "mar099s": "data/naif/mar099s.bsp"
+  },
+  "kernel_sources": {
+    "de440s": {
+      "bytes": 32726016,
+      "kernel": "de440s.bsp",
+      "md5": "3917ee56769db332790c751e2168843d",
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp"
+    },
+    "mar099s": {
+      "bytes": 67594240,
+      "kernel": "mar099s.bsp",
+      "md5": "fd7302dfbaa0c63ce85b1e98923ee6a1",
+      "sha256": "997dc93ba640e476da7a494d2237dcdeb145e528db37be8ccee588c615e4e1ff",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/mar099s.bsp"
+    }
+  },
+  "recorded_at": "2026-09-27T12:34:15.247460+00:00",
+  "schema_version": "t1-mars-center-ephemeris-audit-v1",
+  "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
+  "source_files": [
+    {
+      "bytes": 7064,
+      "path": "scripts/verify_t1_mars_center_ephemeris.py",
+      "sha256": "515e3c415fbb22cd4e628105ffb51434f39ceb58cdd243cfbcac52a448443d9d"
+    },
+    {
+      "bytes": 2818,
+      "path": "scripts/fetch_mar099s.py",
+      "sha256": "a9d7087afdbf96d291ab14c9c9a541a9e925d6c430bdcea36c5b5ddc00f9ef60"
+    },
+    {
+      "bytes": 8209,
+      "path": "src/auditable_scientist/adapters/naif_mars_center.py",
+      "sha256": "4d9d13b96d85d3eac337a8f70a14724746b586b1925278ea6b87ace80fc54c35"
+    },
+    {
+      "bytes": 5593,
+      "path": "src/auditable_scientist/adapters/naif_de440s.py",
+      "sha256": "4a4e00875c47e0fd281c22c28464054c0895010d758041c714ae648bcb8107df"
+    },
+    {
+      "bytes": 3217,
+      "path": "docs/T1_MARS_CENTER_EPHEMERIS.md",
+      "sha256": "ca7b402640ecf7bb0250f4db867d6dc087762eb78589bf4b08821cf7cd391858"
+    },
+    {
+      "bytes": 100,
+      "path": "requirements-t1-mars-center-win-py312.txt",
+      "sha256": "cccfa91e8f71241c7c39ff3449f7241c2983a0b4be1a6f5b5105df25b441b3d4"
+    },
+    {
+      "bytes": 2359,
+      "path": "artifacts/t1-de440s-ephemeris-snapshot.json",
+      "sha256": "55dd2231455d91ed14130c4e20922f273cdf63696bae104b12630b3fe26b7e8c"
+    }
+  ],
+  "source_rights": {
+    "applies_to_unrelated_sources": false,
+    "checksum_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/aa_checksums.txt",
+    "kernels_redistributed_in_repository": false,
+    "redistribution": "permitted only for unmodified NAIF-distributed kernels",
+    "rules_url": "https://naif.jpl.nasa.gov/naif/rules.html",
+    "satellite_guide_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/satellites/AAREADME_Satellite_SPKs",
+    "use": "NAIF kernels may be downloaded and used by anyone, subject to NAIF rules"
+  },
+  "status": "verified-source-tracked-center-geometry-only"
+}

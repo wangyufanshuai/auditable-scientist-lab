@@ -1,0 +1,71 @@
+{
+  "boundaries": {
+    "claim_status": "unverified",
+    "conditional_response_scale": true,
+    "independent_observables": false,
+    "mission_srp_model_validated": false,
+    "mission_validation": false,
+    "scientific_holdout": false,
+    "statistical_uncertainty_interval": false
+  },
+  "checks": {
+    "all_cases_reported": true,
+    "compute_budget": true,
+    "finite_states_and_responses": true,
+    "monotonic_radial_response_scale": true,
+    "source_and_baseline_bound": true,
+    "step_refinement": true,
+    "zero_coefficient_reproduces_prior": true
+  },
+  "observed_budget": {
+    "rk4_steps_total": 3456,
+    "spice_position_queries": 2308
+  },
+  "preregistration_commit": "199ecc4",
+  "protocol_sha256": "68352f9158755dca98baeffe51bd08c65112c2542548ff503ec7a62bdae5e470",
+  "recorded_at": "2026-09-28T02:28:35.583347+00:00",
+  "schema_version": "t1-maven-srp-sensitivity-audit-v1",
+  "snapshot_sha256": "d48b3402746a71023be5056085120568971bbae64a39b969cd476607b4596a82",
+  "source_files": [
+    {
+      "bytes": 18046,
+      "path": "scripts/verify_t1_maven_srp_sensitivity.py",
+      "sha256": "16362c8b2170209b267e89ef9cadf1fd30ace8e8c3f44f4ec36d06ed4247df0f"
+    },
+    {
+      "bytes": 2953,
+      "path": "docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.json",
+      "sha256": "68352f9158755dca98baeffe51bd08c65112c2542548ff503ec7a62bdae5e470"
+    },
+    {
+      "bytes": 2169,
+      "path": "docs/T1_MAVEN_SRP_SENSITIVITY_PROTOCOL.md",
+      "sha256": "61e4ecd7f3db44ffcde33cb1967c20bfad320b495d97be2375db69f077d89f21"
+    },
+    {
+      "bytes": 15770,
+      "path": "scripts/verify_t1_maven_planetary_force.py",
+      "sha256": "2f0bbbdb6106c7ad99b7fc77caf910cdbb23626f7457eef48c12c5d1b1361ff0"
+    },
+    {
+      "bytes": 2953,
+      "path": "docs/T1_MAVEN_PLANETARY_FORCE_PROTOCOL.json",
+      "sha256": "15095d28e9f74896edbd41b3edb1ef9e5eb82d469a29d1a6a70fd3ec3528a394"
+    },
+    {
+      "bytes": 100,
+      "path": "requirements-t1-mars-center-win-py312.txt",
+      "sha256": "cccfa91e8f71241c7c39ff3449f7241c2983a0b4be1a6f5b5105df25b441b3d4"
+    }
+  ],
+  "source_sha256": {
+    "de440s": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+    "gm_kernel": "924ddf4fb9ead9fe8a1aa55780bcabde40b09d00065d58226e24b68d8092f140",
+    "iau_2012_au": "3489ebb1e51f7c278d56c9e0f9cb49c142e036ac34e21defc87414507afec984",
+    "mar099s": "997dc93ba640e476da7a494d2237dcdeb145e528db37be8ccee588c615e4e1ff",
+    "maven_cruise": "07c76dfc2a1f66a54b4dd74105b2a5a70d72192813abee3659a74d4d21988dc5",
+    "maven_navigation_pdf": "969affe7e6d0c8d0a6cbc4dbcdcc46332d429e5e604f004e5e5f1a946231267c",
+    "nasa_solar_irradiance": "855882f054131cc51b9a91788c4c00fe9c1df4d6ecf02f14df490f8a28e6b4ba"
+  },
+  "status": "passed-conditional-srp-sensitivity-only"
+}

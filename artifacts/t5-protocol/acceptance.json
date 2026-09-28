@@ -1,0 +1,318 @@
+{
+  "checks": [
+    {
+      "command": "python scripts/generate_track_artifacts.py",
+      "exit_code": 0,
+      "input_version": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+      "name": "bounded-domain-evaluator",
+      "output_path": "artifacts/t5-protocol/sample-run.json",
+      "recorded_at": "2026-09-27T07:41:39.908408+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_pbs_source_run.py --verify",
+      "exit_code": 0,
+      "input_version": "run-t5-pbs-source-06a7e9fae2d18642",
+      "name": "optional-t5-pbs-source-run",
+      "output_path": "artifacts/t5-pbs-source-run-audit.json",
+      "recorded_at": "2026-09-28T09:56:56.641255+00:00"
+    }
+  ],
+  "evaluator": {
+    "blocked_gates": [
+      "independent source and rights validation",
+      "real wet-lab validation and human biosafety review"
+    ],
+    "evaluator_id": "bio-chem-text-protocol-v2",
+    "evidence_files": [
+      {
+        "allowed_use": [
+          "offline-fixture",
+          "bounded-evaluator"
+        ],
+        "bytes": 3165,
+        "path": "examples/protocol/fixture.json",
+        "provenance_status": "unverified",
+        "sha256": "b86e5ad27ceef1eceeb55113bf1614a0283503c9397b53e143c94a4a812201ee"
+      }
+    ],
+    "evidence_level": "demo",
+    "input_hash": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "checked_citations": 10,
+      "evaluator_id": "bio-chem-text-protocol-v2",
+      "evidence_level": "demo",
+      "execution_allowed": false,
+      "failures": [],
+      "notes": [
+        "The evaluator checks a bounded synthetic text fixture and declared constraints only.",
+        "Source rights, real materials, equipment, safety, and human acceptance are unverified.",
+        "It never schedules, controls, or authorizes wet-lab execution."
+      ],
+      "passed": true,
+      "requires_human_review": true,
+      "review_status": "text-reviewed"
+    },
+    "source_files": [
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 9809,
+        "path": "src/auditable_scientist/tracks/protocol.py",
+        "provenance_status": "unverified",
+        "sha256": "ab93754059671b2bf4018ebe2e43cc991da3c474e22a4402c5df3107eacac059"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1933,
+        "path": "src/auditable_scientist/tracks/common.py",
+        "provenance_status": "unverified",
+        "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 9346,
+        "path": "src/auditable_scientist/tracks/run_package.py",
+        "provenance_status": "unverified",
+        "sha256": "1b1327d0915a6ad18add0b38dda7e59fdad0ec176ed002124f5da9352dae186c"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 12783,
+        "path": "src/auditable_scientist/tracks/runner.py",
+        "provenance_status": "unverified",
+        "sha256": "d57371c5be3ae203fc2c1841552000eeb646f57d54123daefef04aca671a2396"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 11495,
+        "path": "src/auditable_scientist/domain/models.py",
+        "provenance_status": "unverified",
+        "sha256": "600675265af4459fef988fc9e5c7c3a56182f51302fa2acaf04566593c919b8e"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 5093,
+        "path": "src/auditable_scientist/policy/runtime.py",
+        "provenance_status": "unverified",
+        "sha256": "69fc8728f1d48d6910b13d12c4faccbd184798b3fd211daffe668d49036ab648"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1432,
+        "path": "src/auditable_scientist/runtime/canonical.py",
+        "provenance_status": "unverified",
+        "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 829,
+        "path": "src/auditable_scientist/runtime/environment.py",
+        "provenance_status": "unverified",
+        "sha256": "8fcc0e2909ca3e47d266c4f6c3d08be66b0d91346094555c1f46653c758b3bb1"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2790,
+        "path": "src/auditable_scientist/runtime/event_log.py",
+        "provenance_status": "unverified",
+        "sha256": "28202fa27d78dfedd4f7c60cee6d9449ff6da37c3e9dd27d3e0547860d2e6807"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 7943,
+        "path": "src/auditable_scientist/runtime/replay.py",
+        "provenance_status": "unverified",
+        "sha256": "106567264c0f85394aab36434af0713f79b88cd29827e1a5af1c26d3f889f274"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2116,
+        "path": "src/auditable_scientist/runtime/run_integrity.py",
+        "provenance_status": "unverified",
+        "sha256": "187c1012979b9236038ee057591269d2e702ee51295914caf804873d1136cb9b"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1651,
+        "path": "src/auditable_scientist/runtime/paths.py",
+        "provenance_status": "unverified",
+        "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 25103,
+        "path": "src/auditable_scientist/cli.py",
+        "provenance_status": "unverified",
+        "sha256": "910547c4b746ddfff20adca42e1a242bafca78b3c981524708d8bf5deddf4365"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 8913,
+        "path": "src/auditable_scientist/track_cli.py",
+        "provenance_status": "unverified",
+        "sha256": "0f2d782da641301f9221dc74b26c9d921602284ec623212ba1c582770312aa65"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 25634,
+        "path": "scripts/generate_track_artifacts.py",
+        "provenance_status": "unverified",
+        "sha256": "c1b57235e6aee4358da7e439df6b4cb6d94e1b5ffebaf25fabb946e5df17f8c0"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 792,
+        "path": "pyproject.toml",
+        "provenance_status": "unverified",
+        "sha256": "ac81f666d36c3bc904f5b91cb585713abc6597c85b5749e99a99440d24ac67b1"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1318,
+        "path": "docs/EVIDENCE_POLICY.md",
+        "provenance_status": "unverified",
+        "sha256": "dc82def315d527881b863b6a3b34f7b268db87ace460baa5efd572c613978639"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 515,
+        "path": "schemas/track-tool-call-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "2e95da18738e29d0981efdc37e2d8f2ef85ddabc99f46f332b89d7668fcfc0ae"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 1747,
+        "path": "schemas/track-receipt-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "caa83fd95a68914ee85f7aecbdf317cfa51ed16875fe650bad726aeb13d1f945"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 3274,
+        "path": "schemas/track-acceptance-v1.json",
+        "provenance_status": "unverified",
+        "sha256": "389f0981fcf4da138f0d393d23adda54d1338278541779cbb5bf3588a1768bcb"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 8072,
+        "path": "schemas/run.schema.json",
+        "provenance_status": "unverified",
+        "sha256": "aa3866541edf9df7193c0569572aae8dd607aa5566717790802851f431ace3dc"
+      },
+      {
+        "allowed_use": [
+          "offline-evaluator",
+          "source-provenance"
+        ],
+        "bytes": 2010,
+        "path": "docs/T5_METHOD.md",
+        "provenance_status": "unverified",
+        "sha256": "85a88b36e07893c86215b795fe7b10d286761e15b11b321c3a171aaf0ff27cee"
+      }
+    ],
+    "track_id": "T5"
+  },
+  "evidence_boundaries": {
+    "demo": true,
+    "real_data": false,
+    "research_candidate": false,
+    "validated_reproduction": false
+  },
+  "execution": "offline",
+  "negative_case": {
+    "checked_citations": 10,
+    "evaluator_id": "bio-chem-text-protocol-v2",
+    "evidence_level": "demo",
+    "execution_allowed": false,
+    "failures": [
+      "document-hash:synthetic-buffer-plan-v1",
+      "citation-span:step-1:reagent",
+      "citation-span:step-1:volume_ul",
+      "citation-span:step-1:temperature_c",
+      "citation-span:step-1:duration_min",
+      "citation-step:step-1:duration_min",
+      "citation-span:step-2:action",
+      "citation-span:step-2:reagent",
+      "citation-span:step-2:volume_ul",
+      "citation-span:step-2:temperature_c",
+      "citation-span:step-2:duration_min",
+      "citation-step:step-2:duration_min"
+    ],
+    "notes": [
+      "The evaluator checks a bounded synthetic text fixture and declared constraints only.",
+      "Source rights, real materials, equipment, safety, and human acceptance are unverified.",
+      "It never schedules, controls, or authorizes wet-lab execution."
+    ],
+    "passed": false,
+    "requires_human_review": true,
+    "review_status": "blocked"
+  },
+  "status": "accepted-with-bounded-scope",
+  "track": "T5"
+}

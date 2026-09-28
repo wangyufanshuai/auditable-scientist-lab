@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/auditable-scientist/t1-de440s-snapshot-tool-v1.json",
+  "title": "T1 offline DE440s snapshot geometry call",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider_id", "input_hash", "snapshot_path"],
+  "properties": {
+    "provider_id": {"const": "internal-t1-de440s-snapshot-v1"},
+    "input_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "snapshot_path": {"type": "string", "minLength": 1}
+  }
+}
