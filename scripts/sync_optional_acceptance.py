@@ -28,6 +28,11 @@ T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
 OPTIONAL = (
+    ("t2-causal", "context-sensitivity-negative-control", "t2-causal-sensitivity-audit.json",
+     "t2-causal-sensitivity-audit-v1", "verified-synthetic-context-sensitivity-only",
+     "python scripts/verify_t2_causal_sensitivity.py --verify", None,
+     ("real_intervention_data", "causal_identification", "source_rights_reviewed",
+      "research_candidate", "publication_ready"), ("negative_case_rejected",)),
     ("t2-physical", "independent-endpoint-estimator", "t2-independent-endpoint-audit.json",
      "t2-independent-endpoint-audit-v1", "verified-synthetic-endpoints-only",
      "python scripts/verify_t2_independent_endpoint.py --verify", None,
@@ -75,6 +80,13 @@ OPTIONAL = (
 )
 
 REPORT_NOTES = {
+    "t2-causal": (
+        "The optional [context-sensitivity negative control](../t2-causal-sensitivity-audit.json) "
+        "keeps the declared synthetic outcome dependent on `do(intervention_value)` only "
+        "and rejects a fixed candidate that leaks `context_value` on holdout. This is a "
+        "semantic control for the fixture, not causal identification, exchangeability, "
+        "real intervention evidence, source-rights review, or a research-candidate claim.\n"
+    ),
     "t2-physical": (
         "An optional impact-to-impact endpoint estimator independently recomputes 124\n"
         "synthetic factual and intervened horizontal outcomes, including 24 varied\n"
@@ -110,6 +122,7 @@ REPORT_NOTES = {
     ),
 }
 REPORT_MARKERS = {
+    "t2-causal": "The optional [context-sensitivity negative control]",
     "t2-physical": "An optional impact-to-impact endpoint estimator",
     "t3-dynamics": "The optional expanded [finite-horizon audit]",
     "t4-proof": "The optional exact linear-invariant audit",
@@ -171,6 +184,13 @@ def _receipt_row(spec: tuple) -> dict:
         or not all(value is True for value in audit["checks"].values())
     ):
         raise ValueError("T3 horizon grid cannot enter acceptance")
+    if filename == "t2-causal-sensitivity-audit.json":
+        process = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t2_causal_sensitivity.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+        )
+        if process.returncode != 0 or json.loads(process.stdout).get("status") != status:
+            raise ValueError(f"T2 context sensitivity dynamic check failed: {process.stderr.strip()}")
     if filename == "t4-verlet-invariant-audit.json":
         protocol_path = ROOT / "docs/T4_VERLET_INVARIANT_PROTOCOL.json"
         solver_path = ROOT / "src/auditable_scientist/tracks/dynamics.py"
@@ -506,7 +526,7 @@ def desired_outputs() -> dict[Path, str]:
 
     bundles = {
         directory: _load(f"artifacts/{directory}/acceptance.json")
-        for directory in ("t2-physical", "t3-dynamics", "t4-proof", "t5-protocol")
+        for directory in ("t2-causal", "t2-physical", "t3-dynamics", "t4-proof", "t5-protocol")
     }
     rows = [_receipt_row(spec) for spec in OPTIONAL]
     for spec, row in zip(OPTIONAL, rows):
@@ -639,6 +659,21 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": projectile["verifier_sha256"],
         "output_path": "artifacts/t2-projectile-source-audit.json",
     })
+    sensitivity = _load("artifacts/t2-causal-sensitivity-audit.json")
+    sensitivity_timestamp = sensitivity.get("recorded_at")
+    if (sensitivity.get("schema_version") != "t2-causal-sensitivity-audit-v1"
+            or sensitivity.get("status") != "verified-synthetic-context-sensitivity-only"
+            or sensitivity.get("negative_case_rejected") is not True
+            or not isinstance(sensitivity_timestamp, str)
+            or datetime.fromisoformat(sensitivity_timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T2 context sensitivity audit cannot enter acceptance")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-causal-context-sensitivity",
+        "command": "python scripts/verify_t2_causal_sensitivity.py --verify",
+        "exit_code": 0, "recorded_at": sensitivity_timestamp,
+        "input_version": sensitivity["schema_version"],
+        "output_path": "artifacts/t2-causal-sensitivity-audit.json",
+    })
     pbs = _load("artifacts/t5-pbs-source-audit.json")
     pbs_timestamp = pbs.get("recorded_at")
     pbs_sources = [item for item in pbs.get("source_files", [])
@@ -729,6 +764,9 @@ def desired_outputs() -> dict[Path, str]:
     t4_report = ROOT / "artifacts/t4-proof/test-report.md"
     if "The optional [exact Verlet invariant audit]" not in outputs[t4_report]:
         outputs[t4_report] = outputs[t4_report].rstrip("\n") + "\n\n" + VERLET_REPORT_NOTE
+    t2_causal_report = ROOT / "artifacts/t2-causal/test-report.md"
+    if "The optional [context-sensitivity negative control]" not in outputs[t2_causal_report]:
+        outputs[t2_causal_report] = outputs[t2_causal_report].rstrip("\n") + "\n\n" + REPORT_NOTES["t2-causal"]
     t2_report = ROOT / "artifacts/t2-physical/test-report.md"
     if "The optional [real projectile source inventory]" not in outputs[t2_report]:
         outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_REPORT_NOTE

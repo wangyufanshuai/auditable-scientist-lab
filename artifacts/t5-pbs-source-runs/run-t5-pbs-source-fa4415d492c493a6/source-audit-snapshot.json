@@ -1,0 +1,220 @@
+{
+  "anchors": [
+    {
+      "end": 97,
+      "excerpt": "10.17504/protocols.io.p4rdqv6",
+      "key": "doi",
+      "occurrences_on_page": 4,
+      "page": 1,
+      "page_text_sha256": "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+      "start": 68
+    },
+    {
+      "end": 680,
+      "excerpt": "Creative Commons Attribution License",
+      "key": "license",
+      "occurrences_on_page": 1,
+      "page": 1,
+      "page_text_sha256": "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+      "start": 644
+    },
+    {
+      "end": 813,
+      "excerpt": "provided the original author and source are credited",
+      "key": "license_attribution",
+      "occurrences_on_page": 1,
+      "page": 1,
+      "page_text_sha256": "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+      "start": 761
+    },
+    {
+      "end": 61,
+      "excerpt": "We use this protocol and it's working",
+      "key": "self_reported_working",
+      "occurrences_on_page": 1,
+      "page": 2,
+      "page_text_sha256": "c66b73af18b56377ea17a4e4a46c34a6538f8639cc96f98cc5dd13b03d18efda",
+      "start": 24
+    },
+    {
+      "end": 983,
+      "excerpt": "Read appropriate SDS",
+      "key": "sds_warning",
+      "occurrences_on_page": 1,
+      "page": 2,
+      "page_text_sha256": "c66b73af18b56377ea17a4e4a46c34a6538f8639cc96f98cc5dd13b03d18efda",
+      "start": 963
+    },
+    {
+      "end": 37,
+      "excerpt": "1x PBS",
+      "key": "concentration_branch",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 31
+    },
+    {
+      "end": 173,
+      "excerpt": "10x",
+      "key": "concentration_alternative",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 170
+    },
+    {
+      "end": 457,
+      "excerpt": "or 7.2 if required",
+      "key": "ph_alternative",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 439
+    },
+    {
+      "end": 481,
+      "excerpt": "concentrated",
+      "key": "acid",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 469
+    },
+    {
+      "end": 644,
+      "excerpt": "DEPC (diethyl pyrocarbonate)",
+      "key": "optional_depc",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 616
+    },
+    {
+      "end": 673,
+      "excerpt": "Autoclave.",
+      "key": "autoclave",
+      "occurrences_on_page": 1,
+      "page": 3,
+      "page_text_sha256": "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded",
+      "start": 663
+    }
+  ],
+  "boundaries": {
+    "claim_status": "unverified",
+    "complete_safety_review": false,
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "independent_procedure_validation": false,
+    "machine_executable_protocol": false,
+    "real_source_document": true,
+    "rights_declaration_present": true
+  },
+  "contract_sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61",
+  "page_text_sha256": [
+    "e96a64c78014443430143092b5b0a0619071963e2eb88074dff59d416a422a31",
+    "c66b73af18b56377ea17a4e4a46c34a6538f8639cc96f98cc5dd13b03d18efda",
+    "0faf070b43bf1f890a9cae864ee1c46dac1fa8f1f8fa6c2046d86e64ef86fded"
+  ],
+  "reader": {
+    "license_expression": "BSD-3-Clause",
+    "package": "pypdf",
+    "text_method": "PdfReader.pages[i].extract_text()",
+    "version": "6.15.0"
+  },
+  "recorded_at": "2026-09-28T03:02:25.579614+00:00",
+  "review_flags": [
+    "self-reported-working-is-not-independent-validation",
+    "concentration-and-ph-branches-require-selection",
+    "sds-review-required-by-source",
+    "optional-depc-requires-expert-safety-review",
+    "acid-and-autoclave-require-expert-safety-review",
+    "not-mappable-to-teaching-fixture-fields-without-inference"
+  ],
+  "schema_version": "t5-pbs-source-audit-v1",
+  "source": {
+    "attribution_required": true,
+    "author": "Katy M Monteith",
+    "doi": "10.17504/protocols.io.p4rdqv6",
+    "last_modified_date_in_pdf": "2018-05-14",
+    "license_declaration": "Creative Commons Attribution License; version not specified in the PDF",
+    "license_location": "PDF page 1",
+    "local_pdf_redistributed": false,
+    "pdf_bytes": 458059,
+    "pdf_pages": 3,
+    "pdf_url": "https://www.protocols.io/view/phosphate-buffered-saline-pbs-p4rdqv6.pdf",
+    "protocol_integer_id": 12145,
+    "published_date": "2018-05-14",
+    "publisher": "protocols.io",
+    "title": "Phosphate-buffered Saline (PBS)"
+  },
+  "source_files": [
+    {
+      "bytes": 6878,
+      "path": "scripts/verify_t5_pbs_source.py",
+      "sha256": "4cdf836a8b5141563392ef8122a224f3947ff9fee4c44c01e9b8019483cfb16f"
+    },
+    {
+      "bytes": 2537,
+      "path": "docs/T5_PBS_SOURCE_CONTRACT.json",
+      "sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61"
+    },
+    {
+      "bytes": 14,
+      "path": "requirements-t5-pbs-pdf.txt",
+      "sha256": "02567d446a92ee220a930e523d4146f9d2fe9cca53fefcdf0fe29614f23dea75"
+    }
+  ],
+  "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+  "status": "verified-source-document-and-review-flags-only",
+  "step_inventory": [
+    {
+      "end": 278,
+      "excerpt_prefix": "1 For a final concentration of 1x PBS weigh out ",
+      "page": 3,
+      "start": 0,
+      "step_number": 1,
+      "text_sha256": "74471b6a8b13242a60e1c77c0e9fbcaa6af2c391b2db0271b6d69f7ce02b6d69"
+    },
+    {
+      "end": 388,
+      "excerpt_prefix": "2 Dissolve reagents in 800 mL of triple distille",
+      "page": 3,
+      "start": 279,
+      "step_number": 2,
+      "text_sha256": "0bbb4bf402e68f64dfaace854d3e635c8fcdc3c9ca55b648403c7324652bec89"
+    },
+    {
+      "end": 506,
+      "excerpt_prefix": "3 Using a pH meter, adjust pH of solution to 7.4",
+      "page": 3,
+      "start": 389,
+      "step_number": 3,
+      "text_sha256": "db4064d0a6f47c7b53e0ae9a7737ded7ba9b8a85e7c93ef134255d40e4adb13a"
+    },
+    {
+      "end": 574,
+      "excerpt_prefix": "4 Add triple distilled H\u2082O to bring final volume",
+      "page": 3,
+      "start": 507,
+      "step_number": 4,
+      "text_sha256": "7f2566d23d2131408adb2d70e9bb173b22834a938c35498386a7a455840f360a"
+    },
+    {
+      "end": 660,
+      "excerpt_prefix": "5 If require RNase free PBS, add 1 mL of DEPC (d",
+      "page": 3,
+      "start": 575,
+      "step_number": 5,
+      "text_sha256": "8091be97b26e2bf70664e10d8f32d58dd298679312d0b15b88d3627b8b24758e"
+    },
+    {
+      "end": 673,
+      "excerpt_prefix": "6 Autoclave.",
+      "page": 3,
+      "start": 661,
+      "step_number": 6,
+      "text_sha256": "8e6c3dbb48749ac000dba4dc7d9dce53663254a7e1427749bbea75a350a0d9bd"
+    }
+  ]
+}
