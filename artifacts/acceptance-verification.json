@@ -120,6 +120,22 @@
     "snapshot_sha256": "ab878939896e2c60040345f56aff02f85551cc7f24b70e1aeaa0bd140c343bf1",
     "status": "passed-conditional-impulse-sensitivity-only"
   },
+  "t1_maven_ops_event_search": {
+    "arc_event_counts": [
+      2,
+      0
+    ],
+    "desat_keyword_hits_in_arcs": [
+      0,
+      0
+    ],
+    "dynamic_verified_here": true,
+    "impulse_vectors_admitted": false,
+    "independent_observables": false,
+    "mission_validation": false,
+    "records_checked": 185321,
+    "status": "catalog-inspected-not-mission-validation"
+  },
   "t1_maven_planetary_force_diagnostic": {
     "arc_count": 2,
     "dynamic_verified_here": true,

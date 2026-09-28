@@ -247,6 +247,33 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": desat_sources[0]["sha256"],
         "output_path": "artifacts/t1-maven-desat-sensitivity-audit.json",
     })
+    ops = _load("artifacts/t1-maven-ops-event-search-audit.json")
+    ops_sources = [item for item in ops.get("source_files", [])
+                   if item.get("path") == "scripts/verify_t1_maven_ops_events.py"]
+    ops_timestamp = ops.get("recorded_at")
+    if (ops.get("schema_version") != "t1-maven-ops-event-search-audit-v1"
+            or ops.get("status") != "catalog-inspected-not-mission-validation"
+            or ops.get("protocol_sha256") !=
+            "07f7dcc05063d1102835fc1d8549bb776b8c2b6f1ee3dce12f31060e919aee33"
+            or ops.get("records_checked") != 185321
+            or len(ops_sources) != 1
+            or not isinstance(ops_timestamp, str)
+            or datetime.fromisoformat(ops_timestamp.replace("Z", "+00:00")).tzinfo is None
+            or ops.get("boundaries") != {
+                "catalog_scope_only": True, "event_list_complete_for_desats": False,
+                "impulse_vectors_admitted": False, "independent_observables": False,
+                "scientific_holdout": False, "mission_validation": False,
+                "claim_status": "unverified"}
+            or [item.get("all_arc_events") for item in ops.get("arcs", [])] != [2, 0]
+            or any(item.get("keyword_arc_hits") != [] for item in ops["arcs"])):
+        raise ValueError("T1 MAVEN operations-event audit cannot enter acceptance")
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t1-maven-ops-event-search",
+        "command": "python scripts/verify_t1_maven_ops_events.py --verify",
+        "exit_code": 0, "recorded_at": ops_timestamp,
+        "input_version": ops_sources[0]["sha256"],
+        "output_path": "artifacts/t1-maven-ops-event-search-audit.json",
+    })
     _insert_or_replace(root["checks"], {
         **next(row for row in rows if row["name"] == "optional-expanded-horizon-grid"),
         "name": "optional-t3-expanded-horizon-grid",
@@ -275,6 +302,8 @@ def desired_outputs() -> dict[Path, str]:
         or [item.get("track_id") for item in status.get("tracks", [])] != ["T1", "T2", "T3", "T4", "T5"]
         or status["tracks"][0].get("optional_desat_sensitivity_audit") !=
         "artifacts/t1-maven-desat-sensitivity-audit.json"
+        or status["tracks"][0].get("optional_ops_event_search_audit") !=
+        "artifacts/t1-maven-ops-event-search-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"

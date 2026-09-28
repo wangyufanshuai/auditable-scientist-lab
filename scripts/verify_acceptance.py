@@ -879,6 +879,78 @@ def verify_optional_t1_maven_desat_sensitivity(audit: dict | None = None,
             "mission_validation": False}
 
 
+def verify_optional_t1_maven_ops_events(audit: dict | None = None,
+                                        *, verify_dynamic: bool = True) -> dict:
+    """Bind the predeclared PDS event-list search and its negative scope."""
+
+    audit = audit if audit is not None else load("artifacts/t1-maven-ops-event-search-audit.json")
+    protocol = load("docs/T1_MAVEN_OPS_EVENT_SEARCH_PROTOCOL.json")
+    protocol_sha = "07f7dcc05063d1102835fc1d8549bb776b8c2b6f1ee3dce12f31060e919aee33"
+    base = "data/references/maven_anc_events/ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00"
+    expected_sources = {
+        "docs/T1_MAVEN_OPS_EVENT_SEARCH_PROTOCOL.json": (protocol_sha, 2866),
+        "scripts/verify_t1_maven_ops_events.py":
+            (fingerprint_file(ROOT / "scripts/verify_t1_maven_ops_events.py").sha256, 8754),
+        base+".xml": ("4443e819fc341c56542497192a0d3e98f2eced436a307befca5caab4fb683f5c", 7601),
+        base+".csv": ("af9b528afffae7ae7a584030c1a8431f107f80647e2d0635a9f077e70cbbdd73", 53288544),
+    }
+    expected_boundaries = {
+        "catalog_scope_only": True, "event_list_complete_for_desats": False,
+        "impulse_vectors_admitted": False, "independent_observables": False,
+        "scientific_holdout": False, "mission_validation": False,
+        "claim_status": "unverified",
+    }
+    if (fingerprint_file(ROOT / "docs/T1_MAVEN_OPS_EVENT_SEARCH_PROTOCOL.json").sha256 != protocol_sha
+            or audit.get("schema_version") != "t1-maven-ops-event-search-audit-v1"
+            or audit.get("status") != "catalog-inspected-not-mission-validation"
+            or audit.get("protocol_sha256") != protocol_sha
+            or audit.get("preregistration_commit") != "5c1ad36"
+            or audit.get("product_lidvid") != protocol["source"]["product_lidvid"]
+            or audit.get("records_checked") != protocol["source"]["records_from_label"]
+            or audit.get("boundaries") != expected_boundaries
+            or not isinstance(audit.get("recorded_at"), str)
+            or datetime.fromisoformat(audit["recorded_at"].replace("Z", "+00:00")).tzinfo is None
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or {item.get("path"): (item.get("sha256"), item.get("bytes"))
+                for item in audit["source_files"]} != expected_sources):
+        raise ValueError("MAVEN operations-event provenance or boundaries differ")
+    arcs = audit.get("arcs", [])
+    if len(arcs) != 2:
+        raise ValueError("MAVEN operations-event arc count differs")
+    expected_ids = (("860895", "860896", "860903", "860904"),
+                    ("861028", "861029", "861048", "861049", "861081", "861082"))
+    for arc, declared, count, context_ids in zip(
+            arcs, protocol["frozen_arcs"], (2, 0), expected_ids, strict=True):
+        context = arc.get("keyword_context_hits", [])
+        if (arc.get("start_et_tdb_seconds") != declared["start_et_tdb_seconds"]
+                or arc.get("start_utc") != declared["start_utc"]
+                or arc.get("end_utc") != declared["end_utc"]
+                or arc.get("all_arc_events") != count
+                or arc.get("keyword_arc_hits") != []
+                or tuple(item.get("id") for item in context) != context_ids
+                or any(item.get("matched_terms") != ["desat", "reaction wheel"]
+                       or item.get("source") != "Integrated Report"
+                       or not isinstance(item.get("row_sha256"), str)
+                       or len(item["row_sha256"]) != 64 for item in context)):
+            raise ValueError("MAVEN operations-event inventory differs")
+    present = [(ROOT / path).is_file() for path in (base+".xml", base+".csv")]
+    if any(present) and not all(present):
+        raise ValueError("MAVEN operations-event local source pair is incomplete")
+    dynamic = False
+    if all(present) and verify_dynamic:
+        command = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/verify_t1_maven_ops_events.py"), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=90)
+        if command.returncode != 0 or json.loads(command.stdout).get("status") != audit["status"]:
+            raise ValueError(f"MAVEN operations-event dynamic check failed: {command.stderr.strip()}")
+        dynamic = True
+    return {"status": audit["status"], "records_checked": audit["records_checked"],
+            "arc_event_counts": [arc["all_arc_events"] for arc in arcs],
+            "desat_keyword_hits_in_arcs": [len(arc["keyword_arc_hits"]) for arc in arcs],
+            "dynamic_verified_here": dynamic, "impulse_vectors_admitted": False,
+            "independent_observables": False, "mission_validation": False}
+
+
 def verify_optional_t1_maven_run() -> dict:
     """Replay saved NAV short arcs through the shared offline Run contract."""
 
@@ -2037,6 +2109,16 @@ def main() -> None:
         for item in acceptance["checks"]
     ):
         raise SystemExit("T1 MAVEN desat sensitivity has no command receipt")
+    maven_ops_events = verify_optional_t1_maven_ops_events()
+    if not any(
+        item.get("name") == "optional-t1-maven-ops-event-search"
+        and item.get("output_path") == "artifacts/t1-maven-ops-event-search-audit.json"
+        and item.get("input_version") == fingerprint_file(
+            ROOT / "scripts/verify_t1_maven_ops_events.py").sha256
+        and item.get("exit_code") == 0
+        for item in acceptance["checks"]
+    ):
+        raise SystemExit("T1 MAVEN operations-event search has no command receipt")
     maven_run = verify_optional_t1_maven_run()
     if not any(
         item.get("name") == "optional-t1-maven-portable-preflight-run"
@@ -2568,6 +2650,7 @@ def main() -> None:
         "t1_maven_sun_only_preflight": maven_preflight,
         "t1_maven_planetary_force_diagnostic": maven_planetary_force,
         "t1_maven_desat_sensitivity": maven_desat,
+        "t1_maven_ops_event_search": maven_ops_events,
         "t1_maven_portable_preflight_run": maven_run,
         "t1_optional_external_run_static_replay": t1_external_run_replay,
         "t2_independent_endpoint_estimator": {

@@ -1,0 +1,180 @@
+{
+  "arcs": [
+    {
+      "all_arc_events": 2,
+      "end_utc": "2014-04-30T23:58:52.815Z",
+      "keyword_arc_hits": [],
+      "keyword_context_hits": [
+        {
+          "end_time": "2014-04-26T04:00:08+00:00",
+          "event_type_id": "22",
+          "id": "860895",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "833b5b9c46a7457c328f755bdfaaa9dfb32639fa6194a549f8f22390bbc90e59",
+          "source": "Integrated Report",
+          "start_time": "2014-04-26T04:00:08+00:00"
+        },
+        {
+          "end_time": "2014-04-26T04:05:09+00:00",
+          "event_type_id": "35",
+          "id": "860896",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "4b3ebbc5f23b6f50e80816989bf3faa8020a887d8234a5fd8902aee15a949642",
+          "source": "Integrated Report",
+          "start_time": "2014-04-26T04:05:09+00:00"
+        },
+        {
+          "end_time": "2014-05-03T04:00:09+00:00",
+          "event_type_id": "22",
+          "id": "860903",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "0f8cbc018337186d419eeda2b554dc4c84d8f497c8b56fee99ff08ea9aecb259",
+          "source": "Integrated Report",
+          "start_time": "2014-05-03T04:00:09+00:00"
+        },
+        {
+          "end_time": "2014-05-03T04:05:10+00:00",
+          "event_type_id": "35",
+          "id": "860904",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "4496b3a6195ef954b28587f7aac221358e5c9a9277f99a143f0d25061e92ec5a",
+          "source": "Integrated Report",
+          "start_time": "2014-05-03T04:05:10+00:00"
+        }
+      ],
+      "start_et_tdb_seconds": 452088000.0,
+      "start_utc": "2014-04-29T23:58:52.815Z"
+    },
+    {
+      "all_arc_events": 0,
+      "end_utc": "2014-06-29T23:58:52.816Z",
+      "keyword_arc_hits": [],
+      "keyword_context_hits": [
+        {
+          "end_time": "2014-06-28T04:00:03+00:00",
+          "event_type_id": "22",
+          "id": "861028",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "47360f9e9121e1f72fd4cda5fab057a5fd4eea6921f2e5057480c56edf19c5e2",
+          "source": "Integrated Report",
+          "start_time": "2014-06-28T04:00:03+00:00"
+        },
+        {
+          "end_time": "2014-06-28T04:05:04+00:00",
+          "event_type_id": "35",
+          "id": "861029",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "4ca823711b09d161a648036e4301e9e90889d6edfdd6bbd9bf761377b9edb3dc",
+          "source": "Integrated Report",
+          "start_time": "2014-06-28T04:05:04+00:00"
+        },
+        {
+          "end_time": "2014-07-02T17:15:04+00:00",
+          "event_type_id": "22",
+          "id": "861048",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "de4ee02448eb6a6b2b02599d15c63bc00c3d14e254690de2b93aac9be45a3ff3",
+          "source": "Integrated Report",
+          "start_time": "2014-07-02T17:15:04+00:00"
+        },
+        {
+          "end_time": "2014-07-02T17:20:05+00:00",
+          "event_type_id": "35",
+          "id": "861049",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "97b4abde0eb0abcf0a240f43ce498a11e2c83af4e202a82700711ae4495a42be",
+          "source": "Integrated Report",
+          "start_time": "2014-07-02T17:20:05+00:00"
+        },
+        {
+          "end_time": "2014-07-05T04:00:03+00:00",
+          "event_type_id": "22",
+          "id": "861081",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "8157561fd72cd8471c69dcbee462cdb2f2782f3cfa060f648dd1a205e111c39b",
+          "source": "Integrated Report",
+          "start_time": "2014-07-05T04:00:03+00:00"
+        },
+        {
+          "end_time": "2014-07-05T04:05:04+00:00",
+          "event_type_id": "35",
+          "id": "861082",
+          "matched_terms": [
+            "desat",
+            "reaction wheel"
+          ],
+          "row_sha256": "511123466a398140ee7808fc5a7296900ce11962dd2a7869c404e480e63921d8",
+          "source": "Integrated Report",
+          "start_time": "2014-07-05T04:05:04+00:00"
+        }
+      ],
+      "start_et_tdb_seconds": 457272000.0,
+      "start_utc": "2014-06-28T23:58:52.816Z"
+    }
+  ],
+  "boundaries": {
+    "catalog_scope_only": true,
+    "claim_status": "unverified",
+    "event_list_complete_for_desats": false,
+    "impulse_vectors_admitted": false,
+    "independent_observables": false,
+    "mission_validation": false,
+    "scientific_holdout": false
+  },
+  "preregistration_commit": "5c1ad36",
+  "product_lidvid": "urn:nasa:pds:maven.anc:data.events:ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00::1.2",
+  "protocol_sha256": "07f7dcc05063d1102835fc1d8549bb776b8c2b6f1ee3dce12f31060e919aee33",
+  "recorded_at": "2026-09-27T15:47:50.458797+00:00",
+  "records_checked": 185321,
+  "schema_version": "t1-maven-ops-event-search-audit-v1",
+  "source_files": [
+    {
+      "bytes": 2866,
+      "path": "docs/T1_MAVEN_OPS_EVENT_SEARCH_PROTOCOL.json",
+      "sha256": "07f7dcc05063d1102835fc1d8549bb776b8c2b6f1ee3dce12f31060e919aee33"
+    },
+    {
+      "bytes": 8754,
+      "path": "scripts/verify_t1_maven_ops_events.py",
+      "sha256": "47faa352eaae2d9ebb36ff95f45b277a3f38269d008a32205199dc2e9da1a04d"
+    },
+    {
+      "bytes": 7601,
+      "path": "data/references/maven_anc_events/ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00.xml",
+      "sha256": "4443e819fc341c56542497192a0d3e98f2eced436a307befca5caab4fb683f5c"
+    },
+    {
+      "bytes": 53288544,
+      "path": "data/references/maven_anc_events/ops_events_2013-01-01-00-00-00_2021-11-15-00-00-00.csv",
+      "sha256": "af9b528afffae7ae7a584030c1a8431f107f80647e2d0635a9f077e70cbbdd73"
+    }
+  ],
+  "status": "catalog-inspected-not-mission-validation"
+}

@@ -33,8 +33,20 @@ cruise. This establishes operational measurements, not public product-level
 access to the two frozen arcs. The same source documents solar-radiation-pressure
 estimation and approximately weekly desaturation events; see the separate
 [conditional sensitivity result](T1_MAVEN_DESAT_SENSITIVITY_RESULT.md).
-The next admission gate is to locate an official product label or archive
-inventory whose time coverage includes the frozen 2014 arcs, then inspect its
+
+The official [MAVEN ancillary events collection](https://pds.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Amaven.anc%3Adata.events)
+has an operational-events product spanning both fixed arcs. A preregistered
+[inspection](T1_MAVEN_OPS_EVENT_SEARCH_RESULT.md) parsed all 185,321 labeled
+records: no desaturation/maneuver keyword record falls inside either 24-hour
+arc, although explicit reaction-wheel desaturation records fall nearby. This
+is catalog evidence about event timestamps, not proof of a complete maneuver
+history, an impulse vector, or an independent tracking observable. The related
+[GNC DRF collection](https://pds.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Amaven.anc%3Adata.drf.gnc)
+begins 2014-11-15 and does not cover the fixed cruise arcs.
+
+The next independent-observable admission gate is to locate an official
+radiometric product label or archive inventory whose time coverage includes
+the frozen 2014 arcs, then inspect its
 data rights, measurement semantics, calibration and station/time models, and
 upstream dependence on the NAV SPK. A separately reviewed measurement model
 and uncertainty budget are required before using any such records for a

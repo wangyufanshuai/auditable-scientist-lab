@@ -277,6 +277,14 @@
       "name": "optional-t1-maven-desat-sensitivity",
       "output_path": "artifacts/t1-maven-desat-sensitivity-audit.json",
       "recorded_at": "2026-09-27T15:10:24.221967+00:00"
+    },
+    {
+      "command": "python scripts/verify_t1_maven_ops_events.py --verify",
+      "exit_code": 0,
+      "input_version": "47faa352eaae2d9ebb36ff95f45b277a3f38269d008a32205199dc2e9da1a04d",
+      "name": "optional-t1-maven-ops-event-search",
+      "output_path": "artifacts/t1-maven-ops-event-search-audit.json",
+      "recorded_at": "2026-09-27T15:47:50.458797+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
