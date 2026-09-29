@@ -87,6 +87,8 @@ jobs:
         run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
       - name: Verify optional acceptance projection
         run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
+      - name: Verify T2 projectile source reconciliation
+        run: '& $env:REPLAY_PYTHON scripts/verify_t2_projectile_source_reconciliation.py --verify'
       - name: Verify clean wheel installation and replay
         run: '& $env:REPLAY_PYTHON scripts/verify_wheel_install.py'
       - name: Upload wheel audit receipt
