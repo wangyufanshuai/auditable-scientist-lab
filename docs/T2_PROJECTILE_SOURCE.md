@@ -33,6 +33,14 @@ inputs within a trial. Run `python scripts/verify_t2_projectile_source.py
 to recompute it. The original PDF and XLSX files remain locally ignored and
 are not redistributed in Git.
 
+The [source reconciliation receipt](../artifacts/t2-projectile-source-reconciliation-audit.json)
+binds this partial 30-trial/179-row inventory to the article's 82-experiment
+statement, records the 52 unaccounted experiments without silently imputing
+them, preserves the unresolved `v0` role and workbook local-path metadata as
+provenance-only signals, and carries forward the duplicate trial 22/23 split
+risk. Its negative controls reject coverage spoofing, forced `v0` resolution,
+source-hash tampering, ignored cross-split duplicates, and rights promotion.
+
 The PDF declares CC BY 4.0 for the article. The official supplement page says
 the files are published under license by IOP Publishing and that rights belong
 to the authors unless otherwise specified; it also says original content may

@@ -1,0 +1,68 @@
+{
+  "schema_version": "t2-projectile-source-reconciliation-contract-v1",
+  "status": "reconciled-partial-source-intake-only",
+  "scope": "machine-readable reconciliation of article coverage, workbook roles, provenance metadata, and blocked scientific boundaries",
+  "source_contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
+  "source_audit_sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf",
+  "v0_diagnostic_contract_sha256": "ec72000c3ecc9d5b0346ad2954675a268c365bb087f20077fdcdfbae0bae8150",
+  "v0_diagnostic_audit_sha256": "c078f560230a6ec535ac5fbf83f877455455e3b3653d1822c020749949574b1b",
+  "trial_independence_contract_sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
+  "trial_independence_audit_sha256": "0f75c5adc84910fb6b7d3bc42fcd49a1f922cd210afbbc9a62617563536b0b15",
+  "article": {
+    "reported_experiment_count": 82,
+    "reported_launch_speed_upper_bound_m_s": 6.0,
+    "measured_velocity_narrative": "The article says initial velocity is measured with an in-built light gate accurate to within 0.1 m/s.",
+    "fitted_velocity_narrative": "The article also treats initial velocity as a least-squares fitting parameter and says the supplementary result uses measured initial velocity.",
+    "narrative_is_semantic_mapping_for_workbook_v0": false
+  },
+  "measured_workbook": {
+    "sample_count": 179,
+    "trial_count": 30,
+    "trial_id_range": [2, 31],
+    "v0_header": "v0 (m/s)",
+    "v0_role_status": "unresolved",
+    "metadata": {
+      "package_part": "xl/workbook.xml",
+      "part_sha256": "13adaa8abbe7fae0c8c318e7652659812e8aa6e032c6b0f081a699574ff81b8b",
+      "absolute_path_element_present": true,
+      "absolute_path_value_sha256": "4f600d0047a77f9340b33952b0aada3a3eacf4ed3d6da46ca81ae730dc081341",
+      "metadata_role": "provenance-only",
+      "semantic_column_mapping_proven": false
+    },
+    "raw_file_redistributed": false
+  },
+  "numerical_workbook": {
+    "admitted_as_observations": false,
+    "formula_cells": 3507
+  },
+  "reconciliation": {
+    "coverage_status": "partial-unaccounted",
+    "unaccounted_experiment_count": 52,
+    "declared_speed_above_article_bound_trial_ids": [4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22, 23, 24],
+    "duplicate_trial_groups": [[22, 23]],
+    "duplicate_crosses_holdout_boundary": true
+  },
+  "provenance": {
+    "source_rights_status": "rights-language-reviewed-raw-supplement-redistribution-not-confirmed",
+    "local_path_metadata_is_semantic_proof": false,
+    "source_file_identity_is_semantic_proof": false,
+    "source_rights_cleared": false
+  },
+  "negative_controls": {
+    "coverage_count_spoof_rejected": true,
+    "v0_role_forced_resolved_rejected": true,
+    "source_hash_tamper_rejected": true,
+    "duplicate_cross_split_ignored_rejected": true,
+    "rights_promoted_to_cleared_rejected": true
+  },
+  "boundaries": {
+    "complete_reported_experiment_set": false,
+    "velocity_column_semantics_resolved": false,
+    "physical_model_validated": false,
+    "causal_effect_identified": false,
+    "scientific_holdout": false,
+    "research_candidate": false,
+    "publication_ready": false,
+    "claim_status": "unverified"
+  }
+}
