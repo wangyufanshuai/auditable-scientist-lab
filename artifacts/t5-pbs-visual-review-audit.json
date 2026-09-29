@@ -1,0 +1,53 @@
+{
+  "boundaries": {
+    "agent_authored_visual_observations": true,
+    "biosafety_review_complete": false,
+    "claim_status": "unverified",
+    "complete_visual_omission_review": false,
+    "execution_allowed": false,
+    "human_acceptance": false,
+    "independent_procedure_validation": false,
+    "machine_readable_recipe": false
+  },
+  "cross_reader_contract_sha256": "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a",
+  "evaluator_input_hash": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+  "page_render_sha256": [
+    "060c62c7eea362eddfb8556cbc3111128f9955f5580b4926827a1c538fbc7ade",
+    "57043508550b69b5ef6760a6f4719dfef4dd0b6ea48b550d8d592b5f0b8ecffb",
+    "0ceb382b6c34b635e6a9602618038cc0ca6bb3f5f43d1bf77928828eb4c042d4"
+  ],
+  "recorded_at": "2026-09-29T10:05:14.660726+00:00",
+  "review_flags": [
+    "page-2-possible-ui-residue-in-safety-box",
+    "page-3-chemical-glyph-and-separator-ambiguity",
+    "material-cards-not-yet-structured",
+    "manual-visual-review-not-human-acceptance"
+  ],
+  "schema_version": "t5-pbs-visual-review-audit-v1",
+  "source_contract_sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61",
+  "source_files": [
+    {
+      "bytes": 7178,
+      "path": "scripts/verify_t5_pbs_visual_review.py",
+      "sha256": "006563646c1736a9081761a8dfd18aa40654192cb957c16724361152c9b4b6ff"
+    },
+    {
+      "bytes": 2292,
+      "path": "docs/T5_PBS_VISUAL_REVIEW_CONTRACT.json",
+      "sha256": "3206ad726dc4f4a871d811891ae50df6b3188b97bd1d702e8cadfe56d482b5b9"
+    },
+    {
+      "bytes": 2537,
+      "path": "docs/T5_PBS_SOURCE_CONTRACT.json",
+      "sha256": "5d1537b3afcf92b617b46bab47549558ab198fde437568387f0b3db70d4e5b61"
+    },
+    {
+      "bytes": 2022,
+      "path": "docs/T5_PBS_CROSS_READER_CONTRACT.json",
+      "sha256": "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
+    }
+  ],
+  "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+  "status": "recorded-agent-visual-observations-only",
+  "visual_contract_sha256": "3206ad726dc4f4a871d811891ae50df6b3188b97bd1d702e8cadfe56d482b5b9"
+}

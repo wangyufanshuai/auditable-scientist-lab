@@ -1,0 +1,29 @@
+{
+  "schema_version": "t5-pbs-visual-review-contract-v1",
+  "scope": "agent-authored-read-only-page-review-not-human-acceptance",
+  "source_pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+  "source_pdf_bytes": 458059,
+  "renderer": {
+    "name": "pdftoppm",
+    "version": "26.07.0",
+    "local_executable_sha256": "8c1e0b47a78291488bed8c0a03f7401e87292df0b6c25bf643b6ed548916fdf5",
+    "arguments": ["-f", "1", "-l", "3", "-r", "125", "-png"],
+    "rendered_images_redistributed": false
+  },
+  "pages": [
+    {"page": 1, "render_sha256": "060c62c7eea362eddfb8556cbc3111128f9955f5580b4926827a1c538fbc7ade", "observations": ["Visible title, author, DOI and attribution-license statement agree with the source inventory; the license version remains unspecified."]},
+    {"page": 2, "render_sha256": "57043508550b69b5ef6760a6f4719dfef4dd0b6ea48b550d8d592b5f0b8ecffb", "observations": ["Six material cards are visible above the safety warning; the source contract does not enumerate the cards.", "The warning says to read appropriate SDS before work. A visible Sort By Relevance/Name/Formula Weight string occurs inside the warning box and is also present in extracted text; classify it as possible export UI residue, not a safety instruction, pending source-owner review."]},
+    {"page": 3, "render_sha256": "0ceb382b6c34b635e6a9602618038cc0ca6bb3f5f43d1bf77928828eb4c042d4", "observations": ["Six numbered steps and the 1x/10x, pH, optional DEPC, acid and autoclave branches are visible.", "Rendered chemical notation uses subscripts; pypdf inserts a private-use glyph after phosphate notation and Poppler loses at least one separator in the 10x line. Neither extraction is approved as a machine-readable formulation."]}
+  ],
+  "review_flags": ["page-2-possible-ui-residue-in-safety-box", "page-3-chemical-glyph-and-separator-ambiguity", "material-cards-not-yet-structured", "manual-visual-review-not-human-acceptance"],
+  "boundaries": {
+    "agent_authored_visual_observations": true,
+    "complete_visual_omission_review": false,
+    "machine_readable_recipe": false,
+    "independent_procedure_validation": false,
+    "biosafety_review_complete": false,
+    "human_acceptance": false,
+    "execution_allowed": false,
+    "claim_status": "unverified"
+  }
+}
