@@ -24,6 +24,10 @@ OPTIONAL_ROWS = {
     "t5-protocol": {"optional-t5-pbs-source-run", "optional-t5-pbs-source-availability",
                      "optional-t5-pbs-visual-review"},
 }
+ROOT_OPTIONAL_ROWS = {
+    "optional-t5-pbs-source-availability",
+    "optional-t5-pbs-visual-review",
+}
 
 
 def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path) -> None:
@@ -47,6 +51,8 @@ def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path)
     for directory, expected in OPTIONAL_ROWS.items():
         acceptance = json.loads((copied / "artifacts" / directory / "acceptance.json").read_text(encoding="utf-8"))
         assert expected <= {row["name"] for row in acceptance["checks"]}
+    root_acceptance = json.loads((copied / "artifacts/acceptance.json").read_text(encoding="utf-8"))
+    assert ROOT_OPTIONAL_ROWS <= {row["name"] for row in root_acceptance["checks"]}
     status = json.loads((copied / "artifacts/portfolio-status.json").read_text(encoding="utf-8"))
     current_status = json.loads((ROOT / "artifacts/portfolio-status.json").read_text(encoding="utf-8"))
     assert status == current_status

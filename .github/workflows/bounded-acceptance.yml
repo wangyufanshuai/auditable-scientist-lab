@@ -11,6 +11,7 @@ on:
       - publish/integration
       - feature/t2-causal-sensitivity
       - feature/t4-proof-receipt
+      - feature/t5-source-availability
 
 permissions:
   contents: read
