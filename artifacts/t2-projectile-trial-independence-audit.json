@@ -1,0 +1,105 @@
+{
+  "boundaries": {
+    "causal_effect_identified": false,
+    "claim_status": "unverified",
+    "duplicate_trial_content_found": true,
+    "model_fit_admitted": false,
+    "posthoc_diagnostic_only": true,
+    "scientific_holdout": false,
+    "source_rights_cleared": false,
+    "trial_independence_verified": false,
+    "whole_trial_holdout_safe": false
+  },
+  "contract_sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
+  "duplicate_groups": [
+    {
+      "crosses_holdout_boundary": true,
+      "holdout_trial_ids": [
+        22
+      ],
+      "sample_count": 6,
+      "signature_sha256": "14aade88751a370669a4cafe64ced4df89079226e1020df10f83cc204cf6de2c",
+      "training_trial_ids": [
+        23
+      ],
+      "trial_ids": [
+        22,
+        23
+      ]
+    }
+  ],
+  "dynamic_verified_here": true,
+  "protocol_sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c",
+  "recorded_at": "2026-09-29T12:12:37.351091+00:00",
+  "sample_count": 179,
+  "schema_version": "t2-projectile-trial-independence-audit-v1",
+  "source_audit_sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf",
+  "source_contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
+  "source_files": [
+    {
+      "bytes": 8307,
+      "path": "scripts/verify_t2_projectile_trial_independence.py",
+      "sha256": "70dc1844113bfce012ebd5c3781c25a996c633ec72ce097aa80dd97974217b03"
+    },
+    {
+      "bytes": 1731,
+      "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+      "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3"
+    },
+    {
+      "bytes": 4156,
+      "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+      "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+    },
+    {
+      "bytes": 15768,
+      "path": "artifacts/t2-projectile-source-audit.json",
+      "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
+    },
+    {
+      "bytes": 4104,
+      "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
+      "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
+    }
+  ],
+  "source_workbook_sha256": "309d3b3ced687e9bc0da50ece7d68f4f758b7749444fc5f95c7ac073a875d70b",
+  "split": {
+    "holdout_trial_ids": [
+      4,
+      6,
+      7,
+      9,
+      13,
+      21,
+      22,
+      29,
+      30
+    ],
+    "split_registered": false,
+    "training_trial_ids": [
+      2,
+      3,
+      5,
+      8,
+      10,
+      11,
+      12,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      31
+    ]
+  },
+  "status": "verified-posthoc-duplicate-trial-diagnostic-only",
+  "trial_count": 30
+}

@@ -341,6 +341,22 @@
       "name": "optional-t2-causal-context-sensitivity",
       "output_path": "artifacts/t2-causal-sensitivity-audit.json",
       "recorded_at": "2026-09-28T11:40:53.207769+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_projectile_v0_diagnostic.py --verify",
+      "exit_code": 0,
+      "input_version": "e8c0533775f1ab69ceaecfd9de3933012a4f961d6df6df4653ac85f20b6c97b9",
+      "name": "optional-t2-projectile-v0-provenance-diagnostic",
+      "output_path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+      "recorded_at": "2026-09-29T11:01:42.694483+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_projectile_trial_independence.py --verify",
+      "exit_code": 0,
+      "input_version": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
+      "name": "optional-t2-projectile-trial-independence-diagnostic",
+      "output_path": "artifacts/t2-projectile-trial-independence-audit.json",
+      "recorded_at": "2026-09-29T12:12:37.351091+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

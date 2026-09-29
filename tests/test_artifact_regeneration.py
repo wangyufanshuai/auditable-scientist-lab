@@ -22,6 +22,10 @@ OPTIONAL_ROWS = {
     "t4-proof": {"exact-linear-invariant-subtrack", "exact-linear-invariant-run",
                  "exact-verlet-discrete-invariant"},
 }
+ROOT_OPTIONAL_ROWS = {
+    "optional-t2-projectile-v0-provenance-diagnostic",
+    "optional-t2-projectile-trial-independence-diagnostic",
+}
 
 
 def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path) -> None:
@@ -45,6 +49,8 @@ def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path)
     for directory, expected in OPTIONAL_ROWS.items():
         acceptance = json.loads((copied / "artifacts" / directory / "acceptance.json").read_text(encoding="utf-8"))
         assert expected <= {row["name"] for row in acceptance["checks"]}
+    root_acceptance = json.loads((copied / "artifacts/acceptance.json").read_text(encoding="utf-8"))
+    assert ROOT_OPTIONAL_ROWS <= {row["name"] for row in root_acceptance["checks"]}
     status = json.loads((copied / "artifacts/portfolio-status.json").read_text(encoding="utf-8"))
     current_status = json.loads((ROOT / "artifacts/portfolio-status.json").read_text(encoding="utf-8"))
     assert status == current_status
