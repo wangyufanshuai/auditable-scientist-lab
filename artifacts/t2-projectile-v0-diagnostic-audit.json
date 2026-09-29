@@ -64,9 +64,9 @@
   "source_contract_sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
   "source_files": [
     {
-      "bytes": 10129,
+      "bytes": 10357,
       "path": "scripts/verify_t2_projectile_v0_diagnostic.py",
-      "sha256": "2b63fcb28c705d0f9c386c63604412003820e38c601f38f99cc5a12d217cc971"
+      "sha256": "51f260c2508f00824a9f2894f764afa39eddd3a6f2780ce4529e70dba3b7894c"
     },
     {
       "bytes": 8075,

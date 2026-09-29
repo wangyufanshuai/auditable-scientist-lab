@@ -17,10 +17,6 @@ from pathlib import Path
 from statistics import mean, median
 from typing import Any
 
-from openpyxl import load_workbook
-from pypdf import PdfReader
-
-
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json"
 SOURCE_CONTRACT = ROOT / "docs/T2_PROJECTILE_SOURCE_CONTRACT.json"
@@ -55,6 +51,12 @@ def _fit_v0(rows: list[tuple[Any, ...]]) -> float:
 
 
 def _dynamic(pdf: Path, workbook: Path) -> dict[str, object]:
+    # Keep the committed receipt replayable in the dependency-minimal wheel
+    # environment. The excluded local PDF/XLSX sources opt into these readers
+    # only when a caller explicitly requests a dynamic comparison.
+    from openpyxl import load_workbook
+    from pypdf import PdfReader
+
     source = json.loads(SOURCE_CONTRACT.read_text(encoding="utf-8"))
     files = source["files"]
     if _hash(pdf) != files["article_pdf"]["sha256"] or _hash(workbook) != files["measured_trajectories"]["sha256"]:
