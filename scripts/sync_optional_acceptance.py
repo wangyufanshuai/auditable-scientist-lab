@@ -870,6 +870,10 @@ def desired_outputs() -> dict[Path, str]:
     })
     _insert_or_replace(root["checks"], next(
         row for row in rows if row["name"] == "optional-t5-pbs-source-run"))
+    _insert_or_replace(root["checks"], next(
+        row for row in rows if row["name"] == "optional-t5-pbs-source-availability"))
+    _insert_or_replace(root["checks"], next(
+        row for row in rows if row["name"] == "optional-t5-pbs-visual-review"))
     cross_reader = _t5_cross_reader_receipt()
     _insert_or_replace(root["checks"], {
         "name": "optional-t5-pbs-cross-reader-text-coverage",

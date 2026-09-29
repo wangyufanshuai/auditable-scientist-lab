@@ -341,6 +341,22 @@
       "name": "optional-t2-causal-context-sensitivity",
       "output_path": "artifacts/t2-causal-sensitivity-audit.json",
       "recorded_at": "2026-09-28T11:40:53.207769+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_source_availability.py --verify",
+      "exit_code": 0,
+      "input_version": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+      "name": "optional-t5-pbs-source-availability",
+      "output_path": "artifacts/t5-source-availability-audit.json",
+      "recorded_at": "2026-09-29T07:49:01.543314+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_pbs_visual_review.py --verify",
+      "exit_code": 0,
+      "input_version": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+      "name": "optional-t5-pbs-visual-review",
+      "output_path": "artifacts/t5-pbs-visual-review-audit.json",
+      "recorded_at": "2026-09-29T10:05:14.660726+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
