@@ -71,6 +71,11 @@ OPTIONAL = (
      "python scripts/verify_t4_verlet_invariant.py --verify", "protocol_sha256",
      ("floating_implementation_proved", "physical_model_validated", "general_formal_backend",
       "nonlinear_dynamics_proved", "real_data", "publication_ready"), ()),
+    ("t4-proof", "floating-implementation-conformance", "t4-floating-conformance-audit.json",
+     "t4-floating-conformance-audit-v1", "verified-finite-floating-output-conformance-only",
+     "python scripts/verify_t4_floating_conformance.py --verify", "t4_parent_input_hash",
+     ("floating_implementation_proved", "physical_model_validated", "general_formal_backend",
+      "real_data", "publication_ready"), ("positive_cases_passed", "negative_controls_rejected")),
     ("t5-protocol", "optional-t5-pbs-source-run", "t5-pbs-source-run-audit.json",
      "t5-pbs-source-run-audit-v1", "verified-read-only-source-inventory-only",
      "python scripts/verify_t5_pbs_source_run.py --verify", "run_id",
@@ -118,7 +123,12 @@ REPORT_NOTES = {
         "The separate `python scripts/verify_t4_linear_run.py --verify` binds the exact\n"
         "certificate to one policy-guarded Tool/Provider Run. Replay checks its input,\n"
         "source, environment, seed, event chain, and output; relocation and tamper controls\n"
-        "pass. The Run's physical Claim remains `unverified`.\n"
+        "pass. The Run's physical Claim remains `unverified`.\n\n"
+        "The optional [finite floating conformance audit](../t4-floating-conformance-audit.json)\n"
+        "compares T3 velocity-Verlet outputs with an independent exact-rational\n"
+        "map over three finite cases and rejects explicit Euler plus a perturbed update.\n"
+        "It records a numerical error envelope, not a formal proof of floating execution;\n"
+        "physical-model, real-data, and publication gates remain open.\n"
     ),
 }
 REPORT_MARKERS = {
@@ -132,6 +142,14 @@ VERLET_REPORT_NOTE = (
     "rechecks one rational velocity-Verlet matrix with an exact quadratic invariant "
     "and rejects explicit Euler. It proves only this declared discrete map; floating "
     "execution, physical validation, nonlinear dynamics, and real-data gates remain open.\n"
+)
+FLOATING_REPORT_NOTE = (
+    "The optional [finite floating conformance audit](../t4-floating-conformance-audit.json) "
+    "compares final position and maximum energy drift in three finite velocity-Verlet "
+    "cases with an independent exact rational map, and rejects explicit Euler plus a "
+    "perturbed update. It records a numerical "
+    "error envelope; it does not prove arbitrary floating execution or validate the physical "
+    "model, real data, or publication readiness.\n"
 )
 PYTHAGOREAN_REPORT_NOTE = (
     "The optional [Pythagorean close-encounter audit](../t3-pythagorean-audit.json) "
@@ -219,6 +237,44 @@ def _receipt_row(spec: tuple) -> dict:
             != hashlib.sha256(solver_path.read_bytes()).hexdigest()
         ):
             raise ValueError("T4 Verlet invariant audit cannot enter acceptance")
+    if filename == "t4-floating-conformance-audit.json":
+        protocol_path = ROOT / "docs/T4_FLOATING_CONFORMANCE_PROTOCOL.json"
+        solver_path = ROOT / "src/auditable_scientist/tracks/dynamics.py"
+        checker_path = ROOT / "scripts/verify_t4_floating_conformance.py"
+        expected_boundaries = {
+            "finite_horizon_output_conformance": True,
+            "finite_error_envelope": True,
+            "floating_implementation_proved": False,
+            "exact_rational_reference": True,
+            "physical_model_validated": False,
+            "general_formal_backend": False,
+            "real_data": False,
+            "publication_ready": False,
+            "claim_status": "unverified",
+        }
+        source_files = audit.get("source_files", [])
+        expected_sources = {
+            "docs/T4_FLOATING_CONFORMANCE_PROTOCOL.json": protocol_path,
+            "src/auditable_scientist/tracks/dynamics.py": solver_path,
+            "scripts/verify_t4_floating_conformance.py": checker_path,
+        }
+        if (
+            audit.get("protocol_sha256") != hashlib.sha256(protocol_path.read_bytes()).hexdigest()
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("positive_cases_passed") is not True
+            or audit.get("negative_controls_rejected") is not True
+            or set(item.get("path") for item in source_files) != set(expected_sources)
+            or any(item.get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest()
+                   or item.get("bytes") != path.stat().st_size
+                   for item in source_files for path in [expected_sources[item.get("path")]])
+        ):
+            raise ValueError("T4 floating conformance audit cannot enter acceptance")
+        process = subprocess.run(
+            [sys.executable, str(checker_path), "--verify"],
+            cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+        )
+        if process.returncode != 0 or json.loads(process.stdout).get("status") != status:
+            raise ValueError(f"T4 floating conformance dynamic check failed: {process.stderr.strip()}")
     if filename == "t3-figure-eight-audit.json" and (
         audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
         or audit.get("scientific_boundaries", {}).get("untouched_scientific_holdout") is not False
@@ -764,6 +820,8 @@ def desired_outputs() -> dict[Path, str]:
     t4_report = ROOT / "artifacts/t4-proof/test-report.md"
     if "The optional [exact Verlet invariant audit]" not in outputs[t4_report]:
         outputs[t4_report] = outputs[t4_report].rstrip("\n") + "\n\n" + VERLET_REPORT_NOTE
+    if "The optional [finite floating conformance audit]" not in outputs[t4_report]:
+        outputs[t4_report] = outputs[t4_report].rstrip("\n") + "\n\n" + FLOATING_REPORT_NOTE
     t2_causal_report = ROOT / "artifacts/t2-causal/test-report.md"
     if "The optional [context-sensitivity negative control]" not in outputs[t2_causal_report]:
         outputs[t2_causal_report] = outputs[t2_causal_report].rstrip("\n") + "\n\n" + REPORT_NOTES["t2-causal"]

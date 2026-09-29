@@ -136,6 +136,15 @@ def main() -> None:
                 or t3_convergence.get("boundaries", {}).get("real_mission_validation") is not False
                 or t3_convergence.get("boundaries", {}).get("multi_body_validation") is not False):
             raise RuntimeError("wheel T3 convergence evaluator differs")
+        t4_floating = json.loads(invoke(
+            [str(python), str(ROOT / "scripts/verify_t4_floating_conformance.py"), "--verify"],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (t4_floating.get("status") != "verified-finite-floating-output-conformance-only"
+                or t4_floating.get("positive_cases_passed") is not True
+                or t4_floating.get("negative_controls_rejected") is not True
+                or t4_floating.get("floating_implementation_proved") is not False):
+            raise RuntimeError("wheel T4 finite floating output conformance differs")
         console = venv / "Scripts/auditable-scientist.exe"
         invoke([str(console), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -247,6 +256,7 @@ def main() -> None:
             "checks": t3_convergence["checks"],
             "boundaries": t3_convergence["boundaries"],
         },
+        "t4_floating_conformance_wheel_replay": t4_floating,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
         "all_nine_relocated_replays_equal": moved == original,

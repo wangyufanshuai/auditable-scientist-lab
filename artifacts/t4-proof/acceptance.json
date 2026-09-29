@@ -39,6 +39,14 @@
       "name": "exact-verlet-discrete-invariant",
       "output_path": "artifacts/t4-verlet-invariant-audit.json",
       "recorded_at": "2026-09-28T06:37:16.661147+00:00"
+    },
+    {
+      "command": "python scripts/verify_t4_floating_conformance.py --verify",
+      "exit_code": 0,
+      "input_version": "6497f62cc5a8ff8440eb4abab7754f1045ec10aa919de669f51eff8e25a59e00",
+      "name": "floating-implementation-conformance",
+      "output_path": "artifacts/t4-floating-conformance-audit.json",
+      "recorded_at": "2026-09-29T06:56:33.173544+00:00"
     }
   ],
   "evaluator": {
