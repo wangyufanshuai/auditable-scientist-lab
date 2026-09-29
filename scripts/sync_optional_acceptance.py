@@ -153,7 +153,12 @@ PROJECTILE_REPORT_NOTE = (
     "holdout, and causal identification remain open. Official supplement rights "
     "language is reviewed, but raw-XLSX redistribution remains unconfirmed. The [blocked model protocol] "
     "(../docs/T2_PROJECTILE_MODEL_PROTOCOL.md) freezes a whole-trial split but "
-    "permits no fit until those source gates close. The Claim is `unverified`.\n"
+    "permits no fit until those source gates close.\n"
+    "The optional [v0 provenance diagnostic](../t2-projectile-v0-diagnostic-audit.json) "
+    "compares the declared workbook speeds with a trajectory-only no-drag estimate: "
+    "28 of 30 trials are within 0.1 m/s and all 30 are within 0.25 m/s. This agreement "
+    "does not resolve whether `v0` is an independent light-gate reading, a fitted value, "
+    "or a processed copy, so model fitting remains blocked and the Claim is `unverified`.\n"
 )
 
 
@@ -521,6 +526,60 @@ def _t2_projectile_protocol() -> dict:
     return result
 
 
+def _t2_projectile_v0_receipt(audit: dict | None = None) -> dict:
+    """Check the post-hoc v0 provenance diagnostic without admitting a fit."""
+
+    audit_path = ROOT / "artifacts/t2-projectile-v0-diagnostic-audit.json"
+    contract_path = ROOT / "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json"
+    source_contract_path = ROOT / "docs/T2_PROJECTILE_SOURCE_CONTRACT.json"
+    source_audit_path = ROOT / "artifacts/t2-projectile-source-audit.json"
+    audit = audit if audit is not None else _load("artifacts/t2-projectile-v0-diagnostic-audit.json")
+    contract = _load("docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json")
+    source_contract = _load("docs/T2_PROJECTILE_SOURCE_CONTRACT.json")
+    source_audit = _load("artifacts/t2-projectile-source-audit.json")
+    expected_boundaries = {
+        "posthoc_diagnostic_only": True, "v0_role_resolved": False,
+        "independent_input_verified": False, "model_fit_admitted": False,
+        "scientific_holdout": False, "causal_effect_identified": False,
+        "source_rights_cleared": False, "claim_status": "unverified",
+    }
+    expected_sources = {
+        "scripts/verify_t2_projectile_v0_diagnostic.py": ROOT / "scripts/verify_t2_projectile_v0_diagnostic.py",
+        "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json": contract_path,
+        "docs/T2_PROJECTILE_SOURCE_CONTRACT.json": source_contract_path,
+        "artifacts/t2-projectile-source-audit.json": source_audit_path,
+    }
+    if (audit.get("schema_version") != "t2-projectile-v0-diagnostic-audit-v1"
+            or audit.get("status") != "verified-posthoc-v0-provenance-diagnostic-only"
+            or audit.get("contract_sha256") != hashlib.sha256(contract_path.read_bytes()).hexdigest()
+            or audit.get("source_contract_sha256") != hashlib.sha256(source_contract_path.read_bytes()).hexdigest()
+            or audit.get("source_pdf_sha256") != source_contract["files"]["article_pdf"]["sha256"]
+            or audit.get("source_workbook_sha256") != source_contract["files"]["measured_trajectories"]["sha256"]
+            or audit.get("evaluator_input_hash") != _load("artifacts/t2-causal/acceptance.json")["evaluator"]["input_hash"]
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("trial_count") != 30 or audit.get("sample_count") != 179
+            or audit.get("declared_speed_above_paper_bound_trials") != [4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22, 23, 24]
+            or {item.get("path") for item in audit.get("source_files", [])} != set(expected_sources)
+            or len(audit.get("source_files", [])) != len(expected_sources)
+            or source_audit.get("status") != "verified-30-trial-real-source-inventory-only"
+            or source_contract.get("boundaries", {}).get("velocity_column_semantics_reviewed") is not False):
+        raise ValueError("T2 v0 provenance diagnostic or boundary differs")
+    for item in audit["source_files"]:
+        path = expected_sources[item["path"]]
+        if item.get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest() or item.get("bytes") != path.stat().st_size:
+            raise ValueError(f"T2 v0 diagnostic source differs: {item['path']}")
+    process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_projectile_v0_diagnostic.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+    )
+    if process.returncode != 0 or json.loads(process.stdout).get("status") != audit["status"]:
+        raise ValueError(f"T2 v0 diagnostic dynamic check failed: {process.stderr.strip()}")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str) or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None:
+        raise ValueError("T2 v0 diagnostic timestamp is missing or naive")
+    return {"recorded_at": timestamp, "input_hash": audit["evaluator_input_hash"]}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -658,6 +717,14 @@ def desired_outputs() -> dict[Path, str]:
         "exit_code": 0, "recorded_at": projectile["recorded_at"],
         "input_version": projectile["verifier_sha256"],
         "output_path": "artifacts/t2-projectile-source-audit.json",
+    })
+    v0_diagnostic = _t2_projectile_v0_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-projectile-v0-provenance-diagnostic",
+        "command": "python scripts/verify_t2_projectile_v0_diagnostic.py --verify",
+        "exit_code": 0, "recorded_at": v0_diagnostic["recorded_at"],
+        "input_version": v0_diagnostic["input_hash"],
+        "output_path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
     })
     sensitivity = _load("artifacts/t2-causal-sensitivity-audit.json")
     sensitivity_timestamp = sensitivity.get("recorded_at")
