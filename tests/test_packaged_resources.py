@@ -23,6 +23,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
         ROOT / "docs/T2_PHYSICAL_METHOD.md",
         ROOT / "docs/T3_NBODY_METHOD.md",
         ROOT / "docs/T4_METHOD.md",
+        ROOT / "docs/T4_FLOATING_CONFORMANCE.md",
         ROOT / "docs/T5_METHOD.md",
         *(ROOT / "examples").glob("*/*.json"),
     ]

@@ -9,7 +9,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 28,
+  "bundled_resource_count": 29,
   "checkout_root_in_installed_process": null,
   "committed_manifest_hashes": {
     "T1": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
@@ -28,10 +28,10 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-28T13:59:52.373949+00:00",
+  "recorded_at": "2026-09-29T07:05:50.860406+00:00",
   "replay_manifest_hashes": {
     "T1": "f5a0b7ede7984a63777451f8646a9ba971b4ff693d6b9dbac2cbd678138b1827",
-    "T1V2": "219c08efbcb8df9ff96c2b585692e2914b336d774bf20b5b97c4c29aaf33e1f3",
+    "T1V2": "04a096948be3f103124801ad9c8fef7fade767b8adbbddb0ab8b4465e49a46cf",
     "T2": "d659528f9c7512c062c639101bba8ef64fbb8b449f622a47fabaff0dcb26ca26",
     "T2P": "ebd00673aecd86a99fe6fcb20ca42caf0f16fc02cb9f8bb6aceadeda77a9de49",
     "T3": "5d4bdb7778ba5e960771b6bfeaa2bc0010e24bbe2e006268d3a7abae62a0c332",
@@ -41,8 +41,8 @@
     "T5": "4c9893e96ec8f11ba2db8cbfac282bdc90ab67f0f3ec03198a3c70b8696248dd"
   },
   "schema_version": "wheel-audit-v7",
-  "script_sha256": "0345694bcfd70eed6c8389e8230e53e8f14b99a5198c7a44e557ea422dbfbb68",
-  "source_snapshot_sha256": "e09208a46dc6c652c0761e590278f79e374eb05adfd1b2edc6dadd0e32301b95",
+  "script_sha256": "abd7a7ced63513dfdf746843726ab239518a59364783edfc789bff3249259532",
+  "source_snapshot_sha256": "adbcd14d2db7616ad1e0ef74d9eb39049d13a1443a497432d38c7be23fd828a5",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t2_context_sensitivity_wheel_replay": {
@@ -71,9 +71,15 @@
     "schema_version": "t3-sweep-v1"
   },
   "t4_bounded_result_and_unverified_run_claim": true,
+  "t4_floating_conformance_wheel_replay": {
+    "floating_implementation_proved": false,
+    "negative_controls_rejected": true,
+    "positive_cases_passed": true,
+    "status": "verified-finite-floating-output-conformance-only"
+  },
   "t4o_bounded_result_and_unverified_run_claim": true,
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "b960821bfc76b4ebf53b8e5cbba1c4c897093c165b208162d770c5d8f2c1c9cd"
+  "wheel_sha256": "a24cbb19ab2bda6dc86bee4ed5755fd22c7706d6cd53fde8e533d8a6b05f9ad9"
 }

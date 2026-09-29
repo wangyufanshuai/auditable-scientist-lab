@@ -85,6 +85,8 @@ jobs:
         run: '& $env:REPLAY_PYTHON scripts/verify_replay_environment.py'
       - name: Verify T1-T5 acceptance receipts
         run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
+      - name: Verify T4 finite floating output conformance
+        run: '& $env:REPLAY_PYTHON scripts/verify_t4_floating_conformance.py --verify'
       - name: Verify optional acceptance projection
         run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
       - name: Verify clean wheel installation and replay
