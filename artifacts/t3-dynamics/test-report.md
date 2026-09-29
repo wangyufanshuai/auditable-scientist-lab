@@ -11,3 +11,5 @@ The optional [published figure-eight audit](../t3-figure-eight-audit.json) dynam
 - Research-candidate claim: false
 
 The optional [Pythagorean close-encounter audit](../t3-pythagorean-audit.json) compares a published 3–4–5 three-body state and one authored perturbation with pinned DOP853 and independently implemented adaptive RK4. Both stop at the predeclared 0.001 pair-separation guard near t=15.8299. All 12 finite engineering checks pass within budget; no post-guard orbit, Lyapunov estimate, untouched scientific holdout, or mission validation is claimed. Pinned SciPy `python scripts/verify_t3_pythagorean.py --verify` recomputes the receipt; core acceptance checks saved arithmetic and scope.
+
+The optional [T3 independent-backend contract](../t3-backend-contract-audit.json) rechecks the three bounded nonintegrable receipts for named reference and independent solvers, finite error and negative-control checks, source fingerprints, compute ceilings, and explicit `unverified` scientific boundaries. It does not rerun SciPy, validate chaotic regimes or general N-body dynamics, or establish a real-mission result.

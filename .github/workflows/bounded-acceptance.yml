@@ -10,6 +10,7 @@ on:
       - main
       - publish/integration
       - feature/t2-causal-sensitivity
+      - feature/t3-independent-backend
 
 permissions:
   contents: read

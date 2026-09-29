@@ -341,6 +341,14 @@
       "name": "optional-t2-causal-context-sensitivity",
       "output_path": "artifacts/t2-causal-sensitivity-audit.json",
       "recorded_at": "2026-09-28T11:40:53.207769+00:00"
+    },
+    {
+      "command": "python scripts/verify_t3_backend_contract.py --verify",
+      "exit_code": 0,
+      "input_version": "5be87184cb0c41ef0486ebb987e883c36848a4ced3d4cd9ec5faee92c19cc8b1",
+      "name": "optional-t3-independent-backend-contract",
+      "output_path": "artifacts/t3-backend-contract-audit.json",
+      "recorded_at": "2026-09-29T12:43:13.798389+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
