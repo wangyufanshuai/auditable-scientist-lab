@@ -121,6 +121,21 @@ def main() -> None:
                 or t2_sensitivity.get("context_leakage_rejected") is not True
                 or t2_sensitivity.get("context_leak_holdout_rmse", 0.0) <= 1.0):
             raise RuntimeError("wheel T2 context sensitivity evaluator differs")
+        t3_receipt_copy = temporary_root / "t3-sweep.json"
+        shutil.copy2(ROOT / "artifacts/t3-sweep.json", t3_receipt_copy)
+        t3_convergence = json.loads(invoke(
+            [str(python), "-c",
+             "import json,sys; from auditable_scientist.tracks.convergence import verify_saved_receipt; print(json.dumps(verify_saved_receipt(sys.argv[1]), sort_keys=True))",
+             str(t3_receipt_copy)],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (t3_convergence.get("schema_version") != "t3-sweep-v1"
+                or t3_convergence.get("passed") is not True
+                or t3_convergence.get("summary", {}).get("case_count") != 27
+                or not all(t3_convergence.get("checks", {}).values())
+                or t3_convergence.get("boundaries", {}).get("real_mission_validation") is not False
+                or t3_convergence.get("boundaries", {}).get("multi_body_validation") is not False):
+            raise RuntimeError("wheel T3 convergence evaluator differs")
         console = venv / "Scripts/auditable-scientist.exe"
         invoke([str(console), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -226,6 +241,12 @@ def main() -> None:
         "checkout_root_in_installed_process": None,
         "bundled_resource_count": resource_count,
         "t2_context_sensitivity_wheel_replay": t2_sensitivity,
+        "t3_convergence_wheel_replay": {
+            "schema_version": t3_convergence["schema_version"],
+            "case_count": t3_convergence["summary"]["case_count"],
+            "checks": t3_convergence["checks"],
+            "boundaries": t3_convergence["boundaries"],
+        },
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
         "all_nine_relocated_replays_equal": moved == original,

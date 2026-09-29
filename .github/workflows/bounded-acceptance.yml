@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - publish/integration
+      - feature/t2-causal-sensitivity
 
 permissions:
   contents: read

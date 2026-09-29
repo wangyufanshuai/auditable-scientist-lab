@@ -608,6 +608,11 @@
   "passed": true,
   "source_files": [
     {
+      "path": "src/auditable_scientist/tracks/convergence.py",
+      "bytes": 8014,
+      "sha256": "dbaec78dfa818ed958a3b42aead635f836f89b3215ac7cf44fda4ec9a2d11e35"
+    },
+    {
       "path": "src/auditable_scientist/tracks/dynamics.py",
       "bytes": 5756,
       "sha256": "bcaf80f6b87fe03a64fdaaab8c3cf05d7f73a3eaf18fd1af80c1b010b161ef5b"
@@ -616,11 +621,6 @@
       "path": "src/auditable_scientist/tracks/reference_rk4.py",
       "bytes": 1553,
       "sha256": "12d2956df65294126940dba22e56daa3b7c484d4dc4ca232404b1bf14d152792"
-    },
-    {
-      "path": "scripts/verify_t3_sweep.py",
-      "bytes": 8201,
-      "sha256": "58af767cb949b7073567a903a5ba2182bb5a017418889f4ab98e14d682c40bf7"
     }
   ],
   "boundaries": {
@@ -629,5 +629,5 @@
     "multi_body_validation": false,
     "external_solver_validation": false
   },
-  "recorded_at": "2026-09-27T03:59:59.079349+00:00"
+  "recorded_at": "2026-09-28T12:17:39.176024+00:00"
 }
