@@ -10,6 +10,7 @@ on:
       - main
       - publish/integration
       - feature/t2-causal-sensitivity
+      - feature/t4-proof-receipt
 
 permissions:
   contents: read
@@ -87,6 +88,8 @@ jobs:
         run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
       - name: Verify T4 finite floating output conformance
         run: '& $env:REPLAY_PYTHON scripts/verify_t4_floating_conformance.py --verify'
+      - name: Verify T5 source availability boundary
+        run: '& $env:REPLAY_PYTHON scripts/verify_t5_source_availability.py --verify'
       - name: Verify optional acceptance projection
         run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
       - name: Verify clean wheel installation and replay

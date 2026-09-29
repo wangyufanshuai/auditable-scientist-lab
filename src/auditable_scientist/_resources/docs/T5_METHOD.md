@@ -30,3 +30,10 @@ Future source adapters must independently establish a document revision,
 license and allowed use, extraction method, and citation location before a
 real-source claim can be considered. Real materials, equipment, safety review,
 and human approval remain blocked.
+
+The companion [source-availability receipt](T5_SOURCE_AVAILABILITY.md) records a
+clean-checkout fact separately from source-content inventory. It requires the
+contract, DOI, expected byte length, and expected SHA-256 to remain present while
+the PDF itself is absent. This makes the missing local input an explicit
+`blocked-local-source-not-redistributed` state; it is not a failed source hash,
+an implicit network fetch, or permission to execute the protocol.

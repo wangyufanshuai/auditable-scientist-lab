@@ -21,6 +21,7 @@ OPTIONAL_ROWS = {
     "t3-dynamics": {"optional-expanded-horizon-grid", "optional-published-figure-eight"},
     "t4-proof": {"exact-linear-invariant-subtrack", "exact-linear-invariant-run",
                  "exact-verlet-discrete-invariant", "floating-implementation-conformance"},
+    "t5-protocol": {"optional-t5-pbs-source-run", "optional-t5-pbs-source-availability"},
 }
 
 

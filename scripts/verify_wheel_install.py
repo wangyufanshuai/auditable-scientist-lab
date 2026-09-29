@@ -145,6 +145,15 @@ def main() -> None:
                 or t4_floating.get("negative_controls_rejected") is not True
                 or t4_floating.get("floating_implementation_proved") is not False):
             raise RuntimeError("wheel T4 finite floating output conformance differs")
+        t5_source_availability = json.loads(invoke(
+            [str(python), str(ROOT / "scripts/verify_t5_source_availability.py"), "--verify"],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (t5_source_availability.get("status") != "blocked-local-source-not-redistributed"
+                or t5_source_availability.get("local_pdf_exists") is not False
+                or t5_source_availability.get("dynamic_replay_blocked") is not True
+                or t5_source_availability.get("claim_status") != "unverified"):
+            raise RuntimeError("wheel T5 source availability boundary differs")
         console = venv / "Scripts/auditable-scientist.exe"
         invoke([str(console), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -257,6 +266,7 @@ def main() -> None:
             "boundaries": t3_convergence["boundaries"],
         },
         "t4_floating_conformance_wheel_replay": t4_floating,
+        "t5_source_availability_wheel_replay": t5_source_availability,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
         "all_nine_relocated_replays_equal": moved == original,

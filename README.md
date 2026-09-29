@@ -130,6 +130,8 @@ T5 是带逐字段文本位置与文档哈希的合成教学审查；
 检查搬移回放、篡改拒绝和单次离线调用，Claim 仍为 `unverified`。
 独立 [Poppler 交叉抽取审计](docs/T5_PBS_CROSS_READER.md)覆盖三页逐行哈希、引用位置和遗漏负例；
 来源许可范围、视觉遗漏、生物安全与人工验收仍未通过。
+另有 [T5 源文件可用性收据](docs/T5_SOURCE_AVAILABILITY.md)明确记录干净 checkout 不携带 PDF：
+DOI、预期字节数和 SHA-256 仍被固定，但本地动态 PDF 复核为 `blocked`，不会把来源盘点提升为可执行协议或科学 Claim。
 T1 另有只读 NASA fact-sheet 圆整轨道参数敏感性核对；来源权利和独立任务轨道验证仍未通过，
 见 [docs/T1_NASA_PARAMETER_SENSITIVITY.md](docs/T1_NASA_PARAMETER_SENSITIVITY.md)。
 可选的固定 SciPy DOP853 环境还从初始状态积分到远日点，对九个合成样例和一个圆整参数样例
@@ -199,8 +201,10 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 - [docs/T4_VERLET_INVARIANT.md](docs/T4_VERLET_INVARIANT.md)：T4 velocity-Verlet 精确离散不变量收据及其边界。
 - [artifacts/t4-linear-run-audit.json](artifacts/t4-linear-run-audit.json)：T4 精确证明的可选 Tool/Policy/Provider Run 回放与篡改收据。
 - [docs/T5_METHOD.md](docs/T5_METHOD.md)：T5 文本字段引用、确定性检查与执行边界。
+- [docs/T5_SOURCE_AVAILABILITY.md](docs/T5_SOURCE_AVAILABILITY.md)：T5 PDF 缺席、来源指纹和动态复核阻断边界。
 - [artifacts/t5-pbs-source-run-audit.json](artifacts/t5-pbs-source-run-audit.json)：真实 PBS 来源的只读 Run 回放与策略边界。
 - [artifacts/t5-pbs-cross-reader-audit.json](artifacts/t5-pbs-cross-reader-audit.json)：独立 PDF 抽取器的全文覆盖与遗漏负例收据。
+- [artifacts/t5-source-availability-audit.json](artifacts/t5-source-availability-audit.json)：clean checkout 中 PDF 不分发、动态复核被阻断的收据。
 - [artifacts/p1-contract-report.md](artifacts/p1-contract-report.md)：P1 工程检查收据。
 - [artifacts/acceptance.json](artifacts/acceptance.json)：T1 acceptance 清单和边界。
 - [artifacts/track-portfolio.json](artifacts/track-portfolio.json)：T1–T5 独立 evaluator 收据。

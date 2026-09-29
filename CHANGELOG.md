@@ -4,6 +4,16 @@ All notable changes to this project are documented here. This project follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses Semantic Versioning
 for the Python package version.
 
+## [Unreleased]
+
+### Added
+
+- T5 source-availability receipt that pins the rights-declared PBS source identity
+  while recording the intentionally absent PDF and blocked local dynamic replay.
+- Wheel, acceptance projection, and CI checks for the source-availability boundary;
+  scientific validity, execution, biosafety review, human acceptance, and public
+  release remain false or unverified.
+
 ## [0.1.0] - 2026-09-28
 
 This bounded engineering preview packages the offline, replayable five-track workbench.

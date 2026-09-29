@@ -82,6 +82,11 @@ OPTIONAL = (
      ("independent_procedure_validation", "biosafety_review_complete", "human_acceptance",
       "execution_allowed"),
      ("relocated_replay_equal", "result_tamper_rejected", "snapshot_tamper_rejected")),
+    ("t5-protocol", "optional-t5-pbs-source-availability", "t5-source-availability-audit.json",
+     "t5-source-availability-audit-v1", "blocked-local-source-not-redistributed",
+     "python scripts/verify_t5_source_availability.py --verify", "evaluator_input_hash",
+     ("local_dynamic_replay_available", "source_pdf_redistributed", "execution_allowed",
+      "independent_procedure_validation", "biosafety_review_complete", "human_acceptance"), ()),
 )
 
 REPORT_NOTES = {
@@ -130,12 +135,21 @@ REPORT_NOTES = {
         "It records a numerical error envelope, not a formal proof of floating execution;\n"
         "physical-model, real-data, and publication gates remain open.\n"
     ),
+    "t5-protocol": (
+        "The optional [T5 source-availability receipt](../t5-source-availability-audit.json) "
+        "records that the rights-declared PBS PDF is intentionally absent from a clean "
+        "checkout. Its DOI, expected byte length, and SHA-256 remain pinned, but dynamic "
+        "PDF replay is blocked locally. The receipt preserves the bounded T5 evaluator "
+        "input identity and leaves source redistribution, independent procedure validation, "
+        "biosafety review, human acceptance, execution, and the Claim unverified.\n"
+    ),
 }
 REPORT_MARKERS = {
     "t2-causal": "The optional [context-sensitivity negative control]",
     "t2-physical": "An optional impact-to-impact endpoint estimator",
     "t3-dynamics": "The optional expanded [finite-horizon audit]",
     "t4-proof": "The optional exact linear-invariant audit",
+    "t5-protocol": "The optional [T5 source-availability receipt]",
 }
 VERLET_REPORT_NOTE = (
     "The optional [exact Verlet invariant audit](../t4-verlet-invariant-audit.json) "
@@ -275,6 +289,65 @@ def _receipt_row(spec: tuple) -> dict:
         )
         if process.returncode != 0 or json.loads(process.stdout).get("status") != status:
             raise ValueError(f"T4 floating conformance dynamic check failed: {process.stderr.strip()}")
+    if filename == "t5-source-availability-audit.json":
+        contract_path = ROOT / "docs/T5_PBS_SOURCE_CONTRACT.json"
+        expected_source = {
+            "path": "data/references/t5_pbs/protocols_io_p4rdqv6.pdf",
+            "doi": "10.17504/protocols.io.p4rdqv6",
+            "pdf_bytes": 458059,
+            "pdf_sha256": "184b4d211aa8c1a2fcde0eb06a2fd8ae57727c28f1a2b41e5fbfd94b5f8c1271",
+        }
+        expected_boundaries = {
+            "source_inventory_only": True,
+            "local_dynamic_replay_available": False,
+            "source_pdf_redistributed": False,
+            "execution_allowed": False,
+            "independent_procedure_validation": False,
+            "biosafety_review_complete": False,
+            "human_acceptance": False,
+            "claim_status": "unverified",
+        }
+        expected_checks = {
+            "source_contract_present": True,
+            "doi_pinned": True,
+            "expected_pdf_bytes_pinned": True,
+            "expected_pdf_sha256_pinned": True,
+            "pdf_absent_from_clean_checkout": True,
+            "dynamic_pdf_replay_blocked": True,
+        }
+        expected_sources = {
+            "scripts/verify_t5_source_availability.py",
+            "docs/T5_PBS_SOURCE_CONTRACT.json",
+            "docs/T5_SOURCE_AVAILABILITY.md",
+            "requirements-t5-pbs-pdf.txt",
+        }
+        if (
+            audit.get("contract_sha256") != hashlib.sha256(contract_path.read_bytes()).hexdigest()
+            or audit.get("expected_source") != expected_source
+            or audit.get("availability") != {
+                "local_pdf_exists": False,
+                "local_dynamic_replay_available": False,
+                "source_pdf_redistributed": False,
+            }
+            or audit.get("boundaries") != expected_boundaries
+            or audit.get("checks") != expected_checks
+            or audit.get("evaluator_input_hash") != _load("artifacts/t5-protocol/acceptance.json")["evaluator"]["input_hash"]
+            or {item.get("path") for item in audit.get("source_files", [])} != expected_sources
+            or len(audit.get("source_files", [])) != len(expected_sources)
+        ):
+            raise ValueError("T5 source availability audit cannot enter acceptance")
+        paths = {
+            "scripts/verify_t5_source_availability.py": ROOT / "scripts/verify_t5_source_availability.py",
+            "docs/T5_PBS_SOURCE_CONTRACT.json": contract_path,
+            "docs/T5_SOURCE_AVAILABILITY.md": ROOT / "docs/T5_SOURCE_AVAILABILITY.md",
+            "requirements-t5-pbs-pdf.txt": ROOT / "requirements-t5-pbs-pdf.txt",
+        }
+        for item in audit["source_files"]:
+            path = paths[item["path"]]
+            if item.get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest() or item.get("bytes") != path.stat().st_size:
+                raise ValueError(f"T5 source availability verifier source differs: {item['path']}")
+        if (ROOT / expected_source["path"]).is_file():
+            raise ValueError("T5 source availability audit found a local PDF")
     if filename == "t3-figure-eight-audit.json" and (
         audit.get("scientific_boundaries", {}).get("claim_status") != "unverified"
         or audit.get("scientific_boundaries", {}).get("untouched_scientific_holdout") is not False

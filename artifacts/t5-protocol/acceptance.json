@@ -15,6 +15,14 @@
       "name": "optional-t5-pbs-source-run",
       "output_path": "artifacts/t5-pbs-source-run-audit.json",
       "recorded_at": "2026-09-28T11:25:01.521936+00:00"
+    },
+    {
+      "command": "python scripts/verify_t5_source_availability.py --verify",
+      "exit_code": 0,
+      "input_version": "beabca5b5d2177aa77d66c08e0b97b0113053b717ba9a8b1bc71542f2bd205e1",
+      "name": "optional-t5-pbs-source-availability",
+      "output_path": "artifacts/t5-source-availability-audit.json",
+      "recorded_at": "2026-09-29T07:49:01.543314+00:00"
     }
   ],
   "evaluator": {

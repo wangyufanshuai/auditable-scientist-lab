@@ -9,7 +9,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 29,
+  "bundled_resource_count": 30,
   "checkout_root_in_installed_process": null,
   "committed_manifest_hashes": {
     "T1": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
@@ -28,21 +28,21 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-29T07:05:50.860406+00:00",
+  "recorded_at": "2026-09-29T09:30:56.784506+00:00",
   "replay_manifest_hashes": {
     "T1": "f5a0b7ede7984a63777451f8646a9ba971b4ff693d6b9dbac2cbd678138b1827",
-    "T1V2": "04a096948be3f103124801ad9c8fef7fade767b8adbbddb0ab8b4465e49a46cf",
+    "T1V2": "be6324240b28e3afa84c5757240fa7d3a0d281cf59ff4b0e870e62c2d827c38b",
     "T2": "d659528f9c7512c062c639101bba8ef64fbb8b449f622a47fabaff0dcb26ca26",
     "T2P": "ebd00673aecd86a99fe6fcb20ca42caf0f16fc02cb9f8bb6aceadeda77a9de49",
     "T3": "5d4bdb7778ba5e960771b6bfeaa2bc0010e24bbe2e006268d3a7abae62a0c332",
     "T3N": "ca7b5d7c44b96941e5da7aacbcfcaa270ef4ffcf984e40eafa81969ffc0b3ff6",
     "T4": "eb345684729bf403ff03fd0b5a4315937d44008b53a0aa6fbd75a7a144f1b139",
     "T4O": "083df764a358bf4f1b07287145d56c6753798c438adec4a7a7b6af84ac728c85",
-    "T5": "4c9893e96ec8f11ba2db8cbfac282bdc90ab67f0f3ec03198a3c70b8696248dd"
+    "T5": "d77387b55a0be8636bfca3309f927c06733eaadc2799a5bfc51d4cb1fa9075c0"
   },
   "schema_version": "wheel-audit-v7",
-  "script_sha256": "abd7a7ced63513dfdf746843726ab239518a59364783edfc789bff3249259532",
-  "source_snapshot_sha256": "adbcd14d2db7616ad1e0ef74d9eb39049d13a1443a497432d38c7be23fd828a5",
+  "script_sha256": "78cc5a0976064f8be40d017ce96334db86ff382f365d096f2a79ad3e0b4d6d16",
+  "source_snapshot_sha256": "a32968e15525dee7dac05376e9c0c3e2f9aa08446b51d6b97d2cd63319d4bc8f",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t2_context_sensitivity_wheel_replay": {
@@ -79,7 +79,13 @@
   },
   "t4o_bounded_result_and_unverified_run_claim": true,
   "t5_demo_text_review_and_unverified_run_claim": true,
+  "t5_source_availability_wheel_replay": {
+    "claim_status": "unverified",
+    "dynamic_replay_blocked": true,
+    "local_pdf_exists": false,
+    "status": "blocked-local-source-not-redistributed"
+  },
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "a24cbb19ab2bda6dc86bee4ed5755fd22c7706d6cd53fde8e533d8a6b05f9ad9"
+  "wheel_sha256": "00a64271771449657ad230fc491a13e8c15d372c6f101f2ff06a104fed4699da"
 }
