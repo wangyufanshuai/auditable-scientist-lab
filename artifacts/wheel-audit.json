@@ -28,10 +28,10 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-09-28T13:05:50.681997+00:00",
+  "recorded_at": "2026-09-28T13:27:14.606493+00:00",
   "replay_manifest_hashes": {
     "T1": "f5a0b7ede7984a63777451f8646a9ba971b4ff693d6b9dbac2cbd678138b1827",
-    "T1V2": "ff984489a06807c4fce40a59d62c89aca298b190626560cda5c0bd5c75afba16",
+    "T1V2": "c4927bdff6b700f51ac4c19e7d89e8997ccf199b7e655c74c9da76cb780edf49",
     "T2": "d659528f9c7512c062c639101bba8ef64fbb8b449f622a47fabaff0dcb26ca26",
     "T2P": "ebd00673aecd86a99fe6fcb20ca42caf0f16fc02cb9f8bb6aceadeda77a9de49",
     "T3": "5d4bdb7778ba5e960771b6bfeaa2bc0010e24bbe2e006268d3a7abae62a0c332",
@@ -40,15 +40,22 @@
     "T4O": "083df764a358bf4f1b07287145d56c6753798c438adec4a7a7b6af84ac728c85",
     "T5": "4c9893e96ec8f11ba2db8cbfac282bdc90ab67f0f3ec03198a3c70b8696248dd"
   },
-  "schema_version": "wheel-audit-v6",
-  "script_sha256": "6ac4160e0ee684593bc4e3f085f8c91a71b4758eb9ab1ba42be4574365fd01e5",
-  "source_snapshot_sha256": "5ad8e9546d7ae0296150b366071c49e10f10d778cbb5b8a563f28e1a2ae94b98",
+  "schema_version": "wheel-audit-v7",
+  "script_sha256": "8c715d448ba288e444a2587fbb3928bda0ddc29335aab65c6a73cd84d76f56b6",
+  "source_snapshot_sha256": "297a8175648c5a731f0602330207f154de676f7bd1966f586ed55162e34d4299",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
+  "t2_context_sensitivity_wheel_replay": {
+    "baseline_holdout_rmse": 0.0,
+    "candidate_set_sha256": "736a67d5299697f211f3667a98173e921a7826aa87d3f48bbfb52fb0dfeb9d0a",
+    "context_leak_holdout_rmse": 24.75,
+    "context_leakage_rejected": true,
+    "status": "verified-synthetic-context-sensitivity-only"
+  },
   "t4_bounded_result_and_unverified_run_claim": true,
   "t4o_bounded_result_and_unverified_run_claim": true,
   "t5_demo_text_review_and_unverified_run_claim": true,
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "2e8d89640b6a284098c564ed658292681b29c735ce4d48d7363a7349505bb5ad"
+  "wheel_sha256": "74b8271ff5fa4be67227e72b365a54cdf17b56e0a10025faa80c6f7c834ed679"
 }

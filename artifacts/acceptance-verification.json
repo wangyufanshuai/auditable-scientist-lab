@@ -1,6 +1,6 @@
 {
   "bounded_optional_acceptance_projection": {
-    "output_count": 10,
+    "output_count": 12,
     "status": "verified-bounded-optional-acceptance-projection"
   },
   "run_status": "completed",
@@ -237,6 +237,13 @@
     "manifest_hash": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
     "verified": true
   },
+  "t2_context_sensitivity": {
+    "baseline_holdout_rmse": 0.0,
+    "candidate_set_sha256": "736a67d5299697f211f3667a98173e921a7826aa87d3f48bbfb52fb0dfeb9d0a",
+    "context_leak_holdout_rmse": 24.75,
+    "context_leakage_rejected": true,
+    "status": "verified-synthetic-context-sensitivity-only"
+  },
   "t2_independent_endpoint_estimator": {
     "case_count": 124,
     "gates": {
@@ -389,10 +396,10 @@
         "candidate_order",
         "computational_output"
       ],
-      "manifest_hash": "ce247821c444c7387b45f4cf7b950efdfb22576ed324e3204db34a73b9f41930",
+      "manifest_hash": "48dd040e1891f0420c09384aa0fd1d1a07cd5c813ef98d4a1b1366668ceace69",
       "verified": true
     },
-    "run_id": "run-t5-pbs-source-06a7e9fae2d18642"
+    "run_id": "run-t5-pbs-source-fa4415d492c493a6"
   },
   "t5_pbs_real_source_inventory": {
     "dynamic_verified_here": true,

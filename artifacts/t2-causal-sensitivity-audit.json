@@ -1,0 +1,110 @@
+{
+  "boundaries": {
+    "causal_identification": false,
+    "claim_status": "unverified",
+    "context_leakage_negative_control": true,
+    "publication_ready": false,
+    "real_intervention_data": false,
+    "research_candidate": false,
+    "source_rights_reviewed": false,
+    "synthetic_intervention_semantics": true
+  },
+  "candidate_set": {
+    "ids": [
+      "causal-intervention-v1",
+      "causal-context-leak-v1"
+    ],
+    "sha256": "736a67d5299697f211f3667a98173e921a7826aa87d3f48bbfb52fb0dfeb9d0a"
+  },
+  "evaluation": {
+    "baseline_holdout_rmse": 0.0,
+    "baseline_train_rmse": 0.0,
+    "context_leak_holdout_rmse": 24.75,
+    "context_leak_train_rmse": 0.8838834764831844,
+    "context_leakage_coefficient": 0.25,
+    "context_leakage_rejected": true,
+    "evaluator_id": "causal-context-sensitivity-v1",
+    "notes": [
+      "Baseline outcome is declared to depend on do(intervention_value) only.",
+      "The negative candidate adds context_value and must fail the holdout gate.",
+      "Synthetic context-leakage rejection does not establish real causal identification."
+    ],
+    "passed": true
+  },
+  "negative_case_rejected": true,
+  "receipt": {
+    "blocked_gates": [
+      "real-world intervention data",
+      "causal identification",
+      "source and measurement rights"
+    ],
+    "evaluator_id": "causal-context-sensitivity-v1",
+    "evidence_files": [],
+    "evidence_level": "validated-reproduction",
+    "input_hash": "339531e750f8f29b0ec39758743452699420abb3d7f4650c336f79d508cd3a11",
+    "negative_case_passed": true,
+    "passed": true,
+    "result": {
+      "baseline_holdout_rmse": 0.0,
+      "baseline_train_rmse": 0.0,
+      "context_leak_holdout_rmse": 24.75,
+      "context_leak_train_rmse": 0.8838834764831844,
+      "context_leakage_coefficient": 0.25,
+      "context_leakage_rejected": true,
+      "evaluator_id": "causal-context-sensitivity-v1",
+      "notes": [
+        "Baseline outcome is declared to depend on do(intervention_value) only.",
+        "The negative candidate adds context_value and must fail the holdout gate.",
+        "Synthetic context-leakage rejection does not establish real causal identification."
+      ],
+      "passed": true
+    },
+    "source_files": [],
+    "track_id": "T2"
+  },
+  "recorded_at": "2026-09-28T11:40:53.207769+00:00",
+  "schema_version": "t2-causal-sensitivity-audit-v1",
+  "source_files": [
+    {
+      "bytes": 3989,
+      "path": "scripts/verify_t2_causal_sensitivity.py",
+      "sha256": "206f2a63a8a636a13230858605accf40fb280ffd40356c00bccb8b01945b9c5f"
+    },
+    {
+      "bytes": 5042,
+      "path": "src/auditable_scientist/tracks/causal_sensitivity.py",
+      "sha256": "d755754a69398ee2b4d237bea8ffafaf6400ecb26ea25efe7f3d144eb5210f8a"
+    },
+    {
+      "bytes": 3268,
+      "path": "src/auditable_scientist/tracks/causal.py",
+      "sha256": "f35d397499777edfab301198824daa9066c8b1f6a18eb10faceba82520c6acb4"
+    },
+    {
+      "bytes": 1933,
+      "path": "src/auditable_scientist/tracks/common.py",
+      "sha256": "ef149ee4a1779bb14d5b3555832b20452a75c2d55d5d844c386860b3e207cb75"
+    },
+    {
+      "bytes": 1432,
+      "path": "src/auditable_scientist/runtime/canonical.py",
+      "sha256": "e64387beca6fc1eaafa586a4531706df0cc7fe326274d2cab087d6286871673f"
+    },
+    {
+      "bytes": 1651,
+      "path": "src/auditable_scientist/runtime/paths.py",
+      "sha256": "362ba1810c52a46d6c06138c3f1552ef90b0adc3ac95d8d7887eaf5a5d48fa76"
+    },
+    {
+      "bytes": 535,
+      "path": "examples/causal/fixture.json",
+      "sha256": "e3541bc14cc16836f1f1fff989a37743904387596712b82f323f12dc5778ab15"
+    },
+    {
+      "bytes": 853,
+      "path": "docs/T2_CAUSAL_SENSITIVITY.md",
+      "sha256": "7d8c648718a4783d50c083466fb236708f2d221b563bd7624697de51b4bfebd9"
+    }
+  ],
+  "status": "verified-synthetic-context-sensitivity-only"
+}

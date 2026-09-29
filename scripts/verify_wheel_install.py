@@ -111,6 +111,16 @@ def main() -> None:
         ))
         if resource_count < 25:
             raise RuntimeError("wheel omitted an offline resource")
+        t2_sensitivity = json.loads(invoke(
+            [str(python), "-c",
+             "import json; from auditable_scientist.tracks.causal_sensitivity import evaluate_context_sensitivity, load_builtin_cases, candidate_set_hash; e, r = evaluate_context_sensitivity(load_builtin_cases()); print(json.dumps({'status': 'verified-synthetic-context-sensitivity-only' if e.passed else 'failed', 'candidate_set_sha256': candidate_set_hash(), 'baseline_holdout_rmse': e.baseline_holdout_rmse, 'context_leak_holdout_rmse': e.context_leak_holdout_rmse, 'context_leakage_rejected': e.context_leakage_rejected}, sort_keys=True))"],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (t2_sensitivity.get("status") != "verified-synthetic-context-sensitivity-only"
+                or t2_sensitivity.get("baseline_holdout_rmse") != 0.0
+                or t2_sensitivity.get("context_leakage_rejected") is not True
+                or t2_sensitivity.get("context_leak_holdout_rmse", 0.0) <= 1.0):
+            raise RuntimeError("wheel T2 context sensitivity evaluator differs")
         console = venv / "Scripts/auditable-scientist.exe"
         invoke([str(console), "--help"], cwd=temporary_root, environment=base_environment)
 
@@ -204,7 +214,7 @@ def main() -> None:
             historical[track_id] = receipt
 
     result = {
-        "schema_version": "wheel-audit-v6",
+        "schema_version": "wheel-audit-v7",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "status": "verified-within-offline-fixtures",
         "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
@@ -215,6 +225,7 @@ def main() -> None:
         "python": platform.python_version(),
         "checkout_root_in_installed_process": None,
         "bundled_resource_count": resource_count,
+        "t2_context_sensitivity_wheel_replay": t2_sensitivity,
         "manifest_schema": "replay-manifest-v2",
         "replay_manifest_hashes": {track_id: receipt["manifest_hash"] for track_id, receipt in original.items()},
         "all_nine_relocated_replays_equal": moved == original,

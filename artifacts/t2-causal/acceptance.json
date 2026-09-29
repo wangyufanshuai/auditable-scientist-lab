@@ -15,6 +15,14 @@
       "name": "physical-counterfactual-subtrack",
       "output_path": "artifacts/t2-physical/acceptance.json",
       "recorded_at": "2026-09-27T07:41:39.672724+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_causal_sensitivity.py --verify",
+      "exit_code": 0,
+      "input_version": "t2-causal-sensitivity-audit-v1",
+      "name": "context-sensitivity-negative-control",
+      "output_path": "artifacts/t2-causal-sensitivity-audit.json",
+      "recorded_at": "2026-09-28T11:40:53.207769+00:00"
     }
   ],
   "evaluator": {

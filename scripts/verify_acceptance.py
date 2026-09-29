@@ -23,6 +23,11 @@ from auditable_scientist.runtime.canonical import canonical_hash
 from auditable_scientist.runtime.replay import BoundPaths, ReplayManifest, ReplayReceipt, fingerprint_file
 from auditable_scientist.runtime.run_integrity import verify_run_record
 from auditable_scientist.tracks.causal import CausalCase, evaluate_causal_fixture
+from auditable_scientist.tracks.causal_sensitivity import (
+    candidate_set_hash,
+    evaluate_context_sensitivity,
+    load_builtin_cases as load_causal_sensitivity_cases,
+)
 from auditable_scientist.tracks.common import TrackReceipt
 from auditable_scientist.tracks.dynamics import DynamicsCase, evaluate_dynamics_fixture
 from auditable_scientist.tracks.nbody import NBodyCase, evaluate_nbody_fixture
@@ -2239,6 +2244,7 @@ def verify_track_bundle(track_id: str, item: dict, bundle_dir: Path, *, root: Pa
             "symmetric-three-body-subtrack": load("artifacts/t3-nbody/acceptance.json")["evaluator"]["input_hash"],
         } if track_id == "T3" else ({
             "physical-counterfactual-subtrack": load("artifacts/t2-physical/acceptance.json")["evaluator"]["input_hash"],
+            "context-sensitivity-negative-control": "t2-causal-sensitivity-audit-v1",
         } if track_id == "T2" else ({
             "oscillator-physical-module-subtrack": load("artifacts/t4-oscillator/acceptance.json")["evaluator"]["input_hash"],
             "exact-linear-invariant-subtrack": load("artifacts/t4-linear-formal-audit.json")["input_sha256"],
@@ -2706,6 +2712,35 @@ def main() -> None:
         raise SystemExit("T2 negative case replay mismatch")
     if not any(item.get("name") == "physical-counterfactual-subtrack" and item.get("output_path") == "artifacts/t2-physical/acceptance.json" for item in load("artifacts/t2-causal/acceptance.json")["checks"]):
         raise SystemExit("T2 physical counterfactual subtrack is missing from acceptance")
+    sensitivity_audit = load("artifacts/t2-causal-sensitivity-audit.json")
+    sensitivity_process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_causal_sensitivity.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    if sensitivity_process.returncode != 0:
+        raise SystemExit(f"T2 context sensitivity replay failed: {sensitivity_process.stderr.strip()}")
+    sensitivity_output = json.loads(sensitivity_process.stdout)
+    sensitivity_eval, sensitivity_receipt = evaluate_context_sensitivity(load_causal_sensitivity_cases())
+    if (
+        sensitivity_audit.get("schema_version") != "t2-causal-sensitivity-audit-v1"
+        or sensitivity_audit.get("status") != "verified-synthetic-context-sensitivity-only"
+        or sensitivity_audit.get("negative_case_rejected") is not True
+        or sensitivity_audit.get("candidate_set", {}).get("sha256") != candidate_set_hash()
+        or sensitivity_audit.get("evaluation") != sensitivity_eval.model_dump(mode="json")
+        or sensitivity_audit.get("receipt") != sensitivity_receipt.model_dump(mode="json")
+        or sensitivity_output != {
+            "status": sensitivity_audit["status"],
+            "candidate_set_sha256": sensitivity_audit["candidate_set"]["sha256"],
+        }
+        or not any(
+            item.get("name") == "optional-t2-causal-context-sensitivity"
+            and item.get("output_path") == "artifacts/t2-causal-sensitivity-audit.json"
+            and item.get("input_version") == "t2-causal-sensitivity-audit-v1"
+            and item.get("exit_code") == 0
+            for item in acceptance["checks"]
+        )
+    ):
+        raise SystemExit("T2 context sensitivity audit or acceptance binding differs")
 
     t3_item = next(entry for entry in portfolio["tracks"] if entry["track_id"] == "T3")
     t3_fixture = load("examples/dynamics/fixture.json")
@@ -3011,7 +3046,7 @@ def main() -> None:
 
     wheel = load("artifacts/wheel-audit.json")
     if (
-        wheel.get("schema_version") != "wheel-audit-v6"
+        wheel.get("schema_version") != "wheel-audit-v7"
         or wheel.get("status") != "verified-within-offline-fixtures"
         or wheel.get("checkout_root_in_installed_process") is not None
         or wheel.get("all_nine_relocated_replays_equal") is not True
@@ -3020,6 +3055,9 @@ def main() -> None:
         or wheel.get("t4_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t4o_bounded_result_and_unverified_run_claim") is not True
         or wheel.get("t5_demo_text_review_and_unverified_run_claim") is not True
+        or wheel.get("t2_context_sensitivity_wheel_replay", {}).get("status") != "verified-synthetic-context-sensitivity-only"
+        or wheel.get("t2_context_sensitivity_wheel_replay", {}).get("candidate_set_sha256") != candidate_set_hash()
+        or wheel.get("t2_context_sensitivity_wheel_replay", {}).get("context_leakage_rejected") is not True
         or wheel.get("bundled_resource_count", 0) < 25
         or wheel.get("python") != run.environment["python"]
         or wheel.get("wheel_artifact_committed") is not False
@@ -3082,6 +3120,13 @@ def main() -> None:
             "replay": t2_endpoint_run["replay"],
             "mutation_controls": t2_endpoint_run_output["mutation_controls"],
             "policy_denials": t2_endpoint_run["policy_denials"],
+        },
+        "t2_context_sensitivity": {
+            "candidate_set_sha256": sensitivity_audit["candidate_set"]["sha256"],
+            "baseline_holdout_rmse": sensitivity_eval.baseline_holdout_rmse,
+            "context_leak_holdout_rmse": sensitivity_eval.context_leak_holdout_rmse,
+            "context_leakage_rejected": sensitivity_eval.context_leakage_rejected,
+            "status": sensitivity_audit["status"],
         },
         "t4_exact_linear_invariant_proof": t4_linear_expected,
         "t5_pbs_real_source_inventory": t5_pbs,

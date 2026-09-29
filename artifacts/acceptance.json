@@ -313,10 +313,10 @@
     {
       "command": "python scripts/verify_t5_pbs_source_run.py --verify",
       "exit_code": 0,
-      "input_version": "run-t5-pbs-source-06a7e9fae2d18642",
+      "input_version": "run-t5-pbs-source-fa4415d492c493a6",
       "name": "optional-t5-pbs-source-run",
       "output_path": "artifacts/t5-pbs-source-run-audit.json",
-      "recorded_at": "2026-09-28T09:56:56.641255+00:00"
+      "recorded_at": "2026-09-28T11:25:01.521936+00:00"
     },
     {
       "command": "python scripts/verify_t5_pbs_cross_reader.py --verify",
@@ -333,6 +333,14 @@
       "name": "optional-t2-projectile-real-source-inventory",
       "output_path": "artifacts/t2-projectile-source-audit.json",
       "recorded_at": "2026-09-28T04:57:18.470082+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_causal_sensitivity.py --verify",
+      "exit_code": 0,
+      "input_version": "t2-causal-sensitivity-audit-v1",
+      "name": "optional-t2-causal-context-sensitivity",
+      "output_path": "artifacts/t2-causal-sensitivity-audit.json",
+      "recorded_at": "2026-09-28T11:40:53.207769+00:00"
     }
   ],
   "project": "auditable-scientist-lab",
