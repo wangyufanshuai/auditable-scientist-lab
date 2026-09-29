@@ -10,6 +10,7 @@ on:
       - main
       - publish/integration
       - feature/t2-causal-sensitivity
+      - feature/t2-v0-provenance
 
 permissions:
   contents: read
