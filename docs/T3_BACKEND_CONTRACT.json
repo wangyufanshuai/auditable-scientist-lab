@@ -1,0 +1,129 @@
+{
+  "schema_version": "t3-backend-contract-v1",
+  "status": "predeclared-engineering-contract-not-scientific-validation",
+  "purpose": "Require every nonintegrable T3 audit to bind independent methods, finite error gates, compute ceilings, negative controls, source fingerprints, and an unverified claim boundary.",
+  "audits": [
+    {
+      "id": "figure-eight",
+      "artifact": "artifacts/t3-figure-eight-audit.json",
+      "protocol": "docs/T3_FIGURE_EIGHT_PROTOCOL.json",
+      "status": "passed-finite-published-figure-eight-numerics-only",
+      "required_source_paths": [
+        "scripts/verify_t3_figure_eight.py",
+        "docs/T3_FIGURE_EIGHT_PROTOCOL.json",
+        "docs/T3_FIGURE_EIGHT_PROTOCOL.md",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "scripts/verify_t3_external_scipy.py",
+        "requirements-t3-scipy-win-py312.txt"
+      ],
+      "solver_fields": {
+        "reference": "scipy.integrate.solve_ivp:DOP853",
+        "local": "independent fixed-step Cartesian RK4"
+      },
+      "budget_fields": {
+        "dop853_rhs_calls_total": "dop853_rhs_calls_total_max",
+        "fixed_rk4_steps_total": "fixed_rk4_steps_total_max"
+      },
+      "required_checks": [
+        "endpoint_position",
+        "endpoint_velocity",
+        "refinement",
+        "energy",
+        "separation",
+        "negative_repulsive_force",
+        "compute_budget"
+      ],
+      "boundary_equals": {
+        "claim_status": "unverified",
+        "chaotic_regime_validated": false,
+        "general_nbody_validated": false,
+        "untouched_scientific_holdout": false,
+        "real_mission_validated": false
+      }
+    },
+    {
+      "id": "horizon-grid",
+      "artifact": "artifacts/t3-horizon-grid-audit.json",
+      "protocol": "docs/T3_HORIZON_GRID.md",
+      "status": "verified-finite-0.75-period-and-stress-rejection",
+      "required_source_paths": [
+        "scripts/verify_t3_horizon_grid.py",
+        "scripts/verify_t3_perturbed.py",
+        "scripts/verify_t3_external_scipy.py",
+        "src/auditable_scientist/tracks/nbody.py",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py",
+        "requirements-t3-scipy-win-py312.txt",
+        "docs/T3_HORIZON_GRID.md",
+        "examples/dynamics/nbody-fixture.json",
+        "artifacts/t3-perturbed-audit.json"
+      ],
+      "solver_fields": {
+        "reference": "scipy.integrate.solve_ivp:DOP853",
+        "local": "velocity-Verlet",
+        "secondary": "independent Cartesian RK4"
+      },
+      "budget_fields": {
+        "dop853_function_calls_total": "dop853_function_calls_total_max",
+        "fixed_steps_total": "fixed_steps_total_max"
+      },
+      "required_checks": [
+        "fine_verlet_position",
+        "fine_verlet_velocity",
+        "rk4_position",
+        "verlet_convergence",
+        "compute_budget",
+        "stress_excluded"
+      ],
+      "boundary_equals": {
+        "smooth_synthetic_0_75_period_grid": true,
+        "one_period_stress_cases_admitted": false,
+        "chaotic_long_horizon_validated": false,
+        "general_nbody_validated": false,
+        "real_ephemerides": false,
+        "mission_validation": false,
+        "publication_ready": false,
+        "core_t3_run_changed": false
+      }
+    },
+    {
+      "id": "pythagorean",
+      "artifact": "artifacts/t3-pythagorean-audit.json",
+      "protocol": "docs/T3_PYTHAGOREAN_PROTOCOL.json",
+      "status": "passed-bounded-close-encounter-numerics-only",
+      "required_source_paths": [
+        "scripts/verify_t3_pythagorean.py",
+        "docs/T3_PYTHAGOREAN_PROTOCOL.json",
+        "docs/T3_PYTHAGOREAN_PROTOCOL.md",
+        "scripts/verify_t3_external_scipy.py",
+        "requirements-t3-scipy-win-py312.txt"
+      ],
+      "solver_fields": {
+        "external_reference": "scipy.integrate.solve_ivp:DOP853",
+        "independent_backend": "separately implemented adaptive Cartesian RK4 with step-doubling error control"
+      },
+      "budget_fields": {
+        "external_rhs_calls_total": "external_rhs_calls_total_max",
+        "independent_rhs_calls_total": "independent_rhs_calls_total_max",
+        "independent_step_attempts_total": "independent_step_attempts_total_max"
+      },
+      "required_checks": [
+        "finite_pre_event_comparison",
+        "event_time_agreement",
+        "terminal_close_approach",
+        "negative_wrong_force",
+        "compute_budget"
+      ],
+      "boundary_equals": {
+        "bounded_close_encounter_numerics": false,
+        "chaotic_regime_validated": false,
+        "general_nbody_validated": false,
+        "high_precision_long_time_convergence": false,
+        "independent_physical_observation": false,
+        "published_initial_state": true,
+        "real_mission_validated": false,
+        "untouched_scientific_holdout": false,
+        "claim_status": "unverified"
+      }
+    }
+  ]
+}

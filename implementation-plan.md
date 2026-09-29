@@ -135,6 +135,14 @@
   151,200/160,000 fixed-step budget use. It advances finite non-equilateral
   numerical evidence without claiming a chaotic-regime, general-N-body,
   scientific-holdout or mission gate. See `docs/T3_FIGURE_EIGHT_RESULT.md`.
+- The nonintegrable T3 receipts now share a dependency-free backend contract.
+  `docs/T3_BACKEND_CONTRACT.json` requires an independently named backend,
+  finite error and negative-control checks, source fingerprints, an observed
+  compute ceiling, and an explicit `unverified` claim boundary for the
+  figure-eight, 0.75-period horizon grid, and Pythagorean close-encounter
+  audits. `scripts/verify_t3_backend_contract.py` rejects missing sources,
+  over-budget receipts, or promoted scientific boundaries. This is an
+  engineering consistency gate and does not broaden the T3 scientific claim.
 - T4 now carries exact decimal transfer witnesses, contiguous steps, and a complete
   five-obligation set. A fixed-rule symbolic conservation identity and every finite
   transition are checked; a modified mass with a recomputed trajectory hash is rejected.

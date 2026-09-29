@@ -83,6 +83,8 @@ jobs:
         run: '& $env:REPLAY_PYTHON -m pip check'
       - name: Verify committed replay environment
         run: '& $env:REPLAY_PYTHON scripts/verify_replay_environment.py'
+      - name: Verify T3 independent-backend contract
+        run: '& $env:REPLAY_PYTHON scripts/verify_t3_backend_contract.py --verify'
       - name: Verify T1-T5 acceptance receipts
         run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
       - name: Verify optional acceptance projection
