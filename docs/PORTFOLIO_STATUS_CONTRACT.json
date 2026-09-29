@@ -85,6 +85,7 @@
       "optional_pbs_source_audit": "artifacts/t5-pbs-source-audit.json",
       "optional_pbs_cross_reader_audit": "artifacts/t5-pbs-cross-reader-audit.json",
       "optional_pbs_source_run": "artifacts/t5-pbs-source-run-audit.json",
+      "optional_pbs_source_availability": "artifacts/t5-source-availability-audit.json",
       "public_release": false,
       "state": "text-demo-within-scope",
       "track_id": "T5"

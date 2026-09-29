@@ -865,6 +865,8 @@ def desired_outputs() -> dict[Path, str]:
         "artifacts/t5-pbs-cross-reader-audit.json"
         or status["tracks"][4].get("optional_pbs_source_run") !=
         "artifacts/t5-pbs-source-run-audit.json"
+        or status["tracks"][4].get("optional_pbs_source_availability") !=
+        "artifacts/t5-source-availability-audit.json"
         or status["tracks"][2].get("optional_horizon_grid_audit") != "artifacts/t3-horizon-grid-audit.json"
         or status["tracks"][2].get("optional_figure_eight_audit") != "artifacts/t3-figure-eight-audit.json"
         or status["tracks"][2].get("optional_pythagorean_audit") != "artifacts/t3-pythagorean-audit.json"
