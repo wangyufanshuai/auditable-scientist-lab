@@ -159,6 +159,10 @@ PROJECTILE_REPORT_NOTE = (
     "28 of 30 trials are within 0.1 m/s and all 30 are within 0.25 m/s. This agreement "
     "does not resolve whether `v0` is an independent light-gate reading, a fitted value, "
     "or a processed copy, so model fitting remains blocked and the Claim is `unverified`.\n"
+    "The optional [trial-independence diagnostic](../t2-projectile-trial-independence-audit.json) "
+    "also finds exact duplicate observation payloads for trials 22 and 23. The frozen split "
+    "places 22 in holdout and 23 in training, so the duplicate crosses the split boundary; "
+    "the whole-trial holdout is unsafe until source identity is reviewed.\n"
 )
 
 
@@ -580,6 +584,64 @@ def _t2_projectile_v0_receipt(audit: dict | None = None) -> dict:
     return {"recorded_at": timestamp, "input_hash": audit["evaluator_input_hash"]}
 
 
+def _t2_projectile_trial_independence_receipt(audit: dict | None = None) -> dict:
+    """Check exact duplicate trials without admitting a scientific holdout."""
+
+    audit_path = ROOT / "artifacts/t2-projectile-trial-independence-audit.json"
+    contract_path = ROOT / "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json"
+    source_contract_path = ROOT / "docs/T2_PROJECTILE_SOURCE_CONTRACT.json"
+    source_audit_path = ROOT / "artifacts/t2-projectile-source-audit.json"
+    protocol_path = ROOT / "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+    audit = audit if audit is not None else _load("artifacts/t2-projectile-trial-independence-audit.json")
+    contract = _load("docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json")
+    source_contract = _load("docs/T2_PROJECTILE_SOURCE_CONTRACT.json")
+    source_audit = _load("artifacts/t2-projectile-source-audit.json")
+    protocol = _load("docs/T2_PROJECTILE_MODEL_PROTOCOL.json")
+    expected_boundaries = {
+        "posthoc_diagnostic_only": True, "trial_independence_verified": False,
+        "duplicate_trial_content_found": True, "whole_trial_holdout_safe": False,
+        "model_fit_admitted": False, "scientific_holdout": False,
+        "causal_effect_identified": False, "source_rights_cleared": False,
+        "claim_status": "unverified",
+    }
+    expected_sources = {
+        "scripts/verify_t2_projectile_trial_independence.py": ROOT / "scripts/verify_t2_projectile_trial_independence.py",
+        "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json": contract_path,
+        "docs/T2_PROJECTILE_SOURCE_CONTRACT.json": source_contract_path,
+        "artifacts/t2-projectile-source-audit.json": source_audit_path,
+        "docs/T2_PROJECTILE_MODEL_PROTOCOL.json": protocol_path,
+    }
+    if (audit.get("schema_version") != "t2-projectile-trial-independence-audit-v1"
+            or audit.get("status") != "verified-posthoc-duplicate-trial-diagnostic-only"
+            or audit.get("contract_sha256") != hashlib.sha256(contract_path.read_bytes()).hexdigest()
+            or audit.get("source_contract_sha256") != hashlib.sha256(source_contract_path.read_bytes()).hexdigest()
+            or audit.get("source_audit_sha256") != hashlib.sha256(source_audit_path.read_bytes()).hexdigest()
+            or audit.get("protocol_sha256") != hashlib.sha256(protocol_path.read_bytes()).hexdigest()
+            or audit.get("source_workbook_sha256") != source_contract["files"]["measured_trajectories"]["sha256"]
+            or audit.get("trial_count") != 30 or audit.get("sample_count") != 179
+            or audit.get("duplicate_groups") != contract.get("duplicate_groups")
+            or audit.get("boundaries") != expected_boundaries
+            or source_audit.get("status") != "verified-30-trial-real-source-inventory-only"
+            or protocol.get("status") != "draft-blocked-before-model-fit"
+            or {item.get("path") for item in audit.get("source_files", [])} != set(expected_sources)
+            or len(audit.get("source_files", [])) != len(expected_sources)):
+        raise ValueError("T2 trial independence diagnostic or boundary differs")
+    for item in audit["source_files"]:
+        path = expected_sources[item["path"]]
+        if item.get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest() or item.get("bytes") != path.stat().st_size:
+            raise ValueError(f"T2 trial independence source differs: {item['path']}")
+    process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/verify_t2_projectile_trial_independence.py"), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+    )
+    if process.returncode != 0 or json.loads(process.stdout).get("status") != audit["status"]:
+        raise ValueError(f"T2 trial independence dynamic check failed: {process.stderr.strip()}")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str) or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None:
+        raise ValueError("T2 trial independence timestamp is missing or naive")
+    return {"recorded_at": timestamp, "input_hash": audit["contract_sha256"]}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -725,6 +787,14 @@ def desired_outputs() -> dict[Path, str]:
         "exit_code": 0, "recorded_at": v0_diagnostic["recorded_at"],
         "input_version": v0_diagnostic["input_hash"],
         "output_path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+    })
+    trial_independence = _t2_projectile_trial_independence_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-projectile-trial-independence-diagnostic",
+        "command": "python scripts/verify_t2_projectile_trial_independence.py --verify",
+        "exit_code": 0, "recorded_at": trial_independence["recorded_at"],
+        "input_version": trial_independence["input_hash"],
+        "output_path": "artifacts/t2-projectile-trial-independence-audit.json",
     })
     sensitivity = _load("artifacts/t2-causal-sensitivity-audit.json")
     sensitivity_timestamp = sensitivity.get("recorded_at")

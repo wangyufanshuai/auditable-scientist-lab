@@ -24,6 +24,7 @@ OPTIONAL_ROWS = {
 }
 ROOT_OPTIONAL_ROWS = {
     "optional-t2-projectile-v0-provenance-diagnostic",
+    "optional-t2-projectile-trial-independence-diagnostic",
 }
 
 

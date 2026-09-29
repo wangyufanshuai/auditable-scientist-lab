@@ -110,6 +110,8 @@ T3 的 Velocity-Verlet 与独立实现的固定步长 RK4、解析解和 Euler �
 [来源审计](artifacts/t2-projectile-source-audit.json) 只验证本地原件的结构与指纹，Claim 仍为 `unverified`。
 未来比较无阻力与球形阻力模型的[冻结协议](docs/T2_PROJECTILE_MODEL_PROTOCOL.md)只定义整试验留出、指标和负例，
 在 `v0` 列映射、权利和试验覆盖 gates 关闭前禁止拟合，也不构成外部预注册。
+此外，[试验独立性诊断](docs/T2_PROJECTILE_TRIAL_INDEPENDENCE.md)发现 22、23 号试验的观测负载完全重复，
+且跨越当前留出/训练切分；来源身份复核前，整试验留出仍不安全。
 T4O 把证明收据接到 T3
 谐振子数值模块，核对单位、源码、解析解、RK4 和能量漂移；其形式证明仍未配置，
 见 [docs/T4_METHOD.md](docs/T4_METHOD.md)。
@@ -187,6 +189,7 @@ Tool/Policy/Provider 调用、事件链和可搬移回放；重放独立重算 R
 - [docs/T2_PROJECTILE_SOURCE.md](docs/T2_PROJECTILE_SOURCE.md)：T2 真实抛射测量的来源、覆盖缺口与科学边界。
 - [artifacts/t2-projectile-source-audit.json](artifacts/t2-projectile-source-audit.json)：只读来源结构、哈希和负例审计；不含原始 PDF/XLSX。
 - [docs/T2_PROJECTILE_MODEL_PROTOCOL.md](docs/T2_PROJECTILE_MODEL_PROTOCOL.md)：T2 试验级模型比较的阻断协议草案。
+- [docs/T2_PROJECTILE_TRIAL_INDEPENDENCE.md](docs/T2_PROJECTILE_TRIAL_INDEPENDENCE.md)：T2 重复试验与留出切分风险诊断。
 - [docs/T3_NBODY_METHOD.md](docs/T3_NBODY_METHOD.md)：T3 等边三体子轨道、解析参照和门槛。
 - [docs/T3_PERTURBED_METHOD.md](docs/T3_PERTURBED_METHOD.md)：可选受扰动三体数值交叉核验与边界。
 - [docs/T3_HORIZON_GRID.md](docs/T3_HORIZON_GRID.md)：0.75 周期平滑网格、1.0 周期近距离排除案例与计算预算。
