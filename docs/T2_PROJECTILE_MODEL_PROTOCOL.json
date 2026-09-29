@@ -61,6 +61,7 @@
     "shuffled_theta_or_v0_labels_rejected": true,
     "wrong_sign_gravity_rejected": true,
     "duplicate_or_nonmonotonic_time_rejected": true,
+    "duplicate_trial_content_cross_split_rejected": true,
     "train_holdout_overlap_rejected": true,
     "unresolved_v0_role_blocks_fit": true
   },
@@ -71,6 +72,7 @@
     "velocity_column_semantics_reviewed": false,
     "drag_constant_provenance_reviewed": false,
     "external_preregistration": false,
+    "trial_independence_verified": false,
     "physical_model_validated": false,
     "scientific_holdout": false,
     "causal_effect_identified": false,

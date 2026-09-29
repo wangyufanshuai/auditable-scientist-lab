@@ -10,7 +10,7 @@
     "trial_independence_verified": false,
     "whole_trial_holdout_safe": false
   },
-  "contract_sha256": "a43865100f8c63e293c20918b1ff76a9ce9ed7bedb70f93f98f7268ef6d3f130",
+  "contract_sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
   "duplicate_groups": [
     {
       "crosses_holdout_boundary": true,
@@ -29,7 +29,7 @@
     }
   ],
   "dynamic_verified_here": true,
-  "protocol_sha256": "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400",
+  "protocol_sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c",
   "recorded_at": "2026-09-29T12:12:37.351091+00:00",
   "sample_count": 179,
   "schema_version": "t2-projectile-trial-independence-audit-v1",
@@ -42,9 +42,9 @@
       "sha256": "70dc1844113bfce012ebd5c3781c25a996c633ec72ce097aa80dd97974217b03"
     },
     {
-      "bytes": 1483,
+      "bytes": 1731,
       "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
-      "sha256": "a43865100f8c63e293c20918b1ff76a9ce9ed7bedb70f93f98f7268ef6d3f130"
+      "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3"
     },
     {
       "bytes": 4156,
@@ -57,9 +57,9 @@
       "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
     },
     {
-      "bytes": 4004,
+      "bytes": 4104,
       "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
-      "sha256": "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
+      "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
     }
   ],
   "source_workbook_sha256": "309d3b3ced687e9bc0da50ece7d68f4f758b7749444fc5f95c7ac073a875d70b",

@@ -353,7 +353,7 @@
     {
       "command": "python scripts/verify_t2_projectile_trial_independence.py --verify",
       "exit_code": 0,
-      "input_version": "a43865100f8c63e293c20918b1ff76a9ce9ed7bedb70f93f98f7268ef6d3f130",
+      "input_version": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
       "name": "optional-t2-projectile-trial-independence-diagnostic",
       "output_path": "artifacts/t2-projectile-trial-independence-audit.json",
       "recorded_at": "2026-09-29T12:12:37.351091+00:00"
