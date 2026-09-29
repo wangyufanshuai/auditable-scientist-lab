@@ -10,6 +10,7 @@ on:
       - main
       - publish/integration
       - feature/t2-causal-sensitivity
+      - feature/t4-proof-receipt
 
 permissions:
   contents: read

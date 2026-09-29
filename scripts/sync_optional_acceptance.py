@@ -588,6 +588,11 @@ def desired_outputs() -> dict[Path, str]:
     for spec, row in zip(OPTIONAL, rows):
         _insert_or_replace(bundles[spec[0]]["checks"], row)
     root = _load("artifacts/acceptance.json")
+    floating = next(row for row in rows if row["name"] == "floating-implementation-conformance")
+    _insert_or_replace(root["checks"], {
+        **floating,
+        "name": "optional-t4-floating-implementation-conformance",
+    })
     desat = _load("artifacts/t1-maven-desat-sensitivity-audit.json")
     expected_desat_checks = {
         "source_and_baseline_bound", "all_24_scenarios", "split_no_impulse",
