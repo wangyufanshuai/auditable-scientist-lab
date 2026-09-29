@@ -11,6 +11,8 @@ from scripts import verify_acceptance, verify_t5_pbs_source
 
 
 def test_pinned_real_source_recomputes_and_stays_nonexecutable() -> None:
+    if not verify_t5_pbs_source.PDF.is_file():
+        pytest.skip("rights-declared source PDF is not redistributed in a clean checkout")
     result = verify_t5_pbs_source.evaluate()
     assert result["status"] == "verified-source-document-and-review-flags-only"
     assert len(result["anchors"]) == 11
@@ -46,6 +48,8 @@ def test_saved_source_inventory_rejects_tampering(mutation: str) -> None:
 
 
 def test_modified_pdf_bytes_fail_before_text_extraction(tmp_path: Path) -> None:
+    if not verify_t5_pbs_source.PDF.is_file():
+        pytest.skip("rights-declared source PDF is not redistributed in a clean checkout")
     payload = verify_t5_pbs_source.PDF.read_bytes()
     modified = tmp_path / "modified.pdf"
     modified.write_bytes(payload[:-1] + bytes([payload[-1] ^ 1]))

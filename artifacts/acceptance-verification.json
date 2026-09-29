@@ -1,6 +1,6 @@
 {
   "bounded_optional_acceptance_projection": {
-    "output_count": 12,
+    "output_count": 13,
     "status": "verified-bounded-optional-acceptance-projection"
   },
   "run_status": "completed",
@@ -80,7 +80,7 @@
     "run_id": "run-t1-core-orbit-96bd3ccfd5e0ae1d"
   },
   "t1_de440s_geometry": {
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "mission_trajectory_validated": false,
     "snapshot_sha256": "55dd2231455d91ed14130c4e20922f273cdf63696bae104b12630b3fe26b7e8c",
     "status": "verified-source-tracked-geometry-only"
@@ -105,7 +105,7 @@
     "snapshot_geometry_only": true
   },
   "t1_mars_center_geometry": {
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "mars_center_state_available": true,
     "mission_trajectory_validated": false,
     "snapshot_sha256": "4730751d6c39541a582313db873cbae8e9d49de2c357806137e4498183653c37",
@@ -113,7 +113,7 @@
   },
   "t1_maven_desat_sensitivity": {
     "actual_desat_in_arcs": false,
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "mission_validation": false,
     "scenario_count": 24,
     "scientific_holdout": false,
@@ -129,7 +129,7 @@
       0,
       0
     ],
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "impulse_vectors_admitted": false,
     "independent_observables": false,
     "mission_validation": false,
@@ -138,7 +138,7 @@
   },
   "t1_maven_planetary_force_diagnostic": {
     "arc_count": 2,
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "mission_validation": false,
     "planetary_tide_model": true,
     "scientific_holdout": false,
@@ -166,14 +166,14 @@
   },
   "t1_maven_reconstructed_source": {
     "archived_spacecraft_states_available": true,
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "independent_spacecraft_propagation": false,
     "mission_validation": false,
     "snapshot_sha256": "a4fb2b2953afded32b4da5389e9bec4074afc24bee2e6a46de9953e100c035f8",
     "status": "verified-source-tracked-reconstructed-mission-geometry-only"
   },
   "t1_maven_sff_exploratory_inventory": {
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "file_count": 9,
     "force_values_admitted": false,
     "mission_validation": false,
@@ -181,7 +181,7 @@
     "status": "verified-local-source-inventory-only"
   },
   "t1_maven_srp_sensitivity": {
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "mission_validation": false,
     "scenario_count": 8,
     "scientific_holdout": false,
@@ -190,7 +190,7 @@
   },
   "t1_maven_sun_only_preflight": {
     "arc_count": 2,
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "independent_sun_only_propagation": true,
     "mission_validation": false,
     "scientific_holdout": false,
@@ -402,7 +402,7 @@
     "run_id": "run-t5-pbs-source-fa4415d492c493a6"
   },
   "t5_pbs_real_source_inventory": {
-    "dynamic_verified_here": true,
+    "dynamic_verified_here": false,
     "execution_allowed": false,
     "human_acceptance": false,
     "page_count": 3,

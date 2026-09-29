@@ -25,6 +25,8 @@ def test_bundled_offline_resources_match_checkout() -> None:
         ROOT / "docs/T4_METHOD.md",
         ROOT / "docs/T4_FLOATING_CONFORMANCE.md",
         ROOT / "docs/T5_METHOD.md",
+        ROOT / "docs/T5_SOURCE_AVAILABILITY.md",
+        ROOT / "docs/T5_PBS_VISUAL_REVIEW.md",
         *(ROOT / "examples").glob("*/*.json"),
     ]
     assert expected

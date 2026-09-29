@@ -10,6 +10,7 @@ on:
       - main
       - publish/integration
       - feature/t2-causal-sensitivity
+      - feature/t4-proof-receipt
 
 permissions:
   contents: read
@@ -49,7 +50,6 @@ jobs:
           --ignore=tests/test_t1_maven_preflight_run.py
           --ignore=tests/test_t2_independent_run.py
           --ignore=tests/test_t4_linear_run.py
-          --ignore=tests/test_t5_pbs_source.py
           --ignore=tests/test_t5_pbs_source_run.py
       - name: Check tracked text for whitespace errors
         shell: bash
@@ -87,6 +87,10 @@ jobs:
         run: '& $env:REPLAY_PYTHON scripts/verify_acceptance.py'
       - name: Verify T4 finite floating output conformance
         run: '& $env:REPLAY_PYTHON scripts/verify_t4_floating_conformance.py --verify'
+      - name: Verify T5 source availability boundary
+        run: '& $env:REPLAY_PYTHON scripts/verify_t5_source_availability.py --verify'
+      - name: Verify T5 agent-authored visual review boundary
+        run: '& $env:REPLAY_PYTHON scripts/verify_t5_pbs_visual_review.py --verify'
       - name: Verify optional acceptance projection
         run: '& $env:REPLAY_PYTHON scripts/sync_optional_acceptance.py --verify'
       - name: Verify clean wheel installation and replay
