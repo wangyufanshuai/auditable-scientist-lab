@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from verify_t2_projectile_source_reconciliation import (  # noqa: E402
     AUDIT, evaluate, verify_saved,
 )
+from sync_optional_acceptance import _t2_projectile_reconciliation_receipt  # noqa: E402
 
 
 def test_reconciliation_receipt_records_partial_coverage_and_blocked_claims() -> None:
@@ -52,3 +53,16 @@ def test_reconciliation_negative_controls_reject_overclaim(mutation: str) -> Non
         audit["provenance"]["source_rights_cleared"] = True
     with pytest.raises(ValueError):
         verify_saved(audit)
+
+
+@pytest.mark.parametrize("mutation", ["coverage_spoof", "source_hash_tamper", "rights_promotion"])
+def test_reconciliation_is_required_in_acceptance_projection(mutation: str) -> None:
+    audit = deepcopy(json.loads(AUDIT.read_text(encoding="utf-8")))
+    if mutation == "coverage_spoof":
+        audit["reconciliation"]["coverage_status"] = "complete"
+    elif mutation == "source_hash_tamper":
+        audit["input_hashes"]["source_audit_sha256"] = "0" * 64
+    else:
+        audit["provenance"]["source_rights_cleared"] = True
+    with pytest.raises(ValueError):
+        _t2_projectile_reconciliation_receipt(audit)

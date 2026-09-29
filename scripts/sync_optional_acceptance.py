@@ -24,6 +24,8 @@ STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
 T2_PROJECTILE_CONTRACT_SHA256 = "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
 T2_PROJECTILE_AUDIT_SHA256 = "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
 T2_PROJECTILE_PROTOCOL_SHA256 = "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
+T2_PROJECTILE_RECONCILIATION_CONTRACT_SHA256 = "e54039431c9f7733a1fdffec6fbb37e317590086ffafd2a9f71472d256622a36"
+T2_PROJECTILE_RECONCILIATION_AUDIT_SHA256 = "88afb794d50f00f019c3c06be0df57c9993841e01cfbdd413d48104fd6f6c6a2"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -163,6 +165,15 @@ PROJECTILE_REPORT_NOTE = (
     "also finds exact duplicate observation payloads for trials 22 and 23. The frozen split "
     "places 22 in holdout and 23 in training, so the duplicate crosses the split boundary; "
     "the whole-trial holdout is unsafe until source identity is reviewed.\n"
+)
+PROJECTILE_RECONCILIATION_REPORT_NOTE = (
+    "The optional [projectile source reconciliation receipt](../t2-projectile-source-reconciliation-audit.json) "
+    "binds the 82-experiment article statement to the 30-trial/179-row intake, records 52 "
+    "experiments unaccounted for by this intake, preserves the unresolved `v0` role and "
+    "workbook local-path metadata as provenance-only signals, and keeps rights, model, "
+    "causal, holdout, research-candidate, and publication claims blocked. Its negative "
+    "controls reject coverage spoofing, forced `v0` resolution, hash tampering, ignored "
+    "cross-split duplicates, and rights promotion.\n"
 )
 
 
@@ -642,6 +653,68 @@ def _t2_projectile_trial_independence_receipt(audit: dict | None = None) -> dict
     return {"recorded_at": timestamp, "input_hash": audit["contract_sha256"]}
 
 
+def _t2_projectile_reconciliation_receipt(audit: dict | None = None) -> dict:
+    """Bind the T2 source reconciliation receipt into task acceptance."""
+
+    audit_path = ROOT / "artifacts/t2-projectile-source-reconciliation-audit.json"
+    contract_path = ROOT / "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json"
+    verifier_path = ROOT / "scripts/verify_t2_projectile_source_reconciliation.py"
+    if (hashlib.sha256(audit_path.read_bytes()).hexdigest() != T2_PROJECTILE_RECONCILIATION_AUDIT_SHA256
+            or hashlib.sha256(contract_path.read_bytes()).hexdigest() != T2_PROJECTILE_RECONCILIATION_CONTRACT_SHA256):
+        raise ValueError("T2 projectile reconciliation bytes differ")
+    audit = audit if audit is not None else _load("artifacts/t2-projectile-source-reconciliation-audit.json")
+    input_paths = {
+        "source_contract_sha256": ROOT / "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+        "source_audit_sha256": ROOT / "artifacts/t2-projectile-source-audit.json",
+        "v0_diagnostic_contract_sha256": ROOT / "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+        "v0_diagnostic_audit_sha256": ROOT / "artifacts/t2-projectile-v0-diagnostic-audit.json",
+        "trial_independence_contract_sha256": ROOT / "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+        "trial_independence_audit_sha256": ROOT / "artifacts/t2-projectile-trial-independence-audit.json",
+    }
+    expected_input_hashes = {key: hashlib.sha256(path.read_bytes()).hexdigest()
+                             for key, path in input_paths.items()}
+    if (audit.get("schema_version") != "t2-projectile-source-reconciliation-audit-v1"
+            or audit.get("status") != "verified-reconciled-partial-source-intake-only"
+            or audit.get("contract_sha256") != T2_PROJECTILE_RECONCILIATION_CONTRACT_SHA256
+            or audit.get("input_hashes") != expected_input_hashes
+            or audit.get("article", {}).get("reported_experiment_count") != 82
+            or audit.get("measured_workbook", {}).get("trial_count") != 30
+            or audit.get("measured_workbook", {}).get("sample_count") != 179
+            or audit.get("measured_workbook", {}).get("v0_role_status") != "unresolved"
+            or audit.get("reconciliation", {}).get("coverage_status") != "partial-unaccounted"
+            or audit.get("reconciliation", {}).get("unaccounted_experiment_count") != 52
+            or audit.get("reconciliation", {}).get("declared_speed_above_article_bound_trial_ids")
+            != [4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22, 23, 24]
+            or audit.get("reconciliation", {}).get("duplicate_trial_groups") != [[22, 23]]
+            or audit.get("reconciliation", {}).get("duplicate_crosses_holdout_boundary") is not True
+            or audit.get("provenance", {}).get("source_rights_cleared") is not False
+            or audit.get("boundaries", {}).get("claim_status") != "unverified"
+            or any(value is not True for value in audit.get("negative_controls", {}).values())):
+        raise ValueError("T2 projectile reconciliation or boundary differs")
+    process = subprocess.run(
+        [sys.executable, str(verifier_path), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+    )
+    if process.returncode != 0 or json.loads(process.stdout).get("status") != audit["status"]:
+        raise ValueError(f"T2 projectile reconciliation dynamic check failed: {process.stderr.strip()}")
+    source_files = {item.get("path"): item for item in audit.get("source_files", [])}
+    expected_sources = {
+        "scripts/verify_t2_projectile_source_reconciliation.py": verifier_path,
+        "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json": contract_path,
+    }
+    if set(source_files) < set(expected_sources):
+        raise ValueError("T2 projectile reconciliation source inventory is incomplete")
+    for relative, path in expected_sources.items():
+        if (source_files[relative].get("sha256") != hashlib.sha256(path.read_bytes()).hexdigest()
+                or source_files[relative].get("bytes") != path.stat().st_size):
+            raise ValueError(f"T2 projectile reconciliation source differs: {relative}")
+    timestamp = audit.get("recorded_at")
+    if not isinstance(timestamp, str) or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None:
+        raise ValueError("T2 projectile reconciliation timestamp is missing or naive")
+    return {"status": audit["status"], "recorded_at": timestamp,
+            "verifier_sha256": hashlib.sha256(verifier_path.read_bytes()).hexdigest()}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -649,6 +722,12 @@ def desired_outputs() -> dict[Path, str]:
         directory: _load(f"artifacts/{directory}/acceptance.json")
         for directory in ("t2-causal", "t2-physical", "t3-dynamics", "t4-proof", "t5-protocol")
     }
+    # The reconciliation is a root acceptance projection. Keep it out of the
+    # historical T2P bundle so that its evaluator input contract remains stable.
+    bundles["t2-physical"]["checks"] = [
+        row for row in bundles["t2-physical"]["checks"]
+        if row.get("name") != "optional-t2-projectile-source-reconciliation"
+    ]
     rows = [_receipt_row(spec) for spec in OPTIONAL]
     for spec, row in zip(OPTIONAL, rows):
         _insert_or_replace(bundles[spec[0]]["checks"], row)
@@ -796,6 +875,15 @@ def desired_outputs() -> dict[Path, str]:
         "input_version": trial_independence["input_hash"],
         "output_path": "artifacts/t2-projectile-trial-independence-audit.json",
     })
+    reconciliation = _t2_projectile_reconciliation_receipt()
+    reconciliation_row = {
+        "name": "optional-t2-projectile-source-reconciliation",
+        "command": "python scripts/verify_t2_projectile_source_reconciliation.py --verify",
+        "exit_code": 0, "recorded_at": reconciliation["recorded_at"],
+        "input_version": reconciliation["verifier_sha256"],
+        "output_path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+    }
+    _insert_or_replace(root["checks"], reconciliation_row)
     sensitivity = _load("artifacts/t2-causal-sensitivity-audit.json")
     sensitivity_timestamp = sensitivity.get("recorded_at")
     if (sensitivity.get("schema_version") != "t2-causal-sensitivity-audit-v1"
@@ -907,6 +995,8 @@ def desired_outputs() -> dict[Path, str]:
     t2_report = ROOT / "artifacts/t2-physical/test-report.md"
     if "The optional [real projectile source inventory]" not in outputs[t2_report]:
         outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_REPORT_NOTE
+    if "The optional [projectile source reconciliation receipt]" not in outputs[t2_report]:
+        outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_RECONCILIATION_REPORT_NOTE
     return outputs
 
 
