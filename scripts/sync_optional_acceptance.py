@@ -24,6 +24,8 @@ STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
 T2_PROJECTILE_CONTRACT_SHA256 = "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
 T2_PROJECTILE_AUDIT_SHA256 = "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
 T2_PROJECTILE_PROTOCOL_SHA256 = "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
+T3_BACKEND_CONTRACT_SHA256 = "130ba2a7c6efe7d85ad0ac8bed7113b2a0135a3ea594bcdf03dc207812c6d297"
+T3_BACKEND_AUDIT_SHA256 = "98a1960ffce5fbdbb24c08f06f3fec509489d74b4f3d5c3dc1d7b3346feea73c"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -154,6 +156,13 @@ PROJECTILE_REPORT_NOTE = (
     "language is reviewed, but raw-XLSX redistribution remains unconfirmed. The [blocked model protocol] "
     "(../docs/T2_PROJECTILE_MODEL_PROTOCOL.md) freezes a whole-trial split but "
     "permits no fit until those source gates close. The Claim is `unverified`.\n"
+)
+T3_BACKEND_REPORT_NOTE = (
+    "The optional [T3 independent-backend contract](../t3-backend-contract-audit.json) "
+    "rechecks the three bounded nonintegrable receipts for named reference and independent "
+    "solvers, finite error and negative-control checks, source fingerprints, compute ceilings, "
+    "and explicit `unverified` scientific boundaries. It does not rerun SciPy, validate chaotic "
+    "regimes or general N-body dynamics, or establish a real-mission result.\n"
 )
 
 
@@ -521,6 +530,49 @@ def _t2_projectile_protocol() -> dict:
     return result
 
 
+def _t3_backend_contract_receipt(audit: dict | None = None) -> dict:
+    """Bind the dependency-free T3 backend contract into root acceptance."""
+
+    contract_path = ROOT / "docs/T3_BACKEND_CONTRACT.json"
+    audit_path = ROOT / "artifacts/t3-backend-contract-audit.json"
+    verifier_path = ROOT / "scripts/verify_t3_backend_contract.py"
+    if hashlib.sha256(contract_path.read_bytes()).hexdigest() != T3_BACKEND_CONTRACT_SHA256:
+        raise ValueError("T3 backend contract bytes differ")
+    if hashlib.sha256(audit_path.read_bytes()).hexdigest() != T3_BACKEND_AUDIT_SHA256:
+        raise ValueError("T3 backend audit bytes differ")
+    audit = audit if audit is not None else _load("artifacts/t3-backend-contract-audit.json")
+    if (audit.get("schema_version") != "t3-backend-contract-audit-v1"
+            or audit.get("status") != "verified-bounded-independent-backend-contract"
+            or audit.get("contract_sha256") != T3_BACKEND_CONTRACT_SHA256
+            or audit.get("audit_count") != 3
+            or [item.get("id") for item in audit.get("audits", [])]
+            != ["figure-eight", "horizon-grid", "pythagorean"]
+            or audit.get("boundaries") != {
+                "finite_engineering_contract": True,
+                "independent_backend_quality_generalized": False,
+                "chaotic_regime_validated": False,
+                "general_nbody_validated": False,
+                "real_mission_validated": False,
+                "scientific_claim_verified": False,
+                "publication_ready": False,
+            }
+            or any(item.get("claim_status") != "unverified"
+                   for item in audit.get("audits", []))):
+        raise ValueError("T3 backend contract or boundary differs")
+    process = subprocess.run(
+        [sys.executable, str(verifier_path), "--verify"],
+        cwd=ROOT, capture_output=True, text=True, check=False, timeout=30,
+    )
+    if process.returncode != 0:
+        raise ValueError(f"T3 backend contract dynamic check failed: {process.stderr.strip()}")
+    timestamp = audit.get("recorded_at")
+    if (not isinstance(timestamp, str)
+            or datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None):
+        raise ValueError("T3 backend contract timestamp is missing or naive")
+    return {"recorded_at": timestamp,
+            "verifier_sha256": hashlib.sha256(verifier_path.read_bytes()).hexdigest()}
+
+
 def desired_outputs() -> dict[Path, str]:
     """Build all outputs in memory before writing any file."""
 
@@ -532,6 +584,14 @@ def desired_outputs() -> dict[Path, str]:
     for spec, row in zip(OPTIONAL, rows):
         _insert_or_replace(bundles[spec[0]]["checks"], row)
     root = _load("artifacts/acceptance.json")
+    backend = _t3_backend_contract_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t3-independent-backend-contract",
+        "command": "python scripts/verify_t3_backend_contract.py --verify",
+        "exit_code": 0, "recorded_at": backend["recorded_at"],
+        "input_version": backend["verifier_sha256"],
+        "output_path": "artifacts/t3-backend-contract-audit.json",
+    })
     desat = _load("artifacts/t1-maven-desat-sensitivity-audit.json")
     expected_desat_checks = {
         "source_and_baseline_bound", "all_24_scenarios", "split_no_impulse",
@@ -761,6 +821,8 @@ def desired_outputs() -> dict[Path, str]:
     t3_report = ROOT / "artifacts/t3-dynamics/test-report.md"
     if "The optional [Pythagorean close-encounter audit]" not in outputs[t3_report]:
         outputs[t3_report] = outputs[t3_report].rstrip("\n") + "\n\n" + PYTHAGOREAN_REPORT_NOTE
+    if "The optional [T3 independent-backend contract]" not in outputs[t3_report]:
+        outputs[t3_report] = outputs[t3_report].rstrip("\n") + "\n\n" + T3_BACKEND_REPORT_NOTE
     t4_report = ROOT / "artifacts/t4-proof/test-report.md"
     if "The optional [exact Verlet invariant audit]" not in outputs[t4_report]:
         outputs[t4_report] = outputs[t4_report].rstrip("\n") + "\n\n" + VERLET_REPORT_NOTE
