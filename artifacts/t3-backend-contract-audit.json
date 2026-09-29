@@ -1,0 +1,102 @@
+{
+  "audit_count": 3,
+  "audits": [
+    {
+      "artifact": "artifacts/t3-figure-eight-audit.json",
+      "budget": {
+        "dop853_rhs_calls_total": 52489,
+        "fixed_rk4_steps_total": 151200
+      },
+      "checks": {
+        "compute_budget": true,
+        "endpoint_position": true,
+        "endpoint_velocity": true,
+        "energy": true,
+        "negative_repulsive_force": true,
+        "refinement": true,
+        "separation": true
+      },
+      "claim_status": "unverified",
+      "id": "figure-eight",
+      "protocol": "docs/T3_FIGURE_EIGHT_PROTOCOL.json",
+      "source_files": {
+        "docs/T3_FIGURE_EIGHT_PROTOCOL.json": "7828754b52af988780a5e4679b017ff5c20d1aa490cc9720d250b1e719643a3d",
+        "docs/T3_FIGURE_EIGHT_PROTOCOL.md": "62d0aaece0a64cfcb3ce8dff57bb7a8197027dcbe4a1b717c5213265e069bbca",
+        "requirements-t3-scipy-win-py312.txt": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+        "scripts/verify_t3_external_scipy.py": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "scripts/verify_t3_figure_eight.py": "d11a2483fa2d77980ff93ad4c1f06e3a3ce7dce2869776dae471e6029e257ee2",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5"
+      },
+      "status": "passed-finite-published-figure-eight-numerics-only"
+    },
+    {
+      "artifact": "artifacts/t3-horizon-grid-audit.json",
+      "budget": {
+        "dop853_function_calls_total": 9506,
+        "fixed_steps_total": 32140
+      },
+      "checks": {
+        "compute_budget": true,
+        "fine_verlet_position": true,
+        "fine_verlet_velocity": true,
+        "rk4_position": true,
+        "stress_excluded": true,
+        "verlet_convergence": true
+      },
+      "claim_status": "unverified",
+      "id": "horizon-grid",
+      "protocol": "docs/T3_HORIZON_GRID.md",
+      "source_files": {
+        "artifacts/t3-perturbed-audit.json": "c52519d61c62c4ecc03c790afb6cc3bc0c66f480ffc01813f07b7876200c5217",
+        "docs/T3_HORIZON_GRID.md": "d5d1fc6f83549b9b8b1d01f68b9e0de8a8f2dac5ab666a856b624f442f71190a",
+        "examples/dynamics/nbody-fixture.json": "0b1b997ffb038fb8c17a43e6b3041856ec6d1be84b4341947a8e674f5eea3df3",
+        "requirements-t3-scipy-win-py312.txt": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+        "scripts/verify_t3_external_scipy.py": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "scripts/verify_t3_horizon_grid.py": "0e782a9291982b273730389587b54e1774fda382dcc839f1e40f441070968d04",
+        "scripts/verify_t3_perturbed.py": "aa95eaedd1bc7557c7d0e036d72cc295e50795c7fb2b399814fd07d12623e24a",
+        "src/auditable_scientist/tracks/nbody.py": "07dba583fe425e0c8ddd1fd6ad4198f2d4429ec620c61f68554243e98a3a1393",
+        "src/auditable_scientist/tracks/reference_nbody_rk4.py": "70743efb62950f1403ecf6742479761a91faf4fc0d3f5411a0b08bb0c4d3d2b5"
+      },
+      "status": "verified-finite-0.75-period-and-stress-rejection"
+    },
+    {
+      "artifact": "artifacts/t3-pythagorean-audit.json",
+      "budget": {
+        "external_rhs_calls_total": 47978,
+        "independent_rhs_calls_total": 83544,
+        "independent_step_attempts_total": 6962
+      },
+      "checks": {
+        "compute_budget": true,
+        "event_time_agreement": true,
+        "finite_pre_event_comparison": true,
+        "negative_wrong_force": true,
+        "terminal_close_approach": true
+      },
+      "claim_status": "unverified",
+      "id": "pythagorean",
+      "protocol": "docs/T3_PYTHAGOREAN_PROTOCOL.json",
+      "source_files": {
+        "docs/T3_PYTHAGOREAN_PROTOCOL.json": "f9848ae9fb01565f51d3560688a6e5cc30cfd09a274dba2d165bfa309de29927",
+        "docs/T3_PYTHAGOREAN_PROTOCOL.md": "9665b2fbebf29a21afdf612190516c805ab20feb42856d3408ba6e7d044ae1c0",
+        "requirements-t3-scipy-win-py312.txt": "0dfeb0b0583677632bf372e2525572950014c6ba2b84aee7a26dafce37f27e1b",
+        "scripts/verify_t3_external_scipy.py": "fec2ab68323f7ffc1c2e27cd073d49473d946864f731d23886b02977f4e84f13",
+        "scripts/verify_t3_pythagorean.py": "52cbc20885f54bf4ef50f913e0a0748a7220853a861926ddae17be319eaf2e91"
+      },
+      "status": "passed-bounded-close-encounter-numerics-only"
+    }
+  ],
+  "boundaries": {
+    "chaotic_regime_validated": false,
+    "finite_engineering_contract": true,
+    "general_nbody_validated": false,
+    "independent_backend_quality_generalized": false,
+    "publication_ready": false,
+    "real_mission_validated": false,
+    "scientific_claim_verified": false
+  },
+  "contract_sha256": "130ba2a7c6efe7d85ad0ac8bed7113b2a0135a3ea594bcdf03dc207812c6d297",
+  "recorded_at": "2026-09-29T12:43:13.798389+00:00",
+  "schema_version": "t3-backend-contract-audit-v1",
+  "status": "verified-bounded-independent-backend-contract"
+}
