@@ -14,15 +14,15 @@
     "Only the registry's own root acceptance row is excluded from the canonical root receipt hash.",
     "Registration does not add a runtime tool, dispatch a solver, or pass a scientific gate."
   ],
-  "recorded_at": "2026-10-05T04:48:40.553519+00:00",
-  "registry_sha256": "96a7c230ccd6e4a6670826f0510911e413bc9d81c6210106455535209d272b20",
-  "required_receipt_count": 25,
+  "recorded_at": "2026-10-05T05:19:09.301742+00:00",
+  "registry_sha256": "20ca6e6dfe6b3a850e9d5cf91814b15289677e35ca07df0db922a2c078f17f2d",
+  "required_receipt_count": 33,
   "required_receipts": [
     {
       "binding": "canonical-acceptance-excluding-registry-row",
-      "bytes": 13958,
+      "bytes": 14639,
       "path": "artifacts/acceptance.json",
-      "sha256": "625bdcf92c764720d52e77b767fd7d84ca0e88e1d5e40d9bbced0db173952492"
+      "sha256": "a7a1756507b66eacc4c748e021710d9cb753a86b66af4c7dbe59ee798efb093e"
     },
     {
       "binding": "file-bytes",
@@ -56,6 +56,12 @@
     },
     {
       "binding": "file-bytes",
+      "bytes": 10579,
+      "path": "artifacts/t2-measurement-admission-audit.json",
+      "sha256": "d1fc3ddf7fac6cce1bd57a6de4baf1c7104270d876ab7e38d7e3610aec567976"
+    },
+    {
+      "binding": "file-bytes",
       "bytes": 10818,
       "path": "artifacts/t2-physical/acceptance.json",
       "sha256": "4b1c1016449e9f7ed58c049883f63a4de39778a03d3ffb9fd1a40ec57ec5ddfc"
@@ -65,6 +71,24 @@
       "bytes": 15768,
       "path": "artifacts/t2-projectile-source-audit.json",
       "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 4905,
+      "path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+      "sha256": "88afb794d50f00f019c3c06be0df57c9993841e01cfbdd413d48104fd6f6c6a2"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 2760,
+      "path": "artifacts/t2-projectile-trial-independence-audit.json",
+      "sha256": "0f75c5adc84910fb6b7d3bc42fcd49a1f922cd210afbbc9a62617563536b0b15"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 8969,
+      "path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+      "sha256": "c078f560230a6ec535ac5fbf83f877455455e3b3653d1822c020749949574b1b"
     },
     {
       "binding": "file-bytes",
@@ -158,15 +182,39 @@
     },
     {
       "binding": "file-bytes",
-      "bytes": 4004,
+      "bytes": 3930,
+      "path": "docs/T2_MEASUREMENT_ADMISSION_POLICY.json",
+      "sha256": "8651f62fa86cc104e2561621535c9ecf66c3584e080e2fb2b438a6da2fba63a9"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 4104,
       "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
-      "sha256": "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
+      "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
     },
     {
       "binding": "file-bytes",
       "bytes": 4156,
       "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
       "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 3218,
+      "path": "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json",
+      "sha256": "e54039431c9f7733a1fdffec6fbb37e317590086ffafd2a9f71472d256622a36"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 1731,
+      "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+      "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3"
+    },
+    {
+      "binding": "file-bytes",
+      "bytes": 8075,
+      "path": "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+      "sha256": "ec72000c3ecc9d5b0346ad2954675a268c365bb087f20077fdcdfbae0bae8150"
     }
   ],
   "schema_sha256": "b85fef1d6be80aeab4d9d2a1e8afae341bb7487b9548a45819c1c948d303a54e",
@@ -183,14 +231,14 @@
       "sha256": "c3ce57f629abb362f994024827673c4be78e75cdfb4eee6eb0cae8882c8bd625"
     },
     {
-      "bytes": 60122,
+      "bytes": 62363,
       "path": "scripts/sync_optional_acceptance.py",
-      "sha256": "2b2233ae428a44258d1cee344afe3f98bbadb06a5aac17eaaa5468af196f3445"
+      "sha256": "893ede788b2580b2b503e0c19292697e6516a24029be0beb31479c72aede7729"
     },
     {
-      "bytes": 14623,
+      "bytes": 15356,
       "path": "docs/TRACK_REGISTRY.json",
-      "sha256": "96a7c230ccd6e4a6670826f0510911e413bc9d81c6210106455535209d272b20"
+      "sha256": "20ca6e6dfe6b3a850e9d5cf91814b15289677e35ca07df0db922a2c078f17f2d"
     },
     {
       "bytes": 8916,

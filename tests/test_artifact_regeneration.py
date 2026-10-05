@@ -28,6 +28,8 @@ ROOT_OPTIONAL_ROWS = {
     "optional-t5-pbs-source-availability",
     "optional-t5-pbs-visual-review",
     "bounded-track-registry",
+    "optional-t2-measurement-admission",
+    "optional-t2-projectile-source-reconciliation",
 }
 
 

@@ -1,0 +1,110 @@
+{
+  "schema_version": "t2-measurement-admission-policy-v1",
+  "dataset_id": "wadsworth-2025-projectile-pinned-intake",
+  "scope": "pinned-intake-denial-before-measurement-fit",
+  "fit_approval_supported": false,
+  "inputs": [
+    {
+      "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+      "role": "source-contract",
+      "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d",
+      "bytes": 4156
+    },
+    {
+      "path": "artifacts/t2-projectile-source-audit.json",
+      "role": "source-audit",
+      "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf",
+      "bytes": 15768
+    },
+    {
+      "path": "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+      "role": "v0-contract",
+      "sha256": "ec72000c3ecc9d5b0346ad2954675a268c365bb087f20077fdcdfbae0bae8150",
+      "bytes": 8075
+    },
+    {
+      "path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+      "role": "v0-audit",
+      "sha256": "c078f560230a6ec535ac5fbf83f877455455e3b3653d1822c020749949574b1b",
+      "bytes": 8969
+    },
+    {
+      "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+      "role": "independence-contract",
+      "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3",
+      "bytes": 1731
+    },
+    {
+      "path": "artifacts/t2-projectile-trial-independence-audit.json",
+      "role": "independence-audit",
+      "sha256": "0f75c5adc84910fb6b7d3bc42fcd49a1f922cd210afbbc9a62617563536b0b15",
+      "bytes": 2760
+    },
+    {
+      "path": "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json",
+      "role": "reconciliation-contract",
+      "sha256": "e54039431c9f7733a1fdffec6fbb37e317590086ffafd2a9f71472d256622a36",
+      "bytes": 3218
+    },
+    {
+      "path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+      "role": "reconciliation-audit",
+      "sha256": "88afb794d50f00f019c3c06be0df57c9993841e01cfbdd413d48104fd6f6c6a2",
+      "bytes": 4905
+    },
+    {
+      "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
+      "role": "model-protocol",
+      "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c",
+      "bytes": 4104
+    },
+    {
+      "path": "scripts/verify_t2_projectile_source.py",
+      "role": "verifier-source",
+      "sha256": "e0881d0099f1bfbf145655e74d3199b6f2dc2e233643d6a54fb63b2bdcac57cc",
+      "bytes": 12948
+    },
+    {
+      "path": "scripts/verify_t2_projectile_v0_diagnostic.py",
+      "role": "verifier-source",
+      "sha256": "51f260c2508f00824a9f2894f764afa39eddd3a6f2780ce4529e70dba3b7894c",
+      "bytes": 10357
+    },
+    {
+      "path": "scripts/verify_t2_projectile_trial_independence.py",
+      "role": "verifier-source",
+      "sha256": "70dc1844113bfce012ebd5c3781c25a996c633ec72ce097aa80dd97974217b03",
+      "bytes": 8307
+    },
+    {
+      "path": "scripts/verify_t2_projectile_source_reconciliation.py",
+      "role": "verifier-source",
+      "sha256": "185c8a877abd8d0e9f5c05db2f8b5a6c4e31954ef5b9987d454b2a60ad12c7ab",
+      "bytes": 10459
+    },
+    {
+      "path": "scripts/verify_t2_projectile_model_protocol.py",
+      "role": "verifier-source",
+      "sha256": "c3210f909ad321eb975b8b856033e341671cafaddb183ac6efd8fc994319daf4",
+      "bytes": 4096
+    }
+  ],
+  "receipt_identities": {
+    "source-audit": {
+      "schema_version": "t2-projectile-source-audit-v1",
+      "status": "verified-30-trial-real-source-inventory-only"
+    },
+    "v0-audit": {
+      "schema_version": "t2-projectile-v0-diagnostic-audit-v1",
+      "status": "verified-posthoc-v0-provenance-diagnostic-only"
+    },
+    "independence-audit": {
+      "schema_version": "t2-projectile-trial-independence-audit-v1",
+      "status": "verified-posthoc-duplicate-trial-diagnostic-only"
+    },
+    "reconciliation-audit": {
+      "schema_version": "t2-projectile-source-reconciliation-audit-v1",
+      "status": "verified-reconciled-partial-source-intake-only"
+    }
+  }
+}
