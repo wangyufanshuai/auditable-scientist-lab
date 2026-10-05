@@ -27,6 +27,7 @@ def test_bundled_offline_resources_match_checkout() -> None:
         ROOT / "docs/T5_METHOD.md",
         ROOT / "docs/T5_SOURCE_AVAILABILITY.md",
         ROOT / "docs/T5_PBS_VISUAL_REVIEW.md",
+        ROOT / "docs/TRACK_REGISTRY.md",
         *(ROOT / "examples").glob("*/*.json"),
     ]
     assert expected
@@ -34,6 +35,8 @@ def test_bundled_offline_resources_match_checkout() -> None:
         bundled = PACKAGE_DATA / source.relative_to(ROOT)
         assert bundled.is_file(), source
         assert bundled.read_bytes() == source.read_bytes(), source
+    assert (PACKAGE_DATA / "examples/track-registry/registry.json").read_bytes() == (
+        ROOT / "docs/TRACK_REGISTRY.json").read_bytes()
 
 
 def test_replayed_sources_use_stable_lf_bytes() -> None:

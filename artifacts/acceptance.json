@@ -357,6 +357,14 @@
       "name": "optional-t5-pbs-visual-review",
       "output_path": "artifacts/t5-pbs-visual-review-audit.json",
       "recorded_at": "2026-09-29T10:05:14.660726+00:00"
+    },
+    {
+      "command": "python scripts/verify_track_registry.py --verify",
+      "exit_code": 0,
+      "input_version": "9ca77e58d2e34d6ad15e9f5e31e511d9e991cbacee40bdf347a229f20d58d592",
+      "name": "bounded-track-registry",
+      "output_path": "artifacts/track-registry-audit.json",
+      "recorded_at": "2026-10-05T04:48:40.553519+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

@@ -694,8 +694,8 @@ def _t2_projectile_protocol() -> dict:
     return result
 
 
-def desired_outputs() -> dict[Path, str]:
-    """Build all outputs in memory before writing any file."""
+def proposed_outputs() -> dict[Path, str]:
+    """Build the complete optional projection without writing or trusting a registry audit."""
 
     bundles = {
         directory: _load(f"artifacts/{directory}/acceptance.json")
@@ -954,6 +954,26 @@ def desired_outputs() -> dict[Path, str]:
     t2_report = ROOT / "artifacts/t2-physical/test-report.md"
     if "The optional [real projectile source inventory]" not in outputs[t2_report]:
         outputs[t2_report] = outputs[t2_report].rstrip("\n") + "\n\n" + PROJECTILE_REPORT_NOTE
+    return outputs
+
+
+def desired_outputs() -> dict[Path, str]:
+    """Recompute and bind the saved registry before writing any proposed output."""
+    outputs = proposed_outputs()
+    root = json.loads(outputs[ROOT / "artifacts/acceptance.json"])
+    # Recompute against the complete proposed projection, after all optional rows.
+    # The canonical root receipt omits only its own registry row to avoid a cycle.
+    spec = importlib.util.spec_from_file_location(
+        "registry_projection_verifier", ROOT / "scripts/verify_track_registry.py")
+    if spec is None or spec.loader is None:
+        raise ValueError("registry verifier is unavailable")
+    registry_verifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(registry_verifier)
+    proposed = {path.relative_to(ROOT).as_posix(): value.encode("utf-8")
+                for path, value in outputs.items()}
+    registry_audit = registry_verifier.verify_saved(overrides=proposed, require_projection=False)
+    _insert_or_replace(root["checks"], registry_verifier.acceptance_row(registry_audit))
+    outputs[ROOT / "artifacts/acceptance.json"] = _render_json(root)
     return outputs
 
 

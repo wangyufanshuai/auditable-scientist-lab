@@ -27,6 +27,7 @@ OPTIONAL_ROWS = {
 ROOT_OPTIONAL_ROWS = {
     "optional-t5-pbs-source-availability",
     "optional-t5-pbs-visual-review",
+    "bounded-track-registry",
 }
 
 
@@ -43,6 +44,20 @@ def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path)
         env=environment, capture_output=True, text=True, check=False, timeout=60,
     )
     assert generated.returncode == 0, generated.stderr
+    stale = subprocess.run(
+        [sys.executable, "scripts/sync_optional_acceptance.py", "--write"], cwd=copied,
+        env=environment, capture_output=True, text=True, check=False, timeout=30,
+    )
+    assert stale.returncode != 0
+    assert "track registry audit differs" in stale.stderr
+    # New generator timestamps/source snapshots require explicit, reviewed audit generation.
+    registry_audit = copied / "artifacts/track-registry-audit.json"
+    shutil.move(str(registry_audit), str(copied / "artifacts/track-registry-audit-before-regeneration.json"))
+    regenerated_registry = subprocess.run(
+        [sys.executable, "scripts/verify_track_registry.py", "--write"], cwd=copied,
+        env=environment, capture_output=True, text=True, check=False, timeout=30,
+    )
+    assert regenerated_registry.returncode == 0, regenerated_registry.stderr
     synchronized = subprocess.run(
         [sys.executable, "scripts/sync_optional_acceptance.py", "--write"], cwd=copied,
         env=environment, capture_output=True, text=True, check=False, timeout=30,
@@ -62,6 +77,19 @@ def test_regeneration_preserves_optional_receipts_and_acceptance(tmp_path: Path)
     )
     assert verified.returncode == 0, verified.stderr
     assert json.loads(verified.stdout)["status"] == "verified"
+    # A stale saved audit must fail synchronization before any proposed output writes.
+    output_paths = [copied / "artifacts/acceptance.json", copied / "artifacts/portfolio-status.json",
+                    *(copied / "artifacts" / name / "acceptance.json" for name in OPTIONAL_ROWS)]
+    before = {path: path.read_bytes() for path in output_paths}
+    receipt = copied / "docs/T1_MAVEN_MISSION_SOURCE.md"
+    receipt.write_bytes(receipt.read_bytes() + b"\nchanged required receipt\n")
+    stale = subprocess.run(
+        [sys.executable, "scripts/sync_optional_acceptance.py", "--write"], cwd=copied,
+        env=environment, capture_output=True, text=True, check=False, timeout=30,
+    )
+    assert stale.returncode != 0
+    assert "track registry audit differs" in stale.stderr
+    assert {path: path.read_bytes() for path in output_paths} == before
 
 
 def test_optional_receipt_rejects_boundary_overclaim(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

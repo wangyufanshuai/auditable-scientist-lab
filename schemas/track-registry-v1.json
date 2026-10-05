@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://auditable-scientist-lab.local/schemas/track-registry-v1.json",
+  "title": "Bounded scientific target registration contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "purpose",
+    "status",
+    "global_boundaries",
+    "tracks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "track-registry-v1"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "status": {
+      "const": "bounded-engineering-registry"
+    },
+    "global_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_status",
+        "execution_allowed",
+        "real_data",
+        "research_candidate",
+        "public_release_allowed",
+        "scientific_validity",
+        "publication_ready"
+      ],
+      "properties": {
+        "claim_status": {
+          "const": "unverified"
+        },
+        "execution_allowed": {
+          "const": false
+        },
+        "real_data": {
+          "const": false
+        },
+        "research_candidate": {
+          "const": false
+        },
+        "public_release_allowed": {
+          "const": false
+        },
+        "scientific_validity": {
+          "const": false
+        },
+        "publication_ready": {
+          "const": false
+        }
+      }
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "track_id",
+          "acceptance",
+          "acceptance_contract",
+          "evaluator_id",
+          "problem",
+          "state",
+          "evidence_level",
+          "claim_status",
+          "execution_allowed",
+          "real_data",
+          "research_candidate",
+          "public_release",
+          "source_rights_status",
+          "human_review_status",
+          "review_evidence",
+          "open_gates",
+          "next_step",
+          "required_receipts"
+        ],
+        "properties": {
+          "track_id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9-]{1,31}$"
+          },
+          "acceptance": {
+            "type": "string",
+            "pattern": "^artifacts/(?:.*/)?acceptance\\.json$"
+          },
+          "acceptance_contract": {
+            "enum": [
+              "root-v1",
+              "track-v1"
+            ]
+          },
+          "evaluator_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "problem": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "question",
+              "observables",
+              "candidate_space",
+              "baselines",
+              "evaluation_scope",
+              "holdout",
+              "stop_conditions"
+            ],
+            "properties": {
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "observables": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "unit"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    }
+                  }
+                }
+              },
+              "candidate_space": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "families",
+                  "max_candidates"
+                ],
+                "properties": {
+                  "families": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "max_candidates": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10000
+                  }
+                }
+              },
+              "baselines": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                }
+              },
+              "evaluation_scope": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "holdout": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "split_unit",
+                  "limitations"
+                ],
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "analytic-fixture-only",
+                      "synthetic-fixture-only",
+                      "proof-scope-only",
+                      "none"
+                    ]
+                  },
+                  "split_unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "limitations": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  }
+                }
+              },
+              "stop_conditions": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                }
+              }
+            }
+          },
+          "state": {
+            "enum": [
+              "reproduced-within-scope",
+              "text-demo-within-scope"
+            ]
+          },
+          "evidence_level": {
+            "enum": [
+              "demo",
+              "validated-reproduction"
+            ]
+          },
+          "claim_status": {
+            "const": "unverified"
+          },
+          "execution_allowed": {
+            "const": false
+          },
+          "real_data": {
+            "const": false
+          },
+          "research_candidate": {
+            "const": false
+          },
+          "public_release": {
+            "const": false
+          },
+          "source_rights_status": {
+            "enum": [
+              "unresolved",
+              "partially-reviewed",
+              "unverified",
+              "blocked"
+            ]
+          },
+          "human_review_status": {
+            "enum": [
+              "not-completed",
+              "text-review-only",
+              "agent-observation-only"
+            ]
+          },
+          "review_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_rights",
+              "human_review"
+            ],
+            "properties": {
+              "source_rights": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^(artifacts|docs)/[A-Za-z0-9_./-]+$"
+                }
+              },
+              "human_review": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^(artifacts|docs)/[A-Za-z0-9_./-]+$"
+                }
+              }
+            }
+          },
+          "open_gates": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "next_step": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "required_receipts": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^(artifacts|docs)/[A-Za-z0-9_./-]+$"
+            },
+            "minItems": 1
+          }
+        }
+      }
+    }
+  }
+}

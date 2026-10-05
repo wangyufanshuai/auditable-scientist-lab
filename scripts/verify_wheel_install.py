@@ -111,6 +111,21 @@ def main() -> None:
         ))
         if resource_count < 25:
             raise RuntimeError("wheel omitted an offline resource")
+        registry_declaration = json.loads(invoke(
+            [str(python), "-m", "auditable_scientist.track_registry"],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        registry_evidence = json.loads(invoke(
+            [str(python), "-m", "auditable_scientist.track_registry", "--root", str(ROOT)],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (registry_declaration.get("status") != "valid-declaration-only"
+                or registry_declaration.get("evidence_checked") is not False
+                or registry_declaration.get("track_count") != 5
+                or registry_evidence.get("status") != "verified-bounded-registry-evidence"
+                or registry_evidence.get("required_receipt_count") != 25
+                or registry_evidence.get("boundaries", {}).get("scientific_validity") is not False):
+            raise RuntimeError("wheel registry contract or evidence boundary differs")
         t2_sensitivity = json.loads(invoke(
             [str(python), "-c",
              "import json; from auditable_scientist.tracks.causal_sensitivity import evaluate_context_sensitivity, load_builtin_cases, candidate_set_hash; e, r = evaluate_context_sensitivity(load_builtin_cases()); print(json.dumps({'status': 'verified-synthetic-context-sensitivity-only' if e.passed else 'failed', 'candidate_set_sha256': candidate_set_hash(), 'baseline_holdout_rmse': e.baseline_holdout_rmse, 'context_leak_holdout_rmse': e.context_leak_holdout_rmse, 'context_leakage_rejected': e.context_leakage_rejected}, sort_keys=True))"],
@@ -258,6 +273,8 @@ def main() -> None:
         "python": platform.python_version(),
         "checkout_root_in_installed_process": None,
         "bundled_resource_count": resource_count,
+        "track_registry_declaration": registry_declaration,
+        "track_registry_evidence": registry_evidence,
         "t2_context_sensitivity_wheel_replay": t2_sensitivity,
         "t3_convergence_wheel_replay": {
             "schema_version": t3_convergence["schema_version"],
