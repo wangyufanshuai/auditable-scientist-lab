@@ -111,7 +111,15 @@
         "artifacts/t2-projectile-source-audit.json",
         "artifacts/t2-causal-sensitivity-audit.json",
         "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
-        "docs/T2_PROJECTILE_SOURCE_CONTRACT.json"
+        "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+        "artifacts/t2-projectile-v0-diagnostic-audit.json",
+        "artifacts/t2-projectile-trial-independence-audit.json",
+        "artifacts/t2-projectile-source-reconciliation-audit.json",
+        "artifacts/t2-measurement-admission-audit.json",
+        "docs/T2_MEASUREMENT_ADMISSION_POLICY.json",
+        "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+        "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+        "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json"
       ],
       "acceptance_contract": "track-v1",
       "evaluator_id": "causal-intervention-v1",
@@ -146,11 +154,11 @@
           "synthetic structural equation",
           "no-drag projectile model"
         ],
-        "evaluation_scope": "Synthetic fixture comparison; projectile source inventory does not admit measured columns for model fitting.",
+        "evaluation_scope": "Synthetic fixture comparison; projectile source inventory does not admit measured columns for model fitting. The supported guarded_fit entry point refuses the source-bound intake before opening raw measurements or invoking fitting.",
         "holdout": {
           "status": "synthetic-fixture-only",
           "split_unit": "fixture case; prospective whole trial",
-          "limitations": "Measured v0 semantics and 30/82 coverage remain unresolved; no real causal identification."
+          "limitations": "Measured v0 semantics and 30/82 coverage remain unresolved; trial IDs 22 and 23 have duplicate content across the current training/holdout split. No independent scientific holdout or real causal identification."
         },
         "stop_conditions": [
           "Reject evidence or acceptance fingerprint mismatch",

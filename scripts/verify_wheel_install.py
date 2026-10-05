@@ -119,13 +119,40 @@ def main() -> None:
             [str(python), "-m", "auditable_scientist.track_registry", "--root", str(ROOT)],
             cwd=temporary_root, environment=base_environment,
         ))
+        registry_snapshot = json.loads((ROOT / "docs/TRACK_REGISTRY.json").read_text(encoding="utf-8"))
+        registry_receipts = {ref for track in registry_snapshot["tracks"] for ref in track["required_receipts"]}
         if (registry_declaration.get("status") != "valid-declaration-only"
                 or registry_declaration.get("evidence_checked") is not False
                 or registry_declaration.get("track_count") != 5
                 or registry_evidence.get("status") != "verified-bounded-registry-evidence"
-                or registry_evidence.get("required_receipt_count") != 25
+                or registry_evidence.get("required_receipt_count") != len(registry_receipts)
+                or {row["path"] for row in registry_evidence.get("required_receipts", [])} != registry_receipts
                 or registry_evidence.get("boundaries", {}).get("scientific_validity") is not False):
             raise RuntimeError("wheel registry contract or evidence boundary differs")
+        t2_admission = json.loads(invoke(
+            [str(python), "-m", "auditable_scientist.tracks.measurement_admission", "--root", str(ROOT)],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        guard_code = (
+            "import json,sys; from pathlib import Path; "
+            "from auditable_scientist.tracks.measurement_admission import guarded_fit, MeasurementAdmissionDenied; "
+            "called=[]\n"
+            "try:\n guarded_fit(Path(sys.argv[1]), lambda: called.append(True))\n"
+            "except MeasurementAdmissionDenied as error:\n "
+            "print(json.dumps({'fit_callback_not_invoked': not called, 'decision': error.decision}, sort_keys=True))\n"
+            "else:\n raise RuntimeError('wheel unexpectedly admitted measurement fit')\n"
+        )
+        guarded_admission = json.loads(invoke(
+            [str(python), "-c", guard_code, str(ROOT)],
+            cwd=temporary_root, environment=base_environment,
+        ))
+        if (t2_admission.get("status") != "blocked-before-model-fit"
+                or len(t2_admission.get("blocking_reasons", [])) != 7
+                or t2_admission.get("fit_invoked") is not False
+                or t2_admission.get("raw_observations_opened") is not False
+                or guarded_admission.get("fit_callback_not_invoked") is not True
+                or guarded_admission.get("decision") != t2_admission):
+            raise RuntimeError("wheel T2 measurement admission boundary differs")
         t2_sensitivity = json.loads(invoke(
             [str(python), "-c",
              "import json; from auditable_scientist.tracks.causal_sensitivity import evaluate_context_sensitivity, load_builtin_cases, candidate_set_hash; e, r = evaluate_context_sensitivity(load_builtin_cases()); print(json.dumps({'status': 'verified-synthetic-context-sensitivity-only' if e.passed else 'failed', 'candidate_set_sha256': candidate_set_hash(), 'baseline_holdout_rmse': e.baseline_holdout_rmse, 'context_leak_holdout_rmse': e.context_leak_holdout_rmse, 'context_leakage_rejected': e.context_leakage_rejected}, sort_keys=True))"],
@@ -275,6 +302,8 @@ def main() -> None:
         "bundled_resource_count": resource_count,
         "track_registry_declaration": registry_declaration,
         "track_registry_evidence": registry_evidence,
+        "t2_measurement_admission": t2_admission,
+        "t2_measurement_fit_callback_not_invoked": guarded_admission["fit_callback_not_invoked"],
         "t2_context_sensitivity_wheel_replay": t2_sensitivity,
         "t3_convergence_wheel_replay": {
             "schema_version": t3_convergence["schema_version"],

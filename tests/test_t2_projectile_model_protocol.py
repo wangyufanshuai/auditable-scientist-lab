@@ -27,6 +27,7 @@ def test_protocol_is_verified_only_as_a_blocked_design() -> None:
 
 @pytest.mark.parametrize("mutation", [
     "admit_fit", "register_split", "claim_model", "claim_causal", "add_result",
+    "admit_duplicate_holdout",
 ])
 def test_protocol_rejects_overclaim_mutation(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, mutation: str,
@@ -40,6 +41,8 @@ def test_protocol_rejects_overclaim_mutation(
         protocol["gates"]["physical_model_validated"] = True
     elif mutation == "claim_causal":
         protocol["gates"]["causal_effect_identified"] = True
+    elif mutation == "admit_duplicate_holdout":
+        protocol["negative_controls"]["duplicate_trial_content_cross_split_rejected"] = False
     else:
         protocol["result_artifact"] = "artifacts/t2-projectile-model-audit.json"
     destination = tmp_path / "protocol.json"

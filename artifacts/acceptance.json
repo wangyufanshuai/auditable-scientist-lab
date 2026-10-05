@@ -361,10 +361,26 @@
     {
       "command": "python scripts/verify_track_registry.py --verify",
       "exit_code": 0,
-      "input_version": "9ca77e58d2e34d6ad15e9f5e31e511d9e991cbacee40bdf347a229f20d58d592",
+      "input_version": "75577fab0ef3088bd4c55042914bf57d3e98f0220dfe8a8a067235cf49d7f6c8",
       "name": "bounded-track-registry",
       "output_path": "artifacts/track-registry-audit.json",
-      "recorded_at": "2026-10-05T04:48:40.553519+00:00"
+      "recorded_at": "2026-10-05T05:19:09.301742+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_projectile_source_reconciliation.py --verify",
+      "exit_code": 0,
+      "input_version": "185c8a877abd8d0e9f5c05db2f8b5a6c4e31954ef5b9987d454b2a60ad12c7ab",
+      "name": "optional-t2-projectile-source-reconciliation",
+      "output_path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+      "recorded_at": "2026-09-29T13:17:59.290317+00:00"
+    },
+    {
+      "command": "python scripts/verify_t2_measurement_admission.py --verify",
+      "exit_code": 0,
+      "input_version": "d1fc3ddf7fac6cce1bd57a6de4baf1c7104270d876ab7e38d7e3610aec567976",
+      "name": "optional-t2-measurement-admission",
+      "output_path": "artifacts/t2-measurement-admission-audit.json",
+      "recorded_at": "2026-10-05T05:16:00.347025+00:00"
     }
   ],
   "project": "auditable-scientist-lab",

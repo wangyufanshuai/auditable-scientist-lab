@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "scope",
+    "fit_approval_supported",
+    "inputs",
+    "receipt_identities"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "t2-measurement-admission-policy-v1"
+    },
+    "dataset_id": {
+      "const": "wadsworth-2025-projectile-pinned-intake"
+    },
+    "scope": {
+      "const": "pinned-intake-denial-before-measurement-fit"
+    },
+    "fit_approval_supported": {
+      "const": false
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "role",
+          "sha256",
+          "bytes"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(docs|artifacts|scripts)/[A-Za-z0-9_.-]+$"
+          },
+          "role": {
+            "enum": [
+              "independence-audit",
+              "independence-contract",
+              "model-protocol",
+              "reconciliation-audit",
+              "reconciliation-contract",
+              "source-audit",
+              "source-contract",
+              "v0-audit",
+              "v0-contract",
+              "verifier-source"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "receipt_identities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source-audit",
+        "v0-audit",
+        "independence-audit",
+        "reconciliation-audit"
+      ],
+      "properties": {
+        "source-audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "status"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "t2-projectile-source-audit-v1"
+            },
+            "status": {
+              "const": "verified-30-trial-real-source-inventory-only"
+            }
+          }
+        },
+        "v0-audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "status"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "t2-projectile-v0-diagnostic-audit-v1"
+            },
+            "status": {
+              "const": "verified-posthoc-v0-provenance-diagnostic-only"
+            }
+          }
+        },
+        "independence-audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "status"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "t2-projectile-trial-independence-audit-v1"
+            },
+            "status": {
+              "const": "verified-posthoc-duplicate-trial-diagnostic-only"
+            }
+          }
+        },
+        "reconciliation-audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "status"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "t2-projectile-source-reconciliation-audit-v1"
+            },
+            "status": {
+              "const": "verified-reconciled-partial-source-intake-only"
+            }
+          }
+        }
+      }
+    }
+  }
+}

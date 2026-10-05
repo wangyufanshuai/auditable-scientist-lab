@@ -26,6 +26,24 @@ All nine prior PRs were open Drafts at this snapshot. Source inventories and
 authored reviews remain separate from rights clearance and human approval.
 The primary checkout's existing dirty and untracked artifacts are preserved.
 
+## T2 admission increment on the registry base
+
+The next increment starts at PR #14's registry commit `0cf749d` and selectively
+imports the T2 source diagnostics/protocol from `0a7bd56` (#7 -> #9 -> #10).
+The imported files retain their exact upstream receipt hashes. It connects their
+source intake to the supported `guarded_fit` API, which refuses the pinned
+measurement snapshot before raw observations are opened or fitting is invoked.
+The seven blockers, installed interface, and limits are documented in
+`T2_MEASUREMENT_ADMISSION.md`. T2 receipts now join the common registry's evidence
+bindings. This is branch integration of specified files, not a PR merge or release.
+
+The admission version has no approval state. It does not implement the numerical
+fitter or resolve the external source questions. P2 remains open: inspectable
+column/trial mapping, coverage/exclusions, independent split provenance, permitted
+analysis use, drag constant provenance, and prospective registration are needed
+before a reviewed successor may admit real-data model fitting. The numerical
+comparison in P3 and the real-intervention causal campaign are still separate work.
+
 ## Dependency-ordered work
 
 | Priority | Concrete deliverable | Required gate | Stop boundary |

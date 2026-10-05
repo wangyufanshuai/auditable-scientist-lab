@@ -9,7 +9,7 @@
     "scientific_validity": false
   },
   "build_command": "python -m pip wheel . --no-deps --wheel-dir <temporary-directory>",
-  "bundled_resource_count": 34,
+  "bundled_resource_count": 37,
   "checkout_root_in_installed_process": null,
   "committed_manifest_hashes": {
     "T1": "43d66ed9b8117fc7089bb8085bd1f9b7e05645e312dbe530cee9b903abef4365",
@@ -28,10 +28,10 @@
   ],
   "manifest_schema": "replay-manifest-v2",
   "python": "3.12.3",
-  "recorded_at": "2026-10-05T04:46:51.854609+00:00",
+  "recorded_at": "2026-10-05T05:20:51.127691+00:00",
   "replay_manifest_hashes": {
     "T1": "f5a0b7ede7984a63777451f8646a9ba971b4ff693d6b9dbac2cbd678138b1827",
-    "T1V2": "f5a11a6478f9108505104af6976373c73c76ef44aca6b98b0b30f3757f6674f2",
+    "T1V2": "961dc77434d53f219e2c89e6593cccaadfad4cccc9a5af8dd1ec25fe4c520799",
     "T2": "d659528f9c7512c062c639101bba8ef64fbb8b449f622a47fabaff0dcb26ca26",
     "T2P": "ebd00673aecd86a99fe6fcb20ca42caf0f16fc02cb9f8bb6aceadeda77a9de49",
     "T3": "5d4bdb7778ba5e960771b6bfeaa2bc0010e24bbe2e006268d3a7abae62a0c332",
@@ -41,8 +41,8 @@
     "T5": "d77387b55a0be8636bfca3309f927c06733eaadc2799a5bfc51d4cb1fa9075c0"
   },
   "schema_version": "wheel-audit-v7",
-  "script_sha256": "351b6817d2f8cb19a8b452bc0ba2e55b69af2723ede5c3eb5abc932b4a92ae8a",
-  "source_snapshot_sha256": "2018acc5c27c8c31d53355c77add3d01350f6765424fdcc21a2c8d659afb6314",
+  "script_sha256": "3c4953b611197b12ce4391e961670317759fea24edfbef4a347db2c6fb66d905",
+  "source_snapshot_sha256": "ed6e83d52e95a21a09639db0b72e4204932c6e781c59506cc65bd2946bfce66b",
   "status": "verified-within-offline-fixtures",
   "t1v2_combined_run_and_unverified_mission_claim": true,
   "t2_context_sensitivity_wheel_replay": {
@@ -52,6 +52,303 @@
     "context_leakage_rejected": true,
     "status": "verified-synthetic-context-sensitivity-only"
   },
+  "t2_measurement_admission": {
+    "blocking_reasons": [
+      {
+        "code": "velocity-role-unresolved",
+        "details": {
+          "affected_trial_ids": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "column": "v0 (m/s)",
+          "source_narrative_is_column_mapping": false
+        },
+        "evidence_refs": [
+          "artifacts/t2-projectile-v0-diagnostic-audit.json",
+          "artifacts/t2-projectile-source-reconciliation-audit.json"
+        ]
+      },
+      {
+        "code": "experiment-coverage-unaccounted",
+        "details": {
+          "inventoried_trials": 30,
+          "reported_experiments": 82,
+          "unaccounted_experiments": 52
+        },
+        "evidence_refs": [
+          "artifacts/t2-projectile-source-audit.json",
+          "artifacts/t2-projectile-source-reconciliation-audit.json"
+        ]
+      },
+      {
+        "code": "duplicate-content-crosses-split",
+        "details": {
+          "duplicate_groups": [
+            {
+              "crosses_holdout_boundary": true,
+              "trial_ids": [
+                22,
+                23
+              ]
+            }
+          ],
+          "posthoc_diagnostic_only": true
+        },
+        "evidence_refs": [
+          "artifacts/t2-projectile-trial-independence-audit.json",
+          "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+        ]
+      },
+      {
+        "code": "source-use-rights-unresolved",
+        "details": {
+          "analysis_permission_independently_confirmed": false,
+          "redistribution_rights_confirmed": false,
+          "review_status": "rights-language-reviewed-raw-supplement-redistribution-not-confirmed"
+        },
+        "evidence_refs": [
+          "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+          "artifacts/t2-projectile-source-reconciliation-audit.json"
+        ]
+      },
+      {
+        "code": "drag-constants-unreviewed",
+        "details": {
+          "constants": {
+            "air_density_kg_m3": 1.2257,
+            "diameter_m": 0.01746,
+            "dynamic_viscosity_pa_s": 1.7965e-05,
+            "mass_kg": 0.0218
+          }
+        },
+        "evidence_refs": [
+          "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+        ]
+      },
+      {
+        "code": "prospective-split-not-registered",
+        "details": {
+          "holdout_trial_ids": [
+            4,
+            6,
+            7,
+            9,
+            13,
+            21,
+            22,
+            29,
+            30
+          ],
+          "split_unit": "whole-trial",
+          "training_trial_ids": [
+            2,
+            3,
+            5,
+            8,
+            10,
+            11,
+            12,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            31
+          ],
+          "tuning_on_holdout": false
+        },
+        "evidence_refs": [
+          "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+        ]
+      },
+      {
+        "code": "protocol-explicitly-denies-fit",
+        "details": {
+          "v0_input_modes": [
+            "blocked-until-column-role-resolved",
+            "blocked-until-column-role-resolved"
+          ]
+        },
+        "evidence_refs": [
+          "docs/T2_PROJECTILE_MODEL_PROTOCOL.json"
+        ]
+      }
+    ],
+    "boundaries": {
+      "causal_effect_identified": false,
+      "claim_status": "unverified",
+      "model_fit_admitted": false,
+      "physical_model_validated": false,
+      "publication_ready": false,
+      "research_candidate": false,
+      "scientific_holdout": false,
+      "source_rights_cleared": false
+    },
+    "dataset_id": "wadsworth-2025-projectile-pinned-intake",
+    "fit_invoked": false,
+    "input_files": [
+      {
+        "bytes": 4156,
+        "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
+        "role": "source-contract",
+        "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+      },
+      {
+        "bytes": 15768,
+        "path": "artifacts/t2-projectile-source-audit.json",
+        "role": "source-audit",
+        "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
+      },
+      {
+        "bytes": 8075,
+        "path": "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+        "role": "v0-contract",
+        "sha256": "ec72000c3ecc9d5b0346ad2954675a268c365bb087f20077fdcdfbae0bae8150"
+      },
+      {
+        "bytes": 8969,
+        "path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+        "role": "v0-audit",
+        "sha256": "c078f560230a6ec535ac5fbf83f877455455e3b3653d1822c020749949574b1b"
+      },
+      {
+        "bytes": 1731,
+        "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+        "role": "independence-contract",
+        "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3"
+      },
+      {
+        "bytes": 2760,
+        "path": "artifacts/t2-projectile-trial-independence-audit.json",
+        "role": "independence-audit",
+        "sha256": "0f75c5adc84910fb6b7d3bc42fcd49a1f922cd210afbbc9a62617563536b0b15"
+      },
+      {
+        "bytes": 3218,
+        "path": "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json",
+        "role": "reconciliation-contract",
+        "sha256": "e54039431c9f7733a1fdffec6fbb37e317590086ffafd2a9f71472d256622a36"
+      },
+      {
+        "bytes": 4905,
+        "path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+        "role": "reconciliation-audit",
+        "sha256": "88afb794d50f00f019c3c06be0df57c9993841e01cfbdd413d48104fd6f6c6a2"
+      },
+      {
+        "bytes": 4104,
+        "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
+        "role": "model-protocol",
+        "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
+      },
+      {
+        "bytes": 12948,
+        "path": "scripts/verify_t2_projectile_source.py",
+        "role": "verifier-source",
+        "sha256": "e0881d0099f1bfbf145655e74d3199b6f2dc2e233643d6a54fb63b2bdcac57cc"
+      },
+      {
+        "bytes": 10357,
+        "path": "scripts/verify_t2_projectile_v0_diagnostic.py",
+        "role": "verifier-source",
+        "sha256": "51f260c2508f00824a9f2894f764afa39eddd3a6f2780ce4529e70dba3b7894c"
+      },
+      {
+        "bytes": 8307,
+        "path": "scripts/verify_t2_projectile_trial_independence.py",
+        "role": "verifier-source",
+        "sha256": "70dc1844113bfce012ebd5c3781c25a996c633ec72ce097aa80dd97974217b03"
+      },
+      {
+        "bytes": 10459,
+        "path": "scripts/verify_t2_projectile_source_reconciliation.py",
+        "role": "verifier-source",
+        "sha256": "185c8a877abd8d0e9f5c05db2f8b5a6c4e31954ef5b9987d454b2a60ad12c7ab"
+      },
+      {
+        "bytes": 4096,
+        "path": "scripts/verify_t2_projectile_model_protocol.py",
+        "role": "verifier-source",
+        "sha256": "c3210f909ad321eb975b8b856033e341671cafaddb183ac6efd8fc994319daf4"
+      }
+    ],
+    "input_hash": "bf93c867e5f6862aa09ff7ac42fe775e146d59ae4e4ed0c3f6111ae188367a8e",
+    "inventoried_trial_ids": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "policy_sha256": "885c5e780c41f27eb0ec60375f39c799685b6400abd0edd16195acc8da45930d",
+    "raw_observations_opened": false,
+    "schema_version": "t2-measurement-admission-decision-v1",
+    "scope": "source-bound intake denial; no measurement fit or scientific validation",
+    "status": "blocked-before-model-fit"
+  },
+  "t2_measurement_fit_callback_not_invoked": true,
   "t3_convergence_wheel_replay": {
     "boundaries": {
       "external_solver_validation": false,
@@ -116,13 +413,13 @@
       "research_candidate": false,
       "scientific_validity": false
     },
-    "required_receipt_count": 25,
+    "required_receipt_count": 33,
     "required_receipts": [
       {
         "binding": "canonical-acceptance-excluding-registry-row",
-        "bytes": 13958,
+        "bytes": 14639,
         "path": "artifacts/acceptance.json",
-        "sha256": "625bdcf92c764720d52e77b767fd7d84ca0e88e1d5e40d9bbced0db173952492"
+        "sha256": "a7a1756507b66eacc4c748e021710d9cb753a86b66af4c7dbe59ee798efb093e"
       },
       {
         "binding": "file-bytes",
@@ -156,6 +453,12 @@
       },
       {
         "binding": "file-bytes",
+        "bytes": 10579,
+        "path": "artifacts/t2-measurement-admission-audit.json",
+        "sha256": "d1fc3ddf7fac6cce1bd57a6de4baf1c7104270d876ab7e38d7e3610aec567976"
+      },
+      {
+        "binding": "file-bytes",
         "bytes": 10818,
         "path": "artifacts/t2-physical/acceptance.json",
         "sha256": "4b1c1016449e9f7ed58c049883f63a4de39778a03d3ffb9fd1a40ec57ec5ddfc"
@@ -165,6 +468,24 @@
         "bytes": 15768,
         "path": "artifacts/t2-projectile-source-audit.json",
         "sha256": "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 4905,
+        "path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+        "sha256": "88afb794d50f00f019c3c06be0df57c9993841e01cfbdd413d48104fd6f6c6a2"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 2760,
+        "path": "artifacts/t2-projectile-trial-independence-audit.json",
+        "sha256": "0f75c5adc84910fb6b7d3bc42fcd49a1f922cd210afbbc9a62617563536b0b15"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 8969,
+        "path": "artifacts/t2-projectile-v0-diagnostic-audit.json",
+        "sha256": "c078f560230a6ec535ac5fbf83f877455455e3b3653d1822c020749949574b1b"
       },
       {
         "binding": "file-bytes",
@@ -258,15 +579,39 @@
       },
       {
         "binding": "file-bytes",
-        "bytes": 4004,
+        "bytes": 3930,
+        "path": "docs/T2_MEASUREMENT_ADMISSION_POLICY.json",
+        "sha256": "8651f62fa86cc104e2561621535c9ecf66c3584e080e2fb2b438a6da2fba63a9"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 4104,
         "path": "docs/T2_PROJECTILE_MODEL_PROTOCOL.json",
-        "sha256": "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
+        "sha256": "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
       },
       {
         "binding": "file-bytes",
         "bytes": 4156,
         "path": "docs/T2_PROJECTILE_SOURCE_CONTRACT.json",
         "sha256": "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 3218,
+        "path": "docs/T2_PROJECTILE_SOURCE_RECONCILIATION_CONTRACT.json",
+        "sha256": "e54039431c9f7733a1fdffec6fbb37e317590086ffafd2a9f71472d256622a36"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 1731,
+        "path": "docs/T2_PROJECTILE_TRIAL_INDEPENDENCE_CONTRACT.json",
+        "sha256": "8e9093435a877a1045ae3e2c3fca66a47a6afa29c139505ea88dd6e0a0832ed3"
+      },
+      {
+        "binding": "file-bytes",
+        "bytes": 8075,
+        "path": "docs/T2_PROJECTILE_V0_DIAGNOSTIC_CONTRACT.json",
+        "sha256": "ec72000c3ecc9d5b0346ad2954675a268c365bb087f20077fdcdfbae0bae8150"
       }
     ],
     "status": "verified-bounded-registry-evidence",
@@ -281,5 +626,5 @@
   },
   "wheel_artifact_committed": false,
   "wheel_filename": "auditable_scientist_lab-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "dccb39a3cb0bbc139a15def081289e910b07a423e9ad8d0d03f3d2d74de52d38"
+  "wheel_sha256": "b8b3a13ff515c7849a21c881ee5609928fb3761288ce93147d9e54e585a397d4"
 }

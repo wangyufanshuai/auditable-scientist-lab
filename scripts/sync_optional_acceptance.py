@@ -23,7 +23,7 @@ STATUS_CONTRACT = ROOT / "docs/PORTFOLIO_STATUS_CONTRACT.json"
 STATUS_NARRATIVE = ROOT / "docs/PORTFOLIO_STATUS_NARRATIVE.md"
 T2_PROJECTILE_CONTRACT_SHA256 = "7f0591720ee87672004be5421e989a3d63bd89a8b385d22748e456701294467d"
 T2_PROJECTILE_AUDIT_SHA256 = "ea58eabc93dadd0e90f39df8497e8e87c822df1bec25d6271a7296cfa0a9ebdf"
-T2_PROJECTILE_PROTOCOL_SHA256 = "b9fa970bee858bbd66fc27c1a41e56559a76d0c961d4ed71096564fac5c35400"
+T2_PROJECTILE_PROTOCOL_SHA256 = "8a9861daf50013a1eba1ce7b9d84c7088df2ff52334f8f9681e913dea974150c"
 T5_CROSS_READER_CONTRACT_SHA256 = "d8398495281ecd31f4ec6e25253055a5752e7a02ebb9a5d42e4b51a8d602108a"
 T5_CROSS_READER_AUDIT_SHA256 = "894b7101574873eb4ebb181c8204f74c5b12943991515c7bbc5beed6f188cc6d"
 
@@ -694,6 +694,19 @@ def _t2_projectile_protocol() -> dict:
     return result
 
 
+def _t2_projectile_reconciliation_receipt(audit: dict | None = None) -> dict:
+    """Keep the upstream T2 reconciliation verifier authoritative."""
+    path = ROOT / "scripts/verify_t2_projectile_source_reconciliation.py"
+    spec = importlib.util.spec_from_file_location("t2_reconciliation_projection", path)
+    if spec is None or spec.loader is None:
+        raise ValueError("T2 reconciliation verifier is unavailable")
+    verifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(verifier)
+    verified = verifier.verify_saved(audit)
+    return {"status": verified["status"], "recorded_at": verified["recorded_at"],
+            "verifier_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
 def proposed_outputs() -> dict[Path, str]:
     """Build the complete optional projection without writing or trusting a registry audit."""
 
@@ -705,6 +718,30 @@ def proposed_outputs() -> dict[Path, str]:
     for spec, row in zip(OPTIONAL, rows):
         _insert_or_replace(bundles[spec[0]]["checks"], row)
     root = _load("artifacts/acceptance.json")
+    reconciliation = _t2_projectile_reconciliation_receipt()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-projectile-source-reconciliation",
+        "command": "python scripts/verify_t2_projectile_source_reconciliation.py --verify",
+        "exit_code": 0, "recorded_at": reconciliation["recorded_at"],
+        "input_version": reconciliation["verifier_sha256"],
+        "output_path": "artifacts/t2-projectile-source-reconciliation-audit.json",
+    })
+    # The supported T2 fit entry point refuses this source snapshot before any
+    # observations are opened or fitting callback is invoked. Verify dynamically.
+    admission_spec = importlib.util.spec_from_file_location(
+        "t2_admission_projection_verifier", ROOT / "scripts/verify_t2_measurement_admission.py")
+    if admission_spec is None or admission_spec.loader is None:
+        raise ValueError("T2 admission verifier is unavailable")
+    admission_verifier = importlib.util.module_from_spec(admission_spec)
+    admission_spec.loader.exec_module(admission_verifier)
+    admission = admission_verifier.verify_saved()
+    _insert_or_replace(root["checks"], {
+        "name": "optional-t2-measurement-admission",
+        "command": "python scripts/verify_t2_measurement_admission.py --verify",
+        "exit_code": 0, "recorded_at": admission["recorded_at"],
+        "input_version": hashlib.sha256(_render_json(admission).encode("utf-8")).hexdigest(),
+        "output_path": "artifacts/t2-measurement-admission-audit.json",
+    })
     desat = _load("artifacts/t1-maven-desat-sensitivity-audit.json")
     expected_desat_checks = {
         "source_and_baseline_bound", "all_24_scenarios", "split_no_impulse",
